@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_account_invoice_report_branch_filter" model="ir.ui.view">
+        <field name="name">view.account.invoice.report.branch.filter</field>
+        <field name="model">account.invoice.report</field>
+        <field name="inherit_id" ref="account.view_account_invoice_report_search"/>
+        <field name="arch" type="xml">
+            <search>
+                <field name="branch_id"/>
+            </search>
+            <xpath expr="//filter[@name='company']" position="after">
+                <filter string="Branch" name="branch" domain="[]" context="{'group_by':'branch_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

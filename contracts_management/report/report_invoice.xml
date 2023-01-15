@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+            <xpath expr="//h2" position="before">
+                <h2 name="company_info">
+                    <span t-field="o.company_id.name_arabic"/>
+                    <br/>
+                    <span>Tax ID:</span>
+                    <span t-field="o.company_id.vat"/>
+                </h2>
+
+                <br/>
+                <br/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

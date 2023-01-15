@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="view_contracts_management_settings_form" model="ir.ui.view">
+            <field name="name">view.contracts.management.settings.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" string="Facilities" data-key="contracts_management">
+                        <h2>Projects</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="group_show_tender_project"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="group_show_tender_project"/>
+                                    <div class="text-muted">
+                                        Allows to projects
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box"
+                                 attrs="{'invisible': [('group_show_tender_project','=',False)]}">
+                                <div class="o_setting_left_pane">
+                                    <field name="select_tender_project"/>
+                                </div>
+
+                                <div class="o_setting_right_pane">
+                                    <label for="select_tender_project"/>
+                                    <div class="text-muted">
+                                        Must be select project when create contract
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box"
+                                 attrs="{'invisible': [('group_show_tender_project','=',False)]}">
+                                <div class="o_setting_left_pane">
+                                    <field name="contracts_before_tender_projects_menu"/>
+                                </div>
+
+                                <div class="o_setting_right_pane">
+                                    <label for="contracts_before_tender_projects_menu"/>
+                                    <div class="text-muted">
+                                        Show contracts before projects menu
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>Accounting</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="tender_contract_journal_id"/>
+                                    <div class="text-muted">
+                                        Journal used when created customer invoice in contracts
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="tender_contract_journal_id" class="o_light_label"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="tender_contract_customer_account_category_id"/>
+                                    <div class="text-muted">
+                                        Default accounting category used when created customers in projects and
+                                        contracts
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="tender_contract_customer_account_category_id"
+                                                   class="o_light_label"
+                                                   context="{'form_view_ref': 'accounting_category_partner.view_res_partner_account_category_form2','default_apply_to_tender_contract':True,'default_apply_to_customer':True,'default_apply_to_vendor':False}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="auto_sequence_customer"/>
+                                </div>
+
+                                <div class="o_setting_right_pane">
+                                    <label for="auto_sequence_customer"/>
+                                    <div class="text-muted">
+                                        Create sequence when created customer
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_contracts_management_config" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'contracts_management'}</field>
+        </record>
+    </data>
+</odoo>

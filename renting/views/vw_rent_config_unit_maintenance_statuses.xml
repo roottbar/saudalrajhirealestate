@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="rent_config_unit_maintenance_statuses_tree">
+            <field name="name">rent.config.unit.maintenance.statuses.tree</field>
+            <field name="model">rent.config.unit.maintenance.statuses</field>
+            <field name="arch" type="xml">
+                <tree string="Unit Maintenance Statuses">
+                    <field name="unit_maintenance_status_name"/>
+                    <field name="unit_maintenance_status_description"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="rent_config_unit_maintenance_statuses_form">
+            <field name="name">rent.config.unit.maintenance.statuses.form</field>
+            <field name="model">rent.config.unit.maintenance.statuses</field>
+            <field name="arch" type="xml">
+                <form string="Unit Maintenance Statuses">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="unit_maintenance_status_name"/>
+                            </group>
+                            <group>
+                                <field name="unit_maintenance_status_description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

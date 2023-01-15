@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_type_tree" model="ir.ui.view">
+            <field name="name">view.tender.contract.type.tree</field>
+            <field name="model">tender.contract.type</field>
+            <field name="arch" type="xml">
+                <tree string="Tender Contract Types">
+                    <field name="name"/>
+                    <field name="code" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_type_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.type.form</field>
+            <field name="model">tender.contract.type</field>
+            <field name="arch" type="xml">
+                <form string="Tender Contract Types">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tender_contract_type" model="ir.actions.act_window">
+            <field name="name">Types</field>
+            <field name="res_model">tender.contract.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

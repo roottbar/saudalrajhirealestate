@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+  <t t-name="bstt_ksa_ninja_dashboard_back_button" t-inherit="ks_dashboard_ninja.ksDashboardNinjaHeader" t-inherit-mode="extension">
+    <xpath expr="//div[@id='ks_dashboard_title']" position="before">
+      <button type='button' onclick="history.back()" class='button btn btn-primary'>Back</button>
+    </xpath>
+  </t>
+
+</templates>

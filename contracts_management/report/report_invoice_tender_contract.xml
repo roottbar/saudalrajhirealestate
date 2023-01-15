@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_tender_contract_document">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    .table-bordered th, .table-bordered td {
+                    border: 1px solid black;
+                    }
+                </style>
+
+                <!-- Level 1 -->
+                <div class="page">
+                    <h2>
+                        <span t-field="o.company_id.name_arabic"/>
+                        <br/>
+                        <span>Tax ID:</span>
+                        <span t-field="o.company_id.vat"/>
+                    </h2>
+
+                    <br/>
+                    <br/>
+                    <h2>
+                        <span>Invoice</span>
+                    </h2>
+
+                    <div style="margin-right: 0;margin-left: 0;display:flex;display: -webkit-box;justify-content:space-between;-webkit-box-pack: space-between;">
+                        <div style="width: 45%">
+                            <h4 style="border: 1px solid black;color: white;background: #c00000;">BILL TO</h4>
+                            <address t-field="o.partner_id"
+                                     t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                            <div t-if="o.partner_id.vat" class="mt16">
+                                <span t-field="o.partner_id.vat"/>
+                            </div>
+                        </div>
+                        <div style="width:10%"/>
+                        <div style="width: 45%;">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>
+                                        <span>Invoice No.</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Invoice Date</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="o.invoice_date.strftime('%B %d, %Y')"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Contract No.</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.tender_contract_id.ref"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>For Month</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="o.invoice_date.strftime('%B - %Y')"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <t t-set="total_price_subtotal" t-value="0"/>
+                    <t t-set="total_price_tax" t-value="0"/>
+                    <t t-set="total_price_total" t-value="0"/>
+
+                    <table class="table table-bordered" name="invoice_level1_table" style="border: 1px solid black;">
+                        <tr style="color: white;background: #c00000;">
+                            <th>Description</th>
+                            <th class="text-right">Price Before Tax</th>
+                            <th class="text-right">Tax Amount</th>
+                            <th class="text-right">Total Price including Tax</th>
+                        </tr>
+                        <t t-foreach="data_level1['categories']" t-as="category">
+                            <tr>
+                                <td>
+                                    <span t-esc="category['name']"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="category['price_subtotal']"
+                                          t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="category['price_tax']"
+                                          t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-esc="category['price_total']"
+                                          t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                </td>
+
+                                <t t-set="total_price_subtotal"
+                                   t-value="total_price_subtotal + category['price_subtotal']"/>
+                                <t t-set="total_price_tax" t-value="total_price_tax + category['price_tax']"/>
+                                <t t-set="total_price_total" t-value="total_price_total + category['price_total']"/>
+                            </tr>
+                        </t>
+                    </table>
+
+                    <div class="clearfix">
+                        <div class="row">
+                            <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'}">
+                                <table class="table table-bordered" style="border: 1px solid black;">
+                                    <tr style="color: white;background: #c00000;">
+                                        <td>OTHER COMMENTS:</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-field="o.narration"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'}">
+                                <table class="table table-sm" style="page-break-inside: avoid;">
+                                    <tr class="border-black o_subtotal" style="">
+                                        <td>
+                                            <strong>Subtotal</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="total_price_subtotal"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>Discount</span>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="amount_discount"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>Tax Rate</span>
+                                        </td>
+                                        <td>
+                                            <span t-esc="', '.join(map(lambda x: (x.description or x.name), o.invoice_line_ids.filtered(lambda l: not l.display_type).mapped('tax_ids')))"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span>Tax Amount</span>
+                                        </td>
+                                        <td class="text-right o_price_total">
+                                            <span class="text-nowrap" t-esc="total_price_tax"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black o_total">
+                                        <td>
+                                            <strong>Total</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            <span class="text-nowrap" t-esc="total_price_total"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <br/>
+                    <div class="text-center">
+                        <b>If you have any question about this invoice, please contact</b>
+                        <br/>
+                        <span t-field="o.partner_id.name"/>
+                        <t t-if="o.partner_id.phone">
+                            ,
+                            <span t-field="o.partner_id.phone"/>
+                        </t>
+                        <t t-if="o.partner_id.email">
+                            ,
+                            <span t-field="o.partner_id.email"/>
+                        </t>
+                    </div>
+                </div>
+
+                <t t-set="total_cleaning_labour_cost" t-value="0"/>
+                <t t-set="total_cleaning_materials" t-value="0"/>
+                <t t-set="total_hospitality_labour_cost" t-value="0"/>
+                <t t-set="total_hospitality_materials" t-value="0"/>
+                <t t-set="total_maintenance_spare_parts" t-value="0"/>
+                <t t-set="total_maintenance_service_charge" t-value="0"/>
+                <t t-set="total_pest_Control_service_charge" t-value="0"/>
+                <t t-set="total" t-value="0"/>
+
+                <!-- level 2 -->
+                <h2 style="page-break-before:always;">
+                    <span>Level (2) Branches and Services Details</span>
+                </h2>
+
+                <table class="table table-bordered" name="invoice_level2_table"
+                       style="border: 1px solid black;page-break-inside: avoid;">
+                    <tr style="color: white;background: #c00000;">
+                        <th rowspan="2" class="text-center">Branch Name</th>
+                        <th colspan="2" class="text-center">Cleaning</th>
+                        <th colspan="2" class="text-center">Hospitality</th>
+                        <th colspan="2" class="text-center">Maintenance</th>
+                        <th colspan="1" class="text-center">Pest Control</th>
+                        <th rowspan="2" class="text-center">Total</th>
+                    </tr>
+                    <tr style="color: white;background: #c00000;">
+                        <th class="text-center">Labour Cost</th>
+                        <th class="text-center">Materials</th>
+                        <th class="text-center">Labour Cost</th>
+                        <th class="text-center">Materials</th>
+                        <th class="text-center">Spare Parts</th>
+                        <th class="text-center">Service Charge</th>
+                        <th class="text-center">Service Charge</th>
+                    </tr>
+
+                    <t t-foreach="o.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                        <tr>
+                            <tr>
+                                <td class="text-center">
+                                    <span t-field="line.branch_id.name"/>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.service_category_id.id == cleaning_labour_cost_service_category_id">
+                                        <span t-field="line.price_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        <t t-set="total_cleaning_labour_cost"
+                                           t-value="total_cleaning_labour_cost + line.price_total"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.service_category_id.id == cleaning_materials_service_category_id">
+                                        <span t-field="line.price_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        <t t-set="total_cleaning_materials"
+                                           t-value="total_cleaning_materials + line.price_total"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.service_category_id.id == hospitality_labour_cost_service_category_id">
+                                        <span t-field="line.price_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        <t t-set="total_hospitality_labour_cost"
+                                           t-value="total_hospitality_labour_cost + line.price_total"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.service_category_id.id == hospitality_materials_service_category_id">
+                                        <span t-field="line.price_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        <t t-set="total_hospitality_materials"
+                                           t-value="total_hospitality_materials + line.price_total"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.service_category_id.id == maintenance_spare_parts_service_category_id">
+                                        <span t-field="line.price_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        <t t-set="total_maintenance_spare_parts"
+                                           t-value="total_maintenance_spare_parts + line.price_total"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.service_category_id.id == maintenance_service_charge_service_category_id">
+                                        <span t-field="line.price_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        <t t-set="total_maintenance_service_charge"
+                                           t-value="total_maintenance_service_charge + line.price_total"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.service_category_id.id == pest_control_service_charge_service_category_id">
+                                        <span t-field="line.price_total"
+                                              t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        <t t-set="total_pest_Control_service_charge"
+                                           t-value="total_pest_Control_service_charge + line.price_total"/>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <span t-field="line.price_total"
+                                          t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    <t t-set="total" t-value="total + line.price_total"/>
+                                </td>
+                            </tr>
+                        </tr>
+                    </t>
+                    <tr style="color: white;background: #c00000;">
+                        <td class="text-center">
+                            <span>Total</span>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total_cleaning_labour_cost"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total_cleaning_materials"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total_hospitality_labour_cost"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total_hospitality_materials"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total_maintenance_spare_parts"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total_maintenance_service_charge"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total_pest_Control_service_charge"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="total"
+                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- level 3 -->
+                <t t-if="data_level3">
+                    <t t-set="total_cleaning" t-value="0"/>
+                    <t t-set="total_hospitality" t-value="0"/>
+                    <t t-set="total_maintenance" t-value="0"/>
+                    <t t-set="total_pest_Control" t-value="0"/>
+                    <t t-set="total_quantity" t-value="0"/>
+
+                    <h2 style="page-break-before:always;">
+                        <span>Level (3) Materials and Spare Parts Details</span>
+                    </h2>
+
+                    <table class="table table-bordered" name="invoice_level3_table"
+                           style="border: 1px solid black;page-break-inside: avoid;">
+                        <tr style="color: white;background: #c00000;">
+                            <th class="text-center">Branch Name / Code</th>
+                            <th class="text-center">Cleaning</th>
+                            <th class="text-center">Hospitality</th>
+                            <th class="text-center">Maintenance</th>
+                            <th class="text-center">Pest Control</th>
+                            <th class="text-center">Total</th>
+                        </tr>
+                        <t t-foreach="data_level3" t-as="row">
+                            <tr>
+                                <td class="text-center">
+                                    <span t-esc="row['branch_name']"/>
+                                </td>
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                            </tr>
+
+                            <t t-foreach="row['lines']" t-as="line">
+                                <tr>
+                                    <td class="text-center">
+                                        <span t-esc="line['name']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="line['parent_service_category_id'] == cleaning_service_category_id">
+                                            <span t-esc="line['quantity']"/>
+                                            <t t-set="total_cleaning" t-value="total_cleaning + line['quantity']"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="line['parent_service_category_id'] == hospitality_service_category_id">
+                                            <span t-esc="line['quantity']"/>
+                                            <t t-set="total_hospitality"
+                                               t-value="total_hospitality + line['quantity']"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="line['parent_service_category_id'] == maintenance_service_category_id">
+                                            <span t-esc="line['quantity']"/>
+                                            <t t-set="total_maintenance"
+                                               t-value="total_maintenance + line['quantity']"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="line['parent_service_category_id'] == pest_control_service_category_id">
+                                            <span t-esc="line['quantity']"/>
+                                            <t t-set="total_pest_Control"
+                                               t-value="total_pest_Control + line['quantity']"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="line['quantity']"/>
+                                        <t t-set="total_quantity" t-value="total_quantity + line['quantity']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr style="color: white;background: #c00000;">
+                            <td class="text-center">
+                                <span>Total</span>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="total_cleaning"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="total_hospitality"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="total_maintenance"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="total_pest_Control"/>
+                            </td>
+                            <td class="text-center">
+                                <span t-esc="total_quantity"/>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_invoice_tender_contract">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="contracts_management.report_invoice_tender_contract_document"
+                       t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

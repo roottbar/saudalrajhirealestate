@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+<!--    <data>-->
+<!--        <record model="ir.ui.view" id="rent_maintenance_pivot_report_view">-->
+<!--            <field name="name">rent.maintenance.pivot.report.view</field>-->
+<!--            <field name="model">rent.maintenance.pivot.report</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <pivot string="Maintenance">-->
+<!--                    <field name="prod_id" type="row"/>-->
+<!--                    <field name="prop_id" type="row"/>-->
+<!--                    <field name="unit_number" type="col"/>-->
+<!--                </pivot>-->
+<!--            </field>-->
+<!--        </record>-->
+<!--    </data>-->
+</odoo>

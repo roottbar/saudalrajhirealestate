@@ -1,0 +1,52 @@
+<templates>
+    <t t-name="PettyCash.dynamic_report_request_feeding_group_by_menu">
+        <div class="btn-group o_dropdown">
+            <a type="button" class="dropdown-toggle js_dynamic_reports_group_by" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-list-ol"/>
+            </a>
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by selected" title="Without"
+                   data-filter="without">Without
+                </a>
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by" title="Payment Journal"
+                   data-filter="payment_journal">Payment Journal
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by" title="Journal"
+                   data-filter="journal">Journal
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by" title="Responsible Box"
+                   data-filter="responsible_box">Responsible Box
+                </a>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="PettyCash.dynamic_report_request_feeding_state_filter_menu">
+        <div class="btn-group o_dropdown">
+            <a type="button" class="dropdown-toggle js_dynamic_reports_state_filter" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-filter"/>
+            </a>
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_state selected" title="All"
+                   data-filter="all">All
+                </a>
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_state" title="Approved"
+                   data-filter="approved">Approved
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_state" title="Review"
+                   data-filter="review">Review
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_state" title="Rejected"
+                   data-filter="rejected">Rejected
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_state" title="Draft"
+                   data-filter="draft">Draft
+                </a>
+            </div>
+        </div>
+    </t>
+</templates>

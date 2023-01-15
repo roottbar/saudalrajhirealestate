@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_tender_lead_document">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    .table-bordered th, .table-bordered td {
+                    border: 1px solid black;
+                    }
+                </style>
+                <div class="page">
+                    <h2 class="text-center" style="border: 1px solid black;color: white;background: #c00000;">Lead
+                        Form
+                    </h2>
+
+                    <div style="margin-right: 0;margin-left: 0;display:flex;display: -webkit-box;justify-content:space-between;-webkit-box-pack: space-between;">
+                        <div style="width:45%">
+                            <table class="table table-bordered" style="border: 1px solid black">
+                                <tr style="color: white;background: #c00000;">
+                                    <td colspan="3">
+                                        <span style="float:left;" t-translation="off">Details of the applicant:</span>
+                                        <span style="float:right;" t-translation="off">بيانات العميل</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Company Name:</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id.name"/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:إسم الشركة</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Client Number:</span>
+                                    </td>
+                                    <td>
+                                        <t t-if="o.partner_id.number">
+                                            <span t-field="o.partner_id.number"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-field="o.partner_id.ref"/>
+                                        </t>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:رقم العميل</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Company CR.:</span>
+                                    </td>
+                                    <td>
+                                        <span/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:سجل تجاري</span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Address:</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id"
+                                              t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': True}"/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:العنوان</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Responsible Person:</span>
+                                    </td>
+                                    <td>
+                                        <span/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:الشخص المسؤول</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Phone or Emails:</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.partner_id"
+                                              t-options="{'widget': 'contact', 'fields': ['phone','email'], 'no_marker': True}"/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:قنوات التواصل</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:10%"/>
+                        <div style="width:45%">
+                            <table class="table table-bordered" style="border: 1px solid black">
+                                <tr style="color: white;background: #c00000;">
+                                    <td colspan="3">
+                                        <span style="float:left;" t-translation="off">Lead Details:</span>
+                                        <span style="float:right;" t-translation="off">بيانات الفرصة</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Lead Date:</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.create_date"/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:تاريخ الفرصة</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Lead Number:</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.name"/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:رقم الفرصة</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Sales Agent:</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.crm_lead_id.user_id.display_name"/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:ممثل المبيعات</span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Expected Contract Signed:</span>
+                                    </td>
+                                    <td>
+                                        <span/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:تاريخ توقيع العقد المتوقع</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">Lead Status:</span>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.crm_lead_id.stage_id.name"/>
+                                    </td>
+                                    <td class="text-center" style="background: #f2f2f2;">
+                                        <span t-translation="off">:حالة الفرصة</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <t t-if="o.manpower_lines">
+                        <br/>
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;"
+                               name="manpower_lines_table">
+                            <tr style="color: white;background: #c00000;">
+                                <th colspan="99">
+                                    <span style="float:left;" t-translation="off">First: Manpower</span>
+                                    <span style="float:right;" t-translation="off">:أولاً: القوى العاملة منفذة الخدمات
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">م
+                                    <br/>
+                                    SL
+                                </th>
+                                <th t-translation="off">نوع الخدمة
+                                    <br/>
+                                    Service Type
+                                </th>
+                                <th t-translation="off">المهنة/التخصص
+                                    <br/>
+                                    Profession Specialized
+                                </th>
+                                <th t-translation="off">عدد العمالة<br/>Number of workers
+                                </th>
+                                <th t-translation="off">الجنسية<br/>Nationality
+                                </th>
+                                <th t-translation="off">مدة الخدمة<br/>Duration
+                                </th>
+                                <th t-translation="off">أيام وساعات العمل<br/>Working hours &amp; days
+                                </th>
+                                <th t-translation="off">تأمين السكن<br/>Accommodation Providing
+                                </th>
+                                <th t-translation="off">تأمين وسائل النقل<br/>Transportation providing
+                                </th>
+                                <th t-translation="off">فترات العمل<br/>Work Shifts
+                                </th>
+                            </tr>
+                            <t t-foreach="o.manpower_lines" t-as="line">
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type">
+                                        <td>
+                                            <span t-field="line.service_product_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.service_type_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.profession_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.nationality_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.duration" t-options="{'widget': 'float_time'}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.resource_calendar_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.accommodation_providing_amount"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.transportation_providing_amount"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.work_shifts" t-options="{'widget': 'float_time'}"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+
+                    <t t-if="o.equipments_lines">
+                        <br/>
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;"
+                               name="equipments_lines_table">
+                            <tr style="color: white;background: #c00000;">
+                                <th colspan="99">
+                                    <span style="float:left;" t-translation="off">Second: Equipments &amp; tools:
+                                    </span>
+                                    <span style="float:right;" t-translation="off">:ثانياً: بيان المواد والأدوات
+                                        والمعدات المطلوبة لتنفيذ الخدمة
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">م
+                                    <br/>
+                                    SL
+                                </th>
+                                <th t-translation="off">نوع الخدمة
+                                    <br/>
+                                    Service Type
+                                </th>
+                                <th t-translation="off">الصنف<br/>Description
+                                </th>
+                                <th t-translation="off">الكود<br/>Code
+                                </th>
+                                <th t-translation="off">الوحدة<br/>Unit
+                                </th>
+                                <th t-translation="off">الكمية الشهرية<br/>Qty/Monthly
+                                </th>
+                                <th t-translation="off">مدة الإستهلاك/ شهر<br/>Duration
+                                </th>
+                            </tr>
+
+                            <t t-foreach="o.equipments_lines" t-as="line">
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type">
+                                        <td>
+                                            <span t-field="line.service_product_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.service_type_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.code"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.price_unit"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.consumption_duration_monthly"
+                                                  t-options="{'widget': 'float_time'}"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+
+                    <t t-if="o.specialty_services_lines">
+                        <br/>
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;"
+                               name="specialty_services_lines_table">
+                            <tr style="color: white;background: #c00000;">
+                                <th colspan="99">
+                                    <span style="float:left;" t-translation="off">Third: Specialty Services Request:
+                                    </span>
+                                    <span style="float:right;" t-translation="off">:ثالثاً: الخدمات المتخصصة بالعقد
+                                    </span>
+                                </th>
+                            </tr>
+                            <tr style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">م
+                                    <br/>
+                                    SL
+                                </th>
+                                <th t-translation="off">نوع الخدمة
+                                    <br/>
+                                    Service Type
+                                </th>
+                                <th t-translation="off">مدة الزيارة/ساعة<br/>Visit Duration/hrs
+                                </th>
+                                <th t-translation="off">عدد الزيارات الشهرية<br/>Total Visits/ month
+                                </th>
+                                <th t-translation="off">تفاصيل الخدمة<br/>Details of Services
+                                </th>
+                            </tr>
+
+                            <t t-foreach="o.specialty_services_lines" t-as="line">
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type">
+                                        <td>
+                                            <span t-field="line.service_product_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.service_type_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.visit_duration" t-options="{'widget': 'float_time'}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.total_visits_monthly"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.details"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </template>
+        <template id="report_tender_lead">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="contracts_management.report_tender_lead_document"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+

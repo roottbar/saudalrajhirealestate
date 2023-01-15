@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_contracts_management_main" name="Facilities"
+                  web_icon="contracts_management,static/description/icon.png"
+                  groups="contracts_management.group_contracts_management_user"/>
+        <menuitem id="menu_tender_projects" name="Projects" parent="menu_contracts_management_main"
+                  action="action_tender_projects" groups="contracts_management.group_show_tender_project" sequence="1"/>
+        <menuitem id="menu_tender_contracts" name="Contracts" parent="menu_contracts_management_main"
+                  action="action_tender_contracts" sequence="2"/>
+        <menuitem id="menu_tender_quotations" name="Quotations" parent="menu_contracts_management_main"
+                  action="action_tender_quotations" sequence="3"/>
+        <menuitem id="menu_tender_leads" name="Leads" parent="menu_contracts_management_main"
+                  action="action_tender_leads" sequence="4"/>
+        <menuitem id="menu_tender_workers" name="Workers" parent="menu_contracts_management_main"
+                  action="action_tender_workers" sequence="5"/>
+
+        <menuitem id="menu_contracts_management_configuration" name="Configuration"
+                  parent="menu_contracts_management_main"
+                  groups="contracts_management.group_contracts_management_manager"
+                  sequence="10"/>
+        <menuitem id="menu_contracts_management_settings" name="Settings"
+                  parent="menu_contracts_management_configuration" action="action_contracts_management_config"
+                  groups="base.group_system" sequence="1"/>
+        <menuitem id="menu_tender_branch" name="Branches" parent="menu_contracts_management_configuration"
+                  action="action_tender_branch" sequence="2"/>
+        <menuitem id="menu_customer_tender_contract_accounting_category_config" name="Customer Categories"
+                  parent="menu_contracts_management_configuration"
+                  action="action_customer_tender_contract_accounting_category" sequence="3"/>
+        <menuitem id="menu_tender_quotation_term_condition" name="Terms &amp; Conditions"
+                  parent="menu_contracts_management_configuration" action="action_tender_quotation_term_condition" sequence="4"/>
+        <menuitem id="menu_projects_configuration" parent="menu_contracts_management_configuration" name="Projects"
+                  sequence="4" groups="contracts_management.group_show_tender_project"/>
+        <menuitem id="menu_tender_project_category" name="Categories" parent="menu_projects_configuration"
+                  action="action_tender_project_category" sequence="1"/>
+
+        <menuitem id="menu_contracts_configuration" parent="menu_contracts_management_configuration" name="Contracts"
+                  sequence="5"/>
+        <menuitem id="menu_tender_contract_type" name="Types" parent="menu_contracts_configuration"
+                  action="action_tender_contract_type" sequence="1"/>
+        <menuitem id="menu_tender_contract_category" name="Categories" parent="menu_contracts_configuration"
+                  action="action_tender_contract_category" sequence="2"/>
+        <menuitem id="menu_services_configuration" parent="menu_contracts_management_configuration" name="Services"
+                  sequence="6"/>
+        <menuitem id="menu_tender_service_type" name="Types" parent="menu_services_configuration"
+                  action="action_tender_service_type" sequence="1"/>
+        <menuitem id="menu_tender_service_category" name="Categories" parent="menu_services_configuration"
+                  action="action_tender_service_category" sequence="2"/>
+    </data>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_project_planning_slot_form" model="ir.ui.view">
+            <field name="name">view.tender.project.planning.slot.form</field>
+            <field name="model">planning.slot</field>
+            <field name="inherit_id" ref="planning.planning_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='role_id']" position="after">
+                    <field name="tender_project_id" options="{'no_open':True,'no_create':True}"
+                           groups="contracts_management.group_show_tender_project"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_tender_project_planning_slot_filter" model="ir.ui.view">
+            <field name="name">view.tender.project.planning.slot.filter</field>
+            <field name="model">planning.slot</field>
+            <field name="inherit_id" ref="planning.planning_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='role_id']" position="after">
+                    <field name="tender_project_id" groups="contracts_management.group_show_tender_project"/>
+                </xpath>
+                <xpath expr="//filter[@name='group_by_role']" position="after">
+                    <filter name="group_by_tender_project_id" string="Project"
+                            context="{'group_by': 'tender_project_id'}"
+                            groups="contracts_management.group_show_tender_project"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_tender_project_planning_slot" model="ir.actions.act_window">
+            <field name="name">Planning</field>
+            <field name="res_model">planning.slot</field>
+            <field name="view_mode">gantt,tree,form,pivot</field>
+            <field name="context">{'default_tender_project_id': active_id,'search_default_tender_project_id':
+                [active_id]}
+            </field>
+        </record>
+    </data>
+</odoo>

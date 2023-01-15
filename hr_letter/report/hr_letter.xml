@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_letter_report" model="ir.actions.report">
+        <field name="name">HR Letter</field>
+        <field name="model">hr.letter</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">hr_letter.hr_letter_report_template</field>
+        <field name="report_file">hr_letter.hr_letter_report_template</field>
+        <field name="print_report_name">'تعريف بالراتب - %s' % (object.employee_id.name).replace('/', '')</field>
+        <field name="binding_model_id" ref="model_hr_letter"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="hr_letter_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context(lang='ar_001')"/>
+                <t t-call="web.external_layout">
+                    <div class="page" style="direction: rtl;">
+                        <div style="text-align: right;">
+                            <strong>التاريخ:
+                                <t t-esc=" datetime.date.today()"/>
+                            </strong>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>الموضوع:</strong>
+                        </div>
+
+                        <div style="text-align: right;">
+                            <strong>
+                                السادة:
+                                <t t-esc="o.applied_to"/>
+                                المحترمين
+                            </strong>
+                        </div>
+                        <br/>
+                        <div style="text-align: right;font-size: 20px;">
+                            <span>تشهد شركة</span>
+                            <t t-esc="o.company_id.name"/>
+                            <br/>
+                            <br/>
+                            <span>بأن</span>
+                            <t t-esc="o.employee_id.name"/>
+                            <t t-esc="o.employee_id.nationality_ar"/>
+                            <span t-if="o.employee_id.nationality_ar">الجنسية</span>
+                            <span t-if="o.employee_id.identification_id">, ورقم الهوية</span>
+                            <t t-esc="o.employee_id.identification_id"/>
+                            <span>يعمل لديها</span>
+                            <span t-if="o.employee_id.job_title">بوظيفة</span>
+                            <t t-esc="o.employee_id.job_title"/>
+                            <span t-if="o.contract_id">ابتداء من</span>
+                            <t t-esc="o.contract_id.date_start"/>
+                            <span>ولايزال على رأس العمل حتى تاريخه</span>
+                            <br/>
+                            <br/>
+                            <span>ويتقاضى دخل شهرى كما يلى:</span>
+                            <br/>
+                            <span>الراتب الاساسى</span>
+                            <t t-esc="o.contract_id.wage"/>
+                            <br/>
+                            <span>بدل السكن</span>
+                            <t t-esc="o.contract_id.housing_allowance"/>
+                            <br/>
+                            <span>بدل النقل</span>
+                            <t t-esc="o.contract_id.transportation_allowance"/>
+                            <br/>
+                            <span>بدلات أخري</span>
+                            <t t-esc="o.contract_id.other_allowance"/>
+                            <br/>
+                            <span>الإجمالى</span>
+                            <t t-esc="o.contract_id.gross_wage"/>
+                            <br/>
+                        </div>
+
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div style="text-align: center;">
+                           وقد أعطي هذا التعريف بناء على طلبه دون ادنى مسئولية او التزام على المنشأة.
+                        </div>
+                        <br/>
+                        <div style="text-align: right;">
+                            <span>توقيع مسؤل الموارد البشرية</span>
+                            <br/>
+                            <span>.................................................</span>
+                        </div>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
