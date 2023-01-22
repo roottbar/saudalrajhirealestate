@@ -3,8 +3,8 @@
 <odoo>
     <data>
 
-        <record model="ir.ui.view" id="rent_sale_order_inherit_form">
-            <field name="name">sale_order</field>
+        <record model="ir.ui.view" id="rent_sale_order_r_inherit_form">
+            <field name="name">rent.sale.order.r</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_renting.rental_order_primary_form_view"/>
             <field name="arch" type="xml">

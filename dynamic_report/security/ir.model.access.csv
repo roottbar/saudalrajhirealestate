@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_report_template_report_user,access_report_template_report_user,model_report_template,base.group_user,1,1,1,1
-access_template_mapping_line_user,access_template_mapping_line_user,model_template_mapping_line,base.group_user,1,1,1,1

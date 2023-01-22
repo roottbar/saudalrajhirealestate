@@ -13,7 +13,7 @@
     'version': '0.1',
     'license': 'AGPL-3',
     'images': ['static/description/logo.png'],
-    'depends': ['operating_unit','account','account_operating_unit'],
+    'depends': ['operating_unit','account'],
     'data': [
         'views/operating_unit_view.xml',
         'views/account_move_view.xml',
