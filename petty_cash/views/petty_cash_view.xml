@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_petty_cash_line_import" model="ir.actions.client">
+            <field name="name">Import Petty Cash line</field>
+            <field name="tag">import</field>
+            <field name="params">
+                {'model':'petty.cash.line','import_field':'petty_cash_line_ids','height':'300px','show_required':True}
+            </field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_petty_cash_filter" model="ir.ui.view">
+            <field name="name">view.petty.cash.filter</field>
+            <field name="model">petty.cash</field>
+            <field name="arch" type="xml">
+                <search string="Search Petty Cash">
+                    <field name="name" string="Name"/>
+                    <field name="responsible_id" string="Responsible"/>
+                    <field name="partner_ids" string="Partners"/>
+
+                    <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                    <filter name="in_progress" string="In Progress" domain="[('state','=','in progress')]"/>
+                    <filter name="review" string="Review" domain="[('state','=','review')]"/>
+                    <filter name="closed" string="Closed" domain="[('state','=','closed')]"/>
+                    <separator/>
+                    <filter name="petty_cash_my" string="My Petty Cash" domain="[('responsible_id','=',uid)]"/>
+                    <separator/>
+                    <filter name="month" string="Date" date="start_date"/>
+
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_responsible_id" string="Responsible Box"
+                                context="{'group_by':'responsible_id'}"/>
+                        <filter name="group_by_user_rule" string="Box" context="{'group_by':'user_rule'}"/>
+                        <filter name="group_by_date" string="Date" context="{'group_by':'start_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_tree" model="ir.ui.view">
+            <field name="name">view.petty.cash.tree</field>
+            <field name="model">petty.cash</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="reference" optional="show"/>
+                    <field name="start_date" string="Date"/>
+                    <field name="close_date"/>
+                    <field name="balance" optional="hide"/>
+                    <field name="last_balance" optional="hide"/>
+                    <field name="net_balance" optional="hide"/>
+                    <field name="user_rule" string="Box" optional="hide"/>
+                    <field name="responsible_id"/>
+                    <field name="template_type" optional="hide"/>
+                    <field name="journal_id"/>
+                    <field name="amount_untaxed" sum="Total Untaxed Amount" optional="hide"/>
+                    <field name="amount_tax" string="Amount Tax" sum="Total Amount Tax" optional="hide"/>
+                    <field name="amount_total" string="Amount" sum="Total Amount"/>
+                    <field name="state"/>
+                    <field name="partner_ids" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.form</field>
+            <field name="model">petty.cash</field>
+            <field name="arch" type="xml">
+                <form string="Petty Cash">
+                    <header>
+                        <button name="action_open" type="object" states="draft" string="Open"
+                                class="oe_highlight"/>
+                        <button name="action_close" type="object" states="in progress" string="Close"
+                                class="oe_highlight"/>
+                        <button name="action_post" type="object" states="review" string="Post"
+                                class="oe_highlight" groups="petty_cash.group_petty_cash_manager"/>
+                        <button name="%(petty_cash.action_petty_cash_transfer)d" type="action" states="review"
+                                string="Transfer" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,in progress,review,closed"/>
+                    </header>
+
+                    <sheet>
+                        <div class="oe_button_box">
+                            <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck"
+                                    attrs="{'invisible':[('picking_ids','=',[])]}"
+                                    groups="petty_cash.group_petty_cash_manager">
+                                <field name="picking_count" widget="statinfo" string="Shipments"/>
+                                <field name="picking_ids" invisible="1"/>
+                            </button>
+
+                            <button type="object" name="open_journal_entries" class="oe_stat_button" icon="fa-bars"
+                                    attrs="{'invisible': [('state','!=','closed')]}"
+                                    groups="petty_cash.group_petty_cash_manager">
+                                <field name="moves_count" widget="statinfo" string="Journal Entries"/>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="reference"/>
+                                <field name="user_rule" string="Box" attrs="{'readonly': [('id','!=',False)]}"
+                                       options="{'no_open': True,'no_create':True}"/>
+                                <field name="journal_id" readonly="1" force_save="1"/>
+                                <field name="responsible_id" string='Responsible Box'/>
+                                <field name="picking_type_id"
+                                       attrs="{'invisible':[('template_type','!=','with product')],'readonly': [('state','=','closed')],'required':[('template_type','=','with product')]}"/>
+                            </group>
+
+                            <group>
+                                <field name="balance" readonly="1" force_save="1"/>
+                                <field name="start_date" string="Date"/>
+                                <field name="close_date" readonly="1"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="currency_id" readonly="1"
+                                       groups="petty_cash.group_petty_cash_multi_currency"/>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       options="{'no_open':True,'no_create':True}"
+                                       attrs="{'readonly':[('state','=','closed')]}"/>
+                                <field name="account_id" invisible="1"/>
+                                <field name="template_type" invisible="1"/>
+                                <field name="dynamic_journal" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Petty Cash Lines">
+                                <group>
+                                    <button name="%(action_petty_cash_line_import)d" type="action" states="in progress"
+                                            string="Import Excel" class="oe_highlight oe_right"/>
+                                </group>
+
+                                <field name="petty_cash_line_ids"
+                                       attrs="{'invisible':['|',('state','=','draft'),('template_type','=','with product')],'readonly':[('state','in',['review','closed'])]}">
+                                    <tree string="Petty Cash Lines">
+                                        <field name="reference"/>
+                                        <field name="date"/>
+                                        <field name="description"/>
+                                        <field name="partner_id" optional="hide"/>
+                                        <field name="vat_partner" optional="hide"/>
+                                        <field name="account_id" options="{'no_open':True,'no_create':True}"/>
+                                        <field name="analytic_account_id" options="{'no_open':True,'no_create':True}"
+                                               groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                                        <field name="analytic_tag_ids" widget="many2many_tags"
+                                               options="{'color_field': 'color'}" optional="hide"
+                                               groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                                        <field name="price_unit" string="Amount" optional="hide"/>
+                                        <field name="discount" optional="hide"/>
+                                        <field name="amount_untaxed" optional="show" string="Amount"/>
+                                        <field name="tax_ids" optional="hide"/>
+                                        <field name="amount_tax" optional="show"/>
+                                        <field name="amount_total"/>
+                                        <field name="amount_currency"
+                                               groups="petty_cash.group_petty_cash_multi_currency"
+                                               optional="hide"/>
+                                        <field name="currency_id" groups="petty_cash.group_petty_cash_multi_currency"
+                                               optional="hide"/>
+                                        <field name="petty_cash_request_id" invisible="1"/>
+                                        <field name="petty_cash_currency_id" invisible="1"/>
+                                        <field name="file_name" invisible="1"/>
+                                        <field name="file" widget="binary" filename="file_name"
+                                               style="white-space: nowrap;"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+
+                                <field name="petty_cash_line_ids2" context="{'with_product':1}"
+                                       attrs="{'invisible':['|',('state','=','draft'),('template_type','!=','with product')],'readonly':[('state','in',['review','closed'])]}">
+                                    <tree string="Petty Cash Lines">
+                                        <field name="reference"/>
+                                        <field name="date"/>
+                                        <field name="description"/>
+                                        <field name="partner_id" optional="hide"/>
+                                        <field name="vat_partner" optional="hide"/>
+                                        <field name="product_id" optional="hide"/>
+                                        <field name="uom_id" optional="hide"/>
+                                        <field name="account_id"/>
+                                        <field name="analytic_account_id"
+                                               groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                                        <field name="analytic_tag_ids" widget="many2many_tags"
+                                               options="{'color_field': 'color'}" optional="hide"
+                                               groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                                        <field name="price_unit" optional="hide"/>
+                                        <field name="quantity" optional="hide"/>
+                                        <field name="discount" optional="hide"/>
+                                        <field name="amount_untaxed" optional="show" string="Amount"/>
+                                        <field name="tax_ids" optional="hide"/>
+                                        <field name="amount_tax" optional="show"/>
+                                        <field name="amount_total"/>
+                                        <field name="amount_currency"
+                                               groups="petty_cash.group_petty_cash_multi_currency"
+                                               optional="hide"/>
+                                        <field name="currency_id" groups="petty_cash.group_petty_cash_multi_currency"
+                                               optional="hide"/>
+                                        <field name="petty_cash_currency_id" invisible="1"/>
+                                        <field name="file_name" invisible="1"/>
+                                        <field name="file" widget="binary" filename="file_name"
+                                               style="white-space: nowrap;"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="last_balance" invisible="1"/>
+                                    <field name="amount_untaxed"/>
+                                    <field name="amount_tax"/>
+                                    <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                                </group>
+
+                                <field name="note" placeholder="Internal note..."/>
+                            </page>
+                            <page string="Journal Items" groups="petty_cash.group_petty_cash_dynamic_journal"
+                                  attrs="{'invisible':['|',('state','=','draft'),('dynamic_journal','=',False)]}">
+                                <field name="dynamic_move_line_ids" context="{'force_petty_cash':True}"
+                                       attrs="{'readonly':[('state','in',['review','closed'])]}">
+                                    <tree string="Journal Items" editable="bottom" create="false" delete="false"
+                                          readonly="1">
+                                        <field name="account_id" readonly="1"/>
+                                        <field name="partner_id" readonly="1"/>
+                                        <field name="name" optional="show"/>
+                                        <field name="analytic_account_id"
+                                               groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                                        <field name="analytic_tag_ids" widget="many2many_tags"
+                                               options="{'color_field': 'color'}"
+                                               groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                                        <field name="date_maturity" optional="hide"/>
+                                        <field name="amount_currency" readonly="1"
+                                               groups="petty_cash.group_petty_cash_multi_currency" optional="hide"/>
+                                        <field name="currency_id" readonly="1"
+                                               groups="petty_cash.group_petty_cash_multi_currency"/>
+                                        <field name="tax_ids" widget="many2many_tags" readonly="1" optional="hide"/>
+                                        <field name="tax_line_id" invisible="1"/>
+                                        <field name="debit" sum="Total Debit" readonly="1"/>
+                                        <field name="credit" sum="Total Credit" readonly="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Transfers">
+                                <field name="transfers" readonly="1">
+                                    <tree>
+                                        <field name="description"/>
+                                        <field name="manager"/>
+                                        <field name="create_uid"/>
+                                        <field name="create_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_manager_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.manager.form</field>
+            <field name="model">petty.cash</field>
+            <field name="inherit_id" ref="view_petty_cash_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('petty_cash.group_petty_cash_manager')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page/group/button" position="attributes">
+                    <attribute name="states">in progress,review</attribute>
+                </xpath>
+                <field name="petty_cash_line_ids" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('state','=','draft'),
+                        ('template_type','=','with product')],'readonly':[('state','=','closed')]}
+                    </attribute>
+                </field>
+                <field name="petty_cash_line_ids2" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('state','=','draft'),
+                        ('template_type','!=','with product')],'readonly':[('state','=','closed')]}
+                    </attribute>
+                </field>
+                <field name="dynamic_move_line_ids" position="attributes">
+                    <attribute name="attrs">{'readonly':[('state','=','closed')]}</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_admin_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.admin.form</field>
+            <field name="model">petty.cash</field>
+            <field name="inherit_id" ref="view_petty_cash_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='start_date']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('state','=','closed')]}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_responsible_box_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.responsible.box.form</field>
+            <field name="model">petty.cash</field>
+            <field name="inherit_id" ref="view_petty_cash_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('petty_cash.group_petty_cash_responsible_box')])]"/>
+            <field name="arch" type="xml">
+                <field name="responsible_id" position="attributes">
+                    <attribute name="attrs">{'readonly': [('id','!=',False)]}</attribute>
+                    <attribute name="options">{'no_open':True,'no_create':True}</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="action_petty_cash" model="ir.actions.act_window">
+            <field name="name">Petty Cash</field>
+            <field name="res_model">petty.cash</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_petty_cash_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click to define new Petty Cash</p>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_for_review" model="ir.actions.act_window">
+            <field name="name">Petty Cash For Review</field>
+            <field name="res_model">petty.cash</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','review')]</field>
+            <field name="search_view_id" ref="view_petty_cash_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click to define new Petty Cash</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

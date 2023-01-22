@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_lead_filter" model="ir.ui.view">
+            <field name="name">view.tender.lead.filter</field>
+            <field name="model">tender.lead</field>
+            <field name="arch" type="xml">
+                <search string="Search Tender Leads">
+                    <field name="name" string="Lead Name"/>
+                    <field name="partner_id"/>
+                    <field name="crm_lead_id"/>
+
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_customer" string="Customer" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_by_crm_lead" string="Lead" context="{'group_by':'crm_lead_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_tender_lead_tree" model="ir.ui.view">
+            <field name="name">view.tender.lead.tree</field>
+            <field name="model">tender.lead</field>
+            <field name="arch" type="xml">
+                <tree string="Tender Leads">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="crm_lead_id" optional="hide"/>
+                    <field name="amount_untaxed" sum="Total Subtotal" optional="show"/>
+                    <field name="amount_discount" sum="Total Discount" optional="show"/>
+                    <field name="amount_tax" sum="Total Tax" optional="show"/>
+                    <field name="amount_total" sum="Total" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tender_lead_form" model="ir.ui.view">
+            <field name="name">view.tender.lead.form</field>
+            <field name="model">tender.lead</field>
+            <field name="arch" type="xml">
+                <form string="Tender Leads">
+                    <header>
+                        <field name="tender_quotations_count" invisible="1"/>
+                        <button name="generate_crm_lead" type="object" string="Generate Lead" class="oe_highlight"
+                                attrs="{'invisible':[('crm_lead_id','!=',False)]}"/>
+                        <button name="action_create_quotation" type="object"
+                                attrs="{'invisible':[('tender_quotations_count','!=',0)]}" string="Create Quotation"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="get_crm_lead" icon="fa-star"
+                                    string="Lead" attrs="{'invisible':[('crm_lead_id','=',False)]}"/>
+                            <button class="oe_stat_button" type="object" name="get_tender_quotation" icon="fa-book"
+                                    string="Quotation" attrs="{'invisible':[('tender_quotations_count','=',0)]}"/>
+                        </div>
+                        <div class="oe_title pr-0">
+                            <h1 class="d-flex flex-row justify-content-between">
+                                <field name="name" class="text-truncate" placeholder="Lead Name..."/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="partner_id"
+                                       context="{'default_customer_rank': 1,'customer_tender_contract':True}"/>
+                                <field name="crm_lead_id" invisible="1"/>
+
+                                <separator string="Totals"/>
+                                <field name="amount_untaxed"/>
+                                <field name="amount_discount"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total"/>
+                            </group>
+                            <group>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       options="{'no_open':True,'no_create':True}"/>
+                                <field name="currency_id" groups="base.group_multi_currency"
+                                       options="{'no_open':True,'no_create':True}"/>
+
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="manpower" string="Manpower">
+                                <field name="manpower_lines" widget="section_and_note_one2many">
+                                    <tree string="Manpower">
+                                        <field name="service_type_id" optional="show"/>
+                                        <field name="service_product_id" optional="hide"/>
+                                        <field name="name" optional="show"/>
+                                        <field name="profession_id" optional="show"/>
+                                        <field name="nationality_id"/>
+                                        <field name="resource_calendar_id" optional="show"/>
+                                        <field name="duration" widget="float_time"/>
+                                        <field name="work_shifts" widget="float_time" optional="hide"/>
+                                        <field name="accommodation_providing_amount" optional="show"/>
+                                        <field name="transportation_providing_amount" optional="show"/>
+                                        <field name="other_amount" optional="show"/>
+                                        <field name="price_unit" optional="show"/>
+                                        <field name="quantity" string="Number of workers" optional="show"/>
+                                        <field name="tax_ids" widget="many2many_tags" optional="show"/>
+                                        <field name="discount" optional="show"/>
+                                        <field name="branch_id" optional="hide"/>
+                                        <field name="total_price_unit" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_untaxed_manpower"/>
+                                    <field name="amount_discount_manpower"/>
+                                    <field name="amount_tax_manpower"/>
+                                    <field name="amount_total_manpower" class="oe_subtotal_footer_separator"/>
+                                </group>
+
+                                <field name="notes" placeholder="Internal Notes..." class="oe_inline" nolabel="1"/>
+                            </page>
+                            <page name="equipments_tools" string="Equipments  &amp; Tools">
+                                <field name="equipments_lines" widget="section_and_note_one2many">
+                                    <tree string="Equipments  &amp; Tools" editable="bottom">
+                                        <control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                            <create name="add_section_control" string="Add a section"
+                                                    context="{'default_display_type': 'line_section'}"/>
+                                            <create name="add_note_control" string="Add a note"
+                                                    context="{'default_display_type': 'line_note'}"/>
+                                        </control>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="service_type_id" options="{'no_open':True,'no_create':True}"
+                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                        <field name="service_product_id" options="{'no_open':True,'no_create':True}"
+                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                        <field name="name" widget="section_and_note_text" string="Description"
+                                               optional="show"/>
+                                        <field name="code"/>
+                                        <field name="consumption_duration_monthly"/>
+                                        <field name="price_unit" optional="show"/>
+                                        <field name="quantity" optional="show"/>
+                                        <field name="tax_ids" widget="many2many_tags"
+                                               options="{'no_open':True,'no_create':True}" optional="show"/>
+                                        <field name="discount" optional="show"/>
+                                        <field name="branch_id" options="{'no_open':True,'no_create':True}"
+                                               optional="hide"/>
+                                        <field name="display_type" force_save="1" invisible="1"/>
+                                        <field name="total_price_unit" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_untaxed_equipments"/>
+                                    <field name="amount_discount_equipments"/>
+                                    <field name="amount_tax_equipments"/>
+                                    <field name="amount_total_equipments" class="oe_subtotal_footer_separator"/>
+                                </group>
+                            </page>
+                            <page name="specialty_services_request" string="Specialty">
+                                <field name="specialty_services_lines" widget="section_and_note_one2many">
+                                    <tree string="Specialty Services Request" editable="bottom">
+                                        <control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                            <create name="add_section_control" string="Add a section"
+                                                    context="{'default_display_type': 'line_section'}"/>
+                                            <create name="add_note_control" string="Add a note"
+                                                    context="{'default_display_type': 'line_note'}"/>
+                                        </control>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="service_type_id" options="{'no_open':True,'no_create':True}"
+                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                        <field name="service_product_id" options="{'no_open':True,'no_create':True}"
+                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                        <field name="name" widget="section_and_note_text" optional="show"/>
+                                        <field name="visit_duration" widget="float_time"/>
+                                        <field name="total_visits_monthly"/>
+                                        <field name="details"/>
+                                        <field name="price_unit" optional="show"/>
+                                        <field name="quantity" optional="show"/>
+                                        <field name="tax_ids" widget="many2many_tags"
+                                               options="{'no_open':True,'no_create':True}" optional="show"/>
+                                        <field name="discount" optional="show"/>
+                                        <field name="branch_id" options="{'no_open':True,'no_create':True}"
+                                               optional="hide"/>
+                                        <field name="display_type" force_save="1" invisible="1"/>
+                                        <field name="total_price_unit" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_untaxed_specialty_services"/>
+                                    <field name="amount_discount_specialty_services"/>
+                                    <field name="amount_tax_specialty_services"/>
+                                    <field name="amount_total_specialty_services"
+                                           class="oe_subtotal_footer_separator"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tender_leads" model="ir.actions.act_window">
+            <field name="name">Leads</field>
+            <field name="res_model">tender.lead</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

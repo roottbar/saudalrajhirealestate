@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_partner_account_category_user,res.partner.account.category.user,model_res_partner_account_category,base.group_user,1,0,0,0
+access_res_partner_account_category_group_system,res.partner.account.category.group.system,model_res_partner_account_category,base.group_system,1,1,1,1

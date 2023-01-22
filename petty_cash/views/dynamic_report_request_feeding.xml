@@ -1,0 +1,262 @@
+<odoo>
+    <data>
+        <template id="dynamic_report_request_feeding">
+            <div class="o_dynamic_reports_body">
+                <div class="o_dynamic_reports_page o_dynamic_reports_no_print">
+                    <div class="o_dynamic_reports_header"/>
+                    <div class="o_dynamic_reports_summary"/>
+
+                    <div class="table-responsive">
+                        <table class="o_dynamic_reports_table table-hover">
+                            <t t-set="span_length" t-value="8"/>
+                            <thead>
+                                <tr class="o_dynamic_report_column_header">
+                                    <th class="o_dynamic_report_column_header">Date</th>
+                                    <th class="o_dynamic_report_column_header">Journal</th>
+                                    <th class="o_dynamic_report_column_header">Payment Journal</th>
+                                    <th class="o_dynamic_report_column_header number">Amount</th>
+                                    <t t-if="data['state'] not in ['draft', 'rejected', 'review']">
+                                        <th class="o_dynamic_report_column_header number">Actual Amount</th>
+                                        <t t-set="span_length" t-value="span_length - 1"/>
+                                    </t>
+                                    <th class="o_dynamic_report_column_header number">Current Balance</th>
+                                    <th class="o_dynamic_report_column_header">State</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="feeding_lines" t-as="line">
+                                    <tr class="o_dynamic_reports_level0">
+                                        <td t-att-colspan="span_length" t-attf-data-id="line_#{line['id']}"
+                                            class="o_dynamic_report_line o_dynamic_report_line_indent js_dynamic_report_foldable o_foldable_total folded">
+
+                                            <span class="o_dynamic_reports_caret_icon"
+                                                  t-attf-data-id="line_#{line['id']}">
+                                                <i class="fa fa-caret-right" role="img" aria-label="Unfolded"
+                                                   title="Unfolded">
+                                                </i>
+                                            </span>
+
+                                            <span class="dynamic_report_line_name"
+                                                  t-att-title="line['name']">
+                                                <t t-esc="line['name']"/>
+
+                                                <span class="js_dynamic_report_line_footnote"
+                                                      t-attf-data-id="line_#{line['id']}"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr class="o_dynamic_reports_normal_text o_dynamic_reports_level1 o_js_dynamic_report_inner_row"
+                                        t-attf-data-parent-id="line_#{line['id']}"
+                                        style="display: none;">
+                                        <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="line['date']"/>
+                                            </span>
+                                        </td>
+                                        <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="line['journal_name']"/>
+                                            </span>
+                                        </td>
+                                        <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="line['payment_journal_name']"/>
+                                            </span>
+                                        </td>
+                                        <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="line['amount']"/>
+                                                <t t-esc="currency"/>
+                                            </span>
+                                        </td>
+                                        <t t-if="data['state'] not in ['draft', 'rejected', 'review']">
+                                            <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                                <span class="o_dynamic_report_column_value">
+                                                    <t t-esc="line['actual_amount']"/>
+                                                    <t t-esc="currency" t-if="line['actual_amount']"/>
+                                                </span>
+                                            </td>
+                                        </t>
+                                        <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="line['current_balance']"/>
+                                                <t t-esc="currency"/>
+                                            </span>
+                                        </td>
+                                        <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="line['state']"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+
+        <template id="dynamic_report_request_feeding_grouped">
+            <div class="o_dynamic_reports_body">
+                <div class="o_dynamic_reports_page o_dynamic_reports_no_print">
+                    <div class="o_dynamic_reports_header"/>
+                    <div class="o_dynamic_reports_summary"/>
+
+                    <div class="table-responsive">
+                        <table class="o_dynamic_reports_table table-hover">
+                            <t t-set="span_length" t-value="5"/>
+                            <t t-if="data['group_by'] == 'responsible_box'">
+                                <t t-set="span_length" t-value="span_length + 2"/>
+                            </t>
+                            <thead>
+                                <tr class="o_dynamic_report_column_header">
+                                    <th class="o_dynamic_report_column_header">Name</th>
+                                    <th class="o_dynamic_report_column_header">Date</th>
+                                    <t t-if="data['group_by'] != 'journal'">
+                                        <th class="o_dynamic_report_column_header">Journal</th>
+                                        <t t-set="span_length" t-value="span_length - 1"/>
+                                    </t>
+                                    <t t-if="data['group_by'] != 'payment_journal'">
+                                        <th class="o_dynamic_report_column_header">Payment Journal</th>
+                                        <t t-set="span_length" t-value="span_length - 1"/>
+                                    </t>
+                                    <th class="o_dynamic_report_column_header number">Amount</th>
+                                    <t t-if="data['state'] not in ['draft', 'rejected', 'review']">
+                                        <th class="o_dynamic_report_column_header number">Actual Amount</th>
+                                        <t t-set="span_length" t-value="span_length - 1"/>
+                                    </t>
+                                    <th class="o_dynamic_report_column_header number">Current Balance</th>
+                                    <th class="o_dynamic_report_column_header">State</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="feeding_lines" t-as="group">
+                                    <tr class="o_dynamic_reports_level0">
+                                        <td t-att-colspan="span_length"
+                                            t-attf-data-id="group_#{group['group']['group_id']}"
+                                            class="o_dynamic_report_line o_dynamic_report_line_indent js_dynamic_report_foldable o_foldable_total folded">
+
+                                            <span class="o_dynamic_reports_caret_icon"
+                                                  t-attf-data-id="group_#{group['group']['group_id']}">
+                                                <i class="fa fa-caret-right" role="img" aria-label="Unfolded"
+                                                   title="Unfolded">
+                                                </i>
+                                            </span>
+
+                                            <span class="dynamic_report_line_name"
+                                                  t-att-title="group['group']['group_name']">
+                                                <t t-esc="group['group']['group_name']"/>
+
+                                                <span class="js_dynamic_report_line_footnote"
+                                                      t-attf-data-id="group_#{group['group']['group_id']}"/>
+                                            </span>
+                                        </td>
+                                        <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="group['group_total']['amount']"/>
+                                                <t t-esc="currency"/>
+                                            </span>
+                                        </td>
+                                        <t t-if="data['state'] not in ['draft', 'rejected', 'review']">
+                                            <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                                <span class="o_dynamic_report_column_value">
+                                                    <t t-esc="group['group_total']['actual_amount']"/>
+                                                    <t t-esc="currency" t-if="group['group_total']['actual_amount']"/>
+                                                </span>
+                                            </td>
+                                        </t>
+                                        <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                            <span class="o_dynamic_report_column_value">
+                                                <t t-esc="group['group_total']['current_balance']"/>
+                                                <t t-esc="currency"/>
+                                            </span>
+                                        </td>
+                                        <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                            <span class="dynamic_report_line_name">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="group['group_lines']" t-as="line">
+                                        <tr class="o_dynamic_reports_normal_text o_dynamic_reports_level1 o_js_dynamic_report_inner_row"
+                                            t-attf-data-parent-id="group_#{group['group']['group_id']}"
+                                            style="display: none;">
+                                            <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                                <span class="o_dynamic_report_column_value">
+                                                    <t t-esc="line['name']"/>
+                                                </span>
+                                            </td>
+                                            <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                                <span class="o_dynamic_report_column_value">
+                                                    <t t-esc="line['date']"/>
+                                                </span>
+                                            </td>
+                                            <t t-if="data['group_by'] != 'journal'">
+                                                <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                                    <span class="o_dynamic_report_column_value">
+                                                        <t t-esc="line['journal_name']"/>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <t t-if="data['group_by'] != 'payment_journal'">
+                                                <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                                    <span class="o_dynamic_report_column_value">
+                                                        <t t-esc="line['payment_journal_name']"/>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                                <span class="o_dynamic_report_column_value">
+                                                    <t t-esc="line['amount']"/>
+                                                    <t t-esc="currency"/>
+                                                </span>
+                                            </td>
+                                            <t t-if="data['state'] not in ['draft', 'rejected', 'review']">
+                                                <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                                    <span class="o_dynamic_report_column_value">
+                                                        <t t-esc="line['actual_amount']"/>
+                                                        <t t-esc="currency" t-if="line['actual_amount']"/>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td class="o_dynamic_report_line number o_dynamic_report_line_indent">
+                                                <span class="o_dynamic_report_column_value">
+                                                    <t t-esc="line['current_balance']"/>
+                                                    <t t-esc="currency"/>
+                                                </span>
+                                            </td>
+                                            <td class="o_dynamic_report_line o_dynamic_report_line_indent">
+                                                <span class="o_dynamic_report_column_value">
+                                                    <t t-esc="line['state']"/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <record id="action_dynamic_report_request_feeding" model="ir.actions.client">
+            <field name="name">Requests Feeding</field>
+            <field name="tag">DynamicReportRequestFeeding</field>
+            <field name="context"
+                   eval="{'model': 'report.dynamic.request.feeding',
+                    'report_pdf_name':'petty_cash.report_requests_feeding',
+                    'report_pdf_file':'petty_cash.report_requests_feeding'}"/>
+        </record>
+    </data>
+
+    <report
+            id="action_dynamic_petty_cash_report_request_feeding_pdf"
+            model="report.dynamic.request.feeding"
+            string="Request Feeding Report"
+            report_type="qweb-pdf"
+            name="petty_cash.report_requests_feeding"
+            file="petty_cash.report_requests_feeding"
+    />
+</odoo>

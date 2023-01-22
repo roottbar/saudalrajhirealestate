@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+
+        <!--    inherit  project task type  form  -->
+        <record id="view_project_task_type_inherit_form" model="ir.ui.view">
+            <field name="name">view.project.task.type.inherit.form</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="after">
+                    <group>
+                        <field name="in_progress"/>
+                        <field name="is_ready"/>
+                        <field name="is_review"/>
+                        <field name="is_closed" string="Is Closed"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <!--    inherit  project task type  search  -->
+        <record id="view_project_task_type_inherit_filter" model="ir.ui.view">
+            <field name="name">project.task.type</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_search"/>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="In Progress" name="in_progress" domain="[('in_progress','=',True)]"/>
+                    <filter string="Is Ready" name="is_ready" domain="[('is_ready','=',True)]"/>
+                    <filter string="Is Review" name="is_review" domain="[('is_review','=',True)]"/>
+                    <filter string="Is Closed" name="is_closed" domain="[('is_closed','=',True)]"/>
+                </search>
+            </field>
+
+        </record>
+
+    </data>
+</odoo>

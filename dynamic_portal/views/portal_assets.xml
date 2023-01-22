@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <template id="assets_frontend" inherit_id="web.assets_frontend" name="Rating Project Assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/scss" href="dynamic_portal/static/src/css/style.css"/>
+                <script type="text/javascript" src="dynamic_portal/static/src/js/edit_one2many_lines.js"/>
+                <script type="text/javascript" src="dynamic_portal/static/src/js/onchange_buttons.js"/>
+                <script type="text/javascript" src="dynamic_portal/static/src/js/onchange_fields.js"/>
+                <script type="text/javascript" src="dynamic_portal/static/src/js/select2.js"/>
+            </xpath>
+        </template>
+</odoo>

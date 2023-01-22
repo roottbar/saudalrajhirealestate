@@ -1,0 +1,79 @@
+<templates>
+    <t t-name="PettyCash.dynamic_report_m2m_filters_menu">
+        <div class="btn-group o_dropdown o_dynamic_reports_filter_menu">
+            <a type="button" class="dropdown-toggle" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-filter"/>
+                Filters
+            </a>
+
+            <ul class="dropdown-menu o_filters_menu" role="menu">
+                <li class="o_dynamic_report_search js_m2m_filter"/>
+            </ul>
+        </div>
+    </t>
+
+
+    <t t-name="PettyCash.dynamic_report_group_by_menu">
+        <div class="btn-group o_dropdown">
+            <a type="button" class="dropdown-toggle js_dynamic_reports_group_by" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-list-ol"/>
+            </a>
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by selected" title="Without"
+                   data-filter="without">Without
+                </a>
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by" title="Product"
+                   data-filter="product">Product
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by" title="Responsible Box"
+                   data-filter="responsible box">Responsible Box
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by" title="Account"
+                   data-filter="account">Account
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_group_by" title="Analytic Account"
+                   data-filter="analytic account">Analytic Account
+                </a>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="PettyCash.dynamic_report_display_options_menu">
+        <div class="btn-group o_dropdown">
+            <a type="button" class="dropdown-toggle js_dynamic_reports_display_options" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-filter"/>
+            </a>
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_display_options selected" title="All"
+                   data-filter="all">All
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_display_options" title="Not equal to zero"
+                   data-filter="not_equal_to_zero">Not equal to zero
+                </a>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="PettyCash.dynamic_report_options_menu">
+        <div id="extra_options_dropdown" class="btn-group o_dropdown o_dynamic_reports_filter_bool">
+            <a type="button" class="dropdown-toggle js_extra_options_dropdown" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-cog"/>
+            </a>
+
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_bool_filter" title="Unfold"
+                   data-filter="unfold_all">Unfold All
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_bool_filter" title="Include Tax"
+                   data-filter="include_tax">Include Tax
+                </a>
+            </div>
+        </div>
+    </t>
+
+</templates>

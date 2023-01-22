@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_tender_quotation_document">
+            <t t-call="web.external_layout">
+                <style type="text/css">
+                    .table-bordered th, .table-bordered td {
+                    border: 1px solid black;
+                    }
+                </style>
+                <div class="page">
+                    <h2 class="text-center">
+                        <span t-translation="off">Quotation/عرض سعر</span>
+                    </h2>
+                    <br/>
+                    <br/>
+                    <div style="margin-right: 0;margin-left: 0;display:flex;display: -webkit-box;justify-content:space-between;-webkit-box-pack: space-between;">
+                        <div style="width:40%"/>
+                        <div style="width:60%">
+                            <tr>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 50px;">Quotation Date:</span>
+                                </td>
+                                <td>
+                                    <span t-field="o.date"/>
+                                </td>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 30px;">تاريخ عرض السعر</span>
+                                </td>
+                            </tr>
+                            <br/>
+                            <tr>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 50px;">Quotation No.:</span>
+                                </td>
+                                <td>
+                                    <span t-field="o.name"/>
+                                </td>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 50px;">رقم عرض السعر</span>
+                                </td>
+                            </tr>
+                            <br/>
+                            <tr>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 50px;">SQR No.:</span>
+                                </td>
+                                <td>
+                                    <span/>
+                                </td>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 50px;">طلب تقديم خدمة رقم</span>
+                                </td>
+                            </tr>
+                            <br/>
+                            <tr>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 50px;">Contract No.:</span>
+                                </td>
+                                <td>
+                                    <span t-field="o.tender_contract_number"/>
+                                </td>
+                                <td>
+                                    <span t-translation="off" style="margin: 0 50px;">رقم العقد</span>
+                                </td>
+                            </tr>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:90px;">
+                        <tr>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">Attn Mr.</span>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id.name"/>
+                            </td>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">/عناية</span>
+                            </td>
+                        </tr>
+                        <br/>
+                        <tr>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">Company :</span>
+                            </td>
+                            <td>
+                                <span t-field="o.company_id.name"/>
+                            </td>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">/شركة</span>
+                            </td>
+                        </tr>
+                        <br/>
+                        <tr>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">Mobile No.:</span>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id.mobile"/>
+                            </td>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">/جوال رقم</span>
+                            </td>
+                        </tr>
+                        <br/>
+                        <tr>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">Email:</span>
+                            </td>
+                            <td>
+                                <span t-field="o.partner_id.email"/>
+                            </td>
+                            <td>
+                                <span t-translation="off" style="margin: 0 50px;">/بريد الكتروني</span>
+                            </td>
+                        </tr>
+                    </div>
+
+                    <br/>
+                    <br/>
+                    <div t-if="o.manpower_lines" style="page-break-inside: avoid;">
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;">
+                            <tr style="color: white;background: #c00000;">
+                                <th colspan="3">
+                                    <span style="float:left;" t-translation="off">Manpower Cost:</span>
+                                    <span style="float:right;" t-translation="off">القوة العاملة</span>
+                                </th>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;"
+                               name="manpower_lines_table">
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">Service code</th>
+                                <th t-translation="off">Service Name</th>
+                                <th t-translation="off">Nationality</th>
+                                <th t-translation="off">Transportation</th>
+                                <th t-translation="off">Accommodation</th>
+                                <th t-translation="off">Uniform &amp; others</th>
+                                <th t-translation="off">Duty (D/W)</th>
+                                <th t-translation="off">Duty (H/D)</th>
+                                <th t-translation="off">Qty</th>
+                                <th t-translation="off">Unit cost</th>
+                                <th t-translation="off">Total Cost</th>
+                            </tr>
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">رقم الخدمة</th>
+                                <th t-translation="off">أسم الخدمة</th>
+                                <th t-translation="off">الجنسية</th>
+                                <th t-translation="off">النقل</th>
+                                <th t-translation="off">السكن</th>
+                                <th t-translation="off">الزي و اخرى</th>
+                                <th t-translation="off">فترة العمل (يوم/اسبوع)</th>
+                                <th t-translation="off">فترة العمل (ساعة/يوم)</th>
+                                <th t-translation="off">العدد</th>
+                                <th t-translation="off">التكلفة الافرادية</th>
+                                <th t-translation="off">التكلفة الاجمالية</th>
+                            </tr>
+
+                            <t t-foreach="o.manpower_lines" t-as="line">
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type">
+                                        <td>
+                                            <span t-field="line.service_product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.service_product_id.default_code"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.nationality_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.transportation_providing_amount"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.accommodation_providing_amount"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.other_amount"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.work_shifts"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.duration" t-options="{'widget': 'float_time'}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.price_unit"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.amount_total"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+                        <div class="clearfix">
+                            <div class="row">
+                                <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
+                                    <table class="table table-sm" style="page-break-inside: avoid;">
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Subtotal</span>
+                                                <span t-translation="off">المجموع</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_untaxed_manpower"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Discount</span>
+                                                <span t-translation="off">خصم</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_discount_manpower"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Vat</span>
+                                                <span t-translation="off">ض ق م</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_tax_manpower"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Total</span>
+                                                <span t-translation="off">الإجمالي</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_total_manpower"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+
+                    <div t-if="o.equipments_lines" style="page-break-inside: avoid;">
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;">
+                            <tr style="color: white;background: #c00000;">
+                                <th colspan="3">
+                                    <span style="float:left;" t-translation="off">Equipments &amp; Materials Cost:
+                                    </span>
+                                    <span style="float:right;" t-translation="off">المعدات و الادوات و الاجهزة</span>
+                                </th>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;"
+                               name="equipments_lines_table">
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">Product Code</th>
+                                <th t-translation="off">Item Code</th>
+                                <th t-translation="off">Description</th>
+                                <th t-translation="off">Qty</th>
+                                <th t-translation="off">Unit cost</th>
+                                <th t-translation="off">Total Cost</th>
+                            </tr>
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">رقم الخدمة</th>
+                                <th t-translation="off">كود الصنف</th>
+                                <th t-translation="off">البيان</th>
+                                <th t-translation="off">الكمية</th>
+                                <th t-translation="off">التكلفة الافرادية</th>
+                                <th t-translation="off">التكلفة الاجمالية</th>
+                            </tr>
+                            <t t-foreach="o.equipments_lines" t-as="line">
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type">
+                                        <td>
+                                            <span t-field="line.service_product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.service_product_id.default_code"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.price_unit"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.amount_total"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+
+                        <div class="clearfix">
+                            <div class="row">
+                                <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
+                                    <table class="table table-sm" style="page-break-inside: avoid;">
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Subtotal</span>
+                                                <span t-translation="off">المجموع</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_untaxed_equipments"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Discount</span>
+                                                <span t-translation="off">خصم</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_discount_equipments"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Vat</span>
+                                                <span t-translation="off">ض ق م</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_tax_equipments"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Total</span>
+                                                <span t-translation="off">الإجمالي</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_total_equipments"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+
+                    <div t-if="o.specialty_services_lines" style="page-break-inside: avoid;">
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;">
+                            <tr style="color: white;background: #c00000;">
+                                <th colspan="3">
+                                    <span style="float:left;" t-translation="off">Specialty Services Request:
+                                    </span>
+                                    <span style="float:right;" t-translation="off">الخدمات المتخصصة بالعقد</span>
+                                </th>
+                            </tr>
+                        </table>
+
+                        <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;"
+                               name="specialty_services_lines_table">
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">Product Code</th>
+                                <th t-translation="off">Item Code</th>
+                                <th t-translation="off">Description</th>
+                                <th t-translation="off">Qty</th>
+                                <th t-translation="off">Unit cost</th>
+                                <th t-translation="off">Total Cost</th>
+                            </tr>
+                            <tr class="text-center" style="background: #f2f2f2;font-size: 10px;">
+                                <th t-translation="off">رقم الخدمة</th>
+                                <th t-translation="off">كود الصنف</th>
+                                <th t-translation="off">البيان</th>
+                                <th t-translation="off">الكمية</th>
+                                <th t-translation="off">التكلفة الافرادية</th>
+                                <th t-translation="off">التكلفة الاجمالية</th>
+                            </tr>
+
+                            <t t-foreach="o.specialty_services_lines" t-as="line">
+                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="not line.display_type">
+                                        <td>
+                                            <span t-field="line.service_product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.service_product_id.default_code"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.quantity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.price_unit"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.amount_total"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+                        <div class="clearfix">
+                            <div class="row">
+                                <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
+                                    <table class="table table-sm" style="page-break-inside: avoid;">
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Subtotal</span>
+                                                <span t-translation="off">المجموع</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_untaxed_specialty_services"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Discount</span>
+                                                <span t-translation="off">خصم</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_discount_specialty_services"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Vat</span>
+                                                <span t-translation="off">ض ق م</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_tax_specialty_services"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                <span t-translation="off">Total</span>
+                                                <span t-translation="off">الإجمالي</span>
+                                            </th>
+                                            <th class="text-right">
+                                                <span t-esc="o.amount_total_specialty_services"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+
+                    <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;">
+                        <tr style="color: white;background: #c00000;">
+                            <th>
+                                <span style="float:left;" t-translation="off">Terms &amp; Conditions:
+                                </span>
+                                <span style="float:right;" t-translation="off">الشروط و الاحكام</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span t-field="o.terms_and_conditions"/>
+                            </th>
+                        </tr>
+                    </table>
+
+                    <table class="table table-bordered" style="border: 1px solid black;page-break-inside: avoid;">
+                        <tr style="color: white;background: #c00000;">
+                            <th>
+                                <span style="float:left;" t-translation="off">Approvals &amp; Remarks</span>
+                                <span style="float:right;" t-translation="off">الاعتمادات و الملاحظات</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span t-field="o.notes"/>
+                            </th>
+                        </tr>
+                    </table>
+
+                    <div class="row" style="padding-top:50px;;page-break-inside: avoid;">
+                        <div class="col-xs-4 text-center" style="width: 30%;">
+                            <span class="text-center" t-translation="off" style="border-top:1px solid #393e46;">مندوب
+                                المبيعات
+                            </span>
+                            <br/>
+                            <span class="text-center" t-translation="off">Sales Representative</span>
+                        </div>
+                        <div class="col-xs-4 text-center" style="width: 30%;">
+                            <span class="text-center" t-translation="off" style="border-top:1px solid #393e46;">مدير
+                                الحسابات
+                            </span>
+                            <br/>
+                            <span class="text-center" t-translation="off">Accounting Manager</span>
+                        </div>
+                        <div class="col-xs-4 text-center" style="width: 30%;">
+                            <span class="text-center" t-translation="off" style="border-top:1px solid #393e46;">مدير
+                                المبيعات
+                            </span>
+                            <br/>
+                            <span class="text-center" t-translation="off">Sales Director</span>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+        </template>
+        <template id="report_tender_quotation">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="contracts_management.report_tender_quotation_document" t-lang="o.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+

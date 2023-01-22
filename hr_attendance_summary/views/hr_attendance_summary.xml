@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_attendance_summary_form_view" model="ir.ui.view">
+        <field name="name">hr.attendance.summary.form</field>
+        <field name="model">hr.attendance.summary</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <header>
+                    <button name="compute_status" string="Calculate" class="oe_highlight" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="attendance,absence,weekend,holiday"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="date" readonly="1"/>
+                            <field name="weekday" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="late_in" readonly="1"/>
+                            <field name="early_out" readonly="1"/>
+                            <field name="total_late" readonly="1"/>
+                            <field name="rule_ids" widget="many2many_tags"/>
+                            <field name="payslip_paid"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="exception"/>
+                            <field name="exception_reason"
+                                   attrs="{'invisible': [('exception','=',False)],'required': [('exception','=',True)]}"/>
+                        </group>
+                        <group>
+                            <field name="contract_id"/>
+                            <field name="resource_calendar_id"/>
+                            <field name="wage_day"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attendances">
+                            <field name="attendance_ids" readonly="1">
+                                <tree>
+                                    <field name="check_in"/>
+                                    <field name="check_out"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Late Rules">
+                            <field name="late_lines" readonly="1">
+                                <tree>
+                                    <field name="rule_id"/>
+                                    <field name="type"/>
+                                    <field name="sequence"/>
+                                    <field name="penalty_percent"/>
+                                    <field name="late_minutes_deduction"/>
+                                    <field name="late_minutes"/>
+                                    <field name="late_value"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_attendance_summary_tree_view" model="ir.ui.view">
+        <field name="name">hr.attendance.summary.tree</field>
+        <field name="model">hr.attendance.summary</field>
+        <field name="arch" type="xml">
+            <tree create="0" decoration-info="state == 'weekend'" decoration-success="state == 'holiday'"
+                  decoration-danger="state == 'absence'">
+                <field name="employee_id"/>
+                <field name="weekday"/>
+                <field name="date"/>
+                <field name="late_in"/>
+                <field name="early_out"/>
+                <field name="total_late"/>
+                <field name="exception"/>
+                <field name="payslip_paid"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_attendance_summary_search_form" model="ir.ui.view">
+        <field name="name">hr.attendance.summary.search.form</field>
+        <field name="model">hr.attendance.summary</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="My Attendance" name="my_attendance"
+                        domain="[('employee_id.user_id.id', '=', uid)]"/>
+                <separator/>
+                <filter name="today" string="Today"
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="yesterday" string="Yesterday"
+                        domain="[('date', '=', (context_today() + datetime.timedelta(days=-1)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="date_filter" string="Date" date="date"/>
+                <filter name="current_month" string="Current Month" domain="[
+                    ('date', '&gt;=', (context_today()).strftime('%Y-%m-01')),
+                    ('date', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                <separator/>
+                <field name="employee_id" string="Employee"/>
+                <filter string="Exception" name="exception" domain="[('exception', '=', True)]"/>
+                <filter string="Employee" name="employee_id" context="{'group_by':'employee_id'}"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_hr_attendance_summary" model="ir.actions.act_window">
+        <field name="name">Attendances Summary</field>
+        <field name="res_model">hr.attendance.summary</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Record.
+            </p>
+            <p>
+                Use this menu to create Record.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem name="Attendances Summary"
+              id="menu_hr_attendance_summary"
+              parent="hr_attendance.menu_hr_attendance_root"
+              sequence="98"/>
+
+    <menuitem name="Attendances Summary"
+              id="menu_hr_attendance_summary_2"
+              parent="menu_hr_attendance_summary"
+              sequence="1"
+              action="action_hr_attendance_summary"/>
+
+</odoo>

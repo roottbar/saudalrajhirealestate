@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+        <record model="ir.actions.act_window" id="rent_sale_order_lines">
+            <field name="name">الوحدات المؤجرة</field>
+            <field name="res_model">sale.order.line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem name="الوحدات المؤجرة" id="rent_sale_order_lines_menu"
+                  parent="sale_renting.rental_order_menu"
+                  action="rent_sale_order_lines"
+                  sequence="2"/>
+    </data>
+</odoo>

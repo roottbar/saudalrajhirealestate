@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_petty_cash_dashboard_kanban" model="ir.ui.view">
+            <field name="name">view.petty.cash.dashboard.kanban</field>
+            <field name="model">petty.cash.user.rule</field>
+            <field name="arch" type="xml">
+                <kanban create="false" class="oe_background_grey o_kanban_dashboard o_account_kanban">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="color"/>
+                    <field name="kanban_dashboard"/>
+
+                    <templates>
+
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{kanban_color(record.color.raw_value)}">
+                                <t t-value="JSON.parse(record.kanban_dashboard.raw_value)" t-set="dashboard"/>
+                                <t t-call="PettyCashTop"/>
+                                <div class="container o_kanban_card_content">
+                                    <div class="row">
+                                        <t t-call="PettyCashBody"/>
+                                    </div>
+                                    <t t-call="PettyCashBodyGraph"/>
+                                </div>
+
+                                <div class="container o_kanban_card_manage_pane dropdown-menu" role="menu">
+                                    <t t-call="PettyCashManage"/>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-name="PettyCashTop">
+                            <div t-attf-class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <a type="object" name="open_action">
+                                            <field name="user"/>
+                                            <br/>
+                                            <field name="name"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section">
+                                    <a class="o_kanban_manage_toggle_button" href="#">
+                                        <i class="fa fa-ellipsis-v" aria-label="Selection" role="img"
+                                           title="Selection"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-name="PettyCashManage">
+                            <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                <div class="col-8">
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+
+                            <div groups="account.group_account_manager" class="row o_kanban_card_settings">
+                                <div class="col-6 text-right">
+                                    <a t-if="widget.editable" type="edit">Settings</a>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-name="PettyCashBody">
+                            <div class="col-5 o_kanban_primary_left">
+                                <button type="object"
+                                        name="create_cash_statement"
+                                        class="btn btn-primary btn-sm">New Petty Cash
+                                </button>
+                            </div>
+
+
+                            <div class="col-7 o_kanban_primary_right">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <a type="object" name="open_action"
+                                           context="{'search_default_in_progress': '1'}">
+                                            <span title="Petty Cash In Progress">
+                                                <t t-esc="dashboard.number_in_progress"/>
+                                                In Progress
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <span>
+                                            <t t-esc="dashboard.sum_in_progress"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <a type="object" name="open_action" context="{'search_default_review': '1'}">
+                                            <span title="Petty Cash to Review">
+                                                <t t-esc="dashboard.number_review"/>
+                                                Review
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <span>
+                                            <t t-esc="dashboard.sum_review"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <a type="object" name="open_action" context="{'search_default_closed': '1'}">
+                                            <span title="Petty Cash closed">
+                                                <t t-esc="dashboard.number_close"/>
+                                                Closed
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <span>
+                                            <t t-esc="dashboard.sum_close"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a>
+                                            <span title="Current Balance">Current Balance</span>
+                                        </a>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span>
+                                            <t t-esc="dashboard.current_balance"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a>
+                                            <span title="Expected Balance">Expected Balance</span>
+                                        </a>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span>
+                                            <t t-esc="dashboard.expected_balance"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-name="PettyCashBodyGraph">
+                            <field name="kanban_dashboard_graph" t-att-graph_type="'bar'" widget="dashboard_graph"/>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_dashboard_kanban" model="ir.actions.act_window">
+            <field name="name">Petty Cash Dashboard</field>
+            <field name="res_model">petty.cash.user.rule</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="view_petty_cash_dashboard_kanban"/>
+            <field name="usage">menu</field>
+        </record>
+    </data>
+</odoo>

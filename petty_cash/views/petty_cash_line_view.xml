@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_petty_cash_line_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.line.form</field>
+            <field name="model">petty.cash.line</field>
+            <field name="arch" type="xml">
+                <form string="Petty Cash Line">
+                    <group>
+                        <field name="type" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="reference"/>
+                            <field name="product_id" required="context.get('with_product')"
+                                   invisible="not context.get('with_product')"
+                                   options="{'no_open':True,'no_create':True}"/>
+                            <field name="description"/>
+                            <field name="partner_id" options="{'no_open':True,'no_create':True}"
+                                   attrs="{'required':[('type','=','payment')]}"/>
+                            <field name="account_id" options="{'no_open':True,'no_create':True}"
+                                   readonly="context.get('with_product')" force_save="context.get('with_product')"/>
+                            <field name="quantity" invisible="not context.get('with_product')"
+                                   required="context.get('with_product')"/>
+
+                            <label for="price_unit" string="Amount"/>
+                            <div name="price_unit_div" class="o_row">
+                                <field name="price_unit"/>
+                                <field name="currency_id" groups="petty_cash.group_petty_cash_multi_currency"
+                                       options="{'no_open':True,'no_create':True}"/>
+                            </div>
+
+                            <field name="uom_id" groups="uom.group_uom" invisible="not context.get('with_product')"
+                                   required="context.get('with_product')"/>
+
+                            <label for="discount" groups="petty_cash.group_petty_cash_discount"/>
+                            <div name="discount_div" class="o_row" groups="petty_cash.group_petty_cash_discount">
+                                <field name="discount"/>
+                                <field name="discount_type"/>
+                            </div>
+                            <field name="petty_cash_currency_id" invisible="1"/>
+                            <field name="product_uom_category_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="tax_ids" widget="many2many_tags" options="{'no_open':True,'no_create':True}"/>
+                            <field name="analytic_account_id"
+                                   options="{'no_open':True,'no_create':True}"
+                                   groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                            <field name="analytic_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
+                                   groups="petty_cash.group_petty_cash_analytic_accounting"/>
+                            <field name="amount_currency" groups="petty_cash.group_petty_cash_multi_currency"/>
+                            <field name="petty_cash_request_id" invisible="1"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="file" widget="binary" filename="file_name"/>
+                            <field name="is_review"/>
+
+                            <separator string="Totals"/>
+                            <field name="amount_discount" groups="petty_cash.group_petty_cash_discount"/>
+                            <field name="amount_untaxed"/>
+                            <field name="amount_tax"/>
+                            <field name="amount_total"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_line" model="ir.actions.act_window">
+            <field name="name">Petty Cash Line</field>
+            <field name="res_model">petty.cash.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_petty_cash_line_pivot" model="ir.ui.view">
+            <field name="name">view.petty.cash.line.pivot</field>
+            <field name="model">petty.cash.line</field>
+            <field name="arch" type="xml">
+                <pivot string="Petty Cash Lines">
+                    <field name="account_id" type="row"/>
+                    <field name="date" type="col"/>
+                    <field name="amount_total" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_line_graph" model="ir.ui.view">
+            <field name="name">view.petty.cash.line.graph</field>
+            <field name="model">petty.cash.line</field>
+            <field name="arch" type="xml">
+                <graph string="Petty Cash Graph" type="bar">
+                    <field name="date"/>
+                    <field name="amount_total" operator="+" type='measure'/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_dynamic_report_petty_cash_lines_tree" model="ir.ui.view">
+            <field name="name">view.petty.cash.tree</field>
+            <field name="model">petty.cash.line</field>
+            <field name="arch" type="xml">
+                <tree create="false">
+                    <field name="reference" optional="hide"/>
+                    <field name="description"/>
+                    <field name="date"/>
+                    <field name="petty_cash_id"/>
+                    <field name="account_id"/>
+                    <field name="amount_untaxed" sum="Total Untaxed Amount"/>
+                    <field name="amount_tax" sum="Total Amount Tax"/>
+                    <field name="amount_total" sum="Total Amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_dynamic_report_petty_cash_lines_filter" model="ir.ui.view">
+            <field name="name">view.petty.cash.line.filter</field>
+            <field name="model">petty.cash.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Petty Cash Line">
+                    <field name="reference" string="Reference"/>
+                    <field name="description" string="Description"/>
+                    <field name="petty_cash_id" string="Petty Cash"/>
+                    <field name="responsible_id" string="Responsible Box"/>
+                    <field name="product_id" string="product"/>
+                    <field name="account_id" string="Account"/>
+                    <field name="analytic_account_id" string="Analytic account"/>
+                    <field name="date" string="Date"/>
+
+                    <filter name="include_tax" string="Include Tax" domain="[('amount_tax','!=',0)]"/>
+                    <filter name="month" string="Date" date="date"/>
+
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_responsible" string="Responsible Box"
+                                context="{'group_by':'responsible_id'}"/>
+                        <filter name="group_by_product" string="Product"
+                                context="{'group_by':'product_id'}"/>
+                        <filter name="group_by_account" string="Account"
+                                context="{'group_by':'account_id'}"/>
+                        <filter name="group_by_analytic_account" string="Analytic account"
+                                context="{'group_by':'analytic_account_id'}"/>
+                        <filter name="group_by_date" string="Date" context="{'group_by':'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_report_petty_cash_lines_view" model="ir.actions.act_window">
+            <field name="name">Dynamic Petty Cash Lines</field>
+            <field name="res_model">petty.cash.line</field>
+            <field name="view_mode">tree,pivot,graph</field>
+            <field name="view_id" ref="view_dynamic_report_petty_cash_lines_tree"/>
+            <field name="context">{'search_default_group_by_account': 1}</field>
+            <field name="search_view_id" ref="view_dynamic_report_petty_cash_lines_filter"/>
+        </record>
+    </data>
+</odoo>
