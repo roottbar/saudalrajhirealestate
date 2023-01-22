@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_request_user,purchase.request,model_purchase_request,purchase_request.group_purchase_request_user,1,1,1,1
+access_purchase_request_line_user,purchase.request.line,model_purchase_request_line,purchase_request.group_purchase_request_user,1,1,1,1
+access_purchase_request_quotation_wizard_user,purchase.request.quotation.wizard,model_purchase_request_quotation_wizard,,1,1,1,1
+access_purchase_request_quotation_line_wizard_user,purchase.request.quotation.line.wizard,model_purchase_request_quotation_line_wizard,,1,1,1,1
+access_purchase_request_reject_wizard_user,purchase.request.reject.wizard,model_purchase_request_reject_wizard,,1,1,1,1

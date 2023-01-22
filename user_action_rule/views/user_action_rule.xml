@@ -1,0 +1,255 @@
+<odoo>
+    <record id="view_user_action_rule_line_form" model="ir.ui.view">
+        <field name="name">view.user.action.rule.line.tree</field>
+        <field name="model">user.action.rule.line</field>
+        <field name="arch" type="xml">
+            <form string="User Action Rule Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="object_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="model_name" invisible="1"/>
+                            <field name="filter_domain" widget="domain"
+                                   options="{'model': 'model_name', 'in_dialog': True}"/>
+                            <field name="is_all"/>
+                            <field name="sequence"/>
+                            <field name="manager_ids" widget="many2many_tags"
+                                   options="{'no_create': True, 'no_open': True}" string="Approval Levels"/>
+                        </group>
+                        <group>
+                            <field name="rule_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="field_rule_ids" string="Field Approval" widget="many2many_tags"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_user_action_rule_filter" model="ir.ui.view">
+        <field name="name">view.user.action.rule.filter</field>
+        <field name="model">user.action.rule</field>
+        <field name="arch" type="xml">
+            <search string="User Action Rule">
+                <field name="name"/>
+                <field name="code"/>
+            </search>
+        </field>
+    </record>
+    <record id="view_user_action_rule_tree" model="ir.ui.view">
+        <field name="name">view.user.action.rule.tree</field>
+        <field name="model">user.action.rule</field>
+        <field name="arch" type="xml">
+            <tree string="User Action Rule">
+                <field name="name"/>
+                <field name="code" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_user_action_rule_form" model="ir.ui.view">
+        <field name="name">view.user.action.rule.tree</field>
+        <field name="model">user.action.rule</field>
+        <field name="arch" type="xml">
+            <form string="User Action Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Information">
+                            <field name="action_rule_line_ids">
+                                <tree>
+                                    <field name="object_id" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="model_name" invisible="1"/>
+                                    <field name="filter_domain" optional="hide"/>
+                                    <field name="rule_id" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="field_rule_ids" string="Field Approval" widget="many2many_tags"
+                                           options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="is_all"/>
+                                    <field name="manager_ids" widget="many2many_tags"
+                                           options="{'no_create': True, 'no_open': True}" string="Approval Levels"/>
+                                    <field name="sequence"/>
+                                    <field name="manager_rule_sequence_ids" invisible="1">
+                                        <tree>
+                                            <field name="manager_id"/>
+                                            <field name="next_state"/>
+                                            <field name="sequence"/>
+                                        </tree>
+                                    </field>
+                                    <button name="action_manager_sequence" type="object" icon="fa-list" width="0.1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_user_action_rule" model="ir.actions.act_window">
+        <field name="name">Approvals</field>
+        <field name="res_model">user.action.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Approval Rules -->
+    <record id="view_user_line_rule_filter" model="ir.ui.view">
+        <field name="name">user.action.line.rule.filter</field>
+        <field name="model">user.action.line.rule</field>
+        <field name="arch" type="xml">
+            <search string="User Action Line Rule">
+                <field name="name"/>
+                <field name="object_id"/>
+                <field name="field_id"/>
+                <field name="min_value"/>
+                <field name="max_value"/>
+                <group expand="0" string="Group By">
+                    <filter string="Object" name="object_id" domain="[]" context="{'group_by': 'object_id'}"/>
+                    <filter string="Field" name="field_id" domain="[]" context="{'group_by': 'field_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="view_user_line_rule_tree" model="ir.ui.view">
+        <field name="name">view.user.action.line.rule.tree</field>
+        <field name="model">user.action.line.rule</field>
+        <field name="arch" type="xml">
+            <tree string="User Action Line Rule">
+                <field name="name"/>
+                <field name="object_id"/>
+                <field name="field_id" optional="show"/>
+                <field name="min_value" optional="show"/>
+                <field name="max_value" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_user_line_rule_form" model="ir.ui.view">
+        <field name="name">view.user.action.line.rule.form</field>
+        <field name="model">user.action.line.rule</field>
+        <field name="arch" type="xml">
+            <form string="User Action Line Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="object_id" options="{'no_create': True, 'no_open': True}"/>
+
+                        </group>
+                        <group>
+                            <field name="field_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="currency_field_id" options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'invisible':[('field_type','=','integer')]}"
+                                   groups="base.group_multi_currency"/>
+
+                            <field name="min_value"/>
+                            <field name="max_value"/>
+                            <field name="field_type" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_user_line_rule" model="ir.actions.act_window">
+        <field name="name">Approval Rules</field>
+        <field name="res_model">user.action.line.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Field Approvals -->
+    <record id="view_user_field_rule_filter" model="ir.ui.view">
+        <field name="name">user.action.field.rule.filter</field>
+        <field name="model">user.action.field.rule</field>
+        <field name="arch" type="xml">
+            <search string="User Action Field Rule">
+                <field name="name"/>
+                <field name="object_id"/>
+                <field name="field_id"/>
+                <field name="max_value"/>
+                <group expand="0" string="Group By">
+                    <filter string="Object" name="object_id" domain="[]" context="{'group_by': 'object_id'}"/>
+                    <filter string="Field" name="field_id" domain="[]" context="{'group_by': 'field_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="view_user_field_rule_tree" model="ir.ui.view">
+        <field name="name">view.user.action.field.rule.tree</field>
+        <field name="model">user.action.field.rule</field>
+        <field name="arch" type="xml">
+            <tree string="User Action Field Rule">
+                <field name="name"/>
+                <field name="object_id"/>
+                <field name="field_id" optional="show"/>
+                <field name="max_value" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_user_field_rule_form" model="ir.ui.view">
+        <field name="name">view.user.action.field.rule.form</field>
+        <field name="model">user.action.field.rule</field>
+        <field name="arch" type="xml">
+            <form string="User Action Field Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="object_id" options="{'no_create': True, 'no_open': True}"/>
+
+                        </group>
+                        <group>
+                            <field name="field_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="currency_field_id" options="{'no_create': True, 'no_open': True}"
+                                   attrs="{'invisible':[('field_type','=','integer')]}"
+                                   groups="base.group_multi_currency"/>
+
+                            <field name="max_value"/>
+                            <field name="field_type" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_user_field_rule" model="ir.actions.act_window">
+        <field name="name">Field Approvals</field>
+        <field name="res_model">user.action.field.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_action_user_rule_main" name="Approvals" parent="base.menu_users" sequence="10"/>
+
+    <menuitem id="menu_action_user_action_rule" name="Approvals" parent="user_action_rule.menu_action_user_rule_main"
+              action="action_user_action_rule" sequence="1"/>
+    <menuitem id="menu_action_user_line_rule" name="Rules" parent="user_action_rule.menu_action_user_rule_main"
+              action="action_user_line_rule" sequence="2"/>
+
+    <menuitem id="menu_action_user_field_rule" name="Field Approvals"
+              parent="user_action_rule.menu_action_user_rule_main"
+              action="action_user_field_rule" sequence="3"/>
+
+</odoo>

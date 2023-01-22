@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="rent_config_unit_purposes_tree">
+            <field name="name">rent.config.unit.purposes.tree</field>
+            <field name="model">rent.config.unit.purposes</field>
+            <field name="arch" type="xml">
+                <tree string="Unit Purposes">
+                    <field name="unit_purpose_name"/>
+                    <field name="unit_purpose_description"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="rent_config_unit_purposes_form">
+            <field name="name">rent.config.unit.purposes.form</field>
+            <field name="model">rent.config.unit.purposes</field>
+            <field name="arch" type="xml">
+                <form string="Unit Purposes">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="unit_purpose_name"/>
+                            </group>
+                            <group>
+                                <field name="unit_purpose_description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
