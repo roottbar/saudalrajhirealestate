@@ -27,7 +27,7 @@
         </record>
 
         <menuitem id="menu_zk_attendance_view" name="Attendance log" action="action_zk_machine_att_log"
-                  parent="plustech_hr_attendance_transaction.menu_hr_attendance_main"
+                  parent="hr_attendance.menu_hr_attendance_root"
                   sequence="14" groups="base.group_no_one"/>
 
     </data>
