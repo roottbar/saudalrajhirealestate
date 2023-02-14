@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="1">
+		<record id="hr_attendance_ded_rule" model="hr.salary.rule">
+			<field name="name">Attendance Deduction</field>
+			<field name="sequence" eval="11"/>
+			<field name="code">ATTENDANCE</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			 <field name="struct_id" ref="plustech_hr_payroll.structure_main"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = -payslip.attendance_ded</field>
+		</record>
+	</data>
+</odoo>
