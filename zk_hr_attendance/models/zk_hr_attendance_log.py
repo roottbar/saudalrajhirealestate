@@ -50,6 +50,7 @@ class ZKMachineAttendanceLog(models.Model):
         :return: None
         """
 
+
         employees = self.env['hr.employee'].search([])
         for employee in employees:
             employee_machine_attendance_ids = self.search([('machine_employee_id',
