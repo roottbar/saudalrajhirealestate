@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <field name="pin" position="before">
 <!--                    <field name="biometric_device_name"/>-->
-                    <field name="biometric_device_id" invisible="1"/>
+<!--                    <field name="biometric_device_id" invisible="1"/>-->
                     <field name="attendance_device_id"/>
                 </field>
             </field>
