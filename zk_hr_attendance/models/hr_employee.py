@@ -11,7 +11,6 @@ from odoo.exceptions import UserError
 class HREmployee(models.Model):
     _inherit = "hr.employee"
 
-    biometric_device_id = fields.Integer("Attendance Device ID")
     attendance_device_id = fields.Char(string='Attendance Device ID')
     # biometric_device_name = fields.Char(string='Attendance Device Name')
 
@@ -27,5 +26,4 @@ class HREmployee(models.Model):
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'
 
-    biometric_device_id = fields.Integer("Attendance Device ID")
     attendance_device_id = fields.Char(string='Attendance Device ID')

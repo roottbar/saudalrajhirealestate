@@ -10,7 +10,7 @@
     'author': 'Bashier Elbashier',
     'category': 'Human Resources',
     'summary': 'Manage employee attendances performed by ZKTeco devices',
-    'depends': ['plustech_hr_employee', 'hr_attendance_multi_company', 'plustech_hr_attendance'],
+    'depends': ['hr', 'hr_attendance_multi_company', 'hr_attendance'],
     'data': [
         'security/ir.model.access.csv',
         'views/hr_employee_views.xml',
