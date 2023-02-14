@@ -78,28 +78,21 @@ class ZKMachineAttendanceLog(models.Model):
                             dayofweek = current_date_hr_attendances[-1].check_in.weekday()
                             checkout_time = employee.resource_calendar_id.attendance_ids.search(
                                 [('dayofweek', '=', str(dayofweek))], limit=1)
-                            if employee.resource_calendar_id.check_out_necessary == 'no':
-                                check_out = current_date_hr_attendances[-1].check_in
-                                hours = int(checkout_time.hour_to)
-                                minutes = (checkout_time.hour_to * 60) % 60
-                                check_out = check_out.replace(hour=hours, minute=int(minutes), second=0)
-                                current_date_hr_attendances[-1].write(
-                                    {"check_out": check_out})
-                            else:
-                                current_date_hr_attendances[-1].write(
-                                    {"check_out": current_date_attendances[-1].attendance_timestamp,
-                                     'check_out_device': current_date_attendances[0].device_serialnumber,
-                                     })
+
+                            current_date_hr_attendances[-1].write(
+                                {"check_out": current_date_attendances[-1].attendance_timestamp,
+                                 'check_out_device': current_date_attendances[0].device_serialnumber,
+                                 })
                         else:
                             check_out = current_date_attendances[-1]
                             dayofweek = current_date_attendances[-1].attendance_timestamp.weekday()
                             checkout_time = employee.resource_calendar_id.attendance_ids.search(
                                 [('dayofweek', '=', str(dayofweek))], limit=1)
-                            if employee.resource_calendar_id.check_out_necessary == 'no':
-                                check_out = current_date_attendances[-1]
-                                hours = int(checkout_time.hour_to)
-                                minutes = (checkout_time.hour_to * 60) % 60
-                                check_out = check_out.replace(hour=hours, minute=int(minutes), second=0)
+
+                            check_out = current_date_attendances[-1]
+                            hours = int(checkout_time.hour_to)
+                            minutes = (checkout_time.hour_to * 60) % 60
+                            check_out = check_out.replace(hour=hours, minute=int(minutes), second=0)
 
                             self.env['hr.attendance']. \
                                 create({
