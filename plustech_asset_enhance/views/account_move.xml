@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="enhance_view_move_form" model="ir.ui.view">
+            <field name="name">account.move</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_post'][2]" position="replace">
+                    <button name="action_review" type="object" class="oe_highlight"
+                            groups="plustech_asset_enhance.review_account_group"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}" string="Review"/>
+                    <button name="action_post" string="Confirm" class="oe_highlight" type="object"
+                            groups="account.group_account_invoice" data-hotkey="v"
+                            attrs="{'invisible': ['|', '|', '|',
+                                 ('state', '!=', 'review'),
+                                 ('auto_post', '=', True),
+                                 ('move_type', '=', 'entry'),
+                                 ('display_inactive_currency_warning','=',True)]}"/>
+                </xpath>
+                <xpath expr="//button[@name='action_post']" position="replace">
+                        <button name="action_post" string="Post" class="oe_highlight" type="object"
+                                groups="account.group_account_invoice" data-hotkey="v"
+                                attrs="{'invisible': ['|', '|',
+                                 ('state', '!=', 'review'),
+                                  ('auto_post', '=', True),
+                                   ('move_type', '!=', 'entry')]}"/>
+                </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="replace">
+                        <button name="button_cancel" string="Cancel Entry" type="object" groups="account.group_account_invoice"
+                                data-hotkey="w" attrs="{'invisible' : ['|', '|', ('id', '=', False), ('state', 'not in', ['draft', 'review']),('move_type', '!=', 'entry')]}"/>
+                </xpath>
+                <xpath expr="//button[@name='button_cancel'][2]" position="replace">
+                        <button name="button_cancel" string="Cancel" type="object" groups="account.group_account_invoice" data-hotkey="w"
+                                attrs="{'invisible' : ['|', '|', ('id', '=', False), ('state', 'not in', ['draft', 'review']),('move_type', '==', 'entry')]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

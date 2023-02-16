@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+
+        <record id="document_expire_notification" model="mail.activity.type">
+            <field name="name">Expiration Date Notification</field>
+            <field name="icon">fa-pencil-square-o</field>
+            <field name="delay_count">5</field>
+            <field name="sequence">12</field>
+        </record>
+    </data>
+</odoo>
