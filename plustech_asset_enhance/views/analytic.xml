@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="search_template_analytic">
+            <button t-if="options.get('analytic')" type="button"
+                    class="o-no-caret btn btn-secondary dropdown-toggle account_anayltic_filters"
+                    data-toggle="dropdown">
+                <span class="fa fa-folder-open"/>
+                Analytic
+            </button>
+            <ul class="dropdown-menu o_filter_menu" role="menu">
+                <li class="o_account_report_search js_account_analytic_m2m"/>
+            </ul>
+        </template>
+
+        <template id="browseinfo_search_template" inherit_id="account_reports.search_template">
+            <xpath expr="//div[hasclass('o_account_reports_filter_analytic')]" position="after">
+                <div class="btn-group o_dropdown o_account_reports_filter_analytic"
+                     t-if="options.get('analytic') != None">
+                    <t t-call="plustech_asset_enhance.search_template_analytic"/>
+                </div>
+            </xpath>
+        </template>
+
+
+        <template id="search_template_analytics">
+            <button type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle"
+                    data-toggle="dropdown">
+                <span class="fa fa-book"/>
+                Analytic:
+<!--                <t t-set="selected_analytic"-->
+<!--                   t-value="', '.join(analytic.get('name') for analytic in options['analytic'] if analytic.get('selected'))"/>-->
+                <t t-if="selected_analytic">
+                    <t t-esc="selected_analytic"/>
+                </t>
+                <t t-else="">
+                    All
+                </t>
+            </button>
+            <div class="o_dropdown_menu dropdown-menu o_filter_menu" role="menu">
+                <t t-foreach="options['analytic']" t-as="analytic">
+                    <t t-if="analytic.get('id') == 'divider'">
+                        <div role="separator" class="dropdown-divider"/>
+                        <b role="menuitem" class="ml4 dropdown-item-text">
+                            <t t-esc="analytic.get('name')"/>
+                        </b>
+                        <div role="separator" class="dropdown-divider"/>
+                    </t>
+                    <t t-else="">
+                        <a role="menuitem" class="dropdown-item js_account_report_choice_filter"
+                           t-att-title="analytic.get('name')" t-att-data-id="analytic.get('id')"
+                           data-filter="analytic">
+                            <t t-esc="analytic.get('name')"/>
+                        </a>
+                    </t>
+                </t>
+            </div>
+        </template>
+
+
+        <template id="search_templates" inherit_id="account_reports.search_template">
+            <xpath expr="." position="inside">
+                <div class="btn-group o_dropdown o_account_reports_filter_analytics"
+                     t-if="options.get('analytic') != None">
+                    <t t-call="plustech_asset_enhance.search_template_analytics"/>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="filter_info_template" inherit_id="account_reports.filter_info_template">
+            <xpath expr="//div[hasclass('col-4')][last()]" position="inside">
+                <div class="col-12">
+                    <t t-if="options.get('analytic')">
+                        Analyticss:
+                        <t t-set="analytic_value" t-value="'All'"/>
+<!--                        <t t-foreach="options['analytic']" t-as="atc">-->
+<!--                            <t t-if="atc.get('selected') == True">-->
+<!--                                <t t-set="analytic_value" t-value="''"/>-->
+<!--                                <t t-esc="atc.get('name')"/>-->
+<!--                            </t>-->
+<!--                        </t>-->
+                        <t t-esc="analytic_value"/>
+                    </t>
+                </div>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

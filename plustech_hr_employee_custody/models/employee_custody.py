@@ -17,6 +17,8 @@ class EmployeeCustody(models.Model):
     job_id = fields.Many2one(comodel_name='hr.job', string='Job Title',
                              related="employee_id.job_id", )
     request_date = fields.Date(string='Request Date', default=fields.Date.today())
+    receive_date = fields.Date(string='Receive Date', default=fields.Date.today())
+    return_date = fields.Date(string='Return Date', default=fields.Date.today())
     request_for = fields.Char(string='Request For')
     note = fields.Text(string='Notice')
     company_id = fields.Many2one(

@@ -14,5 +14,11 @@
         'views/asset.xml',
         'views/account_move.xml',
         'views/sale_rental.xml',
+        # 'views/analytic.xml',
     ],
+    # 'assets': {
+    #     'web.assets_backend': [
+    #         'plustech_asset_enhance/static/src/js/custom_account_reports.js',
+    #     ],
+    # },
 }
