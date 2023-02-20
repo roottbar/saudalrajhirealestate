@@ -6,7 +6,6 @@
     'author': "Plus Tech",
     'category': 'Accounting/Accounting',
     'version': '0.1',
-    'version': '0.1',
     'depends': ['account', 'account_asset'],
     'data': [
         'security/security.xml',
@@ -14,11 +13,5 @@
         'views/asset.xml',
         'views/account_move.xml',
         'views/sale_rental.xml',
-        # 'views/analytic.xml',
     ],
-    # 'assets': {
-    #     'web.assets_backend': [
-    #         'plustech_asset_enhance/static/src/js/custom_account_reports.js',
-    #     ],
-    # },
 }
