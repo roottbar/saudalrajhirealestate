@@ -6,7 +6,7 @@
     'website': "",
     'category': 'Accounting/Accounting',
     'version': '0.1',
-    'depends': ['base', 'account'],
+    'depends': ['base', 'account', 'sale'],
     'data': [
         'cron/cron.xml',
         'views/settings.xml',

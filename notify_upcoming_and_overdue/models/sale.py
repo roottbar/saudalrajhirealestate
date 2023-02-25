@@ -3,11 +3,11 @@ from datetime import date
 import datetime
 
 
-class AccountMove(models.Model):
-    _inherit = 'account.move'
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
 
-    def send_customer_mail(self):
-        mail_template = self.env.ref('notify_upcoming_and_overdue.customer_up_invoice_mail')
+    def send_up_contract_mail(self):
+        mail_template = self.env.ref('notify_upcoming_and_overdue.customer_up_contract_mail')
         mail_template.send_mail(self.id, force_send=True)
     def notify_upcoming_overdue(self):
         upcoming_days = self.env['ir.config_parameter'].sudo().get_param('notify_upcoming_and_overdue.upcoming_days')
@@ -19,8 +19,8 @@ class AccountMove(models.Model):
         upcoming_day = today + datetime.timedelta(days=int(upcoming_days))
         over_day = today - datetime.timedelta(days=int(over_days))
         if send_notify == 'True':
-            upcoming_move_ids = self.env['account.move'].search([
-                ('move_type', '=', 'out_invoice'),
+            upcoming_move_ids = self.env['sale.order'].search([
+                ('is_rental_order', '=', True),
                 ('payment_state', 'in', ['partial', 'not_paid']),
                 ('invoice_date_due', '=', upcoming_day),
             ])
@@ -81,6 +81,6 @@ class AccountMove(models.Model):
                 ('invoice_date_due', '=', upcoming_day),
             ])
             for up_move in upcoming_move_ids:
-                up_move.send_customer_mail()
+                up_move.send_up_contract_mail()
             for ov_move in over_move_ids:
-                ov_move.send_customer_mail()
+                ov_move.send_up_contract_mail()

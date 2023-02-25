@@ -1,7 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="rental_order_form_view2" model="ir.ui.view">
+            <field name="name">sale.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_renting.rental_order_form_view"/>
+            <field name="arch" type="xml">
 
+<!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>-->
+<!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>-->
+<!--          <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>-->
+<!--          <div class="badge-pill badge-danger float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>-->
+<!--          <div class="badge-pill badge-success float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>-->
+<!--        -->
+                <xpath expr="//div[@class='badge-pill badge-info float-right']" position="replace">
+                    <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'returned'), ('has_late_lines', '=', True)]}">Confirmed</div>
+                </xpath>
+                <xpath expr="//div[@class='badge-pill badge-warning float-right']" position="replace">
+                    <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|','|',  ('state', 'not in', ['done', 'occupied']),('rental_status', '=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>
+                </xpath>
+                <xpath expr="//div[@class='badge-pill badge-success float-right']" position="replace">
+                    <div class="badge-pill badge-success float-right" attrs="{'invisible': ['|', ('state', 'not in', ['termination']), ('rental_status', '!=', 'returned')]}">Returned</div>
+                </xpath>
+            </field>
+        </record>
+        <record id="rent_sale_order_r_inherit_form2" model="ir.ui.view">
+            <field name="name">sale.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="renting.rent_sale_order_r_inherit_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_cancel']" position="replace">
+                    <button name="action_cancel" type="object" string="Cancel"
+                            attrs="{'invisible': ['|','|', ('state', 'not in', ['draft', 'sent','sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
+                    <field name="no_of_invoiced" invisible="1"/>
+                    <field name="has_late_lines" invisible="0"/>
+                    <field name="rental_status" invisible="0"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="rent_view_order_form" model="ir.ui.view">
+            <field name="name">sale.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sale,occupied,termination"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="sale_renting.rental_order_action" model="ir.actions.act_window">
+            <field name="name">Rental Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale_renting.rental_order_view_search"/>
+            <field name="context">{'default_is_rental_order': 1, 'search_default_from_rental': 1}</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_renting.rental_order_view_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('sale_renting.rental_order_primary_form_view')})]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new quotation, the first step of a new rental!
+                </p>
+                <p>
+                    Once the quotation is confirmed, it becomes a rental order.
+                    <br/>
+                    You will be able to create an invoice and collect the payment.
+                </p>
+            </field>
+        </record>
+
+        <record id="contract_view_tree" model="ir.ui.view">
+            <field name="name">contract_view_tree</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <tree string="contract_tree">
+                    <field name="state" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="has_late_lines" invisible="1"/>
+                    <field name="name" readonly="1" decoration-bf="1"/>
+                    <field name="date_order" widget="date"/>
+                    <field name="fromdate"/>
+                    <field name="todate"/>
+                    <field name="partner_id"/>
+                    <field name="user_id" optional="show" widget="many2one_avatar_user"/>
+                    <field name="amount_total"/>
+                    <field name="rental_status" widget="badge"
+                           decoration-info="rental_status == 'draft' or rental_status == 'sent'"
+                           decoration-warning="rental_status == 'pickup'"
+                           decoration-success="rental_status == 'return'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="filter_dates_action" model="ir.actions.act_window">
+            <field name="name">Contract In Dates</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                        (0, 0, {'view_mode': 'form', 'view_id': ref('rent_customize.contract_view_tree')})]"/>
+        </record>
         <record id="view_order_form_rent_customize" model="ir.ui.view">
             <field name="name">view.sale.order.form</field>
             <field name="model">sale.order</field>
@@ -11,6 +110,9 @@
                     <button name="action_pickup" type="object" class="btn-primary" string="PICKUP"
                             groups="rent_customize.group_pickup_rental_order"
                             attrs="{'invisible':['|', ('rental_status','not in',['returned','cancel']), ('state', 'not in', ['sale', 'done'])]}"/>
+
+                    <field name="is_rental_order" invisible="1"/>
+                    <field name="rental_status" invisible="1"/>
                 </xpath>
             </field>
         </record>
