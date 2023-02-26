@@ -3,6 +3,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+from odoo import models, fields, _
+from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
 
 class RentalOrder(models.TransientModel):
     _inherit = 'rental.order.wizard'
@@ -10,10 +12,14 @@ class RentalOrder(models.TransientModel):
     def apply(self):
         res = super(RentalOrder, self).apply()
         for rec in self:
+            print("rental order", rec.status)
+            print("rental order", rec.order_id.state)
             if rec.status == 'return':
                 rec.order_id.state = 'termination'
+                rec.order_id.rental_status = 'returned'
             if rec.status == 'pickup':
                 rec.order_id.state = 'occupied'
+                rec.order_id.rental_status = 'pickup'
         return res
 
 
@@ -28,11 +34,144 @@ class SaleOrder(models.Model):
         ('occupied', 'Occupied'),
         ('termination', 'Termination'),
     ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
-    @api.depends('state', 'order_line', 'order_line.product_uom_qty', 'order_line.qty_delivered', 'order_line.qty_returned')
+    apartment_insurance = fields.Float('Apartment Insurance')
+    refund_insurance = fields.Boolean('Refund Insurance')
+    damage_amount = fields.Float('Damage Amount')
+    refund_amount = fields.Float('Refund Amount')
+    context_order = fields.Many2one('sale.order')
+
+    @api.onchange('damage_amount', 'apartment_insurance')
+    def change_damage_amount(self):
+        self.refund_amount = self.apartment_insurance - self.damage_amount
+    def action_termination(self):
+        self.write({"state": "termination"})
+
+    def action_refund_insurance(self):
+        print("XXXXXXX refund")
+        action = self.env.ref("rent_customize.refund_insurance_action").read()[0]
+        # action["views"] = [(self.env.ref("rent_customize.refund_insurance_view_form").id, "form") ]
+        print("sssssssss", self)
+        self.context_order = self.id
+        self.apartment_insurance = self.apartment_insurance
+        self.refund_amount = self.apartment_insurance
+        self.state = self.state
+        self.partner_invoice_id = self.partner_invoice_id.id
+        self.partner_id = self.partner_id.id
+        action["res_id"] = self.id
+        return action
+
+
+
+        form_view_id = self.env.ref('rent_customize.refund_insurance_view_form').ids
+        return {
+            'name': 'Refund Insurance',
+            'views': [(form_view_id, 'form')],
+            'view_mode': 'form',
+            'res_model': 'sale.order',
+            'type': 'ir.actions.act_window',
+            "context": {
+                'default_partner_id': self.partner_id.id,
+                'default_apartment_insurance': self.apartment_insurance,
+                'default_refund_amount': self.apartment_insurance,
+                'default_partner_invoice_id': self.partner_invoice_id.id,
+                'default_context_order': self.id,
+                'default_state': self.state,
+            },
+            'target': 'new',
+        }
+    def _prepare_refund_invoice_line(self):
+        self.ensure_one()
+
+        product_tmp_id = self.env['ir.config_parameter'].sudo().get_param('renting.insurance_value')
+        print("tmpppppppppppp", product_tmp_id)
+        product_id = self.env['product.product'].search([
+            ('product_tmpl_id', '=', int(product_tmp_id))
+        ])
+        print("ppppppppppppppp", product_id)
+        res = {
+            'display_type': False,
+            'name': product_id.name,
+            'product_id': product_id.id,
+            'product_uom_id': product_id.uom_id.id,
+            'quantity': 1,
+            'discount': 0,
+            'price_unit': abs(self.refund_amount) ,
+            'tax_ids': [(6, 0, [])],
+            'sale_line_ids': [(4, self.context_order.order_line[0].id)],
+            'analytic_account_id': False,
+            'exclude_from_invoice_tab': False,
+        }
+        return res
+
+
+    def _prepare_refund_invoices(self, sale_order_id, invoice_lines):
+        """
+        Prepare the dict of values to create the new invoice for a sales order. This method may be
+        overridden to implement custom invoice generation (making sure to call super() to establish
+        a clean extension chain).
+        """
+        self.ensure_one()
+        journal = self.env['account.move'].with_context(default_move_type='out_invoice')._get_default_journal()
+
+        if not journal:
+            raise UserError(_('Please define an accounting sales journal for the company %s (%s).') % (
+                self.company_id.name, self.company_id.id))
+        invoice_vals = {
+            'ref': sale_order_id.client_order_ref or '',
+            'move_type': 'out_invoice' if self.refund_amount >0 else 'out_refund',
+            'narration': sale_order_id.note,
+            'currency_id': sale_order_id.pricelist_id.currency_id.id,
+            'campaign_id': sale_order_id.campaign_id.id,
+            'medium_id': sale_order_id.medium_id.id,
+            'source_id': sale_order_id.source_id.id,
+            'user_id': sale_order_id.user_id.id,
+            'invoice_user_id': sale_order_id.user_id.id,
+            'team_id': sale_order_id.team_id.id,
+            'partner_id': sale_order_id.partner_invoice_id.id if sale_order_id.partner_invoice_id else sale_order_id.partner_id.id,
+            'partner_shipping_id': sale_order_id.partner_shipping_id.id,
+            'fiscal_position_id': (
+                    sale_order_id.fiscal_position_id or sale_order_id.fiscal_position_id.get_fiscal_position(
+                sale_order_id.partner_invoice_id.id)).id,
+            'partner_bank_id': sale_order_id.company_id.partner_id.bank_ids[:1].id,
+            'journal_id': journal.id,  # company comes from the journal
+            'invoice_origin': sale_order_id.name,
+            'invoice_payment_term_id': sale_order_id.payment_term_id.id,
+            'payment_reference': sale_order_id.reference,
+            'transaction_ids': [(6, 0, sale_order_id.transaction_ids.ids)],
+            "invoice_line_ids": invoice_lines,
+            'company_id': sale_order_id.company_id.id,
+            # 'operating_unit_id': self.operating_unit.id,
+            'fromdate': self.fromdate,
+            'todate': self.todate,
+
+        }
+        return invoice_vals
+    def refund(self):
+        print("xxxxxxxxxdfsfsdsdsdsdssdsdsdsdsdsdsdsdsdsds")
+
+        print("xxxxxxxxxxxxxxxx ", self.partner_invoice_id)
+        print("xxxxxxxxxxxxxxxx ", self.partner_id)
+        invoice_lines = []
+        invoice_lines.append([0, 0, self._prepare_refund_invoice_line()])
+        print("IIIIIIIIIIIIIIIIIIIIIIIII ", invoice_lines)
+        vals = self._prepare_refund_invoices(self, invoice_lines)
+        print(vals)
+        invoice = self.env['account.move'].create(vals)
+        print("Xxxxxxxxxxxxxx ", invoice)
+        invoice.invoice_date = fields.Date.today()
+        invoice.action_review()
+        invoice.action_post()
+        # self.status = 'invoiced'
+        self.refund_insurance = True
+        return invoice
+
+
+
+    @api.depends('state', 'order_line', 'order_line.product_uom_qty', 'order_line.qty_delivered',
+                 'order_line.qty_returned')
     def _compute_rental_status(self):
         # TODO replace multiple assignations by one write?
         for order in self:
-            print("XXXXXXXXXXXXXXXXXXXXXX", order.state)
             if order.state in ['sale', 'done', 'occupied', 'termination'] and order.is_rental_order:
                 rental_order_lines = order.order_line.filtered('is_rental')
                 pickeable_lines = rental_order_lines.filtered(lambda sol: sol.qty_delivered < sol.product_uom_qty)
@@ -44,6 +183,9 @@ class SaleOrder(models.Model):
                     order.next_action_date = min_pickup_date
                 elif returnable_lines:
                     order.rental_status = 'return'
+                    #ToDO: Abdulrhman: Why You do This ?
+                    #ToDO: the next code is for Abdulrhman
+                    order.rental_status = 'pickup'
                     order.next_action_date = min_return_date
                 else:
                     if order.state != 'termination':

@@ -1,5 +1,50 @@
 <odoo>
     <data>
+        <record id="view_crm_template_google_map" model="ir.ui.view">
+            <field name="name">view.crm.leads.google_map</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <google_map string="Maps" lat="partner_latitude" lng="partner_longitude" color="orange">
+                    <field name="partner_latitude"/>
+                    <field name="partner_longitude"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <strong class="o_kanban_record_title">
+                                        <span>
+                                            <field name="name"/>
+                                        </span>
+                                    </strong>
+                                </div>
+                                <div>
+                                    <span class="o_kanban_record_subtitle">
+                                        <field name="name"/>
+                                    </span>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="name"/>
+                                    </div>
+                                    <!--                                    <div class="oe_kanban_bottom_right">-->
+                                    <!--                                        <field name="user_id" widget="many2one_avatar_user"/>-->
+                                    <!--                                    </div>-->
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </google_map>
+            </field>
+        </record>
+
+        <record id="crm_lead_action_pipeline_view_google_map" model="ir.actions.act_window.view">
+            <field name="sequence" eval="6"/>
+            <field name="view_mode">google_map</field>
+            <field name="view_id" ref="view_crm_template_google_map"/>
+            <field name="act_window_id" ref="sale_renting.rental_product_template_action"/>
+        </record>
+
         <record id="customize_product_template_form_view" model="ir.ui.view">
             <field name="name">product.template</field>
             <field name="model">product.template</field>
@@ -37,28 +82,29 @@
                 </xpath>
             </field>
         </record>
-        <record id="product_template_view_map" model="ir.ui.view">
-            <field name="name">product.template.view.map</field>
-            <field name="model">product.template</field>
-            <field name="arch" type="xml">
-                <map res_partner="partner_longitude"/>
-            </field>
-        </record>
+<!--        <record id="product_template_view_map" model="ir.ui.view">-->
+<!--            <field name="name">product.template.view.map</field>-->
+<!--            <field name="model">product.template</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <map res_partner="partner_longitude"/>-->
+<!--            </field>-->
+<!--        </record>-->
 
-        <record id="product_template_action_contacts_view_map" model="ir.actions.act_window.view">
-            <field name="sequence" eval="3"/>
-            <field name="view_mode">map</field>
-            <field name="view_id" ref="product_template_view_map"/>
-            <field name="act_window_id" ref="sale_renting.rental_product_template_action"/>
-        </record>
-      .
+<!--        <record id="product_template_action_contacts_view_map" model="ir.actions.act_window.view">-->
+<!--            <field name="sequence" eval="3"/>-->
+<!--            <field name="view_mode">map</field>-->
+<!--            <field name="view_id" ref="product_template_view_map"/>-->
+<!--            <field name="act_window_id" ref="sale_renting.rental_product_template_action"/>-->
+<!--        </record>-->
+        .
         <record id="furnished_product_template_search_view" model="ir.ui.view">
             <field name="name">product.template.search.inherit.rental</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_search_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//filter[@name='filter_to_purchase']" position="after">
-                    <filter string="Furnished" name="filter_furnished_apartment" domain="[('furnished_apartment', '=', True)]"/>
+                    <filter string="Furnished" name="filter_furnished_apartment"
+                            domain="[('furnished_apartment', '=', True)]"/>
                 </xpath>
             </field>
         </record>

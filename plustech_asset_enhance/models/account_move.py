@@ -91,11 +91,7 @@ class AccountMove(models.Model):
     def action_post(self):
         res = super(AccountMove, self).action_post()
         for rec in self:
-            print("asssssssssssssssssssss",rec.asset_ids)
             for line in rec.asset_ids:
-                print("RRRRRRRRRRRRRRRR",rec.rent_sale_line_id)
-                print("RRRRRRRRRRRRRRRR",rec.rent_sale_line_id.sale_order_id)
-                print("RRRRRRRRRRRRRRRR",rec.rent_sale_line_id.sale_order_id.invoice_number)
                 if rec.rent_sale_line_id:
                     if rec.rent_sale_line_id.sale_order_id.invoice_number:
                         # model_id = self.env['account.asset'].search([('asset_type', '=', 'sale'), ('state', '=', 'model'),('method_number', '=', rec.rent_sale_line_id.sale_order_id.invoice_number )])
@@ -103,17 +99,12 @@ class AccountMove(models.Model):
                             line.set_to_draft()
                             # line.model_id = model_id.id
                             # line._onchange_model_id()
-                            print("wwwwwwwwwwwwww", str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10])
-                            print("wwwwwwwwwwwwww", str(rec.rent_sale_line_id.sale_order_id.todate)[:10])
                             date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
                             date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
                             difference = relativedelta(date2, date1)
-                            print("Diff", difference)
-                            print("invoice_number", rec.rent_sale_line_id.sale_order_id.invoice_number)
                             months = difference.months + 12 * difference.years
                             if difference.days > 0:
                                 months += 1
-                            print("months", months)
 
                             line.method_number = months / rec.rent_sale_line_id.sale_order_id.invoice_number
                             line.compute_depreciation_board()

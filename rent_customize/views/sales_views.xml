@@ -7,34 +7,94 @@
             <field name="inherit_id" ref="sale_renting.rental_order_form_view"/>
             <field name="arch" type="xml">
 
-<!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>-->
-<!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>-->
-<!--          <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>-->
-<!--          <div class="badge-pill badge-danger float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>-->
-<!--          <div class="badge-pill badge-success float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>-->
-<!--        -->
+                <!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>-->
+                <!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>-->
+                <!--          <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>-->
+                <!--          <div class="badge-pill badge-danger float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>-->
+                <!--          <div class="badge-pill badge-success float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>-->
+                <!--        -->
                 <xpath expr="//div[@class='badge-pill badge-info float-right']" position="replace">
-                    <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'returned'), ('has_late_lines', '=', True)]}">Confirmed</div>
+                    <div class="badge-pill badge-info float-right"
+                         attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'returned'), ('has_late_lines', '=', True)]}">
+                        Confirmed
+                    </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-warning float-right']" position="replace">
-                    <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|','|',  ('state', 'not in', ['done', 'occupied']),('rental_status', '=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>
+                    <div class="badge-pill badge-warning float-right"
+                         attrs="{'invisible': ['|','|',  ('state', 'not in', ['done', 'occupied']),('rental_status', '=', 'return'), ('has_late_lines', '=', True)]}">
+                        Picked-up
+                    </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-success float-right']" position="replace">
-                    <div class="badge-pill badge-success float-right" attrs="{'invisible': ['|', ('state', 'not in', ['termination']), ('rental_status', '!=', 'returned')]}">Returned</div>
+                    <div class="badge-pill badge-success float-right"
+                         attrs="{'invisible': ['|', ('state', 'not in', ['termination']), ('rental_status', '!=', 'returned')]}">
+                        Returned
+                    </div>
                 </xpath>
             </field>
         </record>
+        <record id="refund_insurance_view_form" model="ir.ui.view">
+            <field name="name">refund_insurance_view_form</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <form string="refund_insurance_form">
+                    <sheet>
+                        <group>
+                            <field name="apartment_insurance" invisible="1"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="partner_invoice_id" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="state" invisible="1"/>
+                            <field name="damage_amount"/>
+                            <field name="refund_amount" invisible="1"/>
+                            <field name="context_order" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="refund" type="object" string="Refund" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="refund_insurance_action" model="ir.actions.act_window">
+            <field name="name">Refund Insurance</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
         <record id="rent_sale_order_r_inherit_form2" model="ir.ui.view">
             <field name="name">sale.order</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="renting.rent_sale_order_r_inherit_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='contract_extra_maintenance_cost']" position="after">
+                    <field name="apartment_insurance" required="1"/>
+                    <field name="refund_insurance"/>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='property_stats']//field[@name='order_property_state']//page[@name='pickup_contract']"
+                       position="inside">
+                    <group string="المرفقات">
+                        <field name="receipt_attachment_ids" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[@name='property_stats']//field[@name='order_property_state']//page[@name='return_contract']"
+                       position="inside">
+                    <group string="المرفقات">
+                        <field name="delivery_attachment_ids" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="replace">
                     <button name="action_cancel" type="object" string="Cancel"
                             attrs="{'invisible': ['|','|', ('state', 'not in', ['draft', 'sent','sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
+                    <button name="action_termination" type="object" string="Termination" class="oe_highlight"
+                            states="occupied"/>
+                    <button name="action_refund_insurance" type="object" string="Refund Insurance" class="oe_highlight"
+                            attrs="{'invisible':['|', ('refund_insurance', '=', True), ('state', '!=', 'termination')]}"/>
                     <field name="no_of_invoiced" invisible="1"/>
-                    <field name="has_late_lines" invisible="0"/>
-                    <field name="rental_status" invisible="0"/>
+                    <field name="has_late_lines" invisible="1"/>
+                    <field name="rental_status" invisible="1"/>
                 </xpath>
             </field>
         </record>

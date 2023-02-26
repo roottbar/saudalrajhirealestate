@@ -61,7 +61,7 @@ class AccountMove(models.Model):
                 for partner in recipient_partners:
                     vals = {
                         'subject': "Upcoming Payment",
-                        'body': "Please note Payment Invoice %s is due in %s Days ago at %s" % (ov_move.name, upcoming_days, over_day),
+                        'body': "Please note Payment Invoice %s was due in %s Days ago at %s" % (ov_move.name, upcoming_days, over_day),
                         'res_id': ov_move.id,
                         'model': 'account.move',
                         'message_type': 'notification',
