@@ -15,19 +15,19 @@
                 <!--        -->
                 <xpath expr="//div[@class='badge-pill badge-info float-right']" position="replace">
                     <div class="badge-pill badge-info float-right"
-                         attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'returned'), ('has_late_lines', '=', True)]}">
+                         attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'sent'), ('has_late_lines', '=', True)]}">
                         Confirmed
                     </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-warning float-right']" position="replace">
                     <div class="badge-pill badge-warning float-right"
-                         attrs="{'invisible': ['|','|',  ('state', 'not in', ['done', 'occupied']),('rental_status', '=', 'return'), ('has_late_lines', '=', True)]}">
+                         attrs="{'invisible': ['|','|', ('state', 'not in', ['done', 'occupied']), ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">
                         Picked-up
                     </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-success float-right']" position="replace">
                     <div class="badge-pill badge-success float-right"
-                         attrs="{'invisible': ['|', ('state', 'not in', ['termination']), ('rental_status', '!=', 'returned')]}">
+                         attrs="{'invisible': ['|', ('state', 'not in', ['cancel','termination']), ('rental_status', '!=', 'returned')]}">
                         Returned
                     </div>
                 </xpath>
@@ -86,15 +86,18 @@
                     </group>
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="replace">
+                    <field name="no_of_invoiced"/>
                     <button name="action_cancel" type="object" string="Cancel"
-                            attrs="{'invisible': ['|','|', ('state', 'not in', ['draft', 'sent','sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
+                            attrs="{'invisible': ['|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
                     <button name="action_termination" type="object" string="Termination" class="oe_highlight"
                             states="occupied"/>
                     <button name="action_refund_insurance" type="object" string="Refund Insurance" class="oe_highlight"
                             attrs="{'invisible':['|', ('refund_insurance', '=', True), ('state', '!=', 'termination')]}"/>
+                    <button name="renew_contract" type="object" string="Renew" class="oe_highlight"
+                            attrs="{'invisible':[('state', 'not in', ['occupied', 'termination'])]}"/>
                     <field name="no_of_invoiced" invisible="1"/>
-                    <field name="has_late_lines" invisible="1"/>
-                    <field name="rental_status" invisible="1"/>
+                    <field name="has_late_lines" invisible="0"/>
+                    <field name="rental_status" invisible="0"/>
                 </xpath>
             </field>
         </record>
@@ -166,10 +169,16 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_renting.rental_order_primary_form_view"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">
+                        [('product_tmpl_id.property_id','=',property_number),('product_tmpl_id.unit_rented','=',False)]
+                    </attribute>
+                </xpath>
+
                 <xpath expr="//button[@name='action_quotation_send']" position="before">
                     <button name="action_pickup" type="object" class="btn-primary" string="PICKUP"
                             groups="rent_customize.group_pickup_rental_order"
-                            attrs="{'invisible':['|', ('rental_status','not in',['returned','cancel']), ('state', 'not in', ['sale', 'done'])]}"/>
+                            attrs="{'invisible':['|', ('rental_status','not in',['sent']), ('state', 'not in', ['sale', 'done'])]}"/>
 
                     <field name="is_rental_order" invisible="1"/>
                     <field name="rental_status" invisible="1"/>

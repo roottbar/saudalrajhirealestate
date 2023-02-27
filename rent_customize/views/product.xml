@@ -54,12 +54,14 @@
                     <span class="d-inline-block">
                         <field name="furnished_apartment"/>
                         <label for="furnished_apartment"/>
+                        <field name="unit_rented" force_save="1"/>
                     </span>
                 </xpath>
 
                 <xpath expr="//notebook[last()]" position="inside">
                     <page string="Unit Location" name="geo_location">
                         <group>
+                            <field name="state_id"/>
                             <field name="company_id"/>
                             <group string="Geolocation">
                                 <label for="date_localization" string="Geo Location"/>

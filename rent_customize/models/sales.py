@@ -2,9 +2,11 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-
+from datetime import datetime, date, timedelta
 from odoo import models, fields, _
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
+from dateutil.relativedelta import relativedelta
+
 
 class RentalOrder(models.TransientModel):
     _inherit = 'rental.order.wizard'
@@ -12,13 +14,15 @@ class RentalOrder(models.TransientModel):
     def apply(self):
         res = super(RentalOrder, self).apply()
         for rec in self:
-            print("rental order", rec.status)
-            print("rental order", rec.order_id.state)
             if rec.status == 'return':
                 rec.order_id.state = 'termination'
+                for line in rec.order_line:
+                    line.product_id.unit_rented = False
                 rec.order_id.rental_status = 'returned'
             if rec.status == 'pickup':
                 rec.order_id.state = 'occupied'
+                for line in rec.order_line:
+                    line.product_id.unit_rented = True
                 rec.order_id.rental_status = 'pickup'
         return res
 
@@ -40,17 +44,64 @@ class SaleOrder(models.Model):
     refund_amount = fields.Float('Refund Amount')
     context_order = fields.Many2one('sale.order')
 
+    def renew_contract(self):
+        new_contract_id = self.copy()
+        fmt = '%Y-%m-%d'
+        start_date = self.fromdate
+        end_date = self.todate
+        d1 = datetime.strptime(str(start_date)[:10], fmt)
+        d2 = datetime.strptime(str(end_date)[:10], fmt)
+        date_difference = d2 - d1
+        new_contract_id.fromdate = self.todate
+        new_contract_id.todate = new_contract_id.fromdate +   relativedelta(days=date_difference.days)
+        new_contract_id.invoice_number = self.invoice_number
+        new_contract_id.is_rental_order = self.is_rental_order
+        new_contract_id.partner_id = self.partner_id
+        lines = []
+        print(new_contract_id)
+        for line in self.order_line:
+            line = self.env['sale.order.line'].create({
+                'order_id': new_contract_id.id,
+                'property_number': line.property_number.id,
+                'product_id': line.product_id.id,
+                'name': line.name,
+                'product_uom_qty': line.product_uom_qty,
+                'product_uom': line.product_uom.id,
+                'price_unit': line.price_unit,
+                'tax_id': [(6,0, line.tax_id.ids)],
+                'insurance_value': line.insurance_value,
+                'is_rental': line.is_rental,
+                'contract_admin_fees': line.contract_admin_fees,
+                'contract_service_fees': line.contract_admin_sub_fees,
+                'contract_admin_sub_fees': line.contract_service_sub_fees,
+            })
+            lines.append(line.id)
+        new_contract_id.order_line = [(6, 0, lines)]
+        form_view_id = self.env.ref('sale_renting.rental_order_primary_form_view').ids
+
+        return {
+                'type': 'ir.actions.act_window',
+                'name': 'Renew Contract',
+                'target': 'current',
+                'res_model': 'sale.order',
+                'res_id': new_contract_id.id,
+                'view_id': form_view_id,#optional
+                'view_type': 'form',
+                'views':[(form_view_id, 'form')],
+            }
+
     @api.onchange('damage_amount', 'apartment_insurance')
     def change_damage_amount(self):
         self.refund_amount = self.apartment_insurance - self.damage_amount
     def action_termination(self):
-        self.write({"state": "termination"})
+        self.write({
+            "rental_status": "returned",
+            "state": "termination",
+        })
 
     def action_refund_insurance(self):
-        print("XXXXXXX refund")
         action = self.env.ref("rent_customize.refund_insurance_action").read()[0]
         # action["views"] = [(self.env.ref("rent_customize.refund_insurance_view_form").id, "form") ]
-        print("sssssssss", self)
         self.context_order = self.id
         self.apartment_insurance = self.apartment_insurance
         self.refund_amount = self.apartment_insurance
@@ -83,11 +134,9 @@ class SaleOrder(models.Model):
         self.ensure_one()
 
         product_tmp_id = self.env['ir.config_parameter'].sudo().get_param('renting.insurance_value')
-        print("tmpppppppppppp", product_tmp_id)
         product_id = self.env['product.product'].search([
             ('product_tmpl_id', '=', int(product_tmp_id))
         ])
-        print("ppppppppppppppp", product_id)
         res = {
             'display_type': False,
             'name': product_id.name,
@@ -147,17 +196,10 @@ class SaleOrder(models.Model):
         }
         return invoice_vals
     def refund(self):
-        print("xxxxxxxxxdfsfsdsdsdsdssdsdsdsdsdsdsdsdsdsds")
-
-        print("xxxxxxxxxxxxxxxx ", self.partner_invoice_id)
-        print("xxxxxxxxxxxxxxxx ", self.partner_id)
         invoice_lines = []
         invoice_lines.append([0, 0, self._prepare_refund_invoice_line()])
-        print("IIIIIIIIIIIIIIIIIIIIIIIII ", invoice_lines)
         vals = self._prepare_refund_invoices(self, invoice_lines)
-        print(vals)
         invoice = self.env['account.move'].create(vals)
-        print("Xxxxxxxxxxxxxx ", invoice)
         invoice.invoice_date = fields.Date.today()
         invoice.action_review()
         invoice.action_post()
@@ -190,6 +232,14 @@ class SaleOrder(models.Model):
                 else:
                     if order.state != 'termination':
                         order.rental_status = 'returned'
+                        for line in self.order_line:
+                            line.product_id.unit_rented = False
+                    if self.state == 'sale':
+                        order.rental_status = 'sent'
+                    if self.state == 'occupied':
+                        for line in self.order_line:
+                            line.product_id.unit_rented = True
+                        order.rental_status = 'pickup'
                         order.next_action_date = False
                 order.has_pickable_lines = bool(pickeable_lines)
                 order.has_returnable_lines = bool(returnable_lines)
@@ -198,6 +248,11 @@ class SaleOrder(models.Model):
                 order.has_returnable_lines = False
                 order.rental_status = order.state if order.is_rental_order else False
                 order.next_action_date = False
+    def action_cancel(self):
+        res = super(SaleOrder, self).action_cancel()
+        for line in self.order_line:
+            line.product_id.unit_rented = False
+        return res
 
     def action_pickup(self):
         self.write({'state': 'occupied', 'rental_status': 'return'})

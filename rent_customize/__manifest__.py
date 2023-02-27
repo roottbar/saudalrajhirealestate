@@ -8,11 +8,12 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'cron/cron.xml',
+        'views/product.xml',
         'views/sales_views.xml',
         'views/rent_property_build.xml',
         'views/sale_rental_schedule.xml',
         'views/attachment.xml',
-        'views/product.xml',
         'report/contract.xml',
     ]
 }
