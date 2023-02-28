@@ -24,7 +24,7 @@
         </field>
     </record>
 
-    <record id="action_issues_details" model="ir.actions.act_window">
+    <record id="action_issue_detail" model="ir.actions.act_window">
         <field name="name">Issues Details</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">issues.wizard</field>
