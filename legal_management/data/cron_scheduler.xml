@@ -4,7 +4,7 @@
     <!-- noupdate="0"  -->
     <data  >
         <record id="ir_cron_scheduler_recurring_action" model="ir.cron">
-            <field name="name">123 Recurring Todo Activity</field>
+            <field name="name">Recurring Todo Activity</field>
             <field name="model_id" ref="model_contract"/>
             <field name="user_id" ref="base.user_root"/>
             <field name="interval_number">1</field>
@@ -15,15 +15,15 @@
 
         </record>
 
-        <record id="notify_upcoming_and_overdue_contract_cron" model="ir.cron">
-            <field name="name">Notification For Upcoming and Overdue Contracts</field>
+        <record id="notify_power_of_attorney_cron" model="ir.cron">
+            <field name="name">Notification For Power of Attorney</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
-            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="model_id" ref="model_power_of_attorney"/>
             <field name="state">code</field>
-            <field name="code">model.notify_upcoming_overdue_contract()</field>
+            <field name="code">model.notify_power_of_attorney()</field>
         </record>
 
     </data>

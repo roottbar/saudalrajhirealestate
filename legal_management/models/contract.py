@@ -52,15 +52,15 @@ class Contract(models.Model):
 
     def notify_contract(self):
 
-        upcoming_days = self.env['ir.config_parameter'].sudo().get_param('notify_upcoming_and_overdue.upcoming_days')
+        legal_contract_over_days = self.env['ir.config_parameter'].sudo().get_param('notify_upcoming_and_overdue.legal_contract_over_days')
         send_notify = self.env['ir.config_parameter'].sudo().get_param('notify_upcoming_and_overdue.send_user_notify')
         today = date.today()
-        upcoming_day = today + datetime.timedelta(days=int(upcoming_days))
-        print("XXXXXXXXXXXXXXXXXXX", upcoming_day)
-        print("XXXXXXXXXXXXXXXXXXX", upcoming_days)
+        legal_contract_over_day = today + datetime.timedelta(days=int(legal_contract_over_days))
+        print("XXXXXXXXXXXXXXXXXXX", legal_contract_over_day)
+        print("XXXXXXXXXXXXXXXXXXX", legal_contract_over_days)
         print("XXXXXXXXXXXXXXXXXXX", send_notify)
         if send_notify == 'True':
-            upcoming_contract_ids = self.env['contract'].search([('end_contract', '=', upcoming_day)])
+            upcoming_contract_ids = self.env['contract'].search([('end_contract', '=', legal_contract_over_day)])
             print(upcoming_contract_ids)
             for up_contract in upcoming_contract_ids:
                 recipient_partners = []
@@ -72,7 +72,7 @@ class Contract(models.Model):
                 for partner in recipient_partners:
                     vals = {
                         'subject': "Ending Contract",
-                        'body': "Please note Contract %s Will End After %s Days at %s" % ( up_contract.ref, upcoming_days, upcoming_day),
+                        'body': "Please note Contract %s Will End After %s Days at %s" % ( up_contract.ref, legal_contract_over_days, legal_contract_over_day),
                         'res_id': up_contract.id,
                         'model': 'contract',
                         'message_type': 'notification',
