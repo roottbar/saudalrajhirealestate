@@ -272,3 +272,16 @@ class SaleOrder(models.Model):
                 order.invoice_status = 'to invoice'
             elif all(invoice_status == 'invoiced' for invoice_status in invoice_lines):
                 order.invoice_status = 'invoiced'
+
+class RentSaleInvoices(models.Model):
+    _inherit = 'rent.sale.invoices'
+
+
+    def _prepare_invoice(self, invoice_lines):
+        res = super(RentSaleInvoices, self)._prepare_invoice(invoice_lines)
+        res.update({
+            'invoice_date': self.fromdate,
+            'l10n_sa_delivery_date': self.fromdate,
+            'invoice_date_due': self.fromdate,
+        })
+        return res
