@@ -69,13 +69,14 @@ class AccountMove(models.Model):
 
         result = super(AccountMove, self)._post()
         for rec in self:
-            if rec.operating_unit_id.journal_sequence_id and rec.move_type == 'entry':
-                seq = self.env['ir.sequence'].browse(rec.operating_unit_id.journal_sequence_id.id).next_by_id()
-                rec.name = seq
-            if rec.operating_unit_id.invoice_sequence_id and rec.move_type != 'entry':
-                print("ppppppppppppppppppppppp ",(self.env['ir.sequence'].browse(rec.operating_unit_id.invoice_sequence_id.id).next_by_id()))
-                seq = self.env['ir.sequence'].browse(rec.operating_unit_id.invoice_sequence_id.id).next_by_id()
-                rec.name = seq
+            pass
+            # if rec.operating_unit_id.journal_sequence_id and rec.move_type == 'entry':
+            #     seq = self.env['ir.sequence'].browse(rec.operating_unit_id.journal_sequence_id.id).next_by_id()
+            #     rec.name = seq
+            # if rec.operating_unit_id.invoice_sequence_id and rec.move_type != 'entry':
+            #     print("ppppppppppppppppppppppp ",(self.env['ir.sequence'].browse(rec.operating_unit_id.invoice_sequence_id.id).next_by_id()))
+            #     seq = self.env['ir.sequence'].browse(rec.operating_unit_id.invoice_sequence_id.id).next_by_id()
+            #     rec.name = seq
             #ToDo: Abdulrhman Code
             # rec.create_names()
             # else:
