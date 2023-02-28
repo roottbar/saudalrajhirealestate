@@ -16,12 +16,12 @@ class RentalOrder(models.TransientModel):
         for rec in self:
             if rec.status == 'return':
                 rec.order_id.state = 'termination'
-                for line in rec.order_line:
+                for line in rec.order_id.order_line:
                     line.product_id.unit_rented = False
                 rec.order_id.rental_status = 'returned'
             if rec.status == 'pickup':
                 rec.order_id.state = 'occupied'
-                for line in rec.order_line:
+                for line in rec.order_id.order_line:
                     line.product_id.unit_rented = True
                 rec.order_id.rental_status = 'pickup'
         return res
