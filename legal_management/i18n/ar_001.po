@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-28 08:17+0000\n"
-"PO-Revision-Date: 2023-02-28 12:23+0300\n"
+"POT-Creation-Date: 2023-02-28 11:44+0000\n"
+"PO-Revision-Date: 2023-02-28 14:48+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -196,7 +196,7 @@ msgstr "مرفق التوكيل"
 #: model:ir.model.fields,field_description:legal_management.field_appeal__attachment_verdict
 #: model:ir.model.fields,field_description:legal_management.field_issues__attachment_verdict
 msgid "Attachment Verdict"
-msgstr "مرفق الحكم "
+msgstr "مرفق الحكم"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_implementation__attachment_implementation
@@ -216,7 +216,7 @@ msgstr ""
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_issues__case_no
 msgid "Case No."
-msgstr "رقم الدعوى"
+msgstr "رقم الدعو"
 
 #. module: legal_management
 #: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
@@ -249,6 +249,11 @@ msgstr "الإعدادات"
 #: model:ir.ui.menu,name:legal_management.menu_contract
 msgid "Contract"
 msgstr "عقد"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Contract Ending Days"
+msgstr ""
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_appeal__court_2
@@ -294,7 +299,7 @@ msgstr "أنشأ بواسطة"
 #: model:ir.model.fields,field_description:legal_management.field_promissory_note__create_date
 #: model:ir.model.fields,field_description:legal_management.field_type_court__create_date
 msgid "Created on"
-msgstr "أنشأ فى "
+msgstr "أنشأ فى"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_issues__currency_id
@@ -373,7 +378,7 @@ msgstr "تفاصيل الحكم"
 #. module: legal_management
 #: model_terms:ir.ui.view,arch_db:legal_management.view_issues_wizard_form
 msgid "Discard"
-msgstr ""
+msgstr "تجاهل التغييرات"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_appeal__display_name
@@ -491,7 +496,7 @@ msgstr "إستماع"
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_issues__hearing_count
 msgid "Hearing Count"
-msgstr ""
+msgstr "عدد جلسات الاستماع"
 
 #. module: legal_management
 #: model_terms:ir.ui.view,arch_db:legal_management.view_appeal_form
@@ -705,6 +710,11 @@ msgid "Last Updated on"
 msgstr "آخر تحديث في"
 
 #. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_contract_over_days
+msgid "Legal Contract Over Days"
+msgstr "أيام على إنتهاء العقد"
+
+#. module: legal_management
 #: model:ir.ui.menu,name:legal_management.menu_legal_root
 #: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
 msgid "Legal Management"
@@ -719,11 +729,6 @@ msgstr "الأيام المتأخرة"
 #: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_send_user_notify
 msgid "Legal Send User Notify"
 msgstr "إرسال إشعار للمستخدم"
-
-#. module: legal_management
-#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_upcoming_days
-msgid "Legal Upcoming Days"
-msgstr "قبل "
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_appeal__message_main_attachment_id
@@ -846,6 +851,13 @@ msgid "Notification"
 msgstr "إشعار"
 
 #. module: legal_management
+#: model:ir.actions.server,name:legal_management.notify_power_of_attorney_cron_ir_actions_server
+#: model:ir.cron,cron_name:legal_management.notify_power_of_attorney_cron
+#: model:ir.cron,name:legal_management.notify_power_of_attorney_cron
+msgid "Notification For Power of Attorney"
+msgstr ""
+
+#. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_res_company__legal_notify_user_ids
 #: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_notify_user_ids
 #: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
@@ -910,12 +922,7 @@ msgstr ""
 #: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_unread_counter
 #: model:ir.model.fields,help:legal_management.field_promissory_note__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
-
-#. module: legal_management
-#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
-msgid "Overdue Days"
-msgstr "الأيام المتأخرة"
+msgstr "عدد الرسائل غير المقروءة"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__partner
@@ -935,6 +942,11 @@ msgstr "فترة"
 #: model:ir.ui.menu,name:legal_management.menu_power_of_attorney
 msgid "Power Of Attorney"
 msgstr "توكيل عام"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Power Of Attorney Overdue Days"
+msgstr " عدد الأيام قبل إنتهاء التوكيل"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__principal
@@ -1147,11 +1159,6 @@ msgstr "رسائل غير مقروءة"
 #: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "عدد الرسائل غير المقروءة"
-
-#. module: legal_management
-#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
-msgid "Upcoming Days"
-msgstr "الأيام القادمة"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_appeal__verdict_no
