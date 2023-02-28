@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+<!--    <record id="view_contract_tree" model="ir.ui.view">-->
+<!--        <field name="name">contract.tree</field>-->
+<!--        <field name="model">contract</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+
+    <record id="view_contract_form" model="ir.ui.view">
+        <field name="name">contract.form</field>
+        <field name="model">contract</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name ='ref'/>
+                            <field name ='product'/>
+                        </group>
+
+                        <group>
+                            <label for="beginning_contract" string="Period"/>
+                        <div>
+                            <field name="beginning_contract" class="oe_inline"/> - <field name="end_contract" class="oe_inline"/>
+                        </div>
+                            <field name="duration"/>
+                        </group>
+                    </group>
+                     <notebook>
+                        <page string="Attachment" name="attachment contract">
+                            <field name="attachment_contract" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_contract" model="ir.actions.act_window">
+        <field name="name">Contract</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">contract</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_contract"
+              name="Contract"
+              parent="legal_management.menu_legal_master_second"
+              action="action_contract"
+              sequence="1"/>
+
+
+</odoo>

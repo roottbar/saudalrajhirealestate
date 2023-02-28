@@ -13,7 +13,7 @@
     'version': '0.1',
     'license': 'AGPL-3',
     'images': ['static/description/logo.png'],
-    'depends': ['operating_unit','account'],
+    'depends': ['operating_unit','account', 'plustech_asset_enhance'],
     'data': [
         'views/operating_unit_view.xml',
         'views/account_move_view.xml',
