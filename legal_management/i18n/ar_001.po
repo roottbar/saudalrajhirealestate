@@ -248,12 +248,12 @@ msgstr "الإعدادات"
 #: model:ir.model,name:legal_management.model_contract
 #: model:ir.ui.menu,name:legal_management.menu_contract
 msgid "Contract"
-msgstr "عقد"
+msgstr "العقود"
 
 #. module: legal_management
 #: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
 msgid "Contract Ending Days"
-msgstr ""
+msgstr "عدد الايام قبل إنتهاء العقد"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_appeal__court_2
@@ -271,7 +271,7 @@ msgstr "إنشاء فاتورة"
 #. module: legal_management
 #: model_terms:ir.actions.act_window,help:legal_management.action_issues
 msgid "Create your first issue !"
-msgstr "إنشاء أول قضية!"
+msgstr "أنشأ أول قضية !"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_appeal__create_uid
@@ -1033,7 +1033,7 @@ msgstr "خطأ في تسليم الرسائل القصيرة"
 #: model:ir.actions.act_window,name:legal_management.legal_config_settings_action
 #: model:ir.ui.menu,name:legal_management.legal_config_settings_menu
 msgid "Settings"
-msgstr "إعدادات"
+msgstr "الإعدادات"
 
 #. module: legal_management
 #: model:ir.model.fields,field_description:legal_management.field_appeal__state
