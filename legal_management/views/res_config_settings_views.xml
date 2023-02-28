@@ -36,20 +36,45 @@
                             </div>
                         </div>
                         <h2>Notification</h2>
-<!--                         <div class="row mt16 o_settings_container" id="default_notification">-->
-<!--                            <div class="col-12 col-lg-6 o_setting_box">-->
-<!--                                <div class="o_setting_left_pane"></div>-->
-<!--                                <div class="o_setting_right_pane">-->
-<!--                                    <div class="content-group">-->
-<!--                                        <div class="row mt8">-->
-<!--                                            <label for="" class="col-lg-4 o_light_label"-->
-<!--                                                   string=""/>-->
-<!--                                            <field name=""/>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <span class='o_form_label'>
+                                        <field name='legal_send_user_notify'/>
+                                    </span>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span class='o_form_label'>
+                                        Send Notification for User
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
+                                <div class="o_setting_right_pane">
+                                    <span class='o_form_label'>
+                                        Notify Users
+                                        <field name='legal_notify_user_ids' widget="many2many_tags"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
+                                <div class="o_setting_right_pane">
+                                    <span class='o_form_label'>
+                                        Upcoming Days
+                                        <field name='legal_upcoming_days'/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
+                                <div class="o_setting_right_pane">
+                                    <span class='o_form_label'>
+                                        Overdue Days
+                                        <field name='legal_over_days'/>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </xpath>
             </field>

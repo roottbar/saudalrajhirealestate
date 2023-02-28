@@ -30,7 +30,7 @@
     <menuitem id="menu_issues_reporting"
               name="Issues Details"
               parent="menu_reporting"
-              action="action_issues_details"
+              action="action_issue_detail"
               sequence="41"/>
 
 
