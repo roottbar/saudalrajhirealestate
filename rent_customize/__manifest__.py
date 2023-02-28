@@ -4,10 +4,16 @@
     'summary': """Sale Renting Customization""",
     'category': 'Sales Management',
     'version': '0.1',
-    'depends': ['sale_renting','renting'],
+    'depends': ['sale_renting', 'renting', 'web_google_maps'],
     'data': [
         'security/security.xml',
+        'security/ir.model.access.csv',
+        'cron/cron.xml',
+        'views/product.xml',
         'views/sales_views.xml',
-        'views/rent_property_build.xml'
+        'views/rent_property_build.xml',
+        'views/sale_rental_schedule.xml',
+        'views/attachment.xml',
+        'report/contract.xml',
     ]
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_hr_employee_config_settings" model="ir.ui.view">
+            <field name="name">Human Resources Settings</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="hr.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@data-key='hr']" position="inside">
+                    <h2>Notifications</h2>
+                    <div class="row mt16 o_settings_container" name="employees_setting_container">
+                        <div class="col-12 col-lg-6 o_setting_box" id="notification_options_setting"
+                             title="Document Date Expiration Notification">
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Notification Options</span>
+                                <div class="text-muted">
+                                    Notification Options and Sender Human Resources Manager.
+                                </div>
+                                <div class="content-group" name="hr_notification_options">
+                                    <div class="row">
+                                        <field name="hrm_notification" class="col-lg-1 ml16"/>
+                                        <label for="hrm_notification" class="o_light_label"/>
+                                    </div>
+                                    <div class="row">
+                                        <field name="manager_notification" class="col-lg-1 ml16"/>
+                                        <label for="manager_notification" class="o_light_label"/>
+                                    </div>
+                                    <div class="row">
+                                        <field name="employee_notification" class="col-lg-1 ml16"/>
+                                        <label for="employee_notification" class="o_light_label"/>
+
+                                    </div>
+                                    <div class="row">
+                                        <label for="hrm_id" string="Human Resource Manager"
+                                               class="o_light_label col-lg-4 ml18"
+                                               attrs="{'invisible':[('hrm_notification','=',False)]}"/>
+                                        <field name="hrm_id"
+                                               attrs="{'invisible':[('hrm_notification','=',False)],'required':[('hrm_notification','=',True)]}"
+                                               options="{'no_open':True}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box"
+                             id="notification_period_setting"
+                             title="Employee Document Expiration Notification">
+                            <div class="o_setting_right_pane">
+                                <span class="o_form_label">Notification Periods</span>
+                                <div class="text-muted" name="hr_presence_options_advanced">
+                                    Employee Document Expiration Notification Periods and Sender email.
+                                </div>
+                                <div class="row">
+                                    <label for="id_days" class="o_light_label col-lg-4 ml8"/>
+                                    <field name="id_days" class="col-lg-1 ml16"/>
+                                </div>
+
+                                <div class="row">
+                                    <label for="passport_days" class="o_light_label col-lg-4 ml8"/>
+                                    <field name="passport_days" class="col-lg-1 ml16"/>
+                                </div>
+                                   <div class="row">
+                                    <label for="membership_days" class="o_light_label col-lg-4 ml8"/>
+                                    <field name="membership_days" class="col-lg-1 ml16"/>
+                                </div>
+                                <div class="row">
+                                    <label for="email_rec" class="o_light_label col-lg-4 ml8"/>
+                                    <field name="email_rec" class="col-lg-4 ml16" placeholder="Enter e-mail address"/>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

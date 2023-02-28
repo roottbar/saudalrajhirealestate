@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Plus Tech Employee Custody",
+    'version': '15.0.0.0.0',
+    'author': 'Plus Technology Team',
+    'company': 'Plus Technology',
+    'category': 'Human Resources/Custody',
+    'website': "www.plustech-it.com",
+    'description': """Custody Management""",
+    'summary': """Manage employees custody""",
+    'depends': ['base', 'plustech_hr_employee', 'account_asset'],
+    'data': [
+        'security/custody_security.xml',
+        'security/ir.model.access.csv',
+        'views/employee_custody.xml',
+        'views/custody_items.xml',
+        'views/account_asset.xml',
+        'data/request_sequance.xml',
+        'data/cron.xml',
+        'data/template.xml',
+        'views/hr_employee.xml',
+    ],
+    'license': 'LGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}
