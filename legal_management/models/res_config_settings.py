@@ -15,7 +15,7 @@ class ResConfigSettings(models.TransientModel):
     partner_id = fields.Many2one('res.partner', string='Partner',related="company_id.partner_id", readonly=False)
     notification = fields.Integer(string='')
 
-    legal_upcoming_days = fields.Integer(config_parameter='notify_upcoming_and_overdue.legal_upcoming_days')
+    legal_contract_over_days = fields.Integer(config_parameter='notify_upcoming_and_overdue.legal_contract_over_days')
     legal_over_days = fields.Integer(config_parameter='notify_upcoming_and_overdue.legal_over_days')
     legal_send_user_notify = fields.Boolean(config_parameter='notify_upcoming_and_overdue.legal_send_user_notify')
     legal_notify_user_ids = fields.Many2many(string="Notify Users", related='company_id.legal_notify_user_ids', readonly=False)

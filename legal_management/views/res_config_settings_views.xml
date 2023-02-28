@@ -60,15 +60,15 @@
                             <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
                                 <div class="o_setting_right_pane">
                                     <span class='o_form_label'>
-                                        Upcoming Days
-                                        <field name='legal_upcoming_days'/>
+                                        Contract Ending Days
+                                        <field name='legal_contract_over_days'/>
                                     </span>
                                 </div>
                             </div>
                             <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
                                 <div class="o_setting_right_pane">
                                     <span class='o_form_label'>
-                                        Overdue Days
+                                        Power Of Attorney Overdue Days
                                         <field name='legal_over_days'/>
                                     </span>
                                 </div>
