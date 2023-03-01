@@ -22,6 +22,7 @@ class AccountMove(models.Model):
         create_list = []
         invoice_list = []
         auto_validate = []
+        last = 0
         for move in self:
             if not move.is_invoice():
                 continue
@@ -54,6 +55,16 @@ class AccountMove(models.Model):
                         'state': 'draft',
                     }
                     model_id = move_line.account_id.asset_model
+
+                    date1 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                    date2 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+                    difference = relativedelta(date2, date1)
+                    months = difference.months + 12 * difference.years
+                    if difference.days > 0:
+                        months += 1
+                    last = model_id.method_number
+                    model_id.method_number = months / self.rent_sale_line_id.sale_order_id.invoice_number
+
                     if model_id:
                         vals.update({
                             'model_id': model_id.id,
@@ -85,6 +96,11 @@ class AccountMove(models.Model):
                 asset.prorata_date = self.invoice_date
                 asset.compute_depreciation_board()
                 # asset.validate()
+
+        assets.validate()
+        if last > 0:
+            asset.model_id.method_number = last
+
         return assets
 
 
@@ -94,21 +110,23 @@ class AccountMove(models.Model):
             for line in rec.asset_ids:
                 if rec.rent_sale_line_id:
                     if rec.rent_sale_line_id.sale_order_id.invoice_number:
+                        pass
                         # model_id = self.env['account.asset'].search([('asset_type', '=', 'sale'), ('state', '=', 'model'),('method_number', '=', rec.rent_sale_line_id.sale_order_id.invoice_number )])
-                        for line in rec.asset_ids:
-                            line.set_to_draft()
-                            # line.model_id = model_id.id
-                            # line._onchange_model_id()
-                            date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
-                            date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
-                            difference = relativedelta(date2, date1)
-                            months = difference.months + 12 * difference.years
-                            if difference.days > 0:
-                                months += 1
-
-                            line.method_number = months / rec.rent_sale_line_id.sale_order_id.invoice_number
-                            line.compute_depreciation_board()
-                            line.validate()
+                        # for line in rec.asset_ids:
+                        #     line.set_to_draft()
+                        #     # line.model_id = model_id.id
+                        #     # line._onchange_model_id()
+                        #     date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                        #     date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+                        #     difference = relativedelta(date2, date1)
+                        #     months = difference.months + 12 * difference.years
+                        #     if difference.days > 0:
+                        #         months += 1
+                        #     line.method_number = months / rec.rent_sale_line_id.sale_order_id.invoice_number
+                        #     line.model_id.sudo().write({'method_number' : int(months / rec.rent_sale_line_id.sale_order_id.invoice_number)})
+                        #     # line.model_id.method_number = int(months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                        #     line.compute_depreciation_board()
+                        #     line.validate()
                 else:
                     for dep in line.depreciation_move_ids:
                         dep.button_draft()
