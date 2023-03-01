@@ -4,6 +4,8 @@ from odoo import models, fields, _
 from odoo.exceptions import UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import math
+
 
 class AccountMove(models.Model):
     _inherit = "account.move"
@@ -55,15 +57,15 @@ class AccountMove(models.Model):
                         'state': 'draft',
                     }
                     model_id = move_line.account_id.asset_model
-
-                    date1 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
-                    date2 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
-                    difference = relativedelta(date2, date1)
-                    months = difference.months + 12 * difference.years
-                    if difference.days > 0:
-                        months += 1
-                    last = model_id.method_number
-                    model_id.method_number = months / self.rent_sale_line_id.sale_order_id.invoice_number
+                    #
+                    # date1 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                    # date2 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+                    # difference = relativedelta(date2, date1)
+                    # months = difference.months + 12 * difference.years
+                    # if difference.days > 0:
+                    #     months += 1
+                    # last = model_id.method_number
+                    # model_id.method_number = months / self.rent_sale_line_id.sale_order_id.invoice_number
 
                     if model_id:
                         vals.update({
@@ -79,6 +81,8 @@ class AccountMove(models.Model):
         assets = self.env['account.asset'].create(create_list)
         for asset, vals, invoice, validate in zip(assets, create_list, invoice_list, auto_validate):
             if 'model_id' in vals:
+                asset.prorata = True
+                asset.prorata_date = asset.acquisition_date
                 asset._onchange_model_id()
                 if validate:
                     asset.validate()
@@ -105,37 +109,52 @@ class AccountMove(models.Model):
 
 
     def action_post(self):
+        # for record in self:
+        #     # if record.rent_sale_line_id:
+        #     #     for line in record.invoice_line_ids:
+        #     #         if line.account_id:
+        #     #             date1 = datetime.strptime(str(record.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+        #     #             date2 = datetime.strptime(str(record.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+        #     #             difference = relativedelta(date2, date1)
+        #     #             months = difference.months + 12 * difference.years
+        #     #             if difference.days > 0:
+        #     #                 months += 1
+        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", months)
+        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", record.rent_sale_line_id.sale_order_id.invoice_number)
+        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", math.ceil(months / record.rent_sale_line_id.sale_order_id.invoice_number))
+        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", months / record.rent_sale_line_id.sale_order_id.invoice_number)
+            #             line.account_id.asset_model.method_number = math.ceil(months / record.rent_sale_line_id.sale_order_id.invoice_number)
         res = super(AccountMove, self).action_post()
         for rec in self:
             for line in rec.asset_ids:
                 if rec.rent_sale_line_id:
-                    if rec.rent_sale_line_id.sale_order_id.invoice_number:
-                        pass
-                        # model_id = self.env['account.asset'].search([('asset_type', '=', 'sale'), ('state', '=', 'model'),('method_number', '=', rec.rent_sale_line_id.sale_order_id.invoice_number )])
-                        # for line in rec.asset_ids:
-                        #     line.set_to_draft()
-                        #     # line.model_id = model_id.id
-                        #     # line._onchange_model_id()
-                        #     date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
-                        #     date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
-                        #     difference = relativedelta(date2, date1)
-                        #     months = difference.months + 12 * difference.years
-                        #     if difference.days > 0:
-                        #         months += 1
-                        #     line.method_number = months / rec.rent_sale_line_id.sale_order_id.invoice_number
-                        #     line.model_id.sudo().write({'method_number' : int(months / rec.rent_sale_line_id.sale_order_id.invoice_number)})
-                        #     # line.model_id.method_number = int(months / rec.rent_sale_line_id.sale_order_id.invoice_number)
-                        #     line.compute_depreciation_board()
-                        #     line.validate()
-                else:
                     for dep in line.depreciation_move_ids:
                         dep.button_draft()
                         dep.unlink()
-                        line.set_to_running()
-                        line.set_to_draft()
-                        line.compute_depreciation_board()
-                        line.validate()
+                    line.set_to_running()
+                    line.set_to_draft()
+                    date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                    date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+                    difference = relativedelta(date2, date1)
+                    months = difference.months + 12 * difference.years
+                    if difference.days > 0:
+                        months += 1
+                    # print("xxxxxxxxxxxxxxxxxxxxxxx ", months)
+                    # print("xxxxxxxxxxxxxxxxxxxxxxx ", rec.rent_sale_line_id.sale_order_id.invoice_number)
+                    # print("xxxxxxxxxxxnoooxxxxxxxxxxxx ",  months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                    # print("xxxxxxxxxxxxmath ceilxxxxxxxxxxx ",  math.ceil(months / rec.rent_sale_line_id.sale_order_id.invoice_number))
+                    print(line.model_id.name)
+                    print(line.model_id.method_number)
+                    line.model_id.method_number = math.ceil( months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                    line.method_number = math.ceil( months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                    line.prorata = True
+                    line.prorata_date = line.acquisition_date
+                    print(line.model_id.method_number)
+                    line.compute_depreciation_board()
+                    line.validate()
 
+                else:
+                    pass
 
 
         return res
