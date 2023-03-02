@@ -107,7 +107,6 @@ class AccountMove(models.Model):
 
         return assets
 
-
     def action_post(self):
         # for record in self:
         #     # if record.rent_sale_line_id:
@@ -139,22 +138,24 @@ class AccountMove(models.Model):
                     months = difference.months + 12 * difference.years
                     if difference.days > 0:
                         months += 1
-                    # print("xxxxxxxxxxxxxxxxxxxxxxx ", months)
-                    # print("xxxxxxxxxxxxxxxxxxxxxxx ", rec.rent_sale_line_id.sale_order_id.invoice_number)
-                    # print("xxxxxxxxxxxnoooxxxxxxxxxxxx ",  months / rec.rent_sale_line_id.sale_order_id.invoice_number)
-                    # print("xxxxxxxxxxxxmath ceilxxxxxxxxxxx ",  math.ceil(months / rec.rent_sale_line_id.sale_order_id.invoice_number))
-                    print(line.model_id.name)
-                    print(line.model_id.method_number)
                     line.model_id.method_number = math.ceil( months / rec.rent_sale_line_id.sale_order_id.invoice_number)
                     line.method_number = math.ceil( months / rec.rent_sale_line_id.sale_order_id.invoice_number)
                     line.prorata = True
                     line.prorata_date = line.acquisition_date
+                    line.prorata_date = self.invoice_date
                     print(line.model_id.method_number)
                     line.compute_depreciation_board()
                     line.validate()
 
-                else:
-                    pass
-
+                else: 
+                    for dep in line.depreciation_move_ids:
+                        dep.button_draft()
+                        dep.unlink()
+                    line.set_to_running()
+                    line.set_to_draft()
+                    line.prorata_date = line.acquisition_date
+                    line.prorata_date = self.invoice_date
+                    line.compute_depreciation_board()
+                    line.validate()
 
         return res
