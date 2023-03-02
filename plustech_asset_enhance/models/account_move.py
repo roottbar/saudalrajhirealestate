@@ -107,6 +107,13 @@ class AccountMove(models.Model):
 
         return assets
 
+    temp_sale_order_id = fields.Many2one('sale.order', string="Temp sale order")
+    def get_temp_sale_order_id(self):
+        for rec in self:
+            for line in self.env['account.move'].search([('move_type', '=', 'out_invoice')]):
+                temp_sale_order_id = self.env['sale.order'].search([('name', '=', line.invoice_origin)])
+                if not line.temp_sale_order_id:
+                    line.temp_sale_order_id = temp_sale_order_id.id
     def action_post(self):
         # for record in self:
         #     # if record.rent_sale_line_id:
@@ -147,12 +154,20 @@ class AccountMove(models.Model):
                     line.compute_depreciation_board()
                     line.validate()
 
-                else: 
+                else:
                     for dep in line.depreciation_move_ids:
                         dep.button_draft()
                         dep.unlink()
                     line.set_to_running()
                     line.set_to_draft()
+                    date1 = datetime.strptime(str(rec.temp_sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                    date2 = datetime.strptime(str(rec.temp_sale_order_id.todate)[:10], '%Y-%m-%d')
+                    difference = relativedelta(date2, date1)
+                    months = difference.months + 12 * difference.years
+                    if difference.days > 0:
+                        months += 1
+                    line.model_id.method_number = math.ceil(months / rec.temp_sale_order_id.invoice_number)
+                    line.method_number = math.ceil(months / rec.temp_sale_order_id.invoice_number)
                     line.prorata_date = line.acquisition_date
                     line.prorata_date = self.invoice_date
                     line.compute_depreciation_board()
