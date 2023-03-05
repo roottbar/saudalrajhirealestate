@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-admin_access_branch_configuration,admin.branch.branch,model_branch_branch,base_branch.group_branch_manager,1,1,1,1
-access_branch_configuration,branch.branch,model_branch_branch,base.group_user,1,0,0,0
