@@ -733,12 +733,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:renting.field_res_partner__national_id_number
 #: model:ir.model.fields,field_description:renting.field_res_users__national_id_number
 msgid "National ID No."
-msgstr ""
+msgstr "رقم الهوية الوطني."
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_sale_order__invoice_number
 msgid "Number Of Invoices"
-msgstr ""
+msgstr "عدد الفواتير"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__message_needaction_counter
