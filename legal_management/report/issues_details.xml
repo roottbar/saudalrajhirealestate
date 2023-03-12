@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <template id='report_issues_details_template'>
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+             <t t-call="web.external_layout">
+                  <div class="page">
+                      <div class="oe_structure"/>
+                      <div class="text-center">
+                        <h2>Issues Details</h2>
+                      </div>
+                  </div>
+                 <br/>
+                 <table class="table table-sm o_main_table" name="issues">
+                     <thead>
+                         <tr>
+                             <th name="th_case_no" class="text-left">
+                                 <span>Case No.</span>
+                             </th>
+
+                             <th name="th_date_of_the_invitation" class="text-left">
+                                 <span>Date of invitation</span>
+                             </th>
+
+                              <th name="th_court" class="text-left">
+                                 <span>Court</span>
+                             </th>
+
+                              <th name="th_type_of_court" class="text-left">
+                                 <span>Type of Court</span>
+                             </th>
+
+                              <th name="th_judge" class="text-left">
+                                 <span>Judge</span>
+                             </th>
+
+                              <th name="th_prosecut" class="text-left">
+                                 <span>Prosecut</span>
+                             </th>
+
+                              <th name="th_defendant" class="text-left">
+                                 <span>Defendant</span>
+                             </th>
+
+                              <th name="th_fee" class="text-left">
+                                 <span>Fee</span>
+                             </th>
+                         </tr>
+                     </thead>
+
+                     <tr>
+                         <td>
+                             <span t-field="doc.case_no"/>
+                         </td>
+
+                         <td>
+                             <span t-field="doc.date_of_the_invitation"/>
+                         </td>
+
+                          <td>
+                             <span t-field="doc.court"/>
+                         </td>
+
+                          <td>
+                             <span t-field="doc.type_of_court"/>
+                         </td>
+
+                          <td>
+                             <span t-field="doc.judge"/>
+                         </td>
+
+                          <td>
+                             <span t-field="doc.prosecut"/>
+                         </td>
+
+                          <td>
+                             <span t-field="doc.defendant"/>
+                         </td>
+
+                          <td>
+                             <span t-field="doc.fee"/>
+                         </td>
+                     </tr>
+
+                     <tr>
+                         <td colspan="2">
+                             Total Appeals
+                         </td>
+                         <td>
+                             <span t-field="doc.appeal_count"/>
+                         </td>
+                     </tr>
+
+                     <tr>
+                         <td colspan="2">
+                             Total Hearings
+                         </td>
+                         <td>
+                             <span t-field="doc.hearing_count"/>
+                         </td>
+                     </tr>
+                 </table>
+        </t>
+        </t>
+        </t>
+
+    </template>
+
+</odoo>

@@ -10,4 +10,18 @@
 <!--            </xpath>-->
 <!--        </field>-->
 <!--    </record>-->
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="plus_view_move_form" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="seq_created" invisible="1"/>
+                <field name="last_seq" invisible="1"/>
+                <field name="move_type" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

@@ -117,6 +117,7 @@ class RentSaleInvoices(models.Model):
             'ref': self.sale_order_id.client_order_ref or '',
             'move_type': 'out_invoice',
             'narration': self.sale_order_id.note,
+            'rent_sale_line_id': self.id,
             'currency_id': self.sale_order_id.pricelist_id.currency_id.id,
             'campaign_id': self.sale_order_id.campaign_id.id,
             'medium_id': self.sale_order_id.medium_id.id,

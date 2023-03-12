@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="attendance_transaction_tree_view" model="ir.ui.view">
+        <field name="name">attendance.transaction.tree.view</field>
+        <field name="model">attendance.transaction</field>
+        <field name="arch" type="xml">
+             <tree create="0" string="Attendance Transaction">
+                                    <field name="employee_id"/>
+                                    <field name="date"/>
+                                    <field name="day" string="Day"/>
+                                    <field name="pl_sign_in"
+                                           string="PL/IN"
+                                           widget="float_time"/>
+                                    <field name="pl_sign_out"
+                                           string="PL/OUT"
+                                           widget="float_time"/>
+                                    <field name="ac_sign_in"
+                                           string="ACT/IN"
+                                           widget="float_time"/>
+                                    <field name="ac_sign_out"
+                                           string="ACT/OUT"
+                                           widget="float_time"/>
+                                   <field name="pl_hours"
+                                           string="Pl/Hours"
+                                           widget="float_time"/>
+                                    <field name="worked_hours"
+                                           widget="float_time"
+                                           optional="show"
+                                           string="Worked/H"
+                                           sum="Total"/>
+                                    <field name="late_in"
+                                           widget="float_time"
+                                           optional="show"
+                                           sum="Total"/>
+                                    <field name="early_exit"
+                                           optional="show"
+                                           widget="float_time"
+                                           sum="Total"/>
+                                    <field name="diff_time"
+                                           widget="float_time"
+                                           optional="hide"
+                                           sum="Total"/>
+                                   <field name="deducted_amount"
+                                           optional="hide"
+                                           sum="Total"/>
+                                    <field name="overtime"
+                                           widget="float_time"
+                                           optional="show"
+                                           sum="Total"/>
+                                    <field name="overtime_amount"
+                                           optional="hide"
+                                           sum="Total"/>
+                                    <field name="status"/>
+
+             </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_transaction_filter" model="ir.ui.view">
+        <field name="name">attendance.transaction.filter</field>
+        <field name="model">attendance.transaction</field>
+        <field name="arch" type="xml">
+            <search string="Search Attendance Transaction">
+                <filter name="today" string="Today" domain="[('date','=',time.strftime('%%Y-%%m-%%d'))]"/>
+                <separator/>
+                <separator/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_employee" string="Employee"
+                            context="{'group_by':'employee_id'}"/>
+                      <filter name="group_status" string="Status"
+                            context="{'group_by':'status'}"/>
+                    <separator/>
+                    <filter name="group_date_from" string="Date"
+                            context="{'group_by':'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!--action for attendance transaction views-->
+    <record id="action_attendance_transaction" model="ir.actions.act_window">
+        <field name="name">Attendance Transaction</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">attendance.transaction</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{"search_default_today":1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                There's no attendance transactions to showing up!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hr_attendance_main" name="Attendances"
+              parent="hr_attendance.menu_hr_attendance_root"
+              sequence="11"/>
+    <menuitem id="menu_hr_attendance_transaction" name="Transactions"
+              parent="menu_hr_attendance_main"
+              sequence="2" action="action_attendance_transaction"/>
+<record id="hr_attendance.menu_hr_attendance_view_attendances" model="ir.ui.menu">
+    <field name='parent_id' ref='plustech_hr_attendance_transaction.menu_hr_attendance_main'/>
+    <field name="sequence">1</field>
+</record>
+
+</odoo>

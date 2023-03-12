@@ -1,0 +1,148 @@
+<odoo>
+    <data>
+        <record id="view_crm_template_google_map" model="ir.ui.view">
+            <field name="name">view.crm.leads.google_map</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <google_map string="Maps" lat="partner_latitude" lng="partner_longitude" color="orange">
+                    <field name="partner_latitude"/>
+                    <field name="partner_longitude"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_content">
+                                <div>
+                                    <strong class="o_kanban_record_title">
+                                        <span>
+                                            <field name="name"/>
+                                        </span>
+                                    </strong>
+                                </div>
+                                <div>
+                                    <span class="o_kanban_record_subtitle">
+                                        <field name="name"/>
+                                    </span>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="name"/>
+                                    </div>
+                                    <!--                                    <div class="oe_kanban_bottom_right">-->
+                                    <!--                                        <field name="user_id" widget="many2one_avatar_user"/>-->
+                                    <!--                                    </div>-->
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </google_map>
+            </field>
+        </record>
+
+        <record id="crm_lead_action_pipeline_view_google_map" model="ir.actions.act_window.view">
+            <field name="sequence" eval="6"/>
+            <field name="view_mode">google_map</field>
+            <field name="view_id" ref="view_crm_template_google_map"/>
+            <field name="act_window_id" ref="sale_renting.rental_product_template_action"/>
+        </record>
+
+        <record id="customize_product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='options']" position='inside'>
+                    <span class="d-inline-block">
+                        <field name="furnished_apartment"/>
+                        <label for="furnished_apartment"/>
+                        <field name="unit_rented" force_save="1"/>
+                    </span>
+                </xpath>
+
+                <xpath expr="//notebook[last()]" position="inside">
+                    <page string="Unit Location" name="geo_location">
+                        <group>
+                            <field name="state_id"/>
+                            <field name="company_id"/>
+                            <group string="Geolocation">
+                                <label for="date_localization" string="Geo Location"/>
+                                <div>
+                                    <span>Lat :</span>
+                                    <field name="partner_latitude" nolabel="1" class="oe_inline"/>
+                                    <span>, Long:</span>
+                                    <field name="partner_longitude" nolabel="1" class="oe_inline"/>
+                                    <br/>
+                                    <span attrs="{'invisible': [('date_localization', '=', False)]}">Updated on:</span>
+                                    <field name="date_localization" nolabel="1" class="oe_inline"/>
+                                    <span class="oe_inline">
+                                        <button string="(refresh)" name="geo_localize" class="btn btn-link"
+                                                type="object"/>
+                                    </span>
+                                </div>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+<!--        <record id="product_template_view_map" model="ir.ui.view">-->
+<!--            <field name="name">product.template.view.map</field>-->
+<!--            <field name="model">product.template</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <map res_partner="partner_longitude"/>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="product_template_action_contacts_view_map" model="ir.actions.act_window.view">-->
+<!--            <field name="sequence" eval="3"/>-->
+<!--            <field name="view_mode">map</field>-->
+<!--            <field name="view_id" ref="product_template_view_map"/>-->
+<!--            <field name="act_window_id" ref="sale_renting.rental_product_template_action"/>-->
+<!--        </record>-->
+        .
+        <record id="furnished_product_template_search_view" model="ir.ui.view">
+            <field name="name">product.template.search.inherit.rental</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='filter_to_purchase']" position="after">
+                    <filter string="Furnished" name="filter_furnished_apartment"
+                            domain="[('furnished_apartment', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="rental_furnished_product_template_action" model="ir.actions.act_window">
+            <field name="name">Furnished Apartment</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('furnished_apartment', '=', True)]</field>
+            <field name="context">{
+                'default_furnished_apartment': True,
+                'default_sale_ok': False,
+                'default_rent_ok': True,
+                'default_detailed_type': 'consu',
+                'default_purchase_ok': False,
+                'search_default_filter_furnished_apartment': True,
+                }
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Furnished Apartment!
+                </p>
+                <p>
+                    You can also create additional products or services to sell by checking *Can be Sold* in the product
+                    form (e.g. insurance).
+                </p>
+            </field>
+        </record>
+        <menuitem id="sale_renting.menu_rental_products" name="Products" parent="sale_renting.rental_menu_root"
+                  sequence="4"/>
+        <menuitem id="menu_rental_products2" name="Products" parent="sale_renting.menu_rental_products" sequence="4"
+                  action="sale_renting.rental_product_template_action"/>
+
+        <menuitem id="menu_furnished_apartment_products" name="Furnished Apartment"
+                  parent="sale_renting.menu_rental_products"
+                  sequence="4" action="rental_furnished_product_template_action"/>
+    </data>
+</odoo>

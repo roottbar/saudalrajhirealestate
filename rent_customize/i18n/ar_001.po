@@ -1,0 +1,424 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* rent_customize
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-12 09:09+0000\n"
+"PO-Revision-Date: 2023-03-12 09:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.customize_product_template_form_view
+msgid "(refresh)"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.customize_product_template_form_view
+msgid ""
+"<br/>\n"
+"                                    <span attrs=\"{'invisible': [('date_localization', '=', False)]}\">Updated on:</span>"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.customize_product_template_form_view
+msgid "<span>, Long:</span>"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.customize_product_template_form_view
+msgid "<span>Lat :</span>"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__sale_order__state__sale
+msgid "Acceptance"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_order__apartment_insurance
+msgid "Apartment Insurance"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_ir_attachment
+msgid "Attachment"
+msgstr "مرفق"
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_rent_sale_state__delivery_attachment_ids
+#: model:ir.model.fields,field_description:rent_customize.field_rent_sale_state__receipt_attachment_ids
+#: model:ir.model.fields,field_description:rent_customize.field_rent_sale_state__supported_attachment_ids
+msgid "Attachments"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.rent_sale_order_r_inherit_form2
+msgid "Cancel"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__sale_order__state__cancel
+msgid "Cancelled"
+msgstr "ملغي"
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.rental_order_form_view2
+msgid "Confirmed"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_order__context_order
+msgid "Context Order"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.actions.act_window,name:rent_customize.contract_report_action
+msgid "Contract"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.actions.act_window,name:rent_customize.filter_dates_action
+msgid "Contract In Dates"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.ui.menu,name:rent_customize.contract_menu_report
+msgid "Contract Report"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.actions.act_window,help:rent_customize.rental_furnished_product_template_action
+msgid "Create a new Furnished Apartment!"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_order__damage_amount
+msgid "Damage Amount"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_product_product__date_localization
+#: model:ir.model.fields,field_description:rent_customize.field_product_template__date_localization
+msgid "Date Localization"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__end_date
+msgid "End Date"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.furnished_product_template_search_view
+msgid "Furnished"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.actions.act_window,name:rent_customize.rental_furnished_product_template_action
+#: model:ir.ui.menu,name:rent_customize.menu_furnished_apartment_products
+msgid "Furnished Apartment"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_product_product__furnished_apartment
+#: model:ir.model.fields,field_description:rent_customize.field_product_template__furnished_apartment
+msgid "Furnished apartment"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_product_product__partner_latitude
+#: model:ir.model.fields,field_description:rent_customize.field_product_template__partner_latitude
+msgid "Geo Latitude"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.customize_product_template_form_view
+msgid "Geo Location"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_product_product__partner_longitude
+#: model:ir.model.fields,field_description:rent_customize.field_product_template__partner_longitude
+msgid "Geo Longitude"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.customize_product_template_form_view
+msgid "Geolocation"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__sale_order__state__done
+msgid "Locked"
+msgstr "مقفل"
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.view_crm_template_google_map
+msgid "Maps"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__sale_order__state__occupied
+msgid "Occupied"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.view_order_form_rent_customize
+msgid "PICKUP"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_rental_order_wizard
+msgid "Pick-up/Return products"
+msgstr "استلام/إرجاع المنتجات "
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.rental_order_form_view2
+msgid "Picked-up"
+msgstr ""
+
+#. module: rent_customize
+#: model:res.groups,name:rent_customize.group_pickup_rental_order
+msgid "Pickup Rental Order"
+msgstr ""
+
+#. module: rent_customize
+#: code:addons/rent_customize/models/sales.py:0
+#, python-format
+msgid "Please define an accounting sales journal for the company %s (%s)."
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_product_template
+msgid "Product Template"
+msgstr "قالب المنتج"
+
+#. module: rent_customize
+#: model:ir.ui.menu,name:rent_customize.menu_rental_products2
+msgid "Products"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_rental_schedule__property_id
+msgid "Property"
+msgstr "العقار"
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_rental_schedule__property_address_area
+msgid "Property Address Area"
+msgstr "الفرع"
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_rental_schedule__property_address_build
+msgid "Property Address Build"
+msgstr "المجمع"
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__sale_order__state__draft
+msgid "Quotation"
+msgstr "عرض سعر"
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__sale_order__state__sent
+msgid "Quotation Sent"
+msgstr "تم إرسال عرض السعر"
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.refund_insurance_view_form
+msgid "Refund"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_order__refund_amount
+msgid "Refund Amount"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.actions.act_window,name:rent_customize.refund_insurance_action
+#: model:ir.model.fields,field_description:rent_customize.field_sale_order__refund_insurance
+#: model_terms:ir.ui.view,arch_db:rent_customize.rent_sale_order_r_inherit_form2
+msgid "Refund Insurance"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.rent_sale_order_r_inherit_form2
+msgid "Renew"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_sale_rental_schedule
+msgid "Rental Schedule"
+msgstr "جدول التأجير "
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_ir_attachment__rental_type
+msgid "Rental Type"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.ui.menu,name:rent_customize.menu_rental_reporting_child
+msgid "Reporting"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.rental_order_form_view2
+msgid "Returned"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_sale_order
+msgid "Sales Order"
+msgstr "أمر البيع"
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.contract_view_form
+msgid "Show Report"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_contract_wizard__start_date
+msgid "Start Date"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_order__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.view_rent_property_build_form
+msgid "Sync Analytic Account Ref"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__sale_order__state__termination
+#: model_terms:ir.ui.view,arch_db:rent_customize.rent_sale_order_r_inherit_form2
+msgid "Termination"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.customize_product_template_form_view
+msgid "Unit Location"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_product_product__unit_rented
+#: model:ir.model.fields,field_description:rent_customize.field_product_template__unit_rented
+msgid "Unit Rented"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.actions.server,name:rent_customize.update_invoice_status_action_server
+msgid "Update Invoice Status"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.actions.server,name:rent_customize.update_product_rent_cron_id_ir_actions_server
+#: model:ir.cron,cron_name:rent_customize.update_product_rent_cron_id
+#: model:ir.cron,name:rent_customize.update_product_rent_cron_id
+msgid "Update Product Rent"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.actions.act_window,help:rent_customize.rental_furnished_product_template_action
+msgid ""
+"You can also create additional products or services to sell by checking *Can be Sold* in the product\n"
+"                    form (e.g. insurance)."
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_contract_wizard
+msgid "contract.wizard"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.contract_view_form
+msgid "contract_form"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.contract_view_tree
+msgid "contract_tree"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__ir_attachment__rental_type__delivery
+msgid "delivery"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields.selection,name:rent_customize.selection__ir_attachment__rental_type__receipt
+msgid "receipt"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.refund_insurance_view_form
+msgid "refund_insurance_form"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_rent_property_build
+msgid "rent.property.build"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_rent_sale_invoices
+msgid "rent.sale.invoices"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model,name:rent_customize.model_rent_sale_state
+msgid "rent.sale.state"
+msgstr ""
+
+#. module: rent_customize
+#: model:ir.model.fields,field_description:rent_customize.field_sale_rental_schedule__property_number
+msgid "العقار"
+msgstr ""
+
+#. module: rent_customize
+#: model_terms:ir.ui.view,arch_db:rent_customize.rent_sale_order_r_inherit_form2
+msgid "المرفقات"
+msgstr ""

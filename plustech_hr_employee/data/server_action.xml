@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+          <!-- Action set employee partner for multi -->
+        <record id="action_employee_set_partner" model="ir.actions.server">
+            <field name="name">Set Partner</field>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="binding_model_id" ref="hr.model_hr_employee"/>
+            <field name="binding_view_types">list</field>
+            <field name="code">
+                records.set_partner()
+            </field>
+        </record>
+
+    </data>
+
+</odoo>

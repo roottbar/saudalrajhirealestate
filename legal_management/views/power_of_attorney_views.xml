@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+<!--    <record id="view_power_of_attorney_tree" model="ir.ui.view">-->
+<!--        <field name="name">power.of.attorney.tree</field>-->
+<!--        <field name="model">power.of.attorney</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree>-->
+<!--            </tree>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+    <record id="view_power_of_attorney_form" model="ir.ui.view">
+        <field name="name">power.of.attorney.form</field>
+        <field name="model">power.of.attorney</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="ref"/>
+                            <field name = 'partner'/>
+                            <field name = 'principal'/>
+                        </group>
+
+                        <group>
+
+                            <label for="beginning_power" string="Date"/>
+                        <div>
+                            <field name="beginning_power" class="oe_inline"/> - <field name="end_power" class="oe_inline"/>
+                        </div>
+                            <field name="duration"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attachment" name="attachment attorney">
+                            <field name="attachment_attorney" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_power_of_attorney" model="ir.actions.act_window">
+        <field name="name">Power Of Attorney</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">power.of.attorney</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+        <menuitem id="menu_power_of_attorney"
+              name="Power Of Attorney"
+              parent="legal_management.menu_legal_master_second"
+              action="action_power_of_attorney"
+              sequence="2"/>
+
+
+
+
+</odoo>
