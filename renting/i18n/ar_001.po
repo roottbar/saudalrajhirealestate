@@ -6,14 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-12 09:08+0000\n"
-"PO-Revision-Date: 2023-03-12 09:08+0000\n"
+"POT-Creation-Date: 2023-03-12 10:53+0000\n"
+"PO-Revision-Date: 2023-03-12 13:59+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
+"X-Generator: Poedit 2.3\n"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__property_address_Postal_code
@@ -158,7 +159,7 @@ msgstr "بيانات العنوان"
 #: model:ir.model.fields,field_description:renting.field_res_partner__agency_number
 #: model:ir.model.fields,field_description:renting.field_res_users__agency_number
 msgid "Agency No."
-msgstr ""
+msgstr "رقم الوكالة."
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_res_partner__agency_number_date
@@ -263,7 +264,7 @@ msgstr "الدولة"
 #. module: renting
 #: model_terms:ir.ui.view,arch_db:renting.rent_sale_order_r_inherit_form
 msgid "Create Invoice"
-msgstr ""
+msgstr "إنشاء فاتورة"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_config_property_maintenance_statuses__create_uid
@@ -319,7 +320,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:renting.field_res_partner__date_o_birth
 #: model:ir.model.fields,field_description:renting.field_res_users__date_o_birth
 msgid "Date of Birth"
-msgstr ""
+msgstr "تاريخ الميلاد"
 
 #. module: renting
 #: model:ir.model.fields.selection,name:renting.selection__rental_pricing__unit__day
@@ -339,7 +340,7 @@ msgstr "الأيام"
 #: model:ir.model.fields,field_description:renting.field_rent_config_unit_purposes__unit_purpose_description
 #: model:ir.model.fields,field_description:renting.field_rent_config_unit_types__unit_type_description
 msgid "Description"
-msgstr ""
+msgstr "الوصف"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_config_property_maintenance_statuses__display_name
@@ -411,7 +412,7 @@ msgstr "الرقم الاضافي"
 #. module: renting
 #: model_terms:ir.ui.view,arch_db:renting.res_config_settings_view_form
 msgid "Fees Products Configuration"
-msgstr ""
+msgstr "رسوم المنتجات"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__message_follower_ids
@@ -455,7 +456,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:renting.rent_sale_order_r_inherit_form
 #: model_terms:ir.ui.view,arch_db:renting.rental_order_view_search_bstt
 msgid "Fully Invoiced"
-msgstr ""
+msgstr "مفوتر بالكامل"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__property_gas
@@ -535,12 +536,12 @@ msgstr ""
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_sale_invoices__invoice_date
 msgid "Invoice Date"
-msgstr ""
+msgstr "تاريخ الفاتورة"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_sale_order__invoice_terms
 msgid "Invoice Terms"
-msgstr ""
+msgstr "شروط الفاتورة"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_account_bank_statement_line__invoice_line_ids
@@ -552,7 +553,7 @@ msgstr "أسطر الفاتورة"
 #. module: renting
 #: model:ir.model.fields.selection,name:renting.selection__rent_sale_invoices__status__invoiced
 msgid "Invoiced"
-msgstr ""
+msgstr "مفوترة"
 
 #. module: renting
 #: model:ir.model,name:renting.model_account_invoice_report
@@ -671,7 +672,7 @@ msgstr "تاريخ الصيانة"
 #: model:ir.model.fields,field_description:renting.field_rent_property_maintenance__property_maintenance_description
 #: model:ir.model.fields,field_description:renting.field_rent_unit_maintenance__unit_maintenance_description
 msgid "Maintenance Description"
-msgstr "وصف الصيانة "
+msgstr "وصف الصيانة"
 
 #. module: renting
 #: model:ir.actions.act_window,name:renting.rent_config_unit_maintenance_statuses
@@ -684,7 +685,7 @@ msgstr "حالات صيانات الوحدات"
 #: model:ir.model.fields,field_description:renting.field_rent_property_maintenance__property_rent_config_maintenance_status_id
 #: model:ir.model.fields,field_description:renting.field_rent_unit_maintenance__unit_rent_config_unit_maintenance_status_id
 msgid "Maintenance Status"
-msgstr "حالة الصيانة "
+msgstr "حالة الصيانة"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_config_property_maintenance_types__property_maintenance_type_name
@@ -752,7 +753,7 @@ msgstr "عدد المصاعد"
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__property_floors_number
 msgid "Number of Floors"
-msgstr "عدد الطوابق "
+msgstr "عدد الطوابق"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__property_garages
@@ -767,7 +768,7 @@ msgstr "عدد الوحدات"
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "عدد الأخطاء"
 
 #. module: renting
 #: model:ir.model.fields,help:renting.field_rent_property__message_needaction_counter
@@ -810,10 +811,9 @@ msgstr ""
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_sale_order_line__pickup_date
 msgid "Pickup"
-msgstr "استلام "
+msgstr "استلام"
 
 #. module: renting
-#: code:addons/renting/models/rent_sale_invoices.py:0
 #: code:addons/renting/models/rent_sale_invoices.py:0
 #, python-format
 msgid "Please define Insurance and admin fees products in renting setting."
@@ -1023,44 +1023,44 @@ msgstr ""
 #. module: renting
 #: model_terms:ir.ui.view,arch_db:renting.rent_sale_order_r_inherit_form
 msgid "Total Amount"
-msgstr ""
+msgstr "المبلغ الإجمالي"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_sale_order__contract_total_payment
 msgid "Total Contract"
-msgstr ""
+msgstr "إجمالي العقد"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_product_product__unit_expenses_count
 #: model:ir.model.fields,field_description:renting.field_product_template__unit_expenses_count
 msgid "Total Expenses"
-msgstr ""
+msgstr "المصروفات الكلية"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_sale_order__contract_total_fees
 msgid "Total Fees"
-msgstr ""
+msgstr "الرسوم الكلية"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__elevator_maintenance_count
 msgid "Total Maintenance"
-msgstr ""
+msgstr "إجمالي الصيانة"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rent_property__property_maintenance_count
 msgid "Total Property Maintenance"
-msgstr ""
+msgstr "إجمالي صيانة الممتلكات"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_product_product__unit_sales_count
 #: model:ir.model.fields,field_description:renting.field_product_template__unit_sales_count
 msgid "Total Sales"
-msgstr ""
+msgstr "إجمالي المبيعات"
 
 #. module: renting
 #: model:ir.model.fields.selection,name:renting.selection__rent_sale_invoices__status__uninvoiced
 msgid "Un Invoiced"
-msgstr ""
+msgstr "غير مفوتر"
 
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_rental_pricing__unit
@@ -1091,7 +1091,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:renting.rent_unit_maintenance_form
 #: model_terms:ir.ui.view,arch_db:renting.rent_unit_maintenance_tree
 msgid "Unit Maintenance"
-msgstr "صيانة الوحدة "
+msgstr "صيانة الوحدة"
 
 #. module: renting
 #: model:ir.ui.menu,name:renting.rent_config_unit_maintenance_statuses_menu
@@ -2372,8 +2372,6 @@ msgid "ملاحظة"
 msgstr ""
 
 #. module: renting
-#: code:addons/renting/models/rent_sale_order_inherit.py:0
-#: code:addons/renting/models/rent_sale_order_inherit.py:0
 #: code:addons/renting/models/rent_sale_order_inherit.py:0
 #, python-format
 msgid "من فضلك اكتب عدد الفواتير"
