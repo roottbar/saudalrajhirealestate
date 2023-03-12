@@ -6,7 +6,7 @@
     'author': "Plus Tech",
     'category': 'Accounting/Accounting',
     'version': '0.1',
-    'depends': ['account', 'account_asset'],
+    'depends': ['account', 'account_asset', 'renting'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

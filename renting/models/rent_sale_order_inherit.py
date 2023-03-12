@@ -320,6 +320,8 @@ class RentSaleOrderLine(models.Model):
     contract_service_fees = fields.Float(string='رسوم الخدمات')
     contract_admin_sub_fees = fields.Float(string='رسوم ادارية خاضعة')
     contract_service_sub_fees = fields.Float(string='رسوم الخدمات خاضعة')
+    fromdate = fields.Datetime(related="order_id.fromdate", store=1)
+    todate = fields.Datetime(related="order_id.todate", store=1)
 
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
     def _compute_amount(self):
@@ -342,4 +344,3 @@ class RentSaleOrderLine(models.Model):
             if self.env.context.get('import_file', False) and not self.env.user.user_has_groups(
                     'account.group_account_manager'):
                 line.tax_id.invalidate_cache(['invoice_repartition_line_ids'], [line.tax_id.id])
-

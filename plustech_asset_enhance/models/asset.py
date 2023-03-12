@@ -15,3 +15,7 @@ class AccountAsset(models.Model):
     asset_location_id = fields.Many2one('asset.location')
 
 
+    def unlink_lines(self):
+        for line in self.depreciation_move_ids:
+            line.button_draft()
+            line.unlink()
