@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, _
+from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -10,12 +10,28 @@ import math
 class AccountMove(models.Model):
     _inherit = "account.move"
 
+
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
         ('review', 'Reviewed'),
         ('posted', 'Posted'),
         ('cancel', 'Cancelled'),
     ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
+
+    renting_attachment_ids = fields.Many2many(comodel_name='ir.attachment', relation="sale_attachment_rel",
+                                                string='Attachments', compute="get_sale_attachment")
+
+    @api.depends('invoice_origin')
+    def get_sale_attachment(self):
+        for rec in self:
+            rec.renting_attachment_ids = [(6, 0, [])]
+            sale_id = self.env['sale.order'].sudo().search([('name', '=', rec.invoice_origin)])
+            if sale_id:
+                attachment_ids = self.env['ir.attachment'].sudo().search([
+                    ('res_model', '=', 'sale.order'),
+                    ('res_id', '=', sale_id.id),
+                ])
+                rec.renting_attachment_ids = [(6, 0, attachment_ids.ids)]
 
     def action_review(self):
         self.state = 'review'
