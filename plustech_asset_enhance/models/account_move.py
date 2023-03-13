@@ -115,6 +115,7 @@ class AccountMove(models.Model):
                 if not line.temp_sale_order_id:
                     line.temp_sale_order_id = temp_sale_order_id.id
     def action_post(self):
+        print("XXXX 4444")
         # for record in self:
         #     # if record.rent_sale_line_id:
         #     #     for line in record.invoice_line_ids:
@@ -131,10 +132,11 @@ class AccountMove(models.Model):
         #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", months / record.rent_sale_line_id.sale_order_id.invoice_number)
             #             line.account_id.asset_model.method_number = math.ceil(months / record.rent_sale_line_id.sale_order_id.invoice_number)
         res = super(AccountMove, self).action_post()
+        print("XXXX 4444")
         for rec in self:
             for line in rec.asset_ids:
                 if rec.rent_sale_line_id:
-                    for dep in line.depreciation_move_ids:
+                    for dep in line.depreciation_move_ids.sorted(reverse=False):
                         dep.button_draft()
                         dep.unlink()
                     line.set_to_running()
@@ -150,7 +152,6 @@ class AccountMove(models.Model):
                     line.prorata = True
                     line.prorata_date = line.acquisition_date
                     line.prorata_date = self.invoice_date
-                    print(line.model_id.method_number)
                     line.compute_depreciation_board()
                     line.validate()
 
