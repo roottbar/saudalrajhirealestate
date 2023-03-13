@@ -86,7 +86,7 @@
                     </group>
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="replace">
-                    <field name="no_of_invoiced"/>
+                    <field name="no_of_invoiced" invisible="1"/>
                     <button name="action_cancel" type="object" string="Cancel"
                             attrs="{'invisible': ['|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
                     <button name="action_termination" type="object" string="Termination" class="oe_highlight"
@@ -96,8 +96,8 @@
                     <button name="renew_contract" type="object" string="Renew" class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['occupied', 'termination'])]}"/>
                     <field name="no_of_invoiced" invisible="1"/>
-                    <field name="has_late_lines" invisible="0"/>
-                    <field name="rental_status" invisible="0"/>
+                    <field name="has_late_lines" invisible="1"/>
+                    <field name="rental_status" invisible="1"/>
                 </xpath>
             </field>
         </record>
