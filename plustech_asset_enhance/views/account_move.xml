@@ -40,6 +40,12 @@
                         <button name="button_cancel" string="Cancel" type="object" groups="account.group_account_invoice" data-hotkey="w"
                                 attrs="{'invisible' : ['|', '|', ('id', '=', False), ('state', 'not in', ['draft', 'review']),('move_type', '==', 'entry')]}"/>
                 </xpath>
+                <xpath expr="//field[@name='journal_id']/../.." position="after">
+                    <group>
+                        <field name="invoice_origin" string="Renting Order"/>
+                    <field name="renting_attachment_ids"  widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </xpath>
 
             </field>
         </record>
