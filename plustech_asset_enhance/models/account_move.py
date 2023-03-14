@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, models, fields, _
-from odoo.exceptions import UserError
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 import math
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
+
+from odoo import api
+from odoo import models, fields, _
+from odoo.exceptions import UserError
 
 
 class AccountMove(models.Model):
     _inherit = "account.move"
-
 
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -19,7 +21,7 @@ class AccountMove(models.Model):
     ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
 
     renting_attachment_ids = fields.Many2many(comodel_name='ir.attachment', relation="sale_attachment_rel",
-                                                string='Attachments', compute="get_sale_attachment")
+                                              string='Attachments', compute="get_sale_attachment")
 
     @api.depends('invoice_origin')
     def get_sale_attachment(self):
@@ -45,19 +47,22 @@ class AccountMove(models.Model):
             if not move.is_invoice():
                 continue
 
-            for move_line in move.line_ids.filtered(lambda line: not (move.move_type in ('out_invoice', 'out_refund') and line.account_id.user_type_id.internal_group == 'asset')):
+            for move_line in move.line_ids.filtered(lambda line: not (move.move_type in (
+                    'out_invoice', 'out_refund') and line.account_id.user_type_id.internal_group == 'asset')):
                 if (
-                    move_line.account_id
-                    and (move_line.account_id.can_create_asset)
-                    and move_line.account_id.create_asset != "no"
-                    and not move.reversed_entry_id
-                    and not (move_line.currency_id or move.currency_id).is_zero(move_line.price_total)
-                    and not move_line.asset_ids
-                    and not move_line.tax_line_id
-                    and move_line.price_total > 0
+                        move_line.account_id
+                        and (move_line.account_id.can_create_asset)
+                        and move_line.account_id.create_asset != "no"
+                        and not move.reversed_entry_id
+                        and not (move_line.currency_id or move.currency_id).is_zero(move_line.price_total)
+                        and not move_line.asset_ids
+                        and not move_line.tax_line_id
+                        and move_line.price_total > 0
                 ):
                     if not move_line.name:
-                        raise UserError(_('Journal Items of {account} should have a label in order to generate an asset').format(account=move_line.account_id.display_name))
+                        raise UserError(
+                            _('Journal Items of {account} should have a label in order to generate an asset').format(
+                                account=move_line.account_id.display_name))
                     if move_line.account_id.multiple_assets_per_line:
                         # decimal quantities are not supported, quantities are rounded to the lower int
                         units_quantity = max(1, int(move_line.quantity))
@@ -111,7 +116,7 @@ class AccountMove(models.Model):
                 msg = _('%s created from invoice') % (asset_name)
                 msg += ': <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>' % (invoice.id, invoice.name)
                 asset.message_post(body=msg)
-                #Abdulrhman Change
+                # Abdulrhman Change
                 asset.set_to_draft()
                 asset.prorata_date = self.invoice_date
                 asset.compute_depreciation_board()
@@ -124,29 +129,15 @@ class AccountMove(models.Model):
         return assets
 
     temp_sale_order_id = fields.Many2one('sale.order', string="Temp sale order")
+
     def get_temp_sale_order_id(self):
         for rec in self:
             for line in self.env['account.move'].search([('move_type', '=', 'out_invoice')]):
                 temp_sale_order_id = self.env['sale.order'].search([('name', '=', line.invoice_origin)])
                 if not line.temp_sale_order_id:
                     line.temp_sale_order_id = temp_sale_order_id.id
+
     def action_post(self):
-        print("XXXX 4444")
-        # for record in self:
-        #     # if record.rent_sale_line_id:
-        #     #     for line in record.invoice_line_ids:
-        #     #         if line.account_id:
-        #     #             date1 = datetime.strptime(str(record.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
-        #     #             date2 = datetime.strptime(str(record.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
-        #     #             difference = relativedelta(date2, date1)
-        #     #             months = difference.months + 12 * difference.years
-        #     #             if difference.days > 0:
-        #     #                 months += 1
-        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", months)
-        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", record.rent_sale_line_id.sale_order_id.invoice_number)
-        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", math.ceil(months / record.rent_sale_line_id.sale_order_id.invoice_number))
-        #     #             print("xxxxxxxxxxxxxxxxxxxxxxx ", months / record.rent_sale_line_id.sale_order_id.invoice_number)
-            #             line.account_id.asset_model.method_number = math.ceil(months / record.rent_sale_line_id.sale_order_id.invoice_number)
         res = super(AccountMove, self).action_post()
         print("XXXX 4444")
         for rec in self:
@@ -163,11 +154,12 @@ class AccountMove(models.Model):
                     months = difference.months + 12 * difference.years
                     if difference.days > 0:
                         months += 1
-                    line.model_id.method_number = math.ceil( months / rec.rent_sale_line_id.sale_order_id.invoice_number)
-                    line.method_number = math.ceil( months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                    line.model_id.method_number = math.floor(
+                        months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                    line.method_number = math.floor(months / rec.rent_sale_line_id.sale_order_id.invoice_number)
                     line.prorata = True
                     line.prorata_date = line.acquisition_date
-                    line.prorata_date = self.invoice_date
+                    line.prorata_date = self.fromdate or self.invoice_date
                     line.compute_depreciation_board()
                     line.validate()
 
@@ -183,10 +175,10 @@ class AccountMove(models.Model):
                     months = difference.months + 12 * difference.years
                     if difference.days > 0:
                         months += 1
-                    line.model_id.method_number = math.ceil(months / rec.temp_sale_order_id.invoice_number)
-                    line.method_number = math.ceil(months / rec.temp_sale_order_id.invoice_number)
+                    line.model_id.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
+                    line.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
                     line.prorata_date = line.acquisition_date
-                    line.prorata_date = self.invoice_date
+                    line.prorata_date = self.fromdate or self.invoice_date
                     line.compute_depreciation_board()
                     line.validate()
 
