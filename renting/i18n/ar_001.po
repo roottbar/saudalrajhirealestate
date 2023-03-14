@@ -442,7 +442,7 @@ msgstr "تاريخ البداية"
 #. module: renting
 #: model:ir.model.fields,field_description:renting.field_sale_rental_report__fromdate
 msgid "Fromdate"
-msgstr "تاريخ البداية"
+msgstr "تاريخ بداية العقد"
 
 #. module: renting
 #: model_terms:ir.ui.view,arch_db:renting.rental_order_view_kanban_bstt
