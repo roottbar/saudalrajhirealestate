@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import math
+from odoo import api, models, fields, _
+from odoo.exceptions import UserError
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
@@ -12,12 +13,28 @@ from odoo.exceptions import UserError
 class AccountMove(models.Model):
     _inherit = "account.move"
 
+
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
         ('review', 'Reviewed'),
         ('posted', 'Posted'),
         ('cancel', 'Cancelled'),
     ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
+
+    renting_attachment_ids = fields.Many2many(comodel_name='ir.attachment', relation="sale_attachment_rel",
+                                                string='Attachments', compute="get_sale_attachment")
+
+    @api.depends('invoice_origin')
+    def get_sale_attachment(self):
+        for rec in self:
+            rec.renting_attachment_ids = [(6, 0, [])]
+            sale_id = self.env['sale.order'].sudo().search([('name', '=', rec.invoice_origin)])
+            if sale_id:
+                attachment_ids = self.env['ir.attachment'].sudo().search([
+                    ('res_model', '=', 'sale.order'),
+                    ('res_id', '=', sale_id.id),
+                ])
+                rec.renting_attachment_ids = [(6, 0, attachment_ids.ids)]
 
     def action_review(self):
         self.state = 'review'
@@ -62,6 +79,16 @@ class AccountMove(models.Model):
                         'state': 'draft',
                     }
                     model_id = move_line.account_id.asset_model
+                    #
+                    # date1 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                    # date2 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+                    # difference = relativedelta(date2, date1)
+                    # months = difference.months + 12 * difference.years
+                    # if difference.days > 0:
+                    #     months += 1
+                    # last = model_id.method_number
+                    # model_id.method_number = months / self.rent_sale_line_id.sale_order_id.invoice_number
+
                     if model_id:
                         vals.update({
                             'model_id': model_id.id,
@@ -113,10 +140,11 @@ class AccountMove(models.Model):
 
     def action_post(self):
         res = super(AccountMove, self).action_post()
+        print("XXXX 4444")
         for rec in self:
             for line in rec.asset_ids:
                 if rec.rent_sale_line_id:
-                    for dep in line.depreciation_move_ids:
+                    for dep in line.depreciation_move_ids.sorted(reverse=False):
                         dep.button_draft()
                         dep.unlink()
                     line.set_to_running()
