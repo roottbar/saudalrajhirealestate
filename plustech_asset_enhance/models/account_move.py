@@ -139,7 +139,6 @@ class AccountMove(models.Model):
 
     def action_post(self):
         res = super(AccountMove, self).action_post()
-        print("XXXX 4444")
         for rec in self:
             for line in rec.asset_ids:
                 if rec.rent_sale_line_id:
