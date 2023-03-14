@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, models, fields, _
-from odoo.exceptions import UserError
+import math
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 
+from odoo import api
 from odoo import models, fields, _
 from odoo.exceptions import UserError
 
 
 class AccountMove(models.Model):
     _inherit = "account.move"
-
 
     state = fields.Selection(selection=[
         ('draft', 'Draft'),
@@ -22,7 +21,7 @@ class AccountMove(models.Model):
     ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
 
     renting_attachment_ids = fields.Many2many(comodel_name='ir.attachment', relation="sale_attachment_rel",
-                                                string='Attachments', compute="get_sale_attachment")
+                                              string='Attachments', compute="get_sale_attachment")
 
     @api.depends('invoice_origin')
     def get_sale_attachment(self):
