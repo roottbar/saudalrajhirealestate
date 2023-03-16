@@ -10,7 +10,7 @@
                     <field name="property_address_area" string="الفرع"/>
                     <field name="property_address_build2" string="المجمع"/>
                     <field name="property_number" string="العقار"/>
-                    <field name="product_id" string="مكتب"/>
+                    <field name="product_id" string="الوحدة"/>
                     <filter string="الفرع" name="property_address_area" domain="[]" context="{'group_by':'property_address_area'}"/>
                     <filter string="المجمع" name="property_address_build2" domain="[]" context="{'group_by':'property_address_build2'}"/>
                     <filter string="العقار" name="property_number" domain="[]" context="{'group_by':'property_number'}"/>
@@ -24,17 +24,17 @@
             <field name="model">sale.order.line</field>
             <field name="arch" type="xml">
                 <tree string="_tree">
-                    <field name="property_address_area"/>
-                    <field name="property_address_build2"/>
-                    <field name="property_number"/>
-                    <field name="product_id"/>
-                    <field name="order_partner_id"/>
-                    <field name="order_id"/>
-                    <field name="unit_state"/>
-                    <field name="amount_paid"/>
-                    <field name="amount_due"/>
-                    <field name="fromdate"/>
-                    <field name="todate"/>
+                    <field name="property_address_area" string="الفرع"/>
+                    <field name="property_address_build2" string="المجمع"/>
+                    <field name="property_number" string="العقار"/>
+                    <field name="product_id"  string="الوحدة"/>
+                    <field name="order_partner_id"  string="إسم العميل"/>
+                    <field name="order_id"  string="رقم العقد"/>
+                    <field name="unit_state" string="مؤجرة / شاغره "/>
+                    <field name="amount_paid" string="المبلغ المدفوع "/>
+                    <field name="amount_due" string="المبلغ المستحق"/>
+                    <field name="fromdate" string="تاريخ الاستلام   "/>
+                    <field name="todate" string="تاريخ التسليم  "/>
                     <!--                    <field name="apartment_insurance"/>-->
                 </tree>
             </field>
