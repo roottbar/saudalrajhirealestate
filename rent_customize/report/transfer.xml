@@ -1,9 +1,18 @@
 <odoo>
     <data>
         <template id="report_transfer_template_apratment">
-            <t t-call="web.basic_layout">
+
+            <t t-if="doc and 'company_id' in doc">
+                <t t-set="company" t-value="doc.company_id"></t>
+            </t>
+            <t t-if="not doc or not 'company_id' in doc">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+
+            <t t-call="web.external_layout">
+                <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
                 <div class="page" dir="rtl">
-                    <div class="row text-right" style="font-size:20px;line-height:2;word-spacing: 5px;">
+                    <div class="row text-right" style="font-size:22px;line-height:2;word-spacing: 5px;">
 
                         <center>تنازل عن عقد إيجار</center>
                         <br/>
@@ -26,7 +35,7 @@
                                t-esc="doc.order_line[0].property_number.property_address_build.name"/>
 
                             بموجب عقد الإيجار رقم
-                            <b t-esc="doc.name"/>
+                            <b t-esc="doc.company_id"/>
 
                             وتاريخ
                             <b t-esc="doc.get_date_hijri(doc.date_order)"/>
@@ -81,17 +90,18 @@
                         </div>
                     </div>
                     <div class="row text-right">
-                        <div class="col-6">
+                        <div class="col-xs-6">
                             <p>المتنازل</p>
                             <p>الإسم /</p>
                             <p>التوقيع /</p>
                         </div>
-                        <div class="col-6">
+                        <div class="col-xs-6">
                             <p>المتنازل إليه</p>
                             <p>الإسم /</p>
                             <p>التوقيع /</p>
                         </div>
                     </div>
+                    <br/>
                     <div class="row text-right">
                         <div class="col-12">
                             <b>
@@ -99,7 +109,7 @@
                             </b>
                         </div>
                     </div>
-
+                    <br/>
                     <div class="row text-right">
                         <div class="col-12">
                             <b>
@@ -131,17 +141,17 @@
             </t>
         </template>
 
-
         <record id="report_transfer_apratment" model="ir.actions.report">
             <field name="name">Transfer Apartment</field>
             <field name="model">sale.order</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">rent_customize.report_transfer</field>
             <field name="report_file">rent_customize.report_transfer</field>
-            <field name="print_report_name">'Transfer'</field>
+            <field name="print_report_name">'Transfer - %s' % (object.name)</field>
             <field name="binding_model_id" ref="sale.model_sale_order"/>
             <field name="binding_type">report</field>
         </record>
+
 
     </data>
 </odoo>
