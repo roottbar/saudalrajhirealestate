@@ -1,170 +1,132 @@
 <odoo>
     <data>
         <template id="report_transfer_template_apratment">
+            <t t-call="web.basic_layout">
+                <div class="page" dir="rtl">
+                    <div class="row text-right" style="font-size:20px;line-height:2;word-spacing: 5px;">
+
+                        <center>تنازل عن عقد إيجار</center>
+                        <br/>
+                        <para>
+                            انه في يوم ................... وتاريخ    / / 14هـ الموافق
+                            <b t-esc="str(doc.fromdate)[:10]"/>
+                            م أنا (المتنازل)/
+                            <b t-esc="doc.partner_id.name"/>
+                            (هوية وطنية/ إقامة نظامية) رقم
+                            <b t-esc="doc.partner_id.national_id_number"/>
+                            وتاريخ00/00/0000.
+                            الموقع أدناه مستأجر العين رقم
+                            <b t-if="doc.order_line" t-esc="doc.order_line[0].product_id.name"/>
+                            الكائنة في مدينة
+
+                            <b t-if="doc.order_line"
+                               t-esc="doc.order_line[0].property_number.property_address_city.name"/>
+                            حي:
+                            <b t-if="doc.order_line"
+                               t-esc="doc.order_line[0].property_number.property_address_build.name"/>
+
+                            بموجب عقد الإيجار رقم
+                            <b t-esc="doc.name"/>
+
+                            وتاريخ
+                            <b t-esc="doc.get_date_hijri(doc.date_order)"/>
+                            هـ الموافق
+                            <b t-esc="str(doc.fromdate)[:10]"/>
+                            م
+                            والذي يتجدد تلقائيا/لا يتجدد تلقائيا،
+                            قد تنازلت عن عقد ايجار العين المذكورة أعلاه، ومبلغ الإيجار المدفوع عنها إلى
+                            تاريخ
+
+                            <b t-esc="doc.get_date_hijri(doc.transfer_date)"/>
+                            هـ الموافق
+                            <b t-esc="doc.transfer_date"/>
+                            م
+                            بموجب (سند القبض/حوالة) رقم .......... وتاريخ      /      /     14 هـ الموافق..
+                            /.. /... م
+                            والبالغ قدره ....................................... ريال، وكذلك تنازلت عن قيمة
+                            التأمين البالغ قدرها
+                            <b t-esc="doc.apartment_insurance"/>
+                            والمدفوعة حسب (الفاتورة الالكترونية/الحوالة) رقم ............. وتاريخ/ / 14هـ
+                            الموافق.. /.. /... م إلى السيد /
+                            <b t-esc="doc.transfer_customer_id.name"/>
+                            وجنسيته
+                            <b t-esc="doc.transfer_customer_id.country_id.name"/>
+                            بموجب (هوية وطنية / إقامة) رقم
+                            <b t-esc="doc.transfer_customer_id.national_id_number"/>
+
+                            وتاريخ الميلاد       /          /         14هـ وليس لي أو له بعد هذا التنازل
+                            الحق في مطالبة شركة الراجحي العقارية بأية التزامات مالية أو خلافه،
+                            وأصبحت خالي المسئولية وأصبح السيد (المتنازل له) /
+                            <b t-esc="doc.transfer_customer_id.name"/>
+                            <!--                                        <b t-esc="doc.transfer_date"/>-->
+                            مسئولاً مسئوليةً كاملةً عن هذه العين والعقد المشار إليه وملتزماً بكافة شروطه
+                            وبنوده والتزاماته المالية السابقة واللاحقة
+                            وقد استلم العين المذكورة أعلاه وقَبل بها بحالتها الموضحة بمحضر استلامها من
+                            المتنازل علماً بأن هذا التنازل لا يسري مفعوله ولا يعتبر نافذاً إلا بعد اعتماده
+                            بالتوقيع عليه من قبل شركة الراجحي العقارية وإلا اعتبر لا غيا.
+                        </para>
+                        <para>وبعد الرضا والعلم تم التوقيع، تحريراً في
+                            <b t-esc="doc.get_date_hijri(doc.transfer_date)"/>
+                            هـــــــــ الموافق
+                            <b t-esc="doc.transfer_date"/>
+                            م
+                        </para>
+
+                    </div>
+                    <div class="row text-right">
+                        <div class="col-12">
+                            <span>
+                                حرر هذا التنازل من ثلاثة نسخ استلم كل طرف نسخة للعمل بموجبها. والله الموفق
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row text-right">
+                        <div class="col-6">
+                            <p>المتنازل</p>
+                            <p>الإسم /</p>
+                            <p>التوقيع /</p>
+                        </div>
+                        <div class="col-6">
+                            <p>المتنازل إليه</p>
+                            <p>الإسم /</p>
+                            <p>التوقيع /</p>
+                        </div>
+                    </div>
+                    <div class="row text-right">
+                        <div class="col-12">
+                            <b>
+                                وقع المتنازل والمتنازل إليه أمامي بعد مراجعة هوياتهم.
+                            </b>
+                        </div>
+                    </div>
+
+                    <div class="row text-right">
+                        <div class="col-12">
+                            <b>
+                                إدارة العقارات
+                            </b>
+                        </div>
+                    </div>
+                    <div class="row text-right">
+                        <div class="col-6">
+                            <p>مشرف العقار</p>
+                            <p>الإسم /</p>
+                            <p>التوقيع /</p>
+                        </div>
+                        <div class="col-6">
+                            <p>مدير العقار</p>
+                            <p>الإسم /</p>
+                            <p>التوقيع /</p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+        </template>
+        <template id="report_transfer">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
-                    <t t-call="web.basic_layout">
-                        <div class="page" dir="rtl">
-                            <div class="row text-right" style="font-size:20px;line-height:2;word-spacing: 5px;">
-                                <p>
-                                    <center>تنازل عن عقد إيجار</center>
-                                    <br/>
-                                    <para>
-                                        انه في يوم ................... وتاريخ    / / 14هـ الموافق
-                                        <b t-esc="str(doc.fromdate)[:10]"/>
-                                        م أنا (المتنازل)/
-                                        <b t-esc="doc.partner_id.name"/>
-                                        (هوية وطنية/ إقامة نظامية) رقم
-                                        <b t-esc="doc.partner_id.national_id_number"/>
-                                        وتاريخ00/00/0000.
-                                        الموقع أدناه مستأجر العين رقم
-                                        <b t-if="doc.order_line" t-esc="doc.order_line[0].product_id.name"/>
-                                        الكائنة في مدينة
-
-                                        <b t-if="doc.order_line"
-                                           t-esc="doc.order_line[0].property_number.property_address_city.name"/>
-                                        حي:
-                                        <b t-if="doc.order_line"
-                                           t-esc="doc.order_line[0].property_number.property_address_build.name"/>
-
-                                        بموجب عقد الإيجار رقم
-                                        <b t-esc="doc.name"/>
-
-                                        وتاريخ
-                                        <b t-esc="doc.get_date_hijri(doc.date_order)"/>
-                                        هـ الموافق
-                                        <b t-esc="str(doc.fromdate)[:10]"/>
-                                        م
-                                        والذي يتجدد تلقائيا/لا يتجدد تلقائيا،
-                                        قد تنازلت عن عقد ايجار العين المذكورة أعلاه، ومبلغ الإيجار المدفوع عنها إلى
-                                        تاريخ
-
-                                        <b t-esc="doc.get_date_hijri(doc.transfer_date)"/>
-                                        هـ الموافق
-                                        <b t-esc="doc.transfer_date"/>
-                                        م
-                                        بموجب (سند القبض/حوالة) رقم .......... وتاريخ      /      /     14 هـ الموافق..
-                                        /.. /... م
-                                        والبالغ قدره ....................................... ريال، وكذلك تنازلت عن قيمة
-                                        التأمين البالغ قدرها
-                                        <b t-esc="doc.apartment_insurance"/>
-                                        والمدفوعة حسب (الفاتورة الالكترونية/الحوالة) رقم ............. وتاريخ/ / 14هـ
-                                        الموافق.. /.. /... م إلى السيد /
-                                        <b t-esc="doc.transfer_customer_id.name"/>
-                                        وجنسيته
-                                        <b t-esc="doc.transfer_customer_id.country_id.name"/>
-                                        بموجب (هوية وطنية / إقامة) رقم
-                                        <b t-esc="doc.transfer_customer_id.national_id_number"/>
-
-                                        وتاريخ الميلاد       /          /         14هـ وليس لي أو له بعد هذا التنازل
-                                        الحق في مطالبة شركة الراجحي العقارية بأية التزامات مالية أو خلافه،
-                                        وأصبحت خالي المسئولية وأصبح السيد (المتنازل له) /
-                                        <b t-esc="doc.transfer_customer_id.name"/>
-                                        <b t-esc="doc.transfer_date"/>
-                                        مسئولاً مسئوليةً كاملةً عن هذه العين والعقد المشار إليه وملتزماً بكافة شروطه
-                                        وبنوده والتزاماته المالية السابقة واللاحقة
-                                        وقد استلم العين المذكورة أعلاه وقَبل بها بحالتها الموضحة بمحضر استلامها من
-                                        المتنازل علماً بأن هذا التنازل لا يسري مفعوله ولا يعتبر نافذاً إلا بعد اعتماده
-                                        بالتوقيع عليه من قبل شركة الراجحي العقارية وإلا اعتبر لا غيا.
-                                    </para>
-                                    <para>وبعد الرضا والعلم تم التوقيع، تحريراً في
-                                        <b t-esc="doc.get_date_hijri(doc.transfer_date)"/>
-                                        هـــــــــ الموافق
-                                        <b t-esc="doc.transfer_date"/>
-                                        م
-                                    </para>
-                                </p>
-                            </div>
-                            <div class="row text-right">
-                                <div class="col-12">
-                                    <p>
-                                        حرر هذا التنازل من ثلاثة نسخ استلم كل طرف نسخة للعمل بموجبها. والله الموفق
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row text-right">
-                                <div class="col-6">
-                                    <p>المتنازل</p>
-                                    <p>الإسم /</p>
-                                    <p>التوقيع /</p>
-                                </div>
-                                <div class="col-6">
-                                    <p>المتنازل إليه</p>
-                                    <p>الإسم /</p>
-                                    <p>التوقيع /</p>
-                                </div>
-                            </div>
-                            <div class="row text-right">
-                                <div class="col-12">
-                                    <b>
-                                        وقع المتنازل والمتنازل إليه أمامي بعد مراجعة هوياتهم.
-                                    </b>
-                                </div>
-                            </div>
-
-                            <div class="row text-right">
-                                <div class="col-12">
-                                    <b>
-                                        إدارة العقارات
-                                    </b>
-                                </div>
-                            </div>
-                            <div class="row text-right">
-                                <div class="col-6">
-                                    <p>مشرف العقار</p>
-                                    <p>الإسم /</p>
-                                    <p>التوقيع /</p>
-                                </div>
-                                <div class="col-6">
-                                    <p>مدير العقار</p>
-                                    <p>الإسم /</p>
-                                    <p>التوقيع /</p>
-                                </div>
-                            </div>
-                            <!--                            <div class="row" >-->
-                            <!--                                انه في يوم-->
-                            <!--                                ffffff-->
-                            <!--                                وتاريخ / / 14هـ الموافق-->
-                            <!--                                <span t-esc="doc.transfer_date"/>-->
-                            <!--                                م أنا (المتنازل)/-->
-                            <!--                                <span t-esc="doc.partner_id.national_id_number"/>-->
-                            <!--                                (هوية وطنية/ إقامة نظامية) رقم-->
-                            <!--                                وتاريخ00/00/0000. الموقع أدناه-->
-                            <!--                                مستأجر العين رقم ............... الكائنة في مدينة..................حي:-->
-                            <!--                                ................................. بموجب عقد الإيجار-->
-                            <!--                                رقم ............ وتاريخ 00/00/ 000 هـ الموافق 000/000/0000 م والذي يتجدد تلقائيا/لا-->
-                            <!--                                يتجدد-->
-                            <!--                                تلقائيا، قد تنازلت-->
-                            <!--                                عن عقد ايجار العين المذكورة أعلاه، ومبلغ الإيجار المدفوع عنها إلى تاريخ / / 14 هـ-->
-                            <!--                                الموافق-->
-                            <!--                                .../.. /...-->
-                            <!--                                م بموجب (سند القبض/حوالة) رقم .......... وتاريخ / / 14 هـ الموافق.. /.. /... م والبالغ-->
-                            <!--                                قدره-->
-                            <!--                                ....................................... ريال، وكذلك تنازلت عن قيمة التأمين البالغ قدرها-->
-                            <!--                                ............. والمدفوعة حسب-->
-                            <!--                                (الفاتورة الالكترونية/الحوالة) رقم ............. وتاريخ/ / 14هـ الموافق.. /.. /... م إلى-->
-                            <!--                                السيد /-->
-                            <!--                                ..................................................... وجنسيته ................. بموجب-->
-                            <!--                                (هوية-->
-                            <!--                                وطنية / إقامة) رقم-->
-                            <!--                                ...................................... وتاريخ الميلاد / / 14هـ وليس لي أو له بعد هذا-->
-                            <!--                                التنازل-->
-                            <!--                                الحق-->
-                            <!--                                في مطالبة شركة الراجحي العقارية بأية التزامات مالية أو خلافه، وأصبحت خالي المسئولية-->
-                            <!--                                وأصبح-->
-                            <!--                                السيد (المتنازل له)-->
-                            <!--                                / ........................................................... مسئولاً مسئوليةً كاملةً عن-->
-                            <!--                                هذه-->
-                            <!--                                العين والعقد المشار إليه وملتزماً-->
-                            <!--                                بكافة شروطه وبنوده والتزاماته المالية السابقة واللاحقة وقد استلم العين المذكورة أعلاه-->
-                            <!--                                وقَبل-->
-                            <!--                                بها بحالتها الموضحة-->
-                            <!--                                بمحضر استلامها من المتنازل علماً بأن هذا التنازل لا يسري مفعوله ولا يعتبر نافذاً إلا بعد-->
-                            <!--                                اعتماده بالتوقيع عليه من-->
-                            <!--                                قبل شركة الراجحي العقارية وإلا اعتبر لا غيا.-->
-                            <!--                            </div>-->
-                        </div>
-                    </t>
+                    <t t-call="rent_customize.report_transfer_template_apratment" t-lang="doc.partner_id.lang"/>
                 </t>
             </t>
         </template>
@@ -174,8 +136,8 @@
             <field name="name">Transfer Apartment</field>
             <field name="model">sale.order</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">rent_customize.report_transfer_template_apratment</field>
-            <field name="report_file">rent_customize.report_transfer_template_apratment</field>
+            <field name="report_name">rent_customize.report_transfer</field>
+            <field name="report_file">rent_customize.report_transfer</field>
             <field name="print_report_name">'Transfer'</field>
             <field name="binding_model_id" ref="sale.model_sale_order"/>
             <field name="binding_type">report</field>

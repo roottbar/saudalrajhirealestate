@@ -208,7 +208,7 @@
                             attrs="{'invisible':['|', ('rental_status','not in',['sent']), ('state', 'not in', ['sale', 'done'])]}"/>
                     <button name="action_transfer" type="object" class="btn-primary" string="Transfer"
                             attrs="{'invisible':[ ('transferred', '=', True)]}"/>
-                    <button name="print_transfer" type="object" class="btn-primary" string="Transfer"
+                    <button name="print_transfer" type="object" class="btn-primary" string="Print Transfer"
                             attrs="{'invisible':[ ('transferred', '!=', True)]}"/>
 
                     <field name="transferred" invisible="0"/>

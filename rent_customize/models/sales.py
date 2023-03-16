@@ -187,6 +187,7 @@ class SaleOrder(models.Model):
             rec.transfer_context_order.transfer_customer_id = rec.transfer_customer_id.id
             rec.transfer_context_order.transfer_date = rec.transfer_date
             rec.transfer_context_order.transferred = True
+            rec.print_transfer()
     def _prepare_refund_invoice_line(self):
         self.ensure_one()
 
