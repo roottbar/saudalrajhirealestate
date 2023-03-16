@@ -2,12 +2,50 @@
 
 <odoo>
     <data>
+        <record id="rent_sale_order_search_view" model="ir.ui.view">
+            <field name="name">sale.order.line</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="property_address_area" string="الفرع"/>
+                    <field name="property_address_build2" string="المجمع"/>
+                    <field name="property_number" string="العقار"/>
+                    <field name="product_id" string="مكتب"/>
+                    <filter string="الفرع" name="property_address_area" domain="[]" context="{'group_by':'property_address_area'}"/>
+                    <filter string="المجمع" name="property_address_build2" domain="[]" context="{'group_by':'property_address_build2'}"/>
+                    <filter string="العقار" name="property_number" domain="[]" context="{'group_by':'property_number'}"/>
+                    <filter string="مكتب" name="product_id" domain="[]" context="{'group_by':'product_id'}"/>
 
+                </search>
+            </field>
+        </record>
+        <record id="rent_sale_order_tree_view" model="ir.ui.view">
+            <field name="name">sale.order.line</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <tree string="_tree">
+                    <field name="property_address_area"/>
+                    <field name="property_address_build2"/>
+                    <field name="property_number"/>
+                    <field name="product_id"/>
+                    <field name="order_partner_id"/>
+                    <field name="order_id"/>
+                    <field name="unit_state"/>
+                    <field name="amount_paid"/>
+                    <field name="amount_due"/>
+                    <field name="fromdate"/>
+                    <field name="todate"/>
+                    <!--                    <field name="apartment_insurance"/>-->
+                </tree>
+            </field>
+        </record>
         <record model="ir.actions.act_window" id="rent_sale_order_lines">
             <field name="name">الوحدات المؤجرة</field>
             <field name="res_model">sale.order.line</field>
             <field name="type">ir.actions.act_window</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="rent_sale_order_search_view"/>
+            <field name="view_id" ref="rent_sale_order_tree_view"/>
         </record>
         <menuitem name="الوحدات المؤجرة" id="rent_sale_order_lines_menu"
                   parent="sale_renting.rental_order_menu"
