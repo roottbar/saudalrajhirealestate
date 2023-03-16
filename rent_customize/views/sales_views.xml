@@ -81,6 +81,7 @@
                     </sheet>
                     <footer>
                         <button name="do_transfer" type="object" string="Transfer" class="oe_highlight"/>
+                        <button name="do_transfer_and_print" type="object" string="Transfer and print" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
@@ -139,7 +140,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,sale,occupied,termination"/>
                 </xpath>
                 <div class="oe_button_box" position="inside">
-                    <field name="transferred_id" invisible="1" />
+                    <field name="transferred_id" invisible="0" />
                     <field name="new_rental_id" invisible="1" />
                     <button class="oe_stat_button" attrs="{'invisible':[('new_rental_id', '=', False)]}"
                             name="action_view_transfer" type="object" icon="fa-building-o">

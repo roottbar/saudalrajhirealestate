@@ -216,6 +216,10 @@ class SaleOrder(models.Model):
             # rec.transfer_context_order.transfer_customer_id = rec.transfer_customer_id.id
             # rec.transfer_context_order.transfer_date = rec.transfer_date
             rec.transferred = True
+
+    def do_transfer_and_print(self):
+        for rec in self:
+            rec.do_transfer()
             rec.print_transfer()
     def _prepare_refund_invoice_line(self):
         self.ensure_one()
@@ -240,9 +244,11 @@ class SaleOrder(models.Model):
         return res
 
     def print_transfer(self):
-        print("00000000000000000000000000000000000",self)
-        print("00000000000000000000000000000000000",self.company_id)
-        print("00000000000000000000000000000000000",self.company_id.company_registry)
+        data = {
+            'model': 'sale.order',
+            'form': self.read()[0]
+        }
+        print("datadatadatadatadatadata", data)
         return self.env.ref('rent_customize.report_transfer_apratment').report_action(self)
 
 
