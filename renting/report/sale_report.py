@@ -10,7 +10,7 @@ class SaleReport(models.Model):
     property_id = fields.Many2one('rent.property', string='عقارات', readonly=True)
     property_state_id = fields.Char(string='حالة العقار')
     property_address_build = fields.Many2one('rent.property.build', string='المجمع')
-    property_address_city = fields.Many2one('rent.property.city',string='المدينة')
+    property_address_city = fields.Many2one('rent.property.city', string='المدينة')
     country = fields.Many2one('res.country', string='الدولة')
 
     def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
