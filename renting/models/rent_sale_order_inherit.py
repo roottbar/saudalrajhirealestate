@@ -356,8 +356,7 @@ class RentSaleOrderLine(models.Model):
     @api.depends('order_id', 'product_id')
     def get_amount_paid(self):
         for rec in self:
-            rec.amount_paid = sum(
-                ll.amount_total for ll in rec.order_id.invoice_ids.filtered(lambda line: line.payment_state == 'paid'))
+            rec.amount_paid = sum(ll.amount_total for ll in rec.order_id.invoice_ids.filtered(lambda line: line.payment_state == 'paid'))
             rec.amount_due = sum(rec.order_id.order_line[0].price_unit / ll.sale_order_id.invoice_number for ll in
                                  rec.order_id.order_contract_invoice.filtered(lambda line: line.status == 'uninvoiced')
                                  )if rec.order_id.order_line else 0.0

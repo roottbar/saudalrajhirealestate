@@ -2,6 +2,20 @@
 
 <odoo>
     <data>
+        <record id="renting_product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="amount_paid" />
+                    <field name="amount_due" />
+                    <field name="fromdate" />
+                    <field name="todate" />
+                    <field name="last_sale_id" />
+                </xpath>
+            </field>
+        </record>
         <record model="ir.ui.view" id="product_template_search_inherit">
             <field name="name">product.template.search</field>
             <field name="model">product.template</field>

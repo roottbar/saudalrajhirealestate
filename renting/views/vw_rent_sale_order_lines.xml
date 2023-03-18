@@ -51,5 +51,10 @@
                   parent="sale_renting.rental_order_menu"
                   action="rent_sale_order_lines"
                   sequence="2"/>
+        <menuitem id="rent_sale_order_lines_menu2" name="الوحدات المؤجرة"
+                  parent="sale_renting.menu_rental_reporting"
+                  sequence="5"
+                  action="rent_sale_order_lines"/>
+
     </data>
 </odoo>
