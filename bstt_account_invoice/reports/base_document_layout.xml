@@ -4,8 +4,13 @@
         <!-- report qweb view -->
 
         <template id="external_layout_standard" inherit_id="web.external_layout_standard">
-            <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']"
-                   position="replace">
+            <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']" position="replace">
+                <div class="text-center" style="border-top: 1px solid black;display:none">
+                    <ul class="list-inline mb4">
+                        <div t-field="company.report_footer"/>
+                    </ul>
+                </div>
+
                 <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
                     <div class="text-center" style="font-size: small;border-top: 1px solid black;">
                         <ul class="list-inline mb4">
