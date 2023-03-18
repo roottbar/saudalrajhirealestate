@@ -12,7 +12,7 @@
     'author': "Ibrahim Abdullatif",
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale_renting','sale_operating_unit','analytic','account_asset','l10n_gcc_invoice',],
+    'depends': ['base', 'sale_renting','sale_operating_unit','analytic','account_asset','l10n_gcc_invoice','product'],
 
     # always loaded
     'data': [
@@ -32,6 +32,7 @@
         'views/vw_rent_config_unit_purposes.xml',
         'views/vw_rent_res_partner_inherit.xml',
         'views/vw_rent_product_inherit.xml',
+        'views/vw_rent_product.xml',
         'views/vw_rent_property.xml',
         'views/vw_rent_property_elevator.xml',
         'views/vw_rent_property_maintenance.xml',
