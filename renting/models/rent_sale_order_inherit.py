@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from dateutil.relativedelta import relativedelta
-from odoo import models, fields, api, _
 from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
+
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
@@ -328,11 +330,14 @@ class RentSaleOrderLine(models.Model):
     contract_service_sub_fees = fields.Float(string='رسوم الخدمات خاضعة')
     fromdate = fields.Datetime(related="order_id.fromdate", store=1)
     todate = fields.Datetime(related="order_id.todate", store=1)
+
     def search_property_address_area(self, operator, value):
         return [('property_address_area', 'ilike', value)]
 
-    property_address_area = fields.Many2one(comodel_name='operating.unit', string='الفرع', compute="get_property_number_fields", store=1)
-    property_address_build2 = fields.Many2one(comodel_name='rent.property.build', string='المجمع',related="property_number.property_address_build",  store=1)
+    property_address_area = fields.Many2one(comodel_name='operating.unit', string='الفرع',
+                                            compute="get_property_number_fields", store=1)
+    property_address_build2 = fields.Many2one(comodel_name='rent.property.build', string='المجمع',
+                                              related="property_number.property_address_build", store=1)
     # property_address_build = fields.Many2one(comodel_name='rent.property.build', string='المجمع',compute="get_property_number_fields2", store=1)
     # property_number = fields.Many2one(comodel_name='rent.property', string='العقار')
     partner_id = fields.Many2one(related='order_id.partner_id')
@@ -341,6 +346,7 @@ class RentSaleOrderLine(models.Model):
     def get_property_number_fields(self):
         for rec in self:
             rec.property_address_area = rec.property_number.property_address_area.id if rec.property_number else False
+
     # @api.depends('property_number')
     # def get_property_number_fields2(self):
     #     for rec in self:
@@ -349,17 +355,16 @@ class RentSaleOrderLine(models.Model):
     unit_state = fields.Char(related='product_id.unit_state', store=1)
     amount_paid = fields.Float(compute="get_amount_paid")
     amount_due = fields.Float(compute="get_amount_paid")
-    fromdate = fields.Datetime(related="order_id.fromdate")
-    todate = fields.Datetime(related="order_id.todate")
 
     # apartment_insurance = fields.Float(related='order_id.apartment_insurance')
     @api.depends('order_id', 'product_id')
     def get_amount_paid(self):
         for rec in self:
-            rec.amount_paid = sum(ll.amount_total for ll in rec.order_id.invoice_ids.filtered(lambda line: line.payment_state == 'paid'))
+            rec.amount_paid = sum(
+                ll.amount_total for ll in rec.order_id.invoice_ids.filtered(lambda line: line.payment_state == 'paid'))
             rec.amount_due = sum(rec.order_id.order_line[0].price_unit / ll.sale_order_id.invoice_number for ll in
                                  rec.order_id.order_contract_invoice.filtered(lambda line: line.status == 'uninvoiced')
-                                 )if rec.order_id.order_line else 0.0
+                                 ) if rec.order_id.order_line else 0.0
 
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
     def _compute_amount(self):

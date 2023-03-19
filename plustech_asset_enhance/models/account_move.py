@@ -140,7 +140,7 @@ class AccountMove(models.Model):
                 asset.message_post(body=msg)
                 # Abdulrhman Change
                 asset.set_to_draft()
-                asset.prorata_date = self.invoice_date
+                asset.prorata_date = self.fromdate or self.invoice_date
                 asset.compute_depreciation_board()
                 # asset.validate()
 
