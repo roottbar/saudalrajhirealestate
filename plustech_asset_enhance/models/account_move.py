@@ -22,6 +22,28 @@ class AccountMove(models.Model):
 
     renting_attachment_ids = fields.Many2many(comodel_name='ir.attachment', relation="sale_attachment_rel",
                                               string='Attachments', compute="get_sale_attachment")
+    renting_id = fields.Many2one('sale.order', compute="get_renting_id")
+    invoice_months = fields.Integer(compute="get_months")
+
+    @api.depends('fromdate', 'todate')
+    def get_months(self):
+        for rec in self:
+            months = 0
+            print(rec.fromdate, "=========== ", rec.todate)
+            if rec.fromdate and rec.todate:
+                date1 = datetime.strptime(str(rec.fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(rec.todate)[:10], '%Y-%m-%d')
+                difference = relativedelta(date2, date1)
+                months = difference.months + 12 * difference.years
+                if difference.days > 0:
+                    months += 1
+            rec.invoice_months = months
+
+    @api.depends('invoice_origin')
+    def get_renting_id(self):
+        for rec in self:
+            rent_id = self.env['sale.order'].sudo().search([('name', '=', rec.invoice_origin)],limit=1)
+            rec.renting_id = rent_id.id if rent_id else False
 
     @api.depends('invoice_origin')
     def get_sale_attachment(self):
@@ -141,44 +163,106 @@ class AccountMove(models.Model):
         res = super(AccountMove, self).action_post()
         for rec in self:
             for line in rec.asset_ids:
-                if rec.rent_sale_line_id:
-                    for dep in line.depreciation_move_ids.sorted(reverse=False):
-                        dep.button_draft()
-                        dep.unlink()
-                    line.set_to_running()
-                    line.set_to_draft()
-                    date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
-                    date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
-                    difference = relativedelta(date2, date1)
-                    months = difference.months + 12 * difference.years
-                    if difference.days > 0:
-                        months += 1
-                    line.model_id.method_number = math.floor(
-                        months / rec.rent_sale_line_id.sale_order_id.invoice_number)
-                    line.method_number = math.floor(months / rec.rent_sale_line_id.sale_order_id.invoice_number)
-                    line.prorata = True
-                    line.prorata_date = line.acquisition_date
-                    line.prorata_date = self.fromdate or self.invoice_date
-                    line.compute_depreciation_board()
-                    line.validate()
+                for dep in line.depreciation_move_ids.sorted(reverse=False):
+                    dep.button_draft()
+                    dep.unlink()
+                line.set_to_running()
+                line.set_to_draft()
+                date1 = datetime.strptime(str(rec.fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(rec.todate)[:10], '%Y-%m-%d')
+                difference = relativedelta(date2, date1)
+                months = difference.months + 12 * difference.years
+                if difference.days > 0:
+                    months += 1
+                print(rec.fromdate, "XXXXXXXXXXXXXXXXXmionnnnnnnXXXXXXXXxXx", rec.todate)
+                print(months)
+                line.model_id.method_number = math.floor(months)
+                line.method_number = math.floor(months)
+                line.prorata = True
+                line.prorata_date = line.acquisition_date
+                line.prorata_date = self.fromdate or self.invoice_date
+                line.compute_depreciation_board()
+                line.validate()
 
-                else:
-                    for dep in line.depreciation_move_ids:
-                        dep.button_draft()
-                        dep.unlink()
-                    line.set_to_running()
-                    line.set_to_draft()
-                    date1 = datetime.strptime(str(rec.temp_sale_order_id.fromdate)[:10], '%Y-%m-%d')
-                    date2 = datetime.strptime(str(rec.temp_sale_order_id.todate)[:10], '%Y-%m-%d')
-                    difference = relativedelta(date2, date1)
-                    months = difference.months + 12 * difference.years
-                    if difference.days > 0:
-                        months += 1
-                    line.model_id.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
-                    line.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
-                    line.prorata_date = line.acquisition_date
-                    line.prorata_date = self.fromdate or self.invoice_date
-                    line.compute_depreciation_board()
-                    line.validate()
+                # if rec.rent_sale_line_id:
+                #     for dep in line.depreciation_move_ids.sorted(reverse=False):
+                #         dep.button_draft()
+                #         dep.unlink()
+                #     line.set_to_running()
+                #     line.set_to_draft()
+                #     date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                #     date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+                #     difference = relativedelta(date2, date1)
+                #     months = difference.months + 12 * difference.years
+                #     if difference.days > 0:
+                #         months += 1
+                #     line.model_id.method_number = math.floor(
+                #         months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                #     line.method_number = math.floor(months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                #     line.prorata = True
+                #     line.prorata_date = line.acquisition_date
+                #     line.prorata_date = self.fromdate or self.invoice_date
+                #     line.compute_depreciation_board()
+                #     line.validate()
+                #
+                # else:
+                #     for dep in line.depreciation_move_ids:
+                #         dep.button_draft()
+                #         dep.unlink()
+                #     line.set_to_running()
+                #     line.set_to_draft()
+                #     date1 = datetime.strptime(str(rec.temp_sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                #     date2 = datetime.strptime(str(rec.temp_sale_order_id.todate)[:10], '%Y-%m-%d')
+                #     difference = relativedelta(date2, date1)
+                #     months = difference.months + 12 * difference.years
+                #     if difference.days > 0:
+                #         months += 1
+                #     line.model_id.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
+                #     line.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
+                #     line.prorata_date = line.acquisition_date
+                #     line.prorata_date = self.fromdate or self.invoice_date
+                #     line.compute_depreciation_board()
+                #     line.validate()
 
         return res
+
+
+
+    def fix_deferreds(self):
+        # deferreds = self.env["account.asset"].search(
+        #     [("state", "!=", "model"), ("asset_type", "=", "sale")]
+        # )
+        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        invoices = self
+        deferreds = self.asset_ids
+        deferreds.depreciation_move_ids.button_draft()
+        deferreds.depreciation_move_ids.unlink()
+        deferreds.set_to_draft()
+        deferreds.unlink()
+        # invoices[0].get_temp_sale_order_id()
+        for invoice in invoices:
+            invoice._auto_create_asset()
+            invoice.env.cr.commit()
+            print("XXXXXXXXXXXXXXXXXXX ", invoice.asset_ids)
+            for line in invoice.asset_ids:
+                for dep in line.depreciation_move_ids.sorted(reverse=False):
+                    dep.button_draft()
+                    dep.unlink()
+                line.set_to_running()
+                line.set_to_draft()
+                date1 = datetime.strptime(str(invoice.fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(invoice.todate)[:10], '%Y-%m-%d')
+                difference = relativedelta(date2, date1)
+                months = difference.months + 12 * difference.years
+                if difference.days > 0:
+                    months += 1
+                print(invoice.fromdate, "XXXXXXXXXXXXXXXXXmionnnnnnnXXXXXXXXxXx", invoice.todate)
+                print(months)
+                line.model_id.method_number = math.floor(months)
+                line.method_number = math.floor(months)
+                line.prorata = True
+                line.prorata_date = line.acquisition_date
+                line.prorata_date = invoice.fromdate or invoice.invoice_date
+                line.compute_depreciation_board()
+                line.validate()
+        print("PPPPPPPPPPPPPPPPPPPPPPPPPPP")

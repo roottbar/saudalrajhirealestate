@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import math
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from odoo import models, fields, _
 
 
 class AssetLocation(models.Model):
