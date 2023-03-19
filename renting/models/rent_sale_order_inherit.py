@@ -355,8 +355,6 @@ class RentSaleOrderLine(models.Model):
     unit_state = fields.Char(related='product_id.unit_state', store=1)
     amount_paid = fields.Float(compute="get_amount_paid")
     amount_due = fields.Float(compute="get_amount_paid")
-    fromdate = fields.Datetime(related="order_id.fromdate")
-    todate = fields.Datetime(related="order_id.todate")
 
     # apartment_insurance = fields.Float(related='order_id.apartment_insurance')
     @api.depends('order_id', 'product_id')
