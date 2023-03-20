@@ -117,7 +117,6 @@ class AccountMove(models.Model):
                     #     months += 1
 
 
-
                     # date1 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
                     # date2 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
                     # difference = relativedelta(date2, date1)
@@ -158,9 +157,13 @@ class AccountMove(models.Model):
                 asset.message_post(body=msg)
                 # Abdulrhman Change
                 asset.set_to_draft()
-                asset.prorata_date = self.fromdate or self.invoice_date
+                asset.model_id.method_number = math.floor(months)
+                asset.method_number = math.floor(months)
+                asset.prorata = True
+                asset.prorata_date = invoice.fromdate or invoice.invoice_date
+                asset.acquisition_date = invoice.fromdate or invoice.invoice_date
                 asset.compute_depreciation_board()
-                # asset.validate()
+                asset.validate()
 
         assets.validate()
         # if last > 0:
@@ -249,20 +252,15 @@ class AccountMove(models.Model):
 
 
     def fix_defe(self):
+
         invoice_ids = self
-        count = 0
         for rec in invoice_ids:
-            count += 1
-            print("======================================>", count)
-            print(">>>>>>>>>>>> ", rec.asset_ids)
             for ddd in rec.asset_ids:
                 ddd.unlink_lines()
                 ddd.unlink()
         for invoice in invoice_ids:
             invoice._auto_create_asset()
             invoice.env.cr.commit()
-            count += 1
-            print("countcountcountcountcount", count)
             for line in invoice.asset_ids:
                 line.unlink_lines()
                 line.set_to_running()
@@ -291,7 +289,7 @@ class AccountMove(models.Model):
             # )
             invoice_ids = self.env['account.move'].search([('temp_sale_order_id', '!=', False)])
             for invoice  in invoice_ids:
-                print("Invoiceeeeee", invoice)
+                print(invoice.asset_remaining_valuem, "Invoiceeeeee", invoice)
                 if invoice.state == 'posted':
                     print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", invoice)
                     invoice.fix_defe()
