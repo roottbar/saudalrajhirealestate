@@ -291,5 +291,7 @@ class AccountMove(models.Model):
             for invoice  in invoice_ids:
                 print(invoice.asset_remaining_value, "Invoiceeeeee", invoice)
                 if invoice.state == 'posted':
+
                     print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", invoice)
+
                     invoice.fix_defe()
