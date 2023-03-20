@@ -31,12 +31,17 @@ class AccountMove(models.Model):
             months = 0
             print(rec.fromdate, "=========== ", rec.todate)
             if rec.fromdate and rec.todate:
-                date1 = datetime.strptime(str(rec.fromdate)[:10], '%Y-%m-%d')
-                date2 = datetime.strptime(str(rec.todate)[:10], '%Y-%m-%d')
+                fromdate = rec.fromdate.replace(day=1)
+                todateMonth = rec.todate.month
+                todate = rec.todate.replace(day=28)
+                # todate = rec.todate.replace(month=todateMonth+1, day=1)
+                print(fromdate, "=========== ", todate)
+                date1 = datetime.strptime(str(fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
                 difference = relativedelta(date2, date1)
                 months = difference.months + 12 * difference.years
-                if difference.days > 0:
-                    months += 1
+                # if difference.days > 0:
+                #     months += 1
             rec.invoice_months = months
 
     @api.depends('invoice_origin')
@@ -100,7 +105,19 @@ class AccountMove(models.Model):
                         'state': 'draft',
                     }
                     model_id = move_line.account_id.asset_model
-                    #
+                    fromdate = self.fromdate.replace(day=1)
+                    todateMonth = self.todate.month
+                    # todate = self.todate.replace(month=todateMonth + 1, day=1)
+                    todate = self.todate.replace(day=28)
+                    date1 = datetime.strptime(str(fromdate)[:10], '%Y-%m-%d')
+                    date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
+                    difference = relativedelta(date2, date1)
+                    months = difference.months + 12 * difference.years
+                    # if difference.days > 0:
+                    #     months += 1
+
+
+
                     # date1 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
                     # date2 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
                     # difference = relativedelta(date2, date1)
@@ -126,6 +143,7 @@ class AccountMove(models.Model):
             if 'model_id' in vals:
                 asset.prorata = True
                 asset.prorata_date = asset.acquisition_date
+
                 asset._onchange_model_id()
                 if validate:
                     asset.validate()
@@ -163,23 +181,25 @@ class AccountMove(models.Model):
         res = super(AccountMove, self).action_post()
         for rec in self:
             for line in rec.asset_ids:
-                for dep in line.depreciation_move_ids.sorted(reverse=False):
-                    dep.button_draft()
-                    dep.unlink()
+                if line.depreciation_move_ids:
+                    for dep in line.depreciation_move_ids.sorted(reverse=False):
+                        dep.button_draft()
+                        dep.unlink()
                 line.set_to_running()
                 line.set_to_draft()
                 date1 = datetime.strptime(str(rec.fromdate)[:10], '%Y-%m-%d')
                 date2 = datetime.strptime(str(rec.todate)[:10], '%Y-%m-%d')
                 difference = relativedelta(date2, date1)
                 months = difference.months + 12 * difference.years
-                if difference.days > 0:
-                    months += 1
+                # if difference.days > 0:
+                #     months += 1
                 print(rec.fromdate, "XXXXXXXXXXXXXXXXXmionnnnnnnXXXXXXXXxXx", rec.todate)
                 print(months)
                 line.model_id.method_number = math.floor(months)
                 line.method_number = math.floor(months)
                 line.prorata = True
                 line.prorata_date = line.acquisition_date
+                line.acquisition_date = self.fromdate or self.invoice_date
                 line.prorata_date = self.fromdate or self.invoice_date
                 line.compute_depreciation_board()
                 line.validate()
@@ -228,41 +248,51 @@ class AccountMove(models.Model):
 
 
 
-    def fix_deferreds(self):
-        # deferreds = self.env["account.asset"].search(
-        #     [("state", "!=", "model"), ("asset_type", "=", "sale")]
-        # )
-        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        invoices = self
-        deferreds = self.asset_ids
-        deferreds.depreciation_move_ids.button_draft()
-        deferreds.depreciation_move_ids.unlink()
-        deferreds.set_to_draft()
-        deferreds.unlink()
-        # invoices[0].get_temp_sale_order_id()
-        for invoice in invoices:
+    def fix_defe(self):
+        invoice_ids = self
+        count = 0
+        for rec in invoice_ids:
+            count += 1
+            count += 1
+            print("======================================>", count)
+            print(">>>>>>>>>>>> ", rec.asset_ids)
+            for ddd in rec.asset_ids:
+                ddd.unlink_lines()
+                ddd.unlink()
+        for invoice in invoice_ids:
             invoice._auto_create_asset()
             invoice.env.cr.commit()
-            print("XXXXXXXXXXXXXXXXXXX ", invoice.asset_ids)
+            count += 1
+            print("countcountcountcountcount", count)
             for line in invoice.asset_ids:
-                for dep in line.depreciation_move_ids.sorted(reverse=False):
-                    dep.button_draft()
-                    dep.unlink()
+                line.unlink_lines()
                 line.set_to_running()
                 line.set_to_draft()
-                date1 = datetime.strptime(str(invoice.fromdate)[:10], '%Y-%m-%d')
-                date2 = datetime.strptime(str(invoice.todate)[:10], '%Y-%m-%d')
+                fromdate = invoice.fromdate.replace(day=1)
+                todateMonth = invoice.todate.month
+                # todate = invoice.todate.replace(month=todateMonth + 1, day=1)
+                todate = invoice.todate.replace(day=28)
+                date1 = datetime.strptime(str(fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
                 difference = relativedelta(date2, date1)
                 months = difference.months + 12 * difference.years
-                if difference.days > 0:
-                    months += 1
-                print(invoice.fromdate, "XXXXXXXXXXXXXXXXXmionnnnnnnXXXXXXXXxXx", invoice.todate)
-                print(months)
                 line.model_id.method_number = math.floor(months)
                 line.method_number = math.floor(months)
                 line.prorata = True
                 line.prorata_date = line.acquisition_date
                 line.prorata_date = invoice.fromdate or invoice.invoice_date
+                line.acquisition_date = invoice.fromdate or invoice.invoice_date
                 line.compute_depreciation_board()
                 line.validate()
-        print("PPPPPPPPPPPPPPPPPPPPPPPPPPP")
+
+
+    def fix_deferreds(self):
+            # deferreds = self.env["account.asset"].search(
+            #     [("state", "!=", "model"), ("asset_type", "=", "sale")]
+            # )
+            invoice_ids = self.env['account.move'].search([('temp_sale_order_id', '!=', False)])
+            for invoice  in invoice_ids:
+                print("Invoiceeeeee", invoice)
+                if invoice.state == 'posted':
+                    print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", invoice)
+                    invoice.fix_defe()
