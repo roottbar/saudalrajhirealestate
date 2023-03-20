@@ -163,9 +163,9 @@ class AccountMove(models.Model):
                 asset.prorata_date = invoice.fromdate or invoice.invoice_date
                 asset.acquisition_date = invoice.fromdate or invoice.invoice_date
                 asset.compute_depreciation_board()
-                asset.validate()
+                # asset.validate()
 
-        assets.validate()
+        # assets.validate()
         # if last > 0:
         #     asset.model_id.method_number = last
 
@@ -205,7 +205,7 @@ class AccountMove(models.Model):
                 line.acquisition_date = self.fromdate or self.invoice_date
                 line.prorata_date = self.fromdate or self.invoice_date
                 line.compute_depreciation_board()
-                line.validate()
+                # line.validate()
 
                 # if rec.rent_sale_line_id:
                 #     for dep in line.depreciation_move_ids.sorted(reverse=False):
@@ -280,7 +280,7 @@ class AccountMove(models.Model):
                 line.prorata_date = invoice.fromdate or invoice.invoice_date
                 line.acquisition_date = invoice.fromdate or invoice.invoice_date
                 line.compute_depreciation_board()
-                line.validate()
+                # line.validate()
 
 
     def fix_deferreds(self):
