@@ -289,7 +289,7 @@ class AccountMove(models.Model):
             # )
             invoice_ids = self.env['account.move'].search([('temp_sale_order_id', '!=', False)])
             for invoice  in invoice_ids:
-                print(invoice.asset_remaining_valuem, "Invoiceeeeee", invoice)
+                print(invoice.asset_remaining_value "Invoiceeeeee", invoice)
                 if invoice.state == 'posted':
                     print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", invoice)
                     invoice.fix_defe()
