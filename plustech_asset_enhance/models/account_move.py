@@ -163,8 +163,8 @@ class AccountMove(models.Model):
                 # asset.validate()
 
         assets.validate()
-        if last > 0:
-            asset.model_id.method_number = last
+        # if last > 0:
+        #     asset.model_id.method_number = last
 
         return assets
 
@@ -252,7 +252,6 @@ class AccountMove(models.Model):
         invoice_ids = self
         count = 0
         for rec in invoice_ids:
-            count += 1
             count += 1
             print("======================================>", count)
             print(">>>>>>>>>>>> ", rec.asset_ids)
