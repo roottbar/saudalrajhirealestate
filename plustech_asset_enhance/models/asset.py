@@ -20,6 +20,8 @@ class AccountAsset(models.Model):
 
 
     def unlink_lines(self):
-        for line in self.depreciation_move_ids:
-            line.button_draft()
-            line.unlink()
+        for rec in self:
+            for line in rec.depreciation_move_ids:
+                line.button_draft()
+                line.unlink()
+            rec.set_to_draft()
