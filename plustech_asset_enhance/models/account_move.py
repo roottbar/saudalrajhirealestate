@@ -291,7 +291,21 @@ class AccountMove(models.Model):
             for invoice  in invoice_ids:
                 print(invoice.asset_remaining_value, "Invoiceeeeee", invoice)
                 if invoice.state == 'posted':
-
                     print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", invoice)
-
                     invoice.fix_defe()
+
+
+# def fix_deferreds():
+#     deferreds = self.env["account.asset"].search([
+#         ('asset_type', '=', 'sale'),
+#         ('state', 'not in', ['model', 'open', 'close']),
+#         ('parent_id', '=', False),
+#         ("id", "not in", [4077, 4079])]
+#     )
+#     for line in deferreds:
+#         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", line)
+#         line.validate()
+#         line.env.cr.commit()
+
+
+
