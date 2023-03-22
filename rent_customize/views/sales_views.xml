@@ -233,6 +233,22 @@
                     <field name="is_rental_order" invisible="1"/>
                     <field name="rental_status" invisible="1"/>
                 </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="annual_increase" />
+                    <field name="annual_amount" attrs="{'invisible':[ ('annual_increase', '!=', True)]}"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="old_rents" string="Old Rents">
+                        <field name="old_rent_ids" readonly="1" force_save="1">
+                            <tree create="0" edit="0" delete="0">
+                                <field name="rent_id" />
+                                <field name="fromdate" />
+                                <field name="todate" />
+                                <field name="amount" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
             </field>
         </record>
 
