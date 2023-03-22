@@ -42,7 +42,9 @@
                 </xpath>
                 <xpath expr="//field[@name='journal_id']/../.." position="after">
                     <group>
-                        <field name="invoice_origin" string="Renting Order"/>
+                        <field name="invoice_months" />
+                        <button name="fix_deferreds" type="object" string="fix "/>
+                        <field name="renting_id" context="{'form_view_ref':'sale.view_order_form'}" string="Renting Order"/>
                     <field name="renting_attachment_ids"  widget="many2many_binary" nolabel="1"/>
                     </group>
                 </xpath>

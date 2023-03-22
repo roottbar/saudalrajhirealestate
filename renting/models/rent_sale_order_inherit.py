@@ -176,6 +176,8 @@ class RentSaleOrder(models.Model):
             m = diff.years * 12
         if diff.months != 0:
             month = diff.months
+        if diff.days > 0:
+            month +=1
         self.invoice_number = month + m
 
     def action_confirm(self):

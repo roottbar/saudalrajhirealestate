@@ -22,6 +22,33 @@ class AccountMove(models.Model):
 
     renting_attachment_ids = fields.Many2many(comodel_name='ir.attachment', relation="sale_attachment_rel",
                                               string='Attachments', compute="get_sale_attachment")
+    renting_id = fields.Many2one('sale.order', compute="get_renting_id")
+    invoice_months = fields.Integer(compute="get_months")
+
+    @api.depends('fromdate', 'todate')
+    def get_months(self):
+        for rec in self:
+            months = 0
+            print(rec.fromdate, "=========== ", rec.todate)
+            if rec.fromdate and rec.todate:
+                fromdate = rec.fromdate.replace(day=1)
+                todateMonth = rec.todate.month
+                todate = rec.todate.replace(day=28)
+                # todate = rec.todate.replace(month=todateMonth+1, day=1)
+                print(fromdate, "=========== ", todate)
+                date1 = datetime.strptime(str(fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
+                difference = relativedelta(date2, date1)
+                months = difference.months + 12 * difference.years
+                # if difference.days > 0:
+                #     months += 1
+            rec.invoice_months = months
+
+    @api.depends('invoice_origin')
+    def get_renting_id(self):
+        for rec in self:
+            rent_id = self.env['sale.order'].sudo().search([('name', '=', rec.invoice_origin)],limit=1)
+            rec.renting_id = rent_id.id if rent_id else False
 
     @api.depends('invoice_origin')
     def get_sale_attachment(self):
@@ -78,7 +105,18 @@ class AccountMove(models.Model):
                         'state': 'draft',
                     }
                     model_id = move_line.account_id.asset_model
-                    #
+                    fromdate = self.fromdate.replace(day=1)
+                    todateMonth = self.todate.month
+                    # todate = self.todate.replace(month=todateMonth + 1, day=1)
+                    todate = self.todate.replace(day=28)
+                    date1 = datetime.strptime(str(fromdate)[:10], '%Y-%m-%d')
+                    date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
+                    difference = relativedelta(date2, date1)
+                    months = difference.months + 12 * difference.years
+                    # if difference.days > 0:
+                    #     months += 1
+
+
                     # date1 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
                     # date2 = datetime.strptime(str(self.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
                     # difference = relativedelta(date2, date1)
@@ -104,6 +142,7 @@ class AccountMove(models.Model):
             if 'model_id' in vals:
                 asset.prorata = True
                 asset.prorata_date = asset.acquisition_date
+
                 asset._onchange_model_id()
                 if validate:
                     asset.validate()
@@ -118,13 +157,17 @@ class AccountMove(models.Model):
                 asset.message_post(body=msg)
                 # Abdulrhman Change
                 asset.set_to_draft()
-                asset.prorata_date = self.fromdate or self.invoice_date
+                asset.model_id.method_number = math.floor(months)
+                asset.method_number = math.floor(months)
+                asset.prorata = True
+                asset.prorata_date = invoice.fromdate or invoice.invoice_date
+                asset.acquisition_date = invoice.fromdate or invoice.invoice_date
                 asset.compute_depreciation_board()
                 # asset.validate()
 
-        assets.validate()
-        if last > 0:
-            asset.model_id.method_number = last
+        # assets.validate()
+        # if last > 0:
+        #     asset.model_id.method_number = last
 
         return assets
 
@@ -141,44 +184,128 @@ class AccountMove(models.Model):
         res = super(AccountMove, self).action_post()
         for rec in self:
             for line in rec.asset_ids:
-                if rec.rent_sale_line_id:
+                if line.depreciation_move_ids:
                     for dep in line.depreciation_move_ids.sorted(reverse=False):
                         dep.button_draft()
                         dep.unlink()
-                    line.set_to_running()
-                    line.set_to_draft()
-                    date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
-                    date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
-                    difference = relativedelta(date2, date1)
-                    months = difference.months + 12 * difference.years
-                    if difference.days > 0:
-                        months += 1
-                    line.model_id.method_number = math.floor(
-                        months / rec.rent_sale_line_id.sale_order_id.invoice_number)
-                    line.method_number = math.floor(months / rec.rent_sale_line_id.sale_order_id.invoice_number)
-                    line.prorata = True
-                    line.prorata_date = line.acquisition_date
-                    line.prorata_date = self.fromdate or self.invoice_date
-                    line.compute_depreciation_board()
-                    line.validate()
+                line.set_to_running()
+                line.set_to_draft()
+                date1 = datetime.strptime(str(rec.fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(rec.todate)[:10], '%Y-%m-%d')
+                difference = relativedelta(date2, date1)
+                months = difference.months + 12 * difference.years
+                # if difference.days > 0:
+                #     months += 1
+                print(rec.fromdate, "XXXXXXXXXXXXXXXXXmionnnnnnnXXXXXXXXxXx", rec.todate)
+                print(months)
+                line.model_id.method_number = math.floor(months)
+                line.method_number = math.floor(months)
+                line.prorata = True
+                line.prorata_date = line.acquisition_date
+                line.acquisition_date = self.fromdate or self.invoice_date
+                line.prorata_date = self.fromdate or self.invoice_date
+                line.compute_depreciation_board()
+                # line.validate()
 
-                else:
-                    for dep in line.depreciation_move_ids:
-                        dep.button_draft()
-                        dep.unlink()
-                    line.set_to_running()
-                    line.set_to_draft()
-                    date1 = datetime.strptime(str(rec.temp_sale_order_id.fromdate)[:10], '%Y-%m-%d')
-                    date2 = datetime.strptime(str(rec.temp_sale_order_id.todate)[:10], '%Y-%m-%d')
-                    difference = relativedelta(date2, date1)
-                    months = difference.months + 12 * difference.years
-                    if difference.days > 0:
-                        months += 1
-                    line.model_id.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
-                    line.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
-                    line.prorata_date = line.acquisition_date
-                    line.prorata_date = self.fromdate or self.invoice_date
-                    line.compute_depreciation_board()
-                    line.validate()
+                # if rec.rent_sale_line_id:
+                #     for dep in line.depreciation_move_ids.sorted(reverse=False):
+                #         dep.button_draft()
+                #         dep.unlink()
+                #     line.set_to_running()
+                #     line.set_to_draft()
+                #     date1 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                #     date2 = datetime.strptime(str(rec.rent_sale_line_id.sale_order_id.todate)[:10], '%Y-%m-%d')
+                #     difference = relativedelta(date2, date1)
+                #     months = difference.months + 12 * difference.years
+                #     if difference.days > 0:
+                #         months += 1
+                #     line.model_id.method_number = math.floor(
+                #         months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                #     line.method_number = math.floor(months / rec.rent_sale_line_id.sale_order_id.invoice_number)
+                #     line.prorata = True
+                #     line.prorata_date = line.acquisition_date
+                #     line.prorata_date = self.fromdate or self.invoice_date
+                #     line.compute_depreciation_board()
+                #     line.validate()
+                #
+                # else:
+                #     for dep in line.depreciation_move_ids:
+                #         dep.button_draft()
+                #         dep.unlink()
+                #     line.set_to_running()
+                #     line.set_to_draft()
+                #     date1 = datetime.strptime(str(rec.temp_sale_order_id.fromdate)[:10], '%Y-%m-%d')
+                #     date2 = datetime.strptime(str(rec.temp_sale_order_id.todate)[:10], '%Y-%m-%d')
+                #     difference = relativedelta(date2, date1)
+                #     months = difference.months + 12 * difference.years
+                #     if difference.days > 0:
+                #         months += 1
+                #     line.model_id.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
+                #     line.method_number = math.floor(months / rec.temp_sale_order_id.invoice_number)
+                #     line.prorata_date = line.acquisition_date
+                #     line.prorata_date = self.fromdate or self.invoice_date
+                #     line.compute_depreciation_board()
+                #     line.validate()
 
         return res
+
+
+
+    def fix_defe(self):
+
+        invoice_ids = self
+        for rec in invoice_ids:
+            for ddd in rec.asset_ids:
+                ddd.unlink_lines()
+                ddd.unlink()
+        for invoice in invoice_ids:
+            invoice._auto_create_asset()
+            invoice.env.cr.commit()
+            for line in invoice.asset_ids:
+                line.unlink_lines()
+                line.set_to_running()
+                line.set_to_draft()
+                fromdate = invoice.fromdate.replace(day=1)
+                todateMonth = invoice.todate.month
+                # todate = invoice.todate.replace(month=todateMonth + 1, day=1)
+                todate = invoice.todate.replace(day=28)
+                date1 = datetime.strptime(str(fromdate)[:10], '%Y-%m-%d')
+                date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
+                difference = relativedelta(date2, date1)
+                months = difference.months + 12 * difference.years
+                line.model_id.method_number = math.floor(months)
+                line.method_number = math.floor(months)
+                line.prorata = True
+                line.prorata_date = line.acquisition_date
+                line.prorata_date = invoice.fromdate or invoice.invoice_date
+                line.acquisition_date = invoice.fromdate or invoice.invoice_date
+                line.compute_depreciation_board()
+                # line.validate()
+
+
+    def fix_deferreds(self):
+            # deferreds = self.env["account.asset"].search(
+            #     [("state", "!=", "model"), ("asset_type", "=", "sale")]
+            # )
+            invoice_ids = self.env['account.move'].search([('temp_sale_order_id', '!=', False)])
+            for invoice  in invoice_ids:
+                print(invoice.asset_remaining_value, "Invoiceeeeee", invoice)
+                if invoice.state == 'posted':
+                    print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", invoice)
+                    invoice.fix_defe()
+
+
+# def fix_deferreds():
+#     deferreds = self.env["account.asset"].search([
+#         ('asset_type', '=', 'sale'),
+#         ('state', 'not in', ['model', 'open', 'close']),
+#         ('parent_id', '=', False),
+#         ("id", "not in", [4077, 4079])]
+#     )
+#     for line in deferreds:
+#         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", line)
+#         line.validate()
+#         line.env.cr.commit()
+
+
+
