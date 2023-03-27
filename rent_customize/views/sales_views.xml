@@ -56,6 +56,36 @@
                 </form>
             </field>
         </record>
+
+        <record id="transfer_view_form" model="ir.ui.view">
+            <field name="name">transfer_view_form</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <form string="refund_insurance_form">
+                    <sheet>
+                        <group>
+                            <field name="id" invisible="1" />
+                            <field name="state" invisible="1" />
+                            <field name="company_id" invisible="1" />
+                            <field name="partner_id" invisible="1" />
+                            <field name="apartment_insurance" invisible="1" />
+                            <field name="apartment_insurance" invisible="1" />
+                            <field name="partner_invoice_id" invisible="1" />
+                            <field name="pricelist_id" store="1" force_save="1" invisible="1" />
+                            <field name="order_contract_invoice" invisible="1" />
+                            <field name="partner_shipping_id" invisible="1" />
+                            <field name="transfer_customer_id"  />
+                            <field name="transfer_date"  />
+                            <field name="transfer_context_order" invisible="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="do_transfer" type="object" string="Transfer" class="oe_highlight"/>
+                        <button name="do_transfer_and_print" type="object" string="Transfer and print" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
         <record id="refund_insurance_action" model="ir.actions.act_window">
             <field name="name">Refund Insurance</field>
             <field name="type">ir.actions.act_window</field>
@@ -86,7 +116,7 @@
                     </group>
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="replace">
-                    <field name="no_of_invoiced"/>
+                    <field name="no_of_invoiced" invisible="1"/>
                     <button name="action_cancel" type="object" string="Cancel"
                             attrs="{'invisible': ['|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
                     <button name="action_termination" type="object" string="Termination" class="oe_highlight"
@@ -96,8 +126,8 @@
                     <button name="renew_contract" type="object" string="Renew" class="oe_highlight"
                             attrs="{'invisible':[('state', 'not in', ['occupied', 'termination'])]}"/>
                     <field name="no_of_invoiced" invisible="1"/>
-                    <field name="has_late_lines" invisible="0"/>
-                    <field name="rental_status" invisible="0"/>
+                    <field name="has_late_lines" invisible="1"/>
+                    <field name="rental_status" invisible="1"/>
                 </xpath>
             </field>
         </record>
@@ -109,6 +139,19 @@
                 <xpath expr="//field[@name='state']" position="replace">
                     <field name="state" widget="statusbar" statusbar_visible="draft,sale,occupied,termination"/>
                 </xpath>
+                <div class="oe_button_box" position="inside">
+                    <field name="transferred_id" invisible="1" />
+                    <field name="new_rental_id" invisible="1" />
+                    <button class="oe_stat_button" attrs="{'invisible':[('new_rental_id', '=', False)]}"
+                            name="action_view_transfer" type="object" icon="fa-building-o">
+                        New Rental
+                    </button>
+                    <button class="oe_stat_button" attrs="{'invisible':[('transferred_id', '=', False)]}"
+                            name="action_view_transferred" type="object" icon="fa-building-o">
+                        Transferred from
+                    </button>
+                </div>
+
             </field>
         </record>
         <record id="sale_renting.rental_order_action" model="ir.actions.act_window">
@@ -174,14 +217,37 @@
                         [('product_tmpl_id.property_id','=',property_number),('product_tmpl_id.unit_rented','=',False)]
                     </attribute>
                 </xpath>
-
                 <xpath expr="//button[@name='action_quotation_send']" position="before">
                     <button name="action_pickup" type="object" class="btn-primary" string="PICKUP"
                             groups="rent_customize.group_pickup_rental_order"
                             attrs="{'invisible':['|', ('rental_status','not in',['sent']), ('state', 'not in', ['sale', 'done'])]}"/>
+                    <button name="action_transfer" type="object" class="btn-primary" string="Transfer"
+                            attrs="{'invisible':[ ('transferred', '=', True)]}"/>
+                    <button name="print_transfer" type="object" class="btn-primary" string="Print Transfer"
+                            attrs="{'invisible':[ ('transferred', '!=', True)]}"/>
 
+                    <field name="transferred" invisible="1"/>
+                    <field name="transfer_customer_id" invisible="1"/>
+                    <field name="transfer_date" invisible="1"/>
+                    <field name="new_rental_id" invisible="1"/>
                     <field name="is_rental_order" invisible="1"/>
                     <field name="rental_status" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="annual_increase" />
+                    <field name="annual_amount" attrs="{'invisible':[ ('annual_increase', '!=', True)]}"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="old_rents" string="Old Rents">
+                        <field name="old_rent_ids" readonly="1" force_save="1">
+                            <tree create="0" edit="0" delete="0">
+                                <field name="rent_id" />
+                                <field name="fromdate" />
+                                <field name="todate" />
+                                <field name="amount" />
+                            </tree>
+                        </field>
+                    </page>
                 </xpath>
             </field>
         </record>

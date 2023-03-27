@@ -7,6 +7,7 @@ from odoo import models, fields, _
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
 from dateutil.relativedelta import relativedelta
 
+from hijri_converter import Gregorian, convert
 
 class RentalOrder(models.TransientModel):
     _inherit = 'rental.order.wizard'
@@ -27,6 +28,14 @@ class RentalOrder(models.TransientModel):
         return res
 
 
+class RentLog(models.Model):
+    _name = "rent.log"
+    order_id = fields.Many2one('sale.order')
+    rent_id = fields.Many2one('sale.order')
+    fromdate = fields.Date('From Date')
+    todate = fields.Date('To Date')
+    amount = fields.Float('Amount')
+
 class SaleOrder(models.Model):
     _inherit = "sale.order"
     state = fields.Selection([
@@ -43,6 +52,28 @@ class SaleOrder(models.Model):
     damage_amount = fields.Float('Damage Amount')
     refund_amount = fields.Float('Refund Amount')
     context_order = fields.Many2one('sale.order')
+    old_rent_ids = fields.One2many(comodel_name='rent.log', inverse_name='order_id', string='Old Rents')
+
+
+    transfer_context_order = fields.Many2one('sale.order')
+    new_rental_id = fields.Many2one('sale.order', copy=False)
+    transferred_id = fields.Many2one('sale.order', copy=False)
+    transfer_customer_id = fields.Many2one('res.partner', 'Custoemr To Transfer')
+    transfer_date = fields.Date('Transfer Date')
+    transferred = fields.Boolean('Transferred ?')
+    annual_increase = fields.Boolean('Annual Increase ?')
+    annual_amount = fields.Float("Annual Amount")
+
+
+    def get_date_hijri(self, date):
+        day = date.day
+        month = date.month
+        year = date.year
+        hijri_date = Gregorian(year, month, day).to_hijri()
+        war_start = '2011-01-03'
+        war = datetime.strptime(war_start, '%Y-%m-%d')
+        war1 = convert.Gregorian.fromdate(war).to_hijri()
+        return hijri_date
 
     def renew_contract(self):
         new_contract_id = self.copy()
@@ -58,8 +89,9 @@ class SaleOrder(models.Model):
         new_contract_id.is_rental_order = self.is_rental_order
         new_contract_id.partner_id = self.partner_id
         lines = []
-        print(new_contract_id)
         for line in self.order_line:
+            print("XXXXXXXXXXXXXXX", self.annual_increase)
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>> ", line.price_unit if self.annual_increase != True else ((line.price_unit * self.annual_amount/100) + line.price_unit))
             line = self.env['sale.order.line'].create({
                 'order_id': new_contract_id.id,
                 'property_number': line.property_number.id,
@@ -67,7 +99,7 @@ class SaleOrder(models.Model):
                 'name': line.name,
                 'product_uom_qty': line.product_uom_qty,
                 'product_uom': line.product_uom.id,
-                'price_unit': line.price_unit,
+                'price_unit': line.price_unit if self.annual_increase != True else ((line.price_unit * self.annual_amount/100) + line.price_unit),
                 'tax_id': [(6,0, line.tax_id.ids)],
                 'insurance_value': line.insurance_value,
                 'is_rental': line.is_rental,
@@ -78,7 +110,21 @@ class SaleOrder(models.Model):
             lines.append(line.id)
         new_contract_id.order_line = [(6, 0, lines)]
         form_view_id = self.env.ref('sale_renting.rental_order_primary_form_view').ids
-
+        for rent in self.old_rent_ids:
+            self.env['rent.log'].create({
+                'order_id' : new_contract_id.id,
+                'rent_id' : rent.rent_id.id,
+                'fromdate' : rent.fromdate,
+                'todate' : rent.todate,
+                'amount' : rent.amount,
+            })
+        self.env['rent.log'].create({
+            'order_id': new_contract_id.id,
+            'rent_id': self.id,
+            'fromdate': self.fromdate,
+            'todate': self.todate,
+            'amount': self.amount_total,
+        })
         return {
                 'type': 'ir.actions.act_window',
                 'name': 'Renew Contract',
@@ -111,8 +157,6 @@ class SaleOrder(models.Model):
         action["res_id"] = self.id
         return action
 
-
-
         form_view_id = self.env.ref('rent_customize.refund_insurance_view_form').ids
         return {
             'name': 'Refund Insurance',
@@ -130,6 +174,81 @@ class SaleOrder(models.Model):
             },
             'target': 'new',
         }
+    def action_view_transfer(self):
+        # action = self.env.ref("sale_renting.rental_order_action").sudo().read()[0]
+        return {
+            'name': _('Renting Order'),
+            'view_mode': 'form',
+            'view_id': self.env.ref('sale_renting.rental_order_primary_form_view').id,
+            'res_model': 'sale.order',
+            'create': False,
+            'type': 'ir.actions.act_window',
+            'res_id': self.new_rental_id.id,
+        }
+    def action_view_transferred(self):
+        # action = self.env.ref("sale_renting.rental_order_action").sudo().read()[0]
+        return {
+            'name': _('Renting Order'),
+            'view_mode': 'form',
+            'view_id': self.env.ref('sale_renting.rental_order_primary_form_view').id,
+            'res_model': 'sale.order',
+            'create': False,
+            'type': 'ir.actions.act_window',
+            'res_id': self.transferred_id.id,
+        }
+    def action_transfer(self):
+        for rec in self:
+            uninvoiced = len(rec.order_contract_invoice.filtered(lambda ll: ll.status == 'uninvoiced').ids)
+            print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX", uninvoiced)
+            if uninvoiced <1:
+                raise ValidationError(_("There is no draft invoice to be invoiced or transferred"))
+            form_view_id = self.env.ref('rent_customize.transfer_view_form').ids
+            return {
+                'name': 'Transfer Apartment',
+                'views': [(form_view_id, 'form')],
+                'view_mode': 'form',
+                'res_model': 'sale.order',
+                'res_id': self.id,
+                'type': 'ir.actions.act_window',
+                # "context": {
+                #     'default_partner_id': self.partner_id.id,
+                #     'default_apartment_insurance': self.apartment_insurance,
+                #     'default_refund_amount': self.apartment_insurance,
+                #     'default_partner_invoice_id': self.partner_invoice_id.id,
+                #     'default_partner_shipping_id': self.partner_shipping_id.id,
+                #     'default_pricelist_id': self.pricelist_id.id,
+                #     'default_transfer_context_order': self.id,
+                #     'default_state': self.state,
+                #     'default_company_id': self.company_id.id,
+                #     'default_transfer_date': fields.Date.today(),
+                # },
+                'target': 'new',
+            }
+
+    def do_transfer(self):
+        for rec in self:
+            uninvoiced = len(rec.order_contract_invoice.filtered(lambda ll: ll.status == 'uninvoiced').ids)
+            new_rental_id = rec.copy({
+                'pricelist_id' : rec.pricelist_id.id,
+                'apartment_insurance' : rec.pricelist_id.id,
+                'fromdate' : rec.transfer_date,
+                'todate' : rec.todate,
+                'date_order' : fields.Date.today(),
+                'invoice_number' : uninvoiced if uninvoiced > 0 else rec.invoice_number,
+                'is_rental_order' : True,
+                'transferred_id' : rec.id,
+                'new_rental_id' : False,
+            })
+            rec.new_rental_id = new_rental_id.id
+            # print("XXXXXXXXXXrec.transfer_customer_id ",rec.transfer_customer_id)
+            # rec.transfer_context_order.transfer_customer_id = rec.transfer_customer_id.id
+            # rec.transfer_context_order.transfer_date = rec.transfer_date
+            rec.transferred = True
+
+    def do_transfer_and_print(self):
+        for rec in self:
+            rec.do_transfer()
+            rec.print_transfer()
     def _prepare_refund_invoice_line(self):
         self.ensure_one()
 
@@ -151,6 +270,14 @@ class SaleOrder(models.Model):
             'exclude_from_invoice_tab': False,
         }
         return res
+
+    def print_transfer(self):
+        data = {
+            'model': 'sale.order',
+            'form': self.read()[0]
+        }
+        print("datadatadatadatadatadata", data)
+        return self.env.ref('rent_customize.report_transfer_apratment').report_action(self)
 
 
     def _prepare_refund_invoices(self, sale_order_id, invoice_lines):

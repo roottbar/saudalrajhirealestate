@@ -12,6 +12,12 @@ class ProductTemplate(models.Model):
     date_localization = fields.Date()
     furnished_apartment = fields.Boolean(string='Furnished apartment')
     unit_rented = fields.Boolean( )
+    rent_unit_price = fields.Float("Rent Unit Price")
+
+    @api.onchange('rent_unit_price', 'unit_area')
+    def change_rent_unit_price(self):
+        for rec in self:
+            rec.list_price = rec.rent_unit_price * float(rec.unit_area)
 
     def _get_unit_rented_state(self):
         for rec in self:

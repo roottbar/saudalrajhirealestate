@@ -2,6 +2,7 @@
 {
     'name': "Accounting Advanced",
 
+
     'summary': """
         Accounting Advanced""",
 

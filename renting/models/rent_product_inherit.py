@@ -101,12 +101,88 @@ class RentProduct(models.Model):
                 rec.unit_price = 0
                 rec.unit_price_unit = ''
 
+    partner_id = fields.Many2one('res.partner', compute="get_sale_data", string='العميل')
+    amount_paid = fields.Float(compute="get_sale_data", string='المبلغ المدفوع')
+    amount_due = fields.Float(compute="get_sale_data", string='المبلغ المستحق')
+    contract_admin_fees = fields.Float(compute="get_sale_data", string='رسوم إدارية')
+    contract_service_fees = fields.Float(compute="get_sale_data", string='رسوم الخدمات')
+    insurance_value = fields.Float(compute="get_sale_data", string='قيمة التأمين')
+    fromdate = fields.Datetime(compute="get_sale_data", string='تاريخ الإستلام')
+    todate = fields.Datetime(compute="get_sale_data", string='تاريخ التسليم')
+    last_sale_id = fields.Many2one('sale.order', compute="get_sale_data")
+    operating_unit_id = fields.Many2one('operating.unit', string='الفرع ')
+    def get_sale_data(self):
+        for rec in self:
+            order_line_id = rec.env['sale.order.line'].sudo().search([
+                ('product_id', '=', rec.id)
+            ],limit=1, order='id desc')
+            rec.partner_id = order_line_id.order_id.partner_id.id if order_line_id else False
+            rec.last_sale_id = order_line_id.order_id.id if order_line_id else False
+            rec.contract_admin_fees = order_line_id.contract_admin_fees if order_line_id else False
+            rec.insurance_value = order_line_id.insurance_value if order_line_id else False
+            rec.contract_service_fees = order_line_id.contract_service_fees if order_line_id else False
+            rec.fromdate = order_line_id.order_id.fromdate if order_line_id else False
+            rec.operating_unit_id = order_line_id.order_id.operating_unit_id.id if order_line_id else False
+            rec.todate = order_line_id.order_id.todate if order_line_id else False
+            rec.amount_paid = (sum(ll.amount_total for ll in order_line_id.order_id.invoice_ids.filtered(lambda line: line.payment_state == 'paid'))) if order_line_id else 0
+            rec.amount_due = (sum(order_line_id.order_id.order_line[0].price_unit / ll.sale_order_id.invoice_number for ll in
+                                 order_line_id.order_id.order_contract_invoice.filtered(lambda line: line.status == 'uninvoiced')
+                                 )if order_line_id.order_id.order_line else 0.0) if order_line_id else 0.0
+
+    @api.model
+    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
+        res = super(RentProduct, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby,
+                                                 lazy=lazy)
+        print(fields)
+        if 'amount_paid' in fields:
+            for line in res:
+                if '__domain' in line:
+                    lines = self.search(line['__domain'])
+                    total_amount_paid = 0.0
+                    for record in lines:
+                        total_amount_paid += record.amount_paid
+                    line['amount_paid'] = total_amount_paid
+        if 'amount_due' in fields:
+            for line in res:
+                if '__domain' in line:
+                    lines = self.search(line['__domain'])
+                    total_amount_due = 0.0
+                    for record in lines:
+                        total_amount_due += record.amount_due
+                    line['amount_due'] = total_amount_due
+        if 'contract_admin_fees' in fields:
+            for line in res:
+                if '__domain' in line:
+                    lines = self.search(line['__domain'])
+                    total_contract_admin_fees = 0.0
+                    for record in lines:
+                        total_contract_admin_fees += record.contract_admin_fees
+                    line['contract_admin_fees'] = total_contract_admin_fees
+        if 'contract_service_fees' in fields:
+            for line in res:
+                if '__domain' in line:
+                    lines = self.search(line['__domain'])
+                    total_contract_service_fees = 0.0
+                    for record in lines:
+                        total_contract_service_fees += record.contract_service_fees
+                    line['contract_service_fees'] = total_contract_service_fees
+        if 'insurance_value' in fields:
+            for line in res:
+                if '__domain' in line:
+                    lines = self.search(line['__domain'])
+                    total_insurance_value = 0.0
+                    for record in lines:
+                        total_insurance_value += record.insurance_value
+                    line['insurance_value'] = total_insurance_value
+        return res
     def _get_state(self):
         for rec in self:
             rec.unit_state = 'شاغرة'
             rec.state_id = 'شاغرة'
-            order = rec.env['sale.order.line'].sudo().search(
-                [('product_id', '=', rec.id), ('property_number', '=', rec.property_id.property_name)])
+            order = rec.env['sale.order.line'].sudo().search([
+                ('product_id', '=', rec.id),
+                ('property_number', '=', rec.property_id.property_name)
+            ])
             if order:
                 if order[0].order_id.rental_status == 'pickup':
                     rec.state_id = 'مؤجرة'
@@ -143,8 +219,9 @@ class RentProduct(models.Model):
         }
 
     def _unit_sales_count(self):
-        self.unit_sales_count = self.env['sale.order.line'].search_count(
-            [('product_id', '=', self.id), ('property_number', '=', self.property_id.property_name)])
+        self.unit_sales_count = self.env['sale.order.line'].search_count([
+            ('product_id', '=', self.id),
+            ('property_number', '=', self.property_id.property_name)])
 
     # For Unit Maintenance Button in rent_product_inherit_form in "vw_rent_product_inherit.xml"
     def unit_sales(self):
