@@ -321,6 +321,10 @@ class RentSaleOrderLine(models.Model):
     contract_admin_sub_fees = fields.Float(string='رسوم ادارية خاضعة')
     contract_service_sub_fees = fields.Float(string='رسوم الخدمات خاضعة')
 
+    # @api.onchange('operating_unit_id')
+    # def _onchange_operating_unit_id(self):
+    #     return {'domain': {'property_number': [('property_address_area.id', '=', self.operating_unit_id.id)]}}
+
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
     def _compute_amount(self):
         """
