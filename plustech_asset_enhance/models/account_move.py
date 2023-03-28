@@ -42,6 +42,9 @@ class AccountMove(models.Model):
                 months = difference.months + 12 * difference.years
                 # if difference.days > 0:
                 #     months += 1
+                if difference.days > 0:
+                    months += 1
+            print("IIIIIIIIIIIIIIIIIIIIII ", months)
             rec.invoice_months = months
 
     @api.depends('invoice_origin')
@@ -273,6 +276,8 @@ class AccountMove(models.Model):
                 date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
                 difference = relativedelta(date2, date1)
                 months = difference.months + 12 * difference.years
+                if difference.days >0:
+                    months +=1
                 line.model_id.method_number = math.floor(months)
                 line.method_number = math.floor(months)
                 line.prorata = True
@@ -280,7 +285,7 @@ class AccountMove(models.Model):
                 line.prorata_date = invoice.fromdate or invoice.invoice_date
                 line.acquisition_date = invoice.fromdate or invoice.invoice_date
                 line.compute_depreciation_board()
-                # line.validate()
+                line.validate()
 
 
     def fix_deferreds(self):

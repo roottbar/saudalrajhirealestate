@@ -180,6 +180,15 @@ class RentSaleOrder(models.Model):
             month +=1
         self.invoice_number = month + m
 
+        # date1 = datetime.strptime(str(self.fromdateself.todate)[:10], '%Y-%m-%d')
+        # date2 = datetime.strptime(str(self.todate)[:10], '%Y-%m-%d')
+        # difference = relativedelta(date2, date1)
+        # months = difference.months + 12 * difference.years
+        # if difference.days > 0:
+        #     months += 1
+        # print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx ", months)
+        self.invoice_number = month
+
     def action_confirm(self):
         if self.invoice_number == 0:
             # self.get_invoice_number()
