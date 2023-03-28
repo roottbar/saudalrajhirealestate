@@ -43,8 +43,9 @@
                 <xpath expr="//field[@name='journal_id']/../.." position="after">
                     <group>
                         <field name="invoice_months" />
-                        <button name="fix_deferreds" type="object" string="fix "/>
-                        <field name="renting_id" context="{'form_view_ref':'sale.view_order_form'}" string="Renting Order"/>
+                        <button name="fix_deferreds" type="object" string="fix" invisible="1"/>
+                        <field name="renting_id" string="Renting Order"
+                               context="{'form_view_ref':'sale_renting.rental_order_primary_form_view'}" />
                     <field name="renting_attachment_ids"  widget="many2many_binary" nolabel="1"/>
                     </group>
                 </xpath>
