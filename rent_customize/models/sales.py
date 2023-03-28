@@ -55,12 +55,12 @@ class SaleOrder(models.Model):
     old_rent_ids = fields.One2many(comodel_name='rent.log', inverse_name='order_id', string='Old Rents')
 
 
-    transfer_context_order = fields.Many2one('sale.order')
+    transfer_context_order = fields.Many2one('sale.order', copy=False)
     new_rental_id = fields.Many2one('sale.order', copy=False)
     transferred_id = fields.Many2one('sale.order', copy=False)
-    transfer_customer_id = fields.Many2one('res.partner', 'Custoemr To Transfer')
-    transfer_date = fields.Date('Transfer Date')
-    transferred = fields.Boolean('Transferred ?')
+    transfer_customer_id = fields.Many2one('res.partner', 'Custoemr To Transfer', copy=False)
+    transfer_date = fields.Date('Transfer Date', copy=False)
+    transferred = fields.Boolean('Transferred ?', copy=False)
     annual_increase = fields.Boolean('Annual Increase ?')
     annual_amount = fields.Float("Annual Amount")
 
@@ -238,6 +238,7 @@ class SaleOrder(models.Model):
                 'is_rental_order' : True,
                 'transferred_id' : rec.id,
                 'new_rental_id' : False,
+                'partner_id' : rec.transfer_customer_id.id,
             })
             rec.new_rental_id = new_rental_id.id
             # print("XXXXXXXXXXrec.transfer_customer_id ",rec.transfer_customer_id)
