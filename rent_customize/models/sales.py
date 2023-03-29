@@ -77,6 +77,7 @@ class SaleOrder(models.Model):
 
     def renew_contract(self):
         new_contract_id = self.copy()
+        self.new_rental_id = new_contract_id.id
         fmt = '%Y-%m-%d'
         start_date = self.fromdate
         end_date = self.todate
@@ -90,8 +91,6 @@ class SaleOrder(models.Model):
         new_contract_id.partner_id = self.partner_id
         lines = []
         for line in self.order_line:
-            print("XXXXXXXXXXXXXXX", self.annual_increase)
-            print(">>>>>>>>>>>>>>>>>>>>>>>>>> ", line.price_unit if self.annual_increase != True else ((line.price_unit * self.annual_amount/100) + line.price_unit))
             line = self.env['sale.order.line'].create({
                 'order_id': new_contract_id.id,
                 'property_number': line.property_number.id,
@@ -174,8 +173,8 @@ class SaleOrder(models.Model):
             },
             'target': 'new',
         }
+    
     def action_view_transfer(self):
-        # action = self.env.ref("sale_renting.rental_order_action").sudo().read()[0]
         return {
             'name': _('Renting Order'),
             'view_mode': 'form',
@@ -185,6 +184,18 @@ class SaleOrder(models.Model):
             'type': 'ir.actions.act_window',
             'res_id': self.new_rental_id.id,
         }
+    
+    def action_view_old_contract(self):
+
+        return {
+            'name': _('Renting Order'),
+            'view_mode': 'tree',
+            'res_model': 'sale.order',
+            'create': False,
+            'type': 'ir.actions.act_window',
+            'domain' : [('id', 'in', self.old_rent_ids.rent_id.ids)],
+        }
+    
     def action_view_transferred(self):
         # action = self.env.ref("sale_renting.rental_order_action").sudo().read()[0]
         return {
@@ -196,6 +207,7 @@ class SaleOrder(models.Model):
             'type': 'ir.actions.act_window',
             'res_id': self.transferred_id.id,
         }
+    
     def action_transfer(self):
         for rec in self:
             uninvoiced = len(rec.order_contract_invoice.filtered(lambda ll: ll.status == 'uninvoiced').ids)

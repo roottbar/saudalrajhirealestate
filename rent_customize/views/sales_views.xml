@@ -146,6 +146,11 @@
                             name="action_view_transfer" type="object" icon="fa-building-o">
                         New Rental
                     </button>
+                    <field name="old_rent_ids" invisible="1"/>
+                    <button class="oe_stat_button" attrs="{'invisible':[('old_rent_ids', '=', [])]}"
+                            name="action_view_old_contract" type="object" icon="fa-building-o">
+                        Old Rental
+                    </button>
                     <button class="oe_stat_button" attrs="{'invisible':[('transferred_id', '=', False)]}"
                             name="action_view_transferred" type="object" icon="fa-building-o">
                         Transferred from
