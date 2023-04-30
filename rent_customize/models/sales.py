@@ -68,16 +68,16 @@ class SaleOrder(models.Model):
     ], default='percentage', string='Annual INcrease Type')
     annual_amount = fields.Float("Annual Amount")
 
-
     def get_date_hijri(self, date):
-        day = date.day
-        month = date.month
-        year = date.year
-        hijri_date = Gregorian(year, month, day).to_hijri()
-        war_start = '2011-01-03'
-        war = datetime.strptime(war_start, '%Y-%m-%d')
-        war1 = convert.Gregorian.fromdate(war).to_hijri()
-        return hijri_date
+        if date:
+            day = date.day
+            month = date.month
+            year = date.year
+            hijri_date = Gregorian(year, month, day).to_hijri()
+            war_start = '2011-01-03'
+            war = datetime.strptime(war_start, '%Y-%m-%d')
+            war1 = convert.Gregorian.fromdate(war).to_hijri()
+            return hijri_date
 
     def renew_contract(self):
         new_contract_id = self.copy()
@@ -429,6 +429,17 @@ class SaleOrder(models.Model):
                 order.invoice_status = 'to invoice'
             elif all(invoice_status == 'invoiced' for invoice_status in invoice_lines):
                 order.invoice_status = 'invoiced'
+
+    dayofweek = {
+        '0': _('الاثنين'),
+        '1': _('الثلاثاء'),
+        '2': _('الأربعاء'),
+        '3': _('الخميس'),
+        '4': _('الجمعة'),
+        '5': _('السبت'),
+        '6': _('ألأخد')
+        }
+
 
 class RentSaleInvoices(models.Model):
     _inherit = 'rent.sale.invoices'
