@@ -133,11 +133,10 @@ class RentPropertyModel(models.Model):
         #     ref += '0'
         res.ref_analytic_account = res.get_ref_analytic_account()
 
-        if not search_group[-1].id:
-            area_group_analytic_account = exist_area.sudo().create(
-                {'name': res.property_address_area.name, })
-        else:
+        if search_group:
             area_group_analytic_account = search_group[-1]
+        else:
+            area_group_analytic_account = exist_area.sudo().create({'name': res.property_address_area.name, })
 
         if res.property_address_build.id:
             search_build = exist_area.sudo().search([('name', '=', res.property_address_build.name)])
@@ -292,3 +291,4 @@ class RentPropertymain(models.Model):
             'context': {'default_move_type': 'entry', 'default_journal_id': 3, 'default_is_maintain': True,
                         'default_property_name': self.property.id, 'default_unit_number': self.apartment.id, },
         }
+
