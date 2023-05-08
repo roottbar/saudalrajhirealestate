@@ -10,15 +10,19 @@ from odoo import models, fields, _
 from odoo.exceptions import UserError
 
 
+
+class AccountJournal(models.Model):
+    _inherit = "account.journal"
+
+
+    code = fields.Char(string='Short Code', 
+                       required=True, 
+                       help="Shorter name used for display. The journal entries of this journal will also be named using this prefix by default.")
+
+
+
 class AccountMove(models.Model):
     _inherit = "account.move"
-
-    # state = fields.Selection(selection=[
-    #     ('draft', 'Draft'),
-    #     ('review', 'Reviewed'),
-    #     ('posted', 'Posted'),
-    #     ('cancel', 'Cancelled'),
-    # ], string='Status', required=True, readonly=True, copy=False, tracking=True, default='draft')
 
     renting_attachment_ids = fields.Many2many(comodel_name='ir.attachment', relation="sale_attachment_rel",
                                               string='Attachments', compute="get_sale_attachment")
@@ -29,13 +33,11 @@ class AccountMove(models.Model):
     def get_months(self):
         for rec in self:
             months = 0
-            print(rec.fromdate, "=========== ", rec.todate)
             if rec.fromdate and rec.todate:
                 fromdate = rec.fromdate.replace(day=1)
                 todateMonth = rec.todate.month
                 todate = rec.todate.replace(day=28)
                 # todate = rec.todate.replace(month=todateMonth+1, day=1)
-                print(fromdate, "=========== ", todate)
                 date1 = datetime.strptime(str(fromdate)[:10], '%Y-%m-%d')
                 date2 = datetime.strptime(str(todate)[:10], '%Y-%m-%d')
                 difference = relativedelta(date2, date1)
@@ -44,7 +46,6 @@ class AccountMove(models.Model):
                 #     months += 1
                 if difference.days > 0:
                     months += 1
-            print("IIIIIIIIIIIIIIIIIIIIII ", months)
             rec.invoice_months = months
 
     @api.depends('invoice_origin')
@@ -199,8 +200,6 @@ class AccountMove(models.Model):
                 months = difference.months + 12 * difference.years
                 # if difference.days > 0:
                 #     months += 1
-                print(rec.fromdate, "XXXXXXXXXXXXXXXXXmionnnnnnnXXXXXXXXxXx", rec.todate)
-                print(months)
                 line.model_id.method_number = math.floor(months)
                 line.method_number = math.floor(months)
                 line.prorata = True
@@ -294,9 +293,7 @@ class AccountMove(models.Model):
             # )
             invoice_ids = self.env['account.move'].search([('temp_sale_order_id', '!=', False)])
             for invoice  in invoice_ids:
-                print(invoice.asset_remaining_value, "Invoiceeeeee", invoice)
                 if invoice.state == 'posted':
-                    print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", invoice)
                     invoice.fix_defe()
 
 
@@ -308,7 +305,6 @@ class AccountMove(models.Model):
 #         ("id", "not in", [4077, 4079])]
 #     )
 #     for line in deferreds:
-#         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", line)
 #         line.validate()
 #         line.env.cr.commit()
 
