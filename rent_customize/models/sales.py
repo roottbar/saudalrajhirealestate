@@ -466,9 +466,9 @@ class SaleOrderLine(models.Model):
             order = self.env['sale.order.line'].sudo().search([
                 ('order_id.state', '=', 'occupied'),
                 ('property_number', '=', line.property_number.id),
-                ('todate', '>', line.fromdate)
+                ('fromdate', '<', line.todate)
             ], limit=1)
-            if not order:
+            if order:
                 line.unit_rented = True
             else:
                 line.unit_rented = False
