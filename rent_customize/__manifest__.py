@@ -4,7 +4,7 @@
     'summary': """Sale Renting Customization""",
     'category': 'Sales Management',
     'version': '0.1',
-    'depends': ['sale_renting', 'renting', 'web_google_maps'],
+    'depends': ['sale','sale_renting', 'renting', 'web_google_maps'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -21,5 +21,15 @@
         'report/transfer.xml',
         'views/res_setting.xml',
         'data/data.xml',
+        'data/sequence_data.xml',
+        'data/report_rental.xml',
+        'data/report_return.xml',
+        'data/vacating_property.xml',
+        'data/waive.xml',
+        'data/tjari.xml',
+        'data/frdi.xml',
+        'data/value.xml',
+        'data/done.xml',
+        'data/sadad.xml',
     ]
 }

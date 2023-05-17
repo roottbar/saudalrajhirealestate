@@ -1,0 +1,111 @@
+<odoo>
+    <record id="report_vacating15" model="ir.actions.report">
+        <field name="name">خطاب اخلاء عقار</field>
+        <field name="model">rental.letter.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">rent_customize.report_vacating_raj_template</field>
+        <field name="report_file">rent_customize.report_vacating_raj_template</field>
+        <field name="binding_model_id" ref="model_rental_letter_template"/>
+        <field name="binding_type">report</field>
+    </record>
+    <template id="report_vacating_raj_template">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <table align="center" class="table table-bordered mt32" cellpadding="1" cellspacing="1"
+                               style="width:100%;float: right; font-size:18px;" dir="rtl">
+                            <tbody>
+                                <tr style="height:18px;">
+                                    <td colspan="3" style="height:18px;">
+                                        <p align="right">التاريخ:
+                                            <span t-esc="o.get_date_hijri(o.today_date)"/>هـ
+                                        </p>
+                                        <p align="right">الموافق:
+                                            <span t-field="o.today_date"/>م
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <tr style="height:18px;">
+                                    <td colspan="3" style="height:18px; font-weight: bold;" align="center">
+                                        <br/>
+                                        <br/>
+                                        خطاب اخلاء عقار
+                                        <br/>
+                                        <br/>
+
+                                    </td>
+                                </tr>
+
+                                <tr style="height:18px;">
+                                    <td colspan="3" style="height:18px; font-weight: bold;" align="right">
+                                        <p>اسم المستأجر
+                                            :
+                                            <span t-esc="o['partner_id'].partner_id.name"/>
+                                            &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                            المحترم</p>
+                                        <p>السلام عليكم ورحمة الله وبركاته</p>
+                                    </td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td colspan="3" style="height:18px; font-weight: bold;" align="right">
+                                        <u>الموضوع:اخلاء عقار</u>
+                                    </td>
+                                </tr>
+                                <tr style="height:18px;">
+
+                                    <td colspan="3" style="height:18px; font-weight: bold;" align="right">
+                                        <p>
+                                            إشارة الى الموضوع أعلاه وبالإشارة الى عقد الإيجار الإلكتروني المبرم معكم
+                                            بتاريخ
+                                            <span t-esc="o['beginning_contract']"/>م
+                                             والمتضمن تأجير شقة رقم
+                                            &#160;&#160;
+                                            <t t-foreach="o.partner_id.order_line" t-as="line">
+                                                <span t-esc="line.property_number.property_number"/>
+                                            </t>
+                                            &#160;&#160;
+                                            وعليه
+                                            نود اشعاركم بعد رغبتنا في تجديد العقد المشار إليه أعلاه على ان يكون يوم
+                                            استلام الوحدة الإيجارية بتاريخ
+                                            <span t-esc="o['end_contract']"/>م
+                                            (تاريخ نهاية العقد)
+                                        </p>
+                                        <p>
+                                            كما نود ن نشعركم انه في حال تأخير اخلاء الوحدة المؤجرة بتاريخ
+                                            <span t-esc="o['delay_date']"/>م
+                                            سيتم فرض
+                                            إيجار يومي وقدره
+                                            (<span t-esc="o['fee']"/>)
+
+                                            لليوم الواحد.
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr style="height:18px;">
+
+                                    <td style="height:18px; width:33%; font-weight: bold;" align="right">
+                                        <p>المستأجر</p>
+                                        <p>التوقيع:</p>
+                                        <p>التاريخ:</p>
+                                    </td>
+                                    <td style="height:18px; width:33%; font-weight: bold;" align="right"></td>
+                                    <td style="height:18px; width:33%; font-weight: bold;" align="right">
+                                        <p>توقيع إدارة العقار</p>
+                                        <p></p>
+                                        <p></p>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                </t>
+            </t>
+    </template>
+</odoo>

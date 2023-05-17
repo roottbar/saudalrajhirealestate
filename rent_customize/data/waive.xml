@@ -1,0 +1,128 @@
+<odoo>
+    <record id="report_waive15" model="ir.actions.report">
+        <field name="name">تنازل عن عقد ايجار</field>
+        <field name="model">rental.letter.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">rent_customize.report_waive_raj_template</field>
+        <field name="report_file">rent_customize.report_waive_raj_template</field>
+        <field name="binding_model_id" ref="model_rental_letter_template"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_waive_raj_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
+                               style="width:100%;float: right; font-size:20px;" dir="rtl">
+                            <tbody>
+                                <tr style="height:18px;">
+                                    <td colspan="3" style="height:18px;" align="right">
+                                        <h4>تنازل عن عقد ايجار</h4>
+                                    </td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td colspan="3" style="height:18px;" align="right">
+                                        <p>انه في يوم
+                                            <span t-field="o.get_date_name"/>
+                                            وتاريخ
+                                            <span t-esc="o.get_date_hijri(o.today_date) or "/>هـ
+                                             الموافق
+                                            <span t-field="o.today_date"/>م
+                                             أنا (المتنازل)
+
+                                            (..........................) رقم وتاريخ ..................... الموقع أدناه
+                                            مستأجر العين رقم .................... الكائنة في مدينة
+                                            ....................... حي: .................................
+                                            بموجب  عقد الإيجار رقم ...................... وتاريخ
+                                            <span t-esc="o.get_date_hijri(o.beginning_contract)"/>هـ
+                                            الموافق
+                                            <span t-esc="o.beginning_contract"/>م
+                                            والذي يتجدد تلقائيا/لا يتجدد تلقائيا، قد تنازلت عن
+                                            عقد ايجار العين المذكورة أعلاه، ومبلغ الإيجار المدفوع عنها إلى تاريخ
+                                            <span t-esc="o.get_date_hijri(o.end_contract)"/>هـ
+                                            الموافق
+                                            <span t-esc="o.end_contract"/>م
+                                            بموجب (.......................) رقم ........... وتاريخ ..................
+                                            الموافق ............... والبالغ قدره ....................... ريال، وكذلك
+                                            تنازلت عن قيمة التأمين البالغ قدرها ....................
+                                            والمدفوعة حسب (................) بموجب (.......................) رقم
+                                            ........... وتاريخ .................. الموافق ...............
+                                            إلى السيد/
+                                            <span t-esc="o['partner_id'].partner_id.name"/>
+                                             وجنسيته
+                                            بموجب
+                                            (هوية وطنية / إقامة) رقم
+                                            <span t-esc="o['partner_id'].partner_id.national_id_number"/>
+                                            وتاريخ الميلاد
+                                            <span t-esc="o['partner_id'].partner_id.date_o_birth"/>
+                                             وليس
+                                            لي أو له بعد هذا التنازل الحق في مطالبة شركة الراجحي العقارية بأية التزامات
+                                            مالية أو خلافه، وأصبحت خالي المسؤولية وأصبح السيد (المتنازل له)/
+                                            <span t-esc="o['partner_id'].partner_id.name"/>
+                                            مسؤولا مسئولية كاملة عن هذه العين والعقد المشار إليه وملتزما بكافة شروطه
+                                            وبنوده والتزاماته المالية السابقة واللاحقة وقد استلم العين المذكورة أعلاه
+                                            وقبل بها بحالتها الموضحة بمحضر استلامها من المتنازل علما
+                                            بأن هذا التنازل لا يسري مفعوله ولا يعتبر نافذا إلا بعد اعتماده بالتوقيع عليه
+                                            من قبل شركة الراجحي العقاريه وإلا يعتبر لاغيا.
+                                            وبعد الرضا والعلم تم التوقيع، تحريرا في
+                                            <span t-esc="o.get_date_hijri(o.today_date)"/>هـ
+                                            الموافق
+                                             <span t-field="o.today_date"/>م
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td colspan="2" style="height:18px;" align="right">
+                                        <p>حرر هذا التنازل من ثلاثة نسخ استلم كل طرف نسخة للعمل بموجبها. والله الموفق
+                                        </p>
+                                    </td>
+                                    <td style="height:18px;" align="right"></td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td style="height:18px;" align="right">المتنازل</td>
+                                    <td style="height:18px;" align="right"></td>
+                                    <td style="height:18px;" align="right">المتنازل إليه</td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td style="height:18px;" align="right">الاسم/</td>
+                                    <td style="height:18px;" align="right"></td>
+                                    <td style="height:18px;" align="right">الاسم/</td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td style="height:18px;" align="right">التوقيع/</td>
+                                    <td style="height:18px;" align="right"></td>
+                                    <td style="height:18px;" align="right">التوقيع/</td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td colspan='2' style="height:18px;" align="right">وقع المتنازل والمتنازل إليه أمامي
+                                        بعد مراجعة هوياتهم.
+                                    </td>
+                                    <td style="height:18px;" align="right"></td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td colspan='3' style="height:18px;" align="right">إدارة العقارات</td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td style="height:18px;" align="right">مشرف العقار:</td>
+                                    <td style="height:18px;" align="right"></td>
+                                    <td style="height:18px;" align="right">مدير العقارات:</td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td style="height:18px;" align="right">الاسم/</td>
+                                    <td style="height:18px;" align="right"></td>
+                                    <td style="height:18px;" align="right">الاسم/</td>
+                                </tr>
+                                <tr style="height:18px;">
+                                    <td style="height:18px;" align="right">التوقيع/</td>
+                                    <td style="height:18px;" align="right"></td>
+                                    <td style="height:18px;" align="right">التوقيع/</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </t>
+        </t>
+    </template>
+</odoo>
