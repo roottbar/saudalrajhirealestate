@@ -15,12 +15,12 @@
                     <div class="page">
                         <div class="oe_structure"/>
                         <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                               style="width:100%;float: right; border:0; font-size:24px;" dir="rtl">
+                               style="width:100%;float: right; border:0; font-size:18px;" dir="rtl">
                             <tbody>
                                 <tr style="height:18px;">
                                     <td align="right" style="border:0;">
                                             <p align="left">التاريخ:
-                                            <span t-esc="o.get_date_hijri()"/>هـ
+                                            <span t-esc="o.get_date_hijri(o.today_date)"/>هـ
                                         </p>
                                         <p align="left">الموافق:
                                             <span t-esc="o['today_date']"/>م
@@ -34,7 +34,9 @@
                                 </tr>
                                 <tr style="height:18px;">
                                     <td align="right" style="border:0;">
-                                        <p>السيد / السادة ..................المحترم/المحترمين</p>
+                                        <p>السيد / السادة
+                                           &#160;&#160;&#160;&#160; <span t-esc="o['partner_id'].partner_id.name"/> &#160;&#160;&#160;&#160;
+                                            المحترم/المحترمين</p>
                                         <p align="right">السلام عليكم ورحمة الله وبركاته </p>
                                         <br/>
                                         <br/>
@@ -52,10 +54,14 @@
                                              وحيث أنّه قد ترتب عليكم عدة أقساط متأخرة عن استئجاركم الوحدة
                                             رقم معرض / مكتب/شقة
                                             &#160;&#160;
-                                            <span t-esc="o['unit_number']"/>
+                                            <t t-foreach="o.partner_id.order_line" t-as="line">
+                                                <span t-esc="line.property_number.property_number"/>
+                                            </t>
                                             &#160;&#160;
                                             في العقار الكائن بحي
-                                             <span t-esc="o['name_neighborhood']"/>
+                                            <t t-foreach="o.partner_id.order_line" t-as="line">
+                                            <span t-esc="line.property_number.property_name"/>
+                                        </t>
                                             بمدينة الرياض، ولم يتم السداد حتى تاريخه علما بأن المتأخرات المترتبة عليكم كالآتي:
                                         </p>
                                     </td>
@@ -64,33 +70,29 @@
                         </table>
 
                     <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                           style="width:100%;float: right; font-size:24px;" dir="rtl">
+                           style="width:100%;float: right; font-size:18px;" dir="rtl">
                         <tbody>
                             <tr style="height:18px;">
-                                <td align="right">م</td>
-                                <td align="right">الفترة من تاريخ</td>
-                                <td align="right">الى تاريخ</td>
-                                <td align="right">المبلغ المستحق</td>
-                                <td align="right">الضريبة </td>
-                                <td align="right">الإجمالي</td>
+                                <td style="height:18px; border: 1px solid black;" align="right">الفترة من تاريخ</td>
+                                <td style="height:18px; border: 1px solid black;" align="right">الى تاريخ</td>
+                                <td style="height:18px; border: 1px solid black;" align="right">المبلغ المستحق</td>
+                                <td style="height:18px; border: 1px solid black;" align="right">الضريبة </td>
+                                <td style="height:18px; border: 1px solid black;" align="right">الإجمالي</td>
                             </tr>
+                             <t t-foreach="o.invoice_ids" t-as="line">
                             <tr style="height:18px;">
-                                <td align="right"></td>
-                                <td align="right"></td>
-                                <td align="right"></td>
-                                <td rowspan='2' align="right"></td>
-                                <td rowspan='2' align="right"></td>
-                                <td rowspan='2' align="right"></td>
+                                <td style="height:18px; border: 1px solid black;" align="right"><span t-esc="line.date_from"/></td>
+                                <td style="height:18px; border: 1px solid black;" align="right"><span t-esc="line.date_to"/></td>
+                                <td style="height:18px; border: 1px solid black;" align="right"><span t-esc="line.amount"/></td>
+                                <td style="height:18px; border: 1px solid black;" align="right"><span t-esc="line.tax_amount"/></td>
+                                <td style="height:18px; border: 1px solid black;" align="right"><t t-set="total" t-value="line['amount'] * line['tax_amount']"/></td>
                             </tr>
-                            <tr style="height:18px;">
-                                <td align="right"></td>
-                                <td align="right"></td>
-                                <td align="right"></td>
-                            </tr>
+                             </t>
+
                         </tbody>
                     </table>
                     <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                           style="width:100%;float: right; border:0; font-size:24px;" dir="rtl">
+                           style="width:100%;float: right; border:0; font-size:18px;" dir="rtl">
                         <tbody>
                             <tr style="height:18px;">
                                 <td align="right" style="border:0;">
@@ -114,32 +116,28 @@
                     </table>
 
                     <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                           style="width:100%;float: right; font-size:24px;" dir="rtl">
+                           style="width:100%;float: right; font-size:18px;" dir="rtl">
                         <tbody>
                             <tr style="height:18px;">
-                                <td align="center">شركة الراجحي العقارية</td>
+                                <td style="height:18px; border: 1px solid black;" align="center">شركة الراجحي العقارية</td>
                             </tr>
                             <tr style="height:18px;">
-                                <td align="center">بنك ساب</td>
+                                <td style="height:18px; border: 1px solid black;" align="center">بنك ساب</td>
                             </tr>
                              <tr style="height:18px;">
-                                <td align="right">رقم الحساب: 001-844842-2001</td>
+                                <td style="height:18px; border: 1px solid black;" align="right">رقم الحساب: 001-844842-2001</td>
                             </tr>
                             <tr style="height:18px;">
-                                <td align="right">رقم الايبان: SA7245000000011844842001</td>
+                                <td style="height:18px; border: 1px solid black;" align="right">رقم الايبان: SA7245000000011844842001</td>
                             </tr>
                         </tbody>
                     </table>
                     <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                           style="width:100%;float: right; font-size:24px; border:0px;" dir="rtl">
+                           style="width:100%;float: right; font-size:18px; border:0px; margin-top:90px;" dir="rtl">
                         <tbody>
                             <tr style="height:18px;">
-                                <td align="right" style="border:0;">اسم المستلم</td>
+                                <td align="center" style="border:0;">اسم المستلم</td>
                                 <td align="center" style="border:0;">إدارة العقار </td>
-                            </tr>
-                            <tr style="height:18px;">
-                                <td align="right" style="border:0;"></td>
-                                <td align="right" style="border:0;"></td>
                             </tr>
                         </tbody>
                     </table>

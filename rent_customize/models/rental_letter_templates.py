@@ -23,7 +23,21 @@ class RentalLetterTemplate(models.Model):
                                 ],string='Subject',required=True)
 
     today_date = fields.Date(string='Today Date', default= fields.Date.context_today)
-    partner_id = fields.Many2one("res.partner",string='Customer')
+    assigner = fields.Many2one("res.partner",string='Assigner')
+    national_id_assigner=fields.Char(string='National ID No. Assigner')
+    city=fields.Char(string='City')
+
+    cash_receipts=fields.Char(string='Cash Receipts No.')
+    cash_receipts_date=fields.Date(string='Cash Receipts Date')
+    cash_receipts_value=fields.Char(string='Cash Receipts Value')
+
+    e_invoice = fields.Char(string='e-invoice No.')
+    e_invoice_date = fields.Date(string='e-invoice Date')
+    insurance_value = fields.Char(string='Insurance Value')
+
+
+
+
     delay_date = fields.Date(string='Delay Date')
     company_id = fields.Many2one('res.company', store=True, copy=False,
                                  string="Company",
@@ -33,7 +47,10 @@ class RentalLetterTemplate(models.Model):
                                   default=lambda
                                       self: self.env.user.company_id.currency_id.id)
     fee = fields.Monetary(string="Charges day's rental")
+
     beginning_contract = fields.Date(related='partner_id.fromdate',String='Contract Date')
+    contract_number = fields.Char(related='partner_id.contract_number',String='Contract Number', readonly=False)
+
     end_contract = fields.Date(related='partner_id.todate')
     number = fields.Char(string='Letter No.')
     maximum_repayment_period = fields.Char(string='Maximum repayment period')
@@ -68,6 +85,7 @@ class RentalLetterTemplate(models.Model):
     manager = fields.Char(string='Commissioner Director')
     manager_identity = fields.Char(string='Manager Identity')
     targeted_group = fields.Char(string='Targeted Group')
+
 
     invoice_ids = fields.Many2many('rent.due.invoice', 'letter_template_id', string='Due Invoices')
 
@@ -162,7 +180,7 @@ class RentalLetterTemplate(models.Model):
             hijri_date = Gregorian(year, month, day).to_hijri()
         return hijri_date
 
-    def get_date_name(self):
+    def get_date_name(self,gregorian_date):
         days_name = {
             '0':'الاثنين',
             '1':'الثلاثاء',
@@ -196,7 +214,13 @@ class RentDueInvoice(models.Model):
     date_to = fields.Date(string='Date To')
     amount = fields.Float(string='Amount')
     tax_amount = fields.Float(string='Tax Amount')
+    total=fields.Float(string='Total')
     letter_template_id = fields.Many2one('rental.letter.template')
+
+    # @api.depends('amount','tax_amount')
+    # def _compute_price(self):
+    #     for line in self:
+
 
 
 

@@ -26,20 +26,18 @@
                                     <field name="change_reason" attrs="{'invisible': [('subject', 'not in', ('option5','option6'))]}"/>
                                     <field name="job" attrs="{'invisible': [('subject', '!=', 'option6')]}"/>
                                     <field name="salary_definition" attrs="{'invisible': [('subject', '!=', 'option6')]}"/>
-                                     <field name="maximum_repayment_period" attrs="{'invisible': [('subject', 'not in', ('option5'))]}"/>
                                 <field name="commercial_registration_number" attrs="{'invisible': [('subject', 'not in', ('option5'))]}"/>
                                 <field name="national_address_main_center" attrs="{'invisible': [('subject', 'not in', ('option5'))]}"/>
                                 <field name="contact_number" attrs="{'invisible':[('subject', 'not in', ('option5'))]}"/>
                                 <field name="renting_purpose" attrs="{'invisible': [('subject', 'not in', ('option5'))]}"/>
 
 
+                                    <field name="today_date" attrs="{'invisible': [('subject', 'not in', ('option1','option3','option4','option8'))]}"/>
+                                    <field name="contract_number" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
 
-
-
-                                    <field name="today_date" attrs="{'invisible': [('subject', 'not in', ('option1','option3','option8'))]}"/>
                                     <label for="beginning_contract" string="Contract Date"
-                                           attrs="{'invisible': [('subject', 'not in', ('option1','option7','option9'))]}"/>
-                                    <div attrs="{'invisible': [('subject', 'not in', ('option1','option7','option9'))]}">
+                                           attrs="{'invisible': [('subject', 'not in', ('option1','option4','option7','option8','option9'))]}"/>
+                                    <div attrs="{'invisible': [('subject', 'not in', ('option1','option4','option7','option8','option9'))]}">
                                         <field name="beginning_contract" class="oe_inline"/> - <field name="end_contract" class="oe_inline"/>
                                     </div>
                                     <field name="unwillingness_to_renew" attrs="{'invisible': [('subject', '!=', 'option9')]}"/>
@@ -47,10 +45,29 @@
                                       <field name="rental_value_old" attrs="{'invisible': [('subject', '!=', 'option7')]}"/>
                                     <field name="rental_value_new" attrs="{'invisible': [('subject', '!=', 'option7')]}"/>
                                     <field name="vacating_the_property" attrs="{'invisible': [('subject', '!=', 'option7')]}"/>
+                                    <field name="cash_receipts" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+                                <field name="cash_receipts_date" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+                                <field name="cash_receipts_value" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+
                                 </group>
 
                             <group>
                                 <field name="partner_id" context="{'letter':True}"/>
+                                <field name="assigner" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+                                <field name="national_id_assigner" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+                                <field name="city" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+
+                                <field name="e_invoice" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+                                <field name="e_invoice_date" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+                                <field name="insurance_value" attrs="{'invisible': [('subject', 'not in', ('option4'))]}"/>
+
+
+
+
+                                <field name="number" attrs="{'invisible': [('subject', 'not in', ('option8'))]}"/>
+                                <field name="maximum_repayment_period" attrs="{'invisible': [('subject', 'not in', ('option5','option8'))]}"/>
+
+
                                 <field name="property_type" attrs="{'invisible': [('subject', 'not in', ('option5','option6'))]}"/>
                                 <field name="new_rental_value" widget="monetary" attrs="{'invisible': [('subject', 'not in', ('option5','option6'))]}"/>
                                 <field name="employer" attrs="{'invisible': [('subject', '!=', 'option6')]}"/>
@@ -70,15 +87,6 @@
                             </group>
 
 
-
-
-                            <group>
-                                <field name="number" attrs="{'invisible': [('subject', 'not in', ('option8'))]}"/>
-
-
-
-                            </group>
-
                                 <group string="مسؤول الائتمان"  attrs="{'invisible': [('subject', 'not in', ('option5','option6'))]}">
                                     <group><field name="credit_officer"/></group>
                                     <group><field name="credit_officer_opinion"/></group>
@@ -95,8 +103,31 @@
 
 
                         </group>
-                        <notebook attrs="{'invisible': [('subject', 'not in', ('option2','option3'))]}">
-                            <page string="بنود الاستلام" name="cases">
+
+                        <notebook>
+                            <page string="Rent Due Invoice" name="rent_due_invoice" attrs="{'invisible': [('subject', 'not in', ('option8'))]}">
+                                <group>
+                                    <field name="invoice_ids">
+                                        <tree editable="bottom">
+                                            <field name="date_from"/>
+                                            <field name="date_to"/>
+                                            <field name="amount"/>
+                                            <field name="tax_amount"/>
+
+                                        </tree>
+                                        <form>
+                                            <group>
+                                               <field name="date_from"/>
+                                            <field name="date_to"/>
+                                            <field name="amount"/>
+                                            <field name="tax_amount"/>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+
+                            </page>
+                            <page string="بنود الاستلام" name="cases" attrs="{'invisible': [('subject', 'not in', ('option2','option3'))]}">
                                 <group>
                                     <group string="حالة الأبواب">
                                         <field name="door_good"/>
@@ -131,7 +162,7 @@
                                 </group>
                             </page>
 
-                            <page string="معلومات اخرى" name="info">
+                            <page string="معلومات اخرى" name="info" attrs="{'invisible': [('subject', 'not in', ('option2','option3'))]}">
                                 <group col="3">
                                     <group string="موافقة العميل بالتسليم">
                                         <field name="customer_accept"/>
@@ -181,7 +212,7 @@
                                 </group>
                             </page>
 
-                            <page string="خاص بالادارة" name="management">
+                            <page string="خاص بالادارة" name="management" attrs="{'invisible': [('subject', 'not in', ('option2','option3'))]}">
                                 <group string=":موافقة الادارة على الاستلام" col="2">
                                     <group><field name="mangement_accept"/></group>
                                     <group><field name="mangement_refused"/></group>
