@@ -1,18 +1,21 @@
 <odoo>
-    <record id="report_waive15" model="ir.actions.report">
+    <record id="action_report_transfer" model="ir.actions.report">
         <field name="name">تنازل عن عقد ايجار</field>
         <field name="model">rental.letter.template</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">rent_customize.report_waive_raj_template</field>
-        <field name="report_file">rent_customize.report_waive_raj_template</field>
-        <field name="binding_model_id" ref="model_rental_letter_template"/>
+        <field name="report_name">rent_customize.report_template_transfer</field>
+        <field name="report_file">rent_customize.report_template_transfer</field>
+        <field name="binding_model_id" eval="False"/>
         <field name="binding_type">report</field>
     </record>
 
-    <template id="report_waive_raj_template">
+    <template id="report_template_transfer">
         <t t-call="web.html_container">
-            <t t-call="web.basic_layout">
-                     <t t-foreach="docs" t-as="o">
+             <t t-call="rent_customize.reports_template_layout">
+                <t t-set="data_report_margin_top" t-value="12" />
+                <t t-set="data_report_header_spacing" t-value="0" />
+                <t t-set="data_report_dpi" t-value="110" />
+                <t t-foreach="docs" t-as="o">
                     <div class="page">
                         <div class="oe_structure"/>
                         <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
@@ -20,35 +23,32 @@
                             <tbody>
                                 <tr style="height:18px;">
                                     <td colspan="3" style="height:18px;" align="center">
-                                        <h4>تنازل عن عقد ايجار</h4>
+                                        <h4>تنازل عن عقد إيجار</h4>
                                     </td>
                                 </tr>
                                 <tr style="height:18px;">
                                     <td colspan="3" style="height:18px;" align="right">
-                                        <p>انه في يوم
-<!--                                            <span t-field="o.get_date_name()"/>-->
+                                        <p style="line-height: 2;font-family:MonixBold ;">انه في يوم
+                                            <span t-esc="o._get_weekday_name(o.transfer_date)"/>
                                             وتاريخ
-                                            <span t-esc="o.get_date_hijri(o.today_date) "/>هـ
-                                             الموافق
+                                            <span t-esc="o.get_date_hijri(o.transfer_date) "/>هـ
+                                            الموافق
                                             <span t-field="o.today_date"/>م
-                                             أنا (المتنازل)
-                                            <span t-field="o.assigner"/>
+                                            أنا (المتنازل)
+                                            <span t-field="o.assigner_id.partner_id"/>
                                             (هوية وطنية/إقامة نظامية) رقم
                                             <span t-field="o.national_id_assigner"/>
                                             وتاريخ
-                                             الموقع أدناه
+                                            <span t-field="o.national_id_assigner_date"/>
+                                            الموقع أدناه
                                             مستأجر العين رقم
                                             &#160;&#160;
-                                            <t t-foreach="o.partner_id.order_line" t-as="line">
-                                                <span t-esc="line.property_number.property_number"/>
-                                            </t>
-                                             الكائنة في مدينة
-                                            <span t-field="o.city"/>
-                                             حي:
-                                                    <t t-foreach="o.partner_id.order_line" t-as="line">
-                                                        <span t-esc="line.property_number.property_name"/>
-                                                    </t>
-                                            بموجب  عقد الإيجار رقم
+                                            <span t-esc="o.unit_id.product_id.unit_number"/>
+                                            الكائنة في مدينة
+                                            <span t-field="o.unit_id.product_id.property_id.property_address_city"/>
+                                            حي:
+                                            <span t-esc="o.neighborhood"/>
+                                            بموجب عقد الإيجار رقم
                                             <span t-esc="o.contract_number"/>
                                             وتاريخ
                                             <span t-esc="o.get_date_hijri(o.beginning_contract)"/>هـ
@@ -74,23 +74,23 @@
                                             والمدفوعة حسب (الفاتورة الالكترونية / الحوالة) رقم
                                             <span t-esc="o.e_invoice"/>
 
-                                             وتاريخ
+                                            وتاريخ
                                             <span t-esc="o.get_date_hijri(o.e_invoice_date)"/>هـ
-                                             الموافق
+                                            الموافق
                                             <span t-esc="o.e_invoice_date"/>م
 
                                             إلى السيد/
-                                            <span t-esc="o['partner_id'].partner_id.name"/>
-                                             وجنسيته
+                                            <span t-esc="o.new_rental_id.partner_id.name"/>
+                                            وجنسيته
                                             بموجب
                                             (هوية وطنية / إقامة) رقم
-                                            <span t-esc="o['partner_id'].partner_id.national_id_number"/>
+                                            <span t-esc="o.new_rental_id.partner_id.national_id_number"/>
                                             وتاريخ الميلاد
-                                            <span t-esc="o['partner_id'].partner_id.date_o_birth"/>
-                                             وليس
+                                            <span t-esc="o.new_rental_id.partner_id.date_o_birth"/>
+                                            وليس
                                             لي أو له بعد هذا التنازل الحق في مطالبة شركة الراجحي العقارية بأية التزامات
                                             مالية أو خلافه، وأصبحت خالي المسؤولية وأصبح السيد (المتنازل له)/
-                                            <span t-esc="o['partner_id'].partner_id.name"/>
+                                            <span t-esc="o.new_rental_id.partner_id.name"/>
                                             مسؤولا مسئولية كاملة عن هذه العين والعقد المشار إليه وملتزما بكافة شروطه
                                             وبنوده والتزاماته المالية السابقة واللاحقة وقد استلم العين المذكورة أعلاه
                                             وقبل بها بحالتها الموضحة بمحضر استلامها من المتنازل علما
@@ -99,7 +99,7 @@
                                             وبعد الرضا والعلم تم التوقيع، تحريرا في
                                             <span t-esc="o.get_date_hijri(o.today_date)"/>هـ
                                             الموافق
-                                             <span t-field="o.today_date"/>م
+                                            <span t-field="o.today_date"/>م
                                         </p>
                                     </td>
                                 </tr>
@@ -108,7 +108,9 @@
                                         <p>حرر هذا التنازل من ثلاثة نسخ استلم كل طرف نسخة للعمل بموجبها. والله الموفق
                                         </p>
                                     </td>
-                                </tr></tbody></table>
+                                </tr>
+                            </tbody>
+                        </table>
                         <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
                                style="width:100%;float: right; font-size:18px; margin-top:40px;" dir="rtl">
                             <tbody>
@@ -118,22 +120,23 @@
                                 </tr>
                                 <tr style="height:18px;">
                                     <td style="height:18px;" align="right">
-                                                                                الاسم/
+                                        الاسم/
 
-                                        <span t-field="o.assigner"/>
+                                        <span t-field="o.assigner_id.partner_id"/>
                                     </td>
                                     <td style="height:18px;" align="right">
-                                                                                الاسم/
-                                        <span t-esc="o['partner_id'].partner_id.name"/>
+                                        الاسم/
+                                        <span t-esc="o.new_rental_id.partner_id.name"/>
                                     </td>
                                 </tr>
                                 <tr style="height:18px;">
                                     <td style="height:18px;" align="right">التوقيع/</td>
                                     <td style="height:18px;" align="right">التوقيع/</td>
                                 </tr>
-                            </tbody></table>
+                            </tbody>
+                        </table>
 
-                                <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
+                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
                                style="width:100%;float: right; font-size:18px; margin-top:40px;" dir="rtl">
                             <tbody>
                                 <tr style="height:18px;">
@@ -160,7 +163,7 @@
                             </tbody>
                         </table>
                     </div>
-                     </t>
+                </t>
             </t>
         </t>
     </template>
