@@ -17,6 +17,7 @@ ReportActions = {
 
 class RentalLetterTemplate(models.Model):
     _name = 'rental.letter.template'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Rental Letter Templates'
     _rec_name = 'ref'
 

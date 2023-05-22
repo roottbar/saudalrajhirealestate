@@ -27,556 +27,580 @@
 
                     <div class="page" style="line-height: 2;font-family:MonixBold ;">
                         <div class="oe_structure"/>
-                        <p align="left">التاريخ:
-                            <span t-esc="o.get_date_hijri(o.today_date)"/>هـ
-                        </p>
-                        <p align="left">الموافق:
-                            <span t-field="o.today_date"/>م
-                        </p>
-                        <h4 lang="ar-SA" style="padding-top:20px;" align="center">
-                            (نموذج استلام العين المؤجرة من المستأجر)
-                        </h4>
-                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                               style="width:100%;float: right; border:0; font-size:18px;" dir="rtl">
-                            <tbody>
-                                <tr style="height:18px;">
-                                    <td colspan="2" align="right" style="border:0; font-weight: bold;">اسم العقار:
-                                        <t t-foreach="o.partner_id.order_line" t-as="line">
-                                            <span t-esc="line.property_number.property_name"/>
-                                        </t>
-                                    </td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td align="right" style="border:0;">اسم المستأجر:
-                                        <span t-esc="o['partner_id'].partner_id.name"/>
-                                    </td>
-                                    <td align="right" style="border:0;">رقم الوحدة:
-                                        <t t-foreach="o.partner_id.order_line" t-as="line">
-                                            <span t-esc="line.property_number.property_number"/>
-                                        </t>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <table align="center" class="table table-bordered" cellpadding="0" cellspacing="0"
+                                   style="width:100%; border:0; font-size:18px;">
+                                <tbody>
+                                    <tr style="height:18px;">
+                                        <td align="left" style="border:0;">
+                                            <p align="left">التاريخ:
+                                                <span t-esc="o.get_date_hijri(o.today_date)"/>هـ
+                                            </p>
+                                            <p align="left">الموافق:
+                                                <span t-esc="o['today_date']"/>م
+                                            </p>
 
-                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                               style="width:100%;float: right; font-size:18px; margin-top:10px; margin-bottom:10px;"
-                               dir="rtl">
-                            <tbody>
-                                <tr style="height:18px;">
-                                    <td style="height:18px; border: 1px solid black; width:15%;" align="right">حالة
-                                        الأبواب
-                                    </td>
-
-                                    <td style="height:18px; border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>جيد</span>
-                                            <t t-if="o.door_good">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.door_good">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-
-                                    <td style="height:18px; border: 1px solid black; width:10%" align="center">
-                                        <p>
-                                            <span>سيء</span>
-                                            <t t-if="o.door_bad">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.door_bad">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        حدد:
-                                        <span t-field="o.door_comment"/>
-                                    </td>
-
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        الملاحظات
-                                        <span t-field="o.door_note"/>
-                                    </td>
-                                </tr>
-
-                                <tr style="height:18px;">
-                                    <td style="height:18px; border: 1px solid black; width:15%;" align="right">الحائط
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>جيد</span>
-                                            <t t-if="o.wall_good">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.wall_good">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black;" align="center">
-                                        <p>
-                                            <span>سيء</span>
-                                            <t t-if="o.wall_bad">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.wall_bad">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        حدد:
-                                        <span t-field="o.wall_comment"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        <span t-field="o.wall_note"/>
-                                    </td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td style="height:18px; border: 1px solid black; width:15%;" align="right">النوافذ
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>جيد</span>
-                                            <t t-if="o.window_good">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.window_good">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black;" align="center">
-                                        <p>
-                                            <span>سيء</span>
-                                            <t t-if="o.window_bad">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.window_bad">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        حدد:
-                                        <span t-field="o.window_comment"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        <span t-field="o.window_note"/>
-                                    </td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td style="height:18px; border: 1px solid black; width:15%;" align="right">السباكة
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>جيد</span>
-                                            <t t-if="o.water_good">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.water_good">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black;" align="center">
-                                        <p>
-                                            <span>سيء</span>
-                                            <t t-if="o.water_bad">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.water_bad">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        حدد:
-                                        <span t-field="o.water_comment"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        <span t-field="o.water_note"/>
-                                    </td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td style="height:18px; border: 1px solid black; width:15%;" align="right">
-                                        الكهرباء
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>جيد</span>
-                                            <t t-if="o.elec_good">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_good">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black;" align="center">
-                                        <p>
-                                            <span>سيء</span>
-                                            <t t-if="o.elec_bad">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_bad">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        حدد:
-                                        <span t-field="o.elec_comment"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
-                                        <span t-field="o.elec_note"/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                               style="width:100%;float: right; font-size:18px; margin-top:10px; margin-bottom:10px;" dir="rtl">
-                            <tbody>
-                                <tr style="height:18px;">
-                                    <td style="height:18px;  border: 1px solid black; width:20%;" align="center">موافقة العميل بالتسليم</td>
-
-                                    <td style="height:18px;  border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>نعم</span>
-                                            <t t-if="o.customer_accept">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.customer_accept">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-
-                                    <td style="height:18px; border: 1px solid black; width:10%" align="center">
-                                        <p>
-                                            <span>لا</span>
-                                            <t t-if="o.customer_refused">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.customer_refused">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-
-                                    <td style="height:18px; border: 1px solid black; width:60%;" align="right">
-                                        التوقيع:
+                                            <h4 lang="ar-SA" style="padding-top:20px;" align="center">
+                                                (نموذج استلام العين المؤجرة من المستأجر)
+                                            </h4>
                                         </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td colspan="2" align="right" style="border:0; font-weight: bold;">اسم العقار:
+                                            <span t-esc="o.state_unit_id.sale_order_line_id.property_number.property_name"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td align="right" style="border:0;">اسم المستأجر:
+                                            <span t-esc="o['assigner_id'].partner_id.name"/>
+                                        </td>
+                                        <td align="right" style="border:0;">رقم الوحدة:
+                                            <span t-esc="o.state_unit_id.sale_order_line_id.product_id.unit_number"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
 
-                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                               style="width:100%;float: right; font-size:18px; margin-top:10px; margin-bottom:10px;" dir="rtl">
-                            <tbody>
-                                <tr style="height:18px;">
-                                    <td style="height:18px;  border: 1px solid black; width:20%;" align="center">يوجد مستحقات للمؤجر</td>
+                            <table align="center" class="table table-bordered" cellpadding="0" cellspacing="0"
+                                   style="width:100%; font-size:18px; margin-top:10px; margin-bottom:10px;"
+                                   dir="rtl">
+                                <tbody>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px; border: 1px solid black; width:15%;" align="right">حالة
+                                            الأبواب
+                                        </td>
 
-                                    <td style="height:18px;  border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>نعم</span>
-                                            <t t-if="o.rental_payments_yes">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.rental_payments_yes">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
+                                        <td style="height:18px; border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>جيد</span>
+                                                <t t-if="o.state_unit_id.rdoor_good">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rdoor_good">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
 
-                                    <td style="height:18px; border: 1px solid black; width:10%" align="center">
-                                        <p>
-                                            <span>لا</span>
-                                            <t t-if="o.rental_payments_no">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.rental_payments_no">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:30%;" align="right">
-                                        المبلغ:
-                                        <span  t-field="o.rental_payments"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:30%;" align="right">
-                                        التوقيع:
-                                    </td>
-                                </tr>
+                                        <td style="height:18px; border: 1px solid black; width:10%" align="center">
+                                            <p>
+                                                <span>سيء</span>
+                                                <t t-if="o.state_unit_id.rdoor_bad">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rdoor_bad">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
 
-                                <tr style="height:18px;">
-                                    <td style="height:18px;  border: 1px solid black; width:20%;" align="center">المبلغ المتبقي للمستأجر</td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            حدد:
+                                            <span t-field="o.state_unit_id.rdoor_comment"/>
+                                        </td>
 
-                                    <td style="height:18px;  border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>نعم</span>
-                                            <t t-if="o.remaining_amount_yes">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.remaining_amount_yes">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            الملاحظات
+                                            <span t-field="o.state_unit_id.rdoor_comment"/>
+                                        </td>
+                                    </tr>
 
-                                    <td style="height:18px; border: 1px solid black; width:10%" align="center">
-                                        <p>
-                                            <span>لا</span>
-                                            <t t-if="o.remaining_amount_no">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.remaining_amount_no">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:30%;" align="right">
-                                        المبلغ:
-                                        <span  t-field="o.remaining_amount"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:30%;" align="right">
-                                        التوقيع:
-                                    </td>
-                                </tr>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px; border: 1px solid black; width:15%;" align="right">
+                                            الحائط
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>جيد</span>
+                                                <t t-if="o.state_unit_id.rwall_good">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rwall_good">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black;" align="center">
+                                            <p>
+                                                <span>سيء</span>
+                                                <t t-if="o.state_unit_id.rwall_bad">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rwall_bad">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            حدد:
+                                            <span t-field="o.state_unit_id.rwall_comment"/>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            <span t-field="o.state_unit_id.rwall_comment"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px; border: 1px solid black; width:15%;" align="right">
+                                            النوافذ
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>جيد</span>
+                                                <t t-if="o.state_unit_id.rwindow_good">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rwindow_good">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black;" align="center">
+                                            <p>
+                                                <span>سيء</span>
+                                                <t t-if="o.state_unit_id.rwindow_bad">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rwindow_bad">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            حدد:
+                                            <span t-field="o.state_unit_id.rwindow_comment"/>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            <span t-field="o.state_unit_id.rwindow_comment"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px; border: 1px solid black; width:15%;" align="right">
+                                            السباكة
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>جيد</span>
+                                                <t t-if="o.state_unit_id.rwater_good">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rwater_good">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black;" align="center">
+                                            <p>
+                                                <span>سيء</span>
+                                                <t t-if="o.state_unit_id.rwater_bad">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.rwater_bad">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            حدد:
+                                            <span t-field="o.state_unit_id.rwater_comment"/>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            <span t-field="o.state_unit_id.rwater_comment"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px; border: 1px solid black; width:15%;" align="right">
+                                            الكهرباء
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>جيد</span>
+                                                <t t-if="o.state_unit_id.relec_good">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.relec_good">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black;" align="center">
+                                            <p>
+                                                <span>سيء</span>
+                                                <t t-if="o.state_unit_id.relec_bad">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.relec_bad">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            حدد:
+                                            <span t-field="o.state_unit_id.relec_comment"/>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:32.5%;" align="right">
+                                            <span t-field="o.state_unit_id.relec_comment"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
 
-                                <tr style="height:18px;">
-                                    <td style="height:18px; ; border: 1px solid black; width:20%;" align="center">تصفية عداد الكهرباء</td>
+                            <table align="center" class="table table-bordered" cellpadding="0" cellspacing="0"
+                                   style="width:100%;font-size:18px; margin-top:10px; margin-bottom:10px;"
+                                   dir="rtl">
+                                <tbody>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px;  border: 1px solid black; width:20%;" align="center">
+                                            موافقة
+                                            العميل بالتسليم
+                                        </td>
 
-                                    <td style="height:18px; border: 1px solid black; width:10%;" align="center">
-                                        <p>
-                                            <span>نعم</span>
-                                            <t t-if="o.elec_yes">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_yes">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
+                                        <td style="height:18px;  border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>نعم</span>
+                                                <t t-if="o.state_unit_id.customer_accept">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.customer_accept">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
 
-                                    <td style="height:18px; border: 1px solid black; width:10%" align="center">
-                                        <p>
-                                            <span>لا</span>
-                                            <t t-if="o.elec_no">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_no">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:30%;" align="right">
-                                        المبلغ:
-                                        <span  t-field="o.elec_amount"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:30%;" align="right">
-                                        التوقيع:
-                                    </td>
-                                </tr>
+                                        <td style="height:18px; border: 1px solid black; width:10%" align="center">
+                                            <p>
+                                                <span>لا</span>
+                                                <t t-if="o.state_unit_id.customer_refused">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.customer_refused">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
 
-                            </tbody>
-                        </table>
+                                        <td style="height:18px; border: 1px solid black; width:60%;" align="right">
+                                            التوقيع:
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
 
-                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                               style="width:100%;float: right; font-size:18px; margin-top:10px; margin-bottom:10px;" dir="rtl">
-                            <tbody>
-                                <tr style="height:18px;">
-                                    <td style="height:18px; border: 1px solid black; width:20%;" align="right">
-                                        رقم عداد الكهرباء:
-                                        <span  t-field="o.electricity_meter_no"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:20%;" align="right">
-                                        المبلغ المستحق:
-                                        <span  t-field="o.electricity_amount_due"/>
-                                    </td>
+                            <table align="center" class="table table-bordered" cellpadding="0" cellspacing="0"
+                                   style="width:100%;font-size:18px; margin-top:10px; margin-bottom:10px;"
+                                   dir="rtl">
+                                <tbody>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px;  border: 1px solid black; width:20%;" align="center">
+                                            يوجد
+                                            مستحقات للمؤجر
+                                        </td>
 
-                                    <td style="height:18px; border: 1px solid black; width:15%;" align="center">
-                                        <p>
-                                            <span>يوجد</span>
-                                            <t t-if="o.elec_found">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_found">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
+                                        <td style="height:18px;  border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>نعم</span>
+                                                <t t-if="o.state_unit_id.is_cost">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.is_cost">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
 
-                                    <td style="height:18px; border: 1px solid black; width:15%" align="center">
-                                        <p>
-                                            <span>لا يوجد</span>
-                                            <t t-if="o.elec_not_found">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_not_found">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:15%" align="center">
-                                        <p>
-                                            <span>تم السداد</span>
-                                            <t t-if="o.elec_payment">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_payment">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:15%" align="center">
-                                        <p>
-                                            <span>لم يتم السداد</span>
-                                            <t t-if="o.elec_not_payment">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.elec_not_payment">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                </tr>
+                                        <td style="height:18px; border: 1px solid black; width:10%" align="center">
+                                            <p>
+                                                <span>لا</span>
+                                                <t t-if="o.state_unit_id.is_no_cost">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.is_no_cost">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:30%;" align="right">
+                                            المبلغ:
+                                            <span t-field="o.state_unit_id.amount_rem"/>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:30%;" align="right">
+                                            التوقيع:
+                                        </td>
+                                    </tr>
 
-                                <tr style="height:18px;">
-                                    <td style="height:18px; border: 1px solid black; width:20%;" align="right">
-                                        رقم عداد المياه:
-                                        <span  t-field="o.water_meter_no"/>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:20%;" align="right">
-                                        المبلغ المستحق:
-                                        <span  t-field="o.water_amount_due"/>
-                                    </td>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px;  border: 1px solid black; width:20%;" align="center">
+                                            المبلغ
+                                            المتبقي للمستأجر
+                                        </td>
 
-                                    <td style="height:18px; border: 1px solid black; width:15%;" align="center">
-                                        <p>
-                                            <span>يوجد</span>
-                                            <t t-if="o.water_found">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.water_found">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
+                                        <td style="height:18px;  border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>نعم</span>
+                                                <t t-if="o.state_unit_id.is_amount_rem">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.is_amount_rem">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
 
-                                    <td style="height:18px; border: 1px solid black; width:15%" align="center">
-                                        <p>
-                                            <span>لا يوجد</span>
-                                            <t t-if="o.water_not_found">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.water_not_found">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:15%" align="center">
-                                        <p>
-                                            <span>تم السداد</span>
-                                            <t t-if="o.water_payment">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.water_payment">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td style="height:18px; border: 1px solid black; width:15%" align="center">
-                                        <p>
-                                            <span>لم يتم السداد</span>
-                                            <t t-if="o.water_not_payment">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.water_not_payment">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                        <td style="height:18px; border: 1px solid black; width:10%" align="center">
+                                            <p>
+                                                <span>لا</span>
+                                                <t t-if="o.state_unit_id.is_no_amount_rem">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.state_unit_id.is_no_amount_rem">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:30%;" align="right">
+                                            المبلغ:
+                                            <span t-field="o.state_unit_id.amount_rem"/>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:30%;" align="right">
+                                            التوقيع:
+                                        </td>
+                                    </tr>
 
-                        <h3 lang="ar-SA" style="padding-top:20px; font-weight: bold;" align="right">:خاص بالإدارة</h3>
+                                    <tr style="height:18px;">
+                                        <td style="height:18px; ; border: 1px solid black; width:20%;" align="center">
+                                            تصفية
+                                            عداد الكهرباء
+                                        </td>
 
-                        <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
-                               style="width:100%;float: right; border:0; font-size:18px;" dir="rtl">
-                            <tbody>
-                               <tr style="height:18px;">
-                                    <td align="right" style="border:0;">قيمة الإيجار:
-                                        <t t-foreach="o.partner_id.order_line" t-as="line">
-                                            <span t-esc="line.price_subtotal"/>
-                                        </t>
-                                    </td>
-                                    <td align="right" style="border:0;">بداية العقد:
+                                        <td style="height:18px; border: 1px solid black; width:10%;" align="center">
+                                            <p>
+                                                <span>نعم</span>
+                                                <t t-if="o.state_unit_id.is_elec_filter=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.is_elec_filter=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+
+                                        <td style="height:18px; border: 1px solid black; width:10%" align="center">
+                                            <p>
+                                                <span>لا</span>
+                                                <t t-if="o.state_unit_id.is_elec_filter=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.is_elec_filter=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:30%;" align="right">
+                                            المبلغ:
+                                            <span t-field="o.state_unit_id.elec_remain_amount"/>
+                                        </td>
+                                        <td style="height:18px; border: 1px solid black; width:30%;" align="right">
+                                            التوقيع:
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" style="page-break-inside: avoid;">
+
+                            <table align="center" class="table table-bordered" cellpadding="0" cellspacing="0"
+                                   style="border-top: 2px solid black;width:100%; font-size:18px; margin-top:10px; margin-bottom:10px;"
+                                   dir="rtl">
+                                <tbody>
+                                    <tr style="border-top: 1px solid black;">
+                                        <td style="height:10px; border: 1px solid black; width:20%;" align="right">
+                                            رقم عداد الكهرباء:
+                                            <span t-field="o.electricity_meter_no"/>
+                                        </td>
+                                        <td style="border: 1px solid black; width:20%;" align="right">
+                                            المبلغ المستحق:
+                                            <span t-field="o.state_unit_id.elec_remain_amount"/>
+                                        </td>
+
+                                        <td style="border: 1px solid black; width:15%;" align="center">
+                                            <p>
+                                                <span>يوجد</span>
+                                                <t t-if="o.state_unit_id.iselec_remain=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iselec_remain=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+
+                                        <td style="border: 1px solid black; width:15%" align="center">
+                                            <p>
+                                                <span>لا يوجد</span>
+                                                <t t-if="o.state_unit_id.iselec_remain=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iselec_remain=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="border: 1px solid black; width:15%" align="center">
+                                            <p>
+                                                <span>تم السداد</span>
+                                                <t t-if="o.state_unit_id.iselec_paid=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iselec_paid=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="border: 1px solid black; width:15%" align="center">
+                                            <p>
+                                                <span>لم يتم السداد</span>
+                                                <t t-if="o.state_unit_id.iselec_paid=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iselec_paid=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                    </tr>
+
+                                    <tr style="">
+                                        <td style="border: 1px solid black; width:20%;" align="right">
+                                            رقم عداد المياه:
+                                            <span t-field="o.state_unit_id.rwater_filter"/>
+                                        </td>
+                                        <td style=" border: 1px solid black; width:20%;" align="right">
+                                            المبلغ المستحق:
+                                            <span t-field="o.state_unit_id.iswater_remain_amount"/>
+                                        </td>
+
+                                        <td style="border: 1px solid black; width:15%;" align="center">
+                                            <p>
+                                                <span>يوجد</span>
+                                                <t t-if="o.state_unit_id.iswater_remain=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iswater_remain=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+
+                                        <td style="border: 1px solid black; width:15%" align="center">
+                                            <p>
+                                                <span>لا يوجد</span>
+                                                <t t-if="o.state_unit_id.iswater_remain=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iswater_remain=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="border: 1px solid black; width:15%" align="center">
+                                            <p>
+                                                <span>تم السداد</span>
+                                                <t t-if="o.state_unit_id.iswater_paid=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iswater_paid=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td style="border: 1px solid black; width:15%" align="center">
+                                            <p>
+                                                <span>لم يتم السداد</span>
+                                                <t t-if="o.state_unit_id.iswater_paid=='no'">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="o.state_unit_id.iswater_paid=='yes'">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+
+                            <h3 lang="ar-SA" style="padding-top:20px; font-weight: bold;" align="right">:خاص بالإدارة
+                            </h3>
+                        </div>
+                        <div class="row">
+
+                            <table align="center" class="table table-bordered" cellpadding="1" cellspacing="1"
+                                   style="width:100%; border:0; font-size:18px;" dir="rtl">
+                                <tbody>
+                                    <tr style="height:18px;">
+                                        <td align="right" style="border:0;">قيمة الإيجار:
+                                            <span t-esc="o.state_unit_id.sale_order_line_id.price_subtotal"/>
+                                        </td>
+                                        <td align="right" style="border:0;">بداية العقد:
                                             <span t-esc="o.beginning_contract"/>م
-                                    </td>
-                                    <td align="right" style="border:0;">التأمين المدفوع:
-                                        <t t-foreach="o.partner_id.order_line" t-as="line">
-                                            <span t-esc="line.insurance_value"/>
-                                        </t>
-                                    </td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td align="right" style="border:0;">موافقة الإدارة على الاستلام:</td>
-                                    <td align="right" style="border:0;">
-                                        <p>
-                                            <span>نعم</span>
-                                            <t t-if="o.mangement_accept">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.mangement_accept">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                    <td align="right" style="border:0;">
-                                        <p>
-                                            <span>لا</span>
-                                            <t t-if="o.mangement_refused">
-                                                <input type="checkbox" id="oe_import_tracking" checked="checked"/>
-                                            </t>
-                                            <t t-if="not o.mangement_refused">
-                                                <input type="checkbox" id="oe_import_tracking"/>
-                                            </t>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td colspan='3' align="right" style="border:0;">ملاحظة:
-                                         <span  t-field="o.note"/>
-                                    </td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td colspan='3' align="right" style="border:0;"></td>
-                                </tr>
-                                <tr style="height:18px;">
-                                    <td colspan='2' align="right" style="border:0;">المسؤول عن المبنى</td>
-                                    <td align="right" style="border:0;">مدير العقارات</td>
-                                </tr>
+                                        </td>
+                                        <td align="right" style="border:0;">التأمين المدفوع:
+                                            <span t-esc="o.state_unit_id.sale_order_line_id.insurance_value"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td align="right" style="border:0;">موافقة الإدارة على الاستلام:</td>
+                                        <td align="right" style="border:0;">
+                                            <p>
+                                                <span>نعم</span>
+                                                <t t-if="o.mangement_accept">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.mangement_accept">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                        <td align="right" style="border:0;">
+                                            <p>
+                                                <span>لا</span>
+                                                <t t-if="o.mangement_refused">
+                                                    <input type="checkbox" id="oe_import_tracking" checked="checked"/>
+                                                </t>
+                                                <t t-if="not o.mangement_refused">
+                                                    <input type="checkbox" id="oe_import_tracking"/>
+                                                </t>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td colspan='3' align="right" style="border:0;">ملاحظة:
+                                            <span t-field="o.note"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td colspan='3' align="right" style="border:0;"></td>
+                                    </tr>
+                                    <tr style="height:18px;">
+                                        <td colspan='2' align="right" style="border:0;">المسؤول عن المبنى</td>
+                                        <td align="right" style="border:0;">مدير العقارات</td>
+                                    </tr>
 
-                            </tbody>
-                        </table>
-
-
-
-
-
-
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
-                    </t>
                 </t>
             </t>
+        </t>
     </template>
 
 </odoo>
