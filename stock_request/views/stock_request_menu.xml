@@ -2,7 +2,7 @@
 <odoo>
     <menuitem
         id="menu_stock_request_root"
-        name="Stock Requests"
+        name="Purchase Requests"
         groups="stock_request.group_stock_request_user,stock_request.group_stock_request_manager"
         web_icon="stock_request,static/description/icon.png"
         sequence="100"
@@ -11,7 +11,7 @@
     <menuitem
         id="menu_stock_request"
         action="action_request_quantities_form"
-        name="Stock Requests"
+        name="Purchase Requests"
         parent="menu_stock_request_root"
         sequence="30"
     />
@@ -32,7 +32,7 @@
      <menuitem
         id="menu_rental_stock_request"
         action="action_request_quantities_form"
-        name="Stock Requests"
+        name="Purchase Requests"
         parent="sale_renting.rental_menu_root"
         sequence="4"
     />
