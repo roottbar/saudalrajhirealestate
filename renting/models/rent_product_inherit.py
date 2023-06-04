@@ -111,6 +111,7 @@ class RentProduct(models.Model):
     todate = fields.Datetime(compute="get_sale_data", string='تاريخ التسليم')
     last_sale_id = fields.Many2one('sale.order', compute="get_sale_data")
     operating_unit_id = fields.Many2one('operating.unit', string='الفرع ')
+    contract_total = fields.Float(compute="get_sale_data", string='قيمة العقد')
     def get_sale_data(self):
         for rec in self:
             order_line_id = rec.env['sale.order.line'].sudo().search([
@@ -125,6 +126,7 @@ class RentProduct(models.Model):
             rec.operating_unit_id = order_line_id.order_id.operating_unit_id.id if order_line_id else False
             rec.todate = order_line_id.order_id.todate if order_line_id else False
             rec.amount_paid = (sum(ll.price_subtotal for ll in order_line_id.order_id.invoice_ids.invoice_line_ids.filtered(lambda line: line.move_id.payment_state == 'paid' and line.product_id == rec.product_variant_id))) if order_line_id else 0
+            rec.contract_total = order_line_id.order_id.amount_total
 
             rec.amount_due = (sum(order_line_id.order_id.order_line[0].price_unit / ll.sale_order_id.invoice_number for ll in
                                  order_line_id.order_id.order_contract_invoice.filtered(lambda line: line.status == 'uninvoiced')

@@ -36,6 +36,7 @@
                     <field name="activity_exception_decoration" invisible="1" widget="activity_exception"/>
                     <field name="amount_paid"/>
                     <field name="amount_due"/>
+                    <field name="contract_total"/>
                     <field name="fromdate"/>
                     <field name="todate"/>
                     <field name="contract_admin_fees"/>
