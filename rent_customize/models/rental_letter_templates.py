@@ -1,6 +1,7 @@
 from odoo import api, models, fields, _
-from odoo.exceptions import UserError, ValidationError
 from hijri_converter import Hijri, Gregorian
+import ast
+
 
 ReportActions = {
     'transfer': 'action_report_transfer',
@@ -171,6 +172,29 @@ class RentalLetterTemplate(models.Model):
     assignee_identity_date = fields.Date(string='Assignee ID Issue Date')
     rental_value_old = fields.Monetary(string="Rental Value")
     rental_value_new = fields.Monetary(string="Rental Value new")
+    evacuated = fields.Boolean(string='Evacuated')
+
+    def action_open_rental_contract(self):
+        action = self.env.ref("sale_renting.rental_order_action").sudo().read()[0]
+        action["domain"] = [("id", "in", self.assigner_id.id)]
+        view_id = self.env.ref('sale_renting.rental_order_primary_form_view').id
+        action['views'] = [(view_id, 'form')]
+        action['res_id'] = self.assigner_id.id
+        ctx = ast.literal_eval(action['context'])
+        ctx.update({'create':  False, 'delete': False})
+        action['context'] = str(ctx)
+        return action
+
+    def action_evacuation(self):
+        for record in self:
+            invoice_ids = record.sudo().assigner_id.invoice_ids
+            asset_ids = invoice_ids.mapped('asset_ids')
+            for asset in asset_ids.filtered(lambda line: line.asset_type == 'sale'):
+                asset.depreciation_move_ids.filtered(lambda mov: mov.state == 'draft').button_cancel()
+                asset.write({'state': 'close'})
+            invoice_ids.filtered(lambda inv: inv.state == 'draft').button_cancel()
+            record.assigner_id.state = 'termination'
+            record.evacuated = True
 
     def print_letter(self):
         action = self.env.ref('rent_customize.%s' % ReportActions[self.subject])

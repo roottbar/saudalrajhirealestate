@@ -24,5 +24,13 @@
             <field name="category_id" ref="sales_work_fllow"/>
             <field name="users" eval="[(4, ref('base.user_admin'))]" />
         </record>
+
+          <record id="rule_rental_letter_template_multi_company" model="ir.rule">
+            <field name="name">Letter Template Multi Company</field>
+            <field name="model_id" ref="model_rental_letter_template" />
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in',
+                company_ids)]
+            </field>
+        </record>
     </data>
 </odoo>
