@@ -70,9 +70,20 @@ class SaleOrder(models.Model):
     annual_increase_type = fields.Selection([
         ('percentage', 'Percentage'),
         ('fixed', 'Fixed amount')
-    ], default='percentage', string='Annual INcrease Type')
+    ], default='percentage', string='Annual Increase Type')
     annual_amount = fields.Float("Annual Amount")
+    product_id = fields.Many2one('product.product', string='Unit')
+    product_ids = fields.Many2many('product.product', string='Unit_ids')
 
+
+    @api.onchange("order_line")
+    def _compute_allowed_products(self):
+        product_ids = []
+        for rec in self.order_line:
+            product_ids.append(self.env['product.product'].search([('id', '=', rec.product_id.id)]).id)
+        print(product_ids)
+        self.product_ids = product_ids
+    
     def action_submit(self):
         if not self.order_line:
             raise ValidationError(_("You need to add at least one line before Submitting."))
@@ -185,23 +196,6 @@ class SaleOrder(models.Model):
         action["res_id"] = self.id
         return action
 
-        form_view_id = self.env.ref('rent_customize.refund_insurance_view_form').ids
-        return {
-            'name': 'Refund Insurance',
-            'views': [(form_view_id, 'form')],
-            'view_mode': 'form',
-            'res_model': 'sale.order',
-            'type': 'ir.actions.act_window',
-            "context": {
-                'default_partner_id': self.partner_id.id,
-                'default_apartment_insurance': self.apartment_insurance,
-                'default_refund_amount': self.apartment_insurance,
-                'default_partner_invoice_id': self.partner_invoice_id.id,
-                'default_context_order': self.id,
-                'default_state': self.state,
-            },
-            'target': 'new',
-        }
     
     def action_view_transfer(self):
         return {
@@ -310,7 +304,7 @@ class SaleOrder(models.Model):
             'price_unit': abs(self.refund_amount) ,
             'tax_ids': [(6, 0, [])],
             'sale_line_ids': [(4, self.context_order.order_line[0].id)],
-            'analytic_account_id': False,
+            'analytic_account_id': self.product_id.product_tmpl_id.analytic_account.id,
             'exclude_from_invoice_tab': False,
         }
         return res
@@ -484,7 +478,4 @@ class SaleOrderLine(models.Model):
             ])
             product_ids = orders.product_id.ids
         return {'domain': {'product_id': [('product_tmpl_id.property_id','=',self.property_number.id),('id', 'not in', product_ids)]}}
-
-
-
 
