@@ -12,7 +12,7 @@ from odoo.tools import float_compare, format_datetime, format_time
 class RentSaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    contract_number = fields.Char(string='رقم عقد ايجار')
+    contract_number = fields.Char(string='رقم عقد منصة ايجار')
     fromdate = fields.Date(string='From Date', default=datetime.today(), copy=False, required=True)
     todate = fields.Date(string='To Date', default=datetime.today(), copy=False, required=True)
     # Fields in Contract Info Tab
