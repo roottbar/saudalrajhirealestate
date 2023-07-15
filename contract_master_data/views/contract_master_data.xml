@@ -1,5 +1,57 @@
 <odoo>
     <data>
+
+        <record id="contract_master_data_form" model="ir.ui.view">
+            <field name="name">contract.master.data.form</field>
+            <field name="model">contract.master.data</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group col="4">
+                            <field name="property_number" />
+                            <field name="product_id" />
+                            <field name="unit_area" />
+                            <field name="unit_floor_number" />
+                            <field name="property_has_parking" widget="boolean_toggle" />
+                            <field name="furniture_bedroom_no" />
+                            <field name="furniture_bathroom_no" />
+                            <field name="living" />
+                            <field name="lift" />
+                            <field name="balcony" />
+                            <field name="garden" />
+                            <field name="furniture_kitchen_installed" />
+                            <field name="partner_id" />
+                            <field name="contract" />
+                            <field name="contract_number" />
+                            <field name="name" />
+                            <field name="price_unit" />
+                            <field name="contract_service_fees" />
+                            <field name="deposit" />
+                            <field name="price_tax" />
+                            <field name="unit_electricity" />
+                            <field name="unit_water" />
+                            <field name="unit_gas" />
+                            <field name="insurance_value" />
+                            <field name="fromdate" />
+                            <field name="todate" />
+                            <field name="installment_due" />
+                            <field name="premium_due_with_insurance" />
+                            <field name="new_due_date" />
+                            <field name="indebtedness_due_date" />
+                            <field name="number_of_payment" />
+                            <field name="indebtedness_amount" />
+                            <field name="total_amount_with_trade_tax" />
+                            <field name="total_overdue_and_due" />
+                            <field name="contact_number" />
+                            <field name="id_number" />
+                            <field name="date_o_birth" />
+                            <field name="method_of_payment" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <record id="contract_master_data_view_form" model="ir.ui.view">
             <field name="name">contract.master.data.tree.form</field>
             <field name="model">contract.master.data</field>
@@ -16,7 +68,6 @@
                     <field name="lift" optional="show"/>
                     <field name="balcony" optional="show"/>
                     <field name="garden" optional="show"/>
-                    <!-- <field name="garden_des" optional="show"/> -->
                     <field name="furniture_kitchen_installed" optional="show"/>
                     <field name="partner_id" optional="show"/>
                     <field name="contract" optional="show"/>
@@ -44,8 +95,6 @@
                     <field name="id_number" optional="show"/>
                     <field name="date_o_birth" optional="show"/>
                     <field name="method_of_payment" optional="show"/>
-
-
                 </tree>
             </field>
         </record>
@@ -55,7 +104,6 @@
             <field name="name">Contract Master Data</field>
             <field name="res_model">contract.master.data</field>
             <field name="view_mode">tree,form</field>
-            <!-- <field name="view_type">form</field> -->
         </record>
 
         <menuitem id="contract_master_data_action_menu" name="Contract Master Data" parent="sale_renting.menu_rental_reporting" groups="rent_customize.renting_report_contract_master_data" sequence="19" action="contract_master_data_action"/>
