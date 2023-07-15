@@ -17,9 +17,6 @@
                     <field name="balcony" optional="show"/>
                     <field name="garden" optional="show"/>
                     <!-- <field name="garden_des" optional="show"/> -->
-
-
-
                     <field name="furniture_kitchen_installed" optional="show"/>
                     <field name="partner_id" optional="show"/>
                     <field name="contract" optional="show"/>
@@ -35,8 +32,6 @@
                     <field name="insurance_value" optional="show"/>
                     <field name="fromdate" optional="show"/>
                     <field name="todate" optional="show"/>
-                    
-                    
                     <field name="installment_due" optional="show"/>
                     <field name="premium_due_with_insurance" optional="show"/>
                     <field name="new_due_date" optional="show"/>
@@ -57,20 +52,11 @@
 
 
         <record id="contract_master_data_action" model="ir.actions.act_window">
-            <field name="name">contract.master.data</field>
+            <field name="name">Contract Master Data</field>
             <field name="res_model">contract.master.data</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
             <!-- <field name="view_type">form</field> -->
         </record>
-
-        <!-- <record id="action_price_analysis_report" model="ir.actions.act_window">
-            <field name="name">Sale Price Analysis</field>
-            <field name="res_model">price.analysis.report</field>
-            <field name="view_mode">tree,graph,pivot</field>
-            <field name="view_id" />
-            <field name="search_view_id" ref="view_price_analysis_report_search" />
-            <field name="context">{'group_by':[]}</field>
-        </record> -->
 
         <menuitem id="contract_master_data_action_menu" name="Contract Master Data" parent="sale_renting.menu_rental_reporting" groups="rent_customize.renting_report_contract_master_data" sequence="19" action="contract_master_data_action"/>
     </data>
