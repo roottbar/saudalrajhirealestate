@@ -49,9 +49,9 @@
         <field name="search_view_id" ref="biometric_attnd_log_filter"/>
     </record>
 
-    <menuitem action="action_biometric_attnd_log_view"
-              id="menu_biometric_attnd_log"
-              parent="dp_biostar_2_biomatric_attendance.menu_biometric"
-              sequence="2"/>
+<!--    <menuitem action="action_biometric_attnd_log_view"-->
+<!--              id="menu_biometric_attnd_log"-->
+<!--              parent="dp_biostar_2_biomatric_attendance.menu_biometric"-->
+<!--              sequence="2"/>-->
 
 </odoo>

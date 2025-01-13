@@ -68,13 +68,13 @@
         </field>
     </record>
 
-     <menuitem id="menu_biometric"
-              name="Biometric"
-              parent="hr_attendance.menu_hr_attendance_root"
-              sequence="95" />
+<!--     <menuitem id="menu_biometric"-->
+<!--              name="Biometric"-->
+<!--              parent="hr_attendance.menu_hr_attendance_root"-->
+<!--              sequence="95" />-->
 
-     <menuitem action="action_biostar_2_api_intigration_view"
-              id="menu_biometric_device_config"
-              parent="dp_biostar_2_biomatric_attendance.menu_biometric"
-              sequence="98" />
+<!--     <menuitem action="action_biostar_2_api_intigration_view"-->
+<!--              id="menu_biometric_device_config"-->
+<!--              parent="dp_biostar_2_biomatric_attendance.menu_biometric"-->
+<!--              sequence="98" />-->
 </odoo>

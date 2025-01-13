@@ -19,6 +19,7 @@
         'views/biostar_api.xml',
         'views/attendance_logs_views.xml',
         'wizard/attendance_report_wizard_view.xml',
+        'views/menu.xml',
     ],
     'demo': [
     ],

@@ -29,14 +29,34 @@ class AttendanceReportWizard(models.TransientModel):
     report_name = fields.Text(string='File Name')
     is_printed = fields.Boolean('Printed', default=False)
     employee_ids = fields.Many2many('hr.employee',string='Employee')
+    add_time = fields.Boolean('Add Time', default=False)
 
-    @api.onchange('report_from')
-    def onchange_report(self):
-        day = datetime.today().day
-        date_from = datetime.today() + relativedelta(day=day - 1, hour=00, minute=00, second=00)
-        date_to = datetime.today() + relativedelta(day=day - 1, hour=23, minute=59, second=59)
-        self.date_from = date_from.strftime("%Y-%m-%d %H:%M:%S")
-        self.date_to = date_to.strftime("%Y-%m-%d %H:%M:%S")
+    # New fields
+    date_from_d = fields.Date('From')
+    date_to_d = fields.Date('To')
+
+    @api.onchange('date_from_d')
+    def _onchange_date_from_d(self):
+        if not self.add_time and self.date_from_d:
+            self.date_from = f"{self.date_from_d} 00:00:00"
+        elif self.add_time and self.date_from_d:
+            pass
+
+    @api.onchange('date_to_d')
+    def _onchange_date_to_d(self):
+        if not self.add_time and self.date_to_d:
+            self.date_to = f"{self.date_to_d} 23:59:59"
+        elif self.add_time and self.date_to_d:
+            pass
+
+
+    # @api.onchange('report_from')
+    # def onchange_report(self):
+    #     day = datetime.today().day
+    #     date_from = datetime.today() + relativedelta(day=day - 1, hour=00, minute=00, second=00)
+    #     date_to = datetime.today() + relativedelta(day=day - 1, hour=23, minute=59, second=59)
+    #     self.date_from = date_from.strftime("%Y-%m-%d %H:%M:%S")
+    #     self.date_to = date_to.strftime("%Y-%m-%d %H:%M:%S")
 
     def export_attendance_xlsx(self, fl=None):
         date_from = self.new_timezone(self.date_from)
@@ -132,63 +152,79 @@ class AttendanceReportWizard(models.TransientModel):
             #worksheet.set_column('O:XFD', None, None, {'hidden': True})
             worksheet.set_column('A:O', 20, border)
             worksheet.set_row(0, 20)
-            worksheet.merge_range('A1:J1',
+            worksheet.merge_range('A1:L1',
                                   "Attendance sheet from" + day1 + '-' + month1 + '-' + year1 + ' to ' + day2 + '-' + month2 + '-' + year2,
                                   bold)
 
             row = 2
             col = 0
             worksheet.merge_range(row, col, row + 1, col + 1, "Name of Employee", font_bold_center)
-            worksheet.merge_range(row, col + 2, row + 1, col + 2, "Check In", font_bold_center)
-            worksheet.merge_range(row, col + 3, row + 1, col + 3, "Check_out", font_bold_center)
-            worksheet.merge_range(row, col + 4, row + 1, col + 4, "Difference", font_bold_center)
-            worksheet.merge_range(row, col + 5, row + 1, col + 5, "Break Time", font_bold_center)
-            worksheet.merge_range(row, col + 6, row + 1, col + 6, "Worked Hours", font_bold_center)
-            worksheet.merge_range(row, col + 7, row + 1, col + 7, "Shift Hours", font_bold_center)
-            worksheet.merge_range(row, col + 8, row + 1, col + 8, "Overtime Hours", font_bold_center)
-            worksheet.merge_range(row, col + 9, row + 1, col + 9, "Shortfall Hours", font_bold_center)
+            worksheet.merge_range(row, col + 2, row + 1, col + 2, "Check In Date", font_bold_center)
+            worksheet.merge_range(row, col + 3, row + 1, col + 3, "Check In Time", font_bold_center)
+            worksheet.merge_range(row, col + 4, row + 1, col + 4, "Check Out Date", font_bold_center)
+            worksheet.merge_range(row, col + 5, row + 1, col + 5, "Check Out Time", font_bold_center)
+            worksheet.merge_range(row, col + 6, row + 1, col + 6, "Difference", font_bold_center)
+            worksheet.merge_range(row, col + 7, row + 1, col + 7, "Break Time", font_bold_center)
+            worksheet.merge_range(row, col + 8, row + 1, col + 8, "Worked Hours", font_bold_center)
+            worksheet.merge_range(row, col + 9, row + 1, col + 9, "Shift Hours", font_bold_center)
+            worksheet.merge_range(row, col + 10, row + 1, col + 10, "Overtime Hours", font_bold_center)
+            worksheet.merge_range(row, col + 11, row + 1, col + 11, "Shortfall Hours", font_bold_center)
             row += 2
             total_overtime = "00:00"
             for attendance in records:
                 worksheet.merge_range(row, col, row, col + 1, attendance.employee_id.name, font_left)
                 if attendance.check_in:
                     check_in = self.new_timezone(attendance.check_in)
+                    if isinstance(check_in, str):
+                        check_in_dt = datetime.strptime(check_in, '%Y-%m-%d %H:%M:%S')
+                    check_in_date = check_in_dt.strftime('%Y-%m-%d')
+                    check_in_time = check_in_dt.strftime('%H:%M:%S')
                 else:
                     check_in = '***No Check In***'
-                worksheet.write(row, col + 2, check_in, font_center)
+                    check_in_date = '***No Check In***'
+                    check_in_time = '***No Check In***'
+                worksheet.write(row, col + 2, check_in_date, font_center)
+                worksheet.write(row, col + 3, check_in_time, font_center)
                 if attendance.check_out:
                     check_out = self.new_timezone(attendance.check_out)
+                    if isinstance(check_out, str):
+                        check_out_dt = datetime.strptime(check_out, '%Y-%m-%d %H:%M:%S')
+                    check_out_date = check_out_dt.strftime('%Y-%m-%d')
+                    check_out_time = check_out_dt.strftime('%H:%M:%S')
                 else:
                     check_out = '***No Check Out***'
+                    check_out_date = '***No Check Out***'
+                    check_out_time = '***No Check Out***'
 
-                worksheet.write(row, col + 3, check_out, font_center)
+                worksheet.write(row, col + 4, check_out_date, font_center)
+                worksheet.write(row, col + 5, check_out_time, font_center)
 
                 diff_hours = int(attendance.in_out_diff)
                 diff_minutes = int((attendance.in_out_diff - diff_hours) * 60)
                 diff = f"{diff_hours:02}:{diff_minutes:02}"
-                worksheet.write(row, col + 4, diff, font_center)
+                worksheet.write(row, col + 6, diff, font_center)
 
                 wrk_hours = int(attendance.worked_hours)
                 wrk_minutes = int((attendance.worked_hours - wrk_hours) * 60)
                 worked = f"{wrk_hours:02}:{wrk_minutes:02}"
-                worksheet.write(row, col + 6, worked, font_center)
+                worksheet.write(row, col + 8, worked, font_center)
 
                 break_time = datetime.strptime(diff, "%H:%M") - datetime.strptime(worked, "%H:%M")
                 hours, remainder = divmod(break_time.seconds, 3600)
                 minutes = remainder // 60
                 formatted_break_time = f"{hours:02}:{minutes:02}"
 
-                worksheet.write(row, col + 5, formatted_break_time, font_center)
+                worksheet.write(row, col + 7, formatted_break_time, font_center)
 
                 # Determine if the current day is Friday
                 check_in_date = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S") if attendance.check_in else None
                 is_friday = check_in_date and check_in_date.weekday() == 4  # 4 corresponds to Friday
 
                 # Write the shift hours based on whether it is Friday
-                if is_friday:
-                    worksheet.write(row, col + 7, "00:00", font_center)
-                else:
-                    worksheet.write(row, col + 7, "08:00", font_center)
+                # if is_friday:
+                #     worksheet.write(row, col + 7, "00:00", font_center)
+                # else:
+                worksheet.write(row, col + 9, "08:00", font_center)
 
                 def calculate_time(input_time, check_in, base_hours=8):
                     cumulative_overtime = timedelta(0)
@@ -234,7 +270,7 @@ class AttendanceReportWizard(models.TransientModel):
 
                 # Example usage:
                 adjusted_time, classification = calculate_time(worked, check_in)  # Friday
-                worksheet.write(row, col + 8, adjusted_time if classification == "Overtime" else "00:00", font_center)
+                worksheet.write(row, col + 10, adjusted_time if classification == "Overtime" else "00:00", font_center)
                 hours1, minutes1 = map(int, total_overtime.split(":"))
                 hours2, minutes2 = map(int, adjusted_time.split(":") if classification == "Overtime" else "00:00".split(":"))
 
@@ -247,10 +283,10 @@ class AttendanceReportWizard(models.TransientModel):
                 total_hours, remainder = divmod(total_time.seconds, 3600)
                 total_minutes = remainder // 60
                 total_overtime = f"{total_time.days * 24 + total_hours:02}:{total_minutes:02}"
-                worksheet.write(row, col + 9, adjusted_time if classification == "Shortfall" else "00:00", font_center)
+                worksheet.write(row, col + 11, adjusted_time if classification == "Shortfall" else "00:00", font_center)
 
                 row += 1
-            worksheet.write(row, 8, f"Total: {total_overtime}", font_center)
+            worksheet.write(row, 10, f"Total: {total_overtime}", font_center)
         workbook.close()
         xlsx_data = output.getvalue()
 

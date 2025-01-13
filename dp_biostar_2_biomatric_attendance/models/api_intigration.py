@@ -30,22 +30,23 @@ class BiostarApi(models.Model):
 
     def check_connection(self):
         protocols = ["https", "http"]
-        ports = [443, 80]
-
         payload = json.dumps({
             "User": {
                 "login_id": self.device_id,
                 "password": self.device_password,
             }
         })
-        headers = {
-            'Content-Type': 'application/json'
-        }
+        headers = {'Content-Type': 'application/json'}
 
         for protocol in protocols:
             url = f"{protocol}://{self.device_ip}/api/login"
+            print(f"Attempting connection to: {url}")
+            print(f"Payload: {payload}")
+
             try:
-                response = requests.post(url, headers=headers, data=payload, timeout=10, verify=False)
+                response = requests.request("POST", url, headers=headers, data=payload, verify=False)
+                print(f"Response Status: {response.status_code}")
+                print(f"Response Text: {response.text}")
 
                 if response.status_code == 200:
                     bs_session_id = response.headers.get('bs-session-id')
@@ -55,14 +56,21 @@ class BiostarApi(models.Model):
                             'state': 'connected',
                         })
                         return True
-
                     else:
                         raise UserError(
                             _("Connection successful but 'bs-session-id' is missing in the response headers."))
                 else:
                     print(f"Failed with status code {response.status_code}: {url}")
+                    if response.status_code == 401:
+                        raise UserError(_("Unauthorized: Check your device credentials."))
+                    elif response.status_code == 403:
+                        raise UserError(_("Forbidden: Access denied to the device."))
+                    else:
+                        raise UserError(_("Failed to connect: %s") % response.text)
             except requests.exceptions.RequestException as e:
-                print(f"Connection error to {url}: {e}")
+                print(f"Request failed: {e}")
+                raise UserError(_("Failed to connect due to a network error: %s") % str(e))
+
         self.write({'state': 'not_connected'})
         raise UserError(_("Failed to connect to the device at IP: %s") % self.device_ip)
 
