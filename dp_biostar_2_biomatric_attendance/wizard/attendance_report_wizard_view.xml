@@ -11,7 +11,7 @@
                            attrs="{'invisible': [('is_printed','=',True)]}">
                         <!--                           attrs="{'invisible': [('is_printed','=',True)]}">-->
                         <group>
-                            <field name="report_from"/>
+                            <field name="report_from" invisible="1"/>
                             <field name="employee_ids" widget="many2many_tags"/>
                         </group>
                         <group>

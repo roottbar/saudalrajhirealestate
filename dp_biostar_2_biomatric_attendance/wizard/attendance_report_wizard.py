@@ -61,14 +61,16 @@ class AttendanceReportWizard(models.TransientModel):
     def export_attendance_xlsx(self, fl=None):
         date_from = self.new_timezone(self.date_from)
         date_to = self.new_timezone(self.date_to)
-        domain = ['|',
-                  '&', ('check_in', '>=', date_from), ('check_out', '<=', date_to),
-                  '&', '&', ('check_in', '>=', date_from), ('check_in', '<=', date_to), ('check_out', '=', False)]
+        # domain = [('check_in', '>=', date_from), ('check_out', '<=', date_to)]
+
         if self.employee_ids:
-            domain = ['|',
-                      '&', ('check_in', '>=', date_from), ('check_out', '<=', date_to),
-                      '&', '&', ('check_in', '>=', date_from), ('check_in', '<=', date_to),
-                      ('check_out', '=', False),('employee_id','in',self.employee_ids.ids)]
+            domain = [('check_in', '>=', date_from), ('check_out', '<=', date_to),
+                     ('employee_id','in',self.employee_ids.ids)]
+        else:
+            employees = self.env['hr.employee'].search([])
+            domain = [('check_in', '>=', date_from), ('check_out', '<=', date_to),
+                      ('employee_id', 'in', employees.ids)]
+
         attendances = self.env['hr.attendance'].search(domain)
         # Group records by employee_id
         grouped_by_employee = defaultdict(list)
