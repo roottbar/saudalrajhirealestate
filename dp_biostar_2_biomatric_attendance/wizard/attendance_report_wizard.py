@@ -67,11 +67,11 @@ class AttendanceReportWizard(models.TransientModel):
             domain = [('check_in', '>=', date_from), ('check_out', '<=', date_to),
                      ('employee_id','in',self.employee_ids.ids)]
         else:
-            employees = self.env['hr.employee'].search([])
+            employees = self.env['hr.employee'].sudo().search([])
             domain = [('check_in', '>=', date_from), ('check_out', '<=', date_to),
                       ('employee_id', 'in', employees.ids)]
 
-        attendances = self.env['hr.attendance'].search(domain)
+        attendances = self.env['hr.attendance'].sudo().search(domain)
         # Group records by employee_id
         grouped_by_employee = defaultdict(list)
         for record in attendances:
