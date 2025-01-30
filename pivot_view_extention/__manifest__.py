@@ -12,9 +12,9 @@
             Customized Odoo Web core module, to extend the functionality for 
             pivot groupby.
     """,
-    'assets': {
-        'web.assets_backend': [
-            'pivot_view_extention/static/src/views/**/*',
+    "assets": {
+        "web.assets_backend": [
+            'pivot_view_extention/static/src/views/pivot/custom_pivot_model.js',
         ],
     },
     'installable': True,

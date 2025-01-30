@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import { PivotModel } from "@web/static/src/views/pivot/pivot_model";
-import { patch } from 'web.utils';
+import { PivotModel } from "@web/views/pivot/pivot_model";
+import { patch } from "@web/core/utils/patch";  // Use correct patch import
 
 patch(PivotModel.prototype, 'web/static/src/views/pivot/pivot_model.js', {
 
@@ -13,21 +13,26 @@ patch(PivotModel.prototype, 'web/static/src/views/pivot/pivot_model.js', {
      * It allows for handling dynamic data loading and user notifications in
      * the context of group expansion in the pivot view.
      * @param {Array} groupId - The unique identifier for the group to be
-     expanded, consisting of row and column values.
+     * expanded, consisting of row and column values.
      * @param {string} type - The type of group being expanded, either "row" or
-     "col".
+     * "col".
      * @param {Object} config - The configuration object containing data and
-     metadata related to the pivot table.
+     * metadata related to the pivot table.
      *
      * @returns {Promise} - A promise that resolves after the group has been
-     expanded and the data has been reloaded.
+     * expanded and the data has been reloaded.
      *
      * @override
      */
-     async _expandGroup(groupId, type, config) {
-        const res = super._expandGroup(...arguments);
+    async _expandGroup(groupId, type, config) {
+        // Get the original result of the parent method call
+        const res = await this._super(...arguments);  // Calling the original method
+
+        // Your custom logic to load data and notify
         await this._loadData(config, false);
-		this.notify();
-        return res
-     }
+        this.notify();
+
+        // Return the original result after modifications
+        return res;
+    }
 });
