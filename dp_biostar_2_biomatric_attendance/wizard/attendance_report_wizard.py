@@ -31,6 +31,9 @@ class AttendanceReportWizard(models.TransientModel):
     employee_ids = fields.Many2many('hr.employee',string='Employee')
     add_time = fields.Boolean('Add Time', default=False)
 
+    html_preview = fields.Html(string="Preview", readonly=True, help="Preview of the report data")
+
+
     # New fields
     date_from_d = fields.Date('From')
     date_to_d = fields.Date('To')
@@ -403,3 +406,167 @@ class AttendanceReportWizard(models.TransientModel):
         xlsx_data = output.getvalue()
 
         return [fl, xlsx_data]
+
+    def action_preview_attendance_report(self):
+        """Generate and show a preview of the attendance report with all calculations."""
+
+        date_from = self.new_timezone(self.date_from)
+        date_to = self.new_timezone(self.date_to)
+
+        if self.employee_ids:
+            domain = [('check_in', '>=', date_from), ('check_out', '<=', date_to),
+                      ('employee_id', 'in', self.employee_ids.ids)]
+        else:
+            employees = self.env['hr.employee'].sudo().search([])
+            domain = [('check_in', '>=', date_from), ('check_out', '<=', date_to),
+                      ('employee_id', 'in', employees.ids)]
+
+        attendances = self.env['hr.attendance'].sudo().search(domain)
+
+        # Group records by employee_id
+        grouped_by_employee = defaultdict(list)
+        for record in attendances:
+            grouped_by_employee[record.employee_id].append(record)
+
+        # Format the report date range
+        str_date1 = self.new_timezone(self.date_from)
+        date1 = datetime.strptime(str_date1, '%Y-%m-%d %H:%M:%S').date()
+        day1, month1, year1 = date1.strftime('%d'), date1.strftime('%B'), date1.strftime('%Y')
+
+        str_date2 = self.new_timezone(self.date_to)
+        date2 = datetime.strptime(str_date2, '%Y-%m-%d %H:%M:%S').date()
+        day2, month2, year2 = date2.strftime('%d'), date2.strftime('%B'), date2.strftime('%Y')
+
+        # Start building the HTML preview
+        preview_content = f"""
+        <div style='font-size:18px; font-weight:bold;'>
+            <span>Attendance Report from {day1}-{month1}-{year1} to {day2}-{month2}-{year2}</span>
+        </div>
+        <br/>
+        <div style='font-size:22px; font-weight:bold; text-align:center;'>Employee Attendance Report</div>
+        <br/>
+        """
+
+        if attendances:
+            preview_content += """
+            <table border='1' style='width:100%; border-collapse:collapse; font-size:14px;'>
+                <thead>
+                    <tr style='background-color:#38761d; color:white; text-align:center;'>
+                        <th style='border: 1px solid #000; padding:5px;'>Employee</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Check In Date</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Check In Time</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Check Out Date</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Check Out Time</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Difference</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Break Time</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Worked Hours</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Shift Hours</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Overtime</th>
+                        <th style='border: 1px solid #000; padding:5px;'>Shortfall</th>
+                    </tr>
+                </thead>
+                <tbody>
+            """
+
+            for employee, records in grouped_by_employee.items():
+                for attendance in records:
+                    check_in = self.new_timezone(attendance.check_in) if attendance.check_in else 'No Check In'
+                    check_out = self.new_timezone(attendance.check_out) if attendance.check_out else 'No Check Out'
+
+                    check_in_dt = datetime.strptime(check_in, '%Y-%m-%d %H:%M:%S') if attendance.check_in else None
+                    check_out_dt = datetime.strptime(check_out, '%Y-%m-%d %H:%M:%S') if attendance.check_out else None
+
+                    check_in_date = check_in_dt.strftime('%Y-%m-%d') if check_in_dt else 'N/A'
+                    check_in_time = check_in_dt.strftime('%H:%M:%S') if check_in_dt else 'N/A'
+                    check_out_date = check_out_dt.strftime('%Y-%m-%d') if check_out_dt else 'N/A'
+                    check_out_time = check_out_dt.strftime('%H:%M:%S') if check_out_dt else 'N/A'
+
+                    # Calculate difference
+                    difference = attendance.in_out_diff
+                    diff_hours = int(difference)
+                    diff_minutes = int((difference - diff_hours) * 60)
+                    formatted_difference = f"{diff_hours:02}:{diff_minutes:02}"
+
+                    # Calculate worked hours
+                    worked_hours = formatted_difference
+
+                    # Calculate break time
+                    diff_hours = int(attendance.in_out_diff)
+                    diff_minutes = int((attendance.in_out_diff - diff_hours) * 60)
+                    diff = f"{diff_hours:02}:{diff_minutes:02}"
+                    wrk_hours = int(attendance.worked_hours)
+                    wrk_minutes = int((attendance.worked_hours - wrk_hours) * 60)
+                    worked = f"{wrk_hours:02}:{wrk_minutes:02}"
+                    break_time = datetime.strptime(diff, "%H:%M") - datetime.strptime(worked, "%H:%M")
+                    hours, remainder = divmod(break_time.seconds, 3600)
+                    minutes = remainder // 60
+                    formatted_break_time = f"{hours:02}:{minutes:02}"
+
+                    # Determine shift hours (default 8 hours)
+                    shift_hours = "08:00"
+
+                    # Calculate overtime and shortfall
+                    adjusted_time, classification = self.calculate_time_p(worked_hours, check_in)
+
+                    preview_content += f"""
+                    <tr style='text-align:center;'>
+                        <td style='border: 1px solid #000;'>{attendance.employee_id.name}</td>
+                        <td style='border: 1px solid #000;'>{check_in_date}</td>
+                        <td style='border: 1px solid #000;'>{check_in_time}</td>
+                        <td style='border: 1px solid #000;'>{check_out_date}</td>
+                        <td style='border: 1px solid #000;'>{check_out_time}</td>
+                        <td style='border: 1px solid #000;'>{formatted_difference}</td>
+                        <td style='border: 1px solid #000;'>{formatted_break_time}</td>
+                        <td style='border: 1px solid #000;'>{worked_hours}</td>
+                        <td style='border: 1px solid #000;'>{shift_hours}</td>
+                        <td style='border: 1px solid #000;'>{adjusted_time if classification == "Overtime" else "00:00"}</td>
+                        <td style='border: 1px solid #000;'>{adjusted_time if classification == "Shortfall" else "00:00"}</td>
+                    </tr>
+                    """
+
+            preview_content += "</tbody></table><br/><br/>"
+
+        else:
+            preview_content += "<p>No data found for the selected filters.</p>"
+
+        # Assign the generated HTML content to preview
+        self.html_preview = preview_content
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_mode': 'form',
+            'res_id': self.id,
+            'target': 'new',
+        }
+
+    def calculate_time_p(self, worked_hours, check_in):
+        """Calculate overtime and shortfall based on worked hours."""
+        base_hours = 8
+        cumulative_overtime = timedelta(0)
+        cumulative_shortfall = timedelta(0)
+
+        hours, minutes = map(int, worked_hours.split(":"))
+        input_timedelta = timedelta(hours=hours, minutes=minutes)
+        base_time = timedelta(hours=base_hours)
+
+        check_in_date = datetime.strptime(check_in, "%Y-%m-%d %H:%M:%S") if check_in else None
+        is_friday = check_in_date and check_in_date.weekday() == 4  # 4 corresponds to Friday
+
+        adjusted_timedelta = input_timedelta - base_time
+
+        if is_friday:
+            return worked_hours, "Overtime"
+
+        if adjusted_timedelta > timedelta(0):
+            cumulative_overtime += adjusted_timedelta
+            classification = "Overtime"
+        else:
+            cumulative_shortfall -= adjusted_timedelta
+            classification = "Shortfall"
+
+        hours, remainder = divmod(abs(adjusted_timedelta).seconds, 3600)
+        minutes = remainder // 60
+        formatted_adjusted_time = f"{hours:02}:{minutes:02}"
+
+        return formatted_adjusted_time, classification
