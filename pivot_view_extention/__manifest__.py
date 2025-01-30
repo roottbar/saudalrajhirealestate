@@ -2,7 +2,7 @@
 {
     'name': 'Pivot View Extention',
     'summary': 'Extention the functionality for the pivot groupby',
-    'version': '17.0.1.0.0',
+    'version': '15.0.1.0.0',
     'license': 'LGPL-3',
     'author': '',
     'website': '',
