@@ -56,12 +56,12 @@
             <field name="target">new</field>
         </record>
 
-        <menuitem
-                action="action_view_attendance_report_wizard_form"
-                id="menu_attendance_report_wizard"
-                parent="dp_biostar_2_biomatric_attendance.menu_biometric"
-                sequence="25"
-        />
+<!--        <menuitem-->
+<!--                action="action_view_attendance_report_wizard_form"-->
+<!--                id="menu_attendance_report_wizard"-->
+<!--                parent="dp_biostar_2_biomatric_attendance.menu_biometric"-->
+<!--                sequence="25"-->
+<!--        />-->
     </data>
 
 </odoo>
