@@ -38,6 +38,17 @@
         parent="suprema_configuration_menu"
         sequence="25"
     />
+    <menuitem
+        action="action_biostar_2_api_device_type_view"
+        id="suprema_device_type_menu"
+        parent="suprema_configuration_menu"
+        sequence="30"
+    /><menuitem
+        action="action_biostar_2_api_device_view"
+        id="suprema_device_menu"
+        parent="suprema_configuration_menu"
+        sequence="35"
+    />
 
 
 </odoo>

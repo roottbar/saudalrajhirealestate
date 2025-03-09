@@ -11,9 +11,22 @@ class AttendanceLog(models.Model):
     _order = 'punching_time desc'
     _rec_name = 'punching_time'
 
-    status = fields.Selection([('0', 'Check In'),
-                               ('1', 'Check Out'),
-                               ('2', 'Punched')], string='Status')
+    # status = fields.Selection([('0', 'Check In'),
+    #                            ('1', 'Check Out'),
+    #                            ('2', 'Punched')], string='Status')
+    status = fields.Selection(
+        [
+            ("0", "Check In"),
+            ("1", "Check Out"),
+            ("2", "Break Out"),
+            ("3", "Break In"),
+            ("4", "Overtime In"),
+            ("5", "Overtime Out"),
+            ("255", "Duplicate"),
+        ],
+        string="Punching Type",
+        help="Punching type of the attendance",
+    )
     punching_time = fields.Datetime('Punching Time')
     device = fields.Char('Device')
     employee_id = fields.Many2one('hr.employee', string='Employee',
@@ -22,11 +35,20 @@ class AttendanceLog(models.Model):
                                 )
     status_number = fields.Char("Status Number")
     number = fields.Char("Number")
-    timestamp = fields.Integer("Time stamp")
+    timestamp = fields.Char("Timestamp")
     status_string = fields.Char("Status String")
 
 
+class HrEmployee(models.Model):
+    _inherit = 'hr.employee'
 
+    sigma_bio_id = fields.Integer("Sigma Bio ID")
+
+
+class ResourceCalendar(models.Model):
+    _inherit = 'resource.calendar'
+
+    sigma_schedule_id = fields.Integer("Sigma Schedule Id")
 
 class HrAttendance(models.Model):
     _inherit = "hr.attendance"
