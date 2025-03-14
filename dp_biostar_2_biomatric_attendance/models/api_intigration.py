@@ -3,7 +3,7 @@ from odoo import api, fields, models, _
 from collections import defaultdict
 from odoo.addons.base.models.res_partner import _tz_get
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 from odoo.exceptions import UserError, ValidationError
 import re
 import requests
@@ -251,7 +251,7 @@ class BioStarDeviceSync(models.Model):
         """Fetch and sync attendance records since last sync time"""
         # Get record limit from settings
         # record_limit = int(self.env['ir.config_parameter'].sudo().get_param('attendance.record.limit', default=300))
-        record_limit = 1000
+        record_limit = 300000
 
         # Get last sync time from model
         if not self.last_sync_time:
@@ -347,19 +347,19 @@ class BioStarDeviceSync(models.Model):
                 }
             )
 
-            # Create / Update Attendance
-            if status == "0":  # Check-In
-                self.env["hr.attendance"].create(
-                    {"employee_id": employee.id, "check_in": punching_time}
-                )
-            else:  # Check-Out
-                last_attendance = self.env["hr.attendance"].search(
-                    [("employee_id", "=", employee.id)], order="check_in desc", limit=1
-                )
+            # # Create / Update Attendance
+            # if status == "0":  # Check-In
+            #     self.env["hr.attendance"].create(
+            #         {"employee_id": employee.id, "check_in": punching_time}
+            #     )
+            # else:  # Check-Out
+            #     last_attendance = self.env["hr.attendance"].search(
+            #         [("employee_id", "=", employee.id)], order="check_in desc", limit=1
+            #     )
 
-                # Only update check_out if last_attendance exists and does not have a checkout time
-                if last_attendance and not last_attendance.check_out:
-                    last_attendance.write({"check_out": punching_time})
+            #     # Only update check_out if last_attendance exists and does not have a checkout time
+            #     if last_attendance and not last_attendance.check_out:
+            #         last_attendance.write({"check_out": punching_time})
 
         # Update last synced time in the model
         self.last_sync_time = fields.Datetime.now()
