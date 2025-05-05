@@ -52,7 +52,6 @@ class AttendanceLog(models.Model):
 
 
     def create_attendance(self):
-        # Fetch unsynced attendance logs
         attendance_logs = self.search(
             [("is_synced", "!=", True)], order="punching_time asc"
         )
@@ -85,21 +84,32 @@ class AttendanceLog(models.Model):
                         )
 
                 if check_in and check_out and check_in < check_out:
-                    # Check if there's an open attendance to update
+                    # First, look for any open attendance (without check_out)
                     open_attendance = hr_attendance.search([
                         ("employee_id", "=", employee_id),
-                        ("check_in", "<=", check_in),
                         ("check_out", "=", False)
                     ], limit=1)
 
                     if open_attendance:
+                        # Close the existing open attendance
                         open_attendance.write({"check_out": check_out})
                     else:
-                        hr_attendance.create({
-                            "employee_id": employee_id,
-                            "check_in": check_in,
-                            "check_out": check_out,
-                        })
+                        # Check if an overlapping attendance already exists
+                        existing_attendance = hr_attendance.search([
+                            ("employee_id", "=", employee_id),
+                            ("check_in", "<", check_out),
+                            ("check_out", ">", check_in)
+                        ], limit=1)
+
+                        if not existing_attendance:
+                            hr_attendance.create({
+                                "employee_id": employee_id,
+                                "check_in": check_in,
+                                "check_out": check_out,
+                            })
+                        else:
+                            # Skip to avoid overlapping records
+                            continue
 
                 # Mark logs as synced
                 logs_to_sync = self.search([
