@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from collections import defaultdict
 import base64
+from odoo import SUPERUSER_ID
 
 
 class AttendanceLog(models.Model):
@@ -52,6 +53,7 @@ class AttendanceLog(models.Model):
     def action_calculate_attendance(self):
         self.create_attendance()
 
+
     def create_attendance(self):
         attendance_logs = self.search(
             [("is_synced", "!=", True)], order="punching_time asc"
@@ -63,62 +65,53 @@ class AttendanceLog(models.Model):
                 date_key = log.punching_time.date()
                 grouped_attendance[log.employee_id.id][date_key].append(log)
 
-        hr_attendance = self.env["hr.attendance"]
-
         for employee_id, dates in grouped_attendance.items():
+            employee = self.env["hr.employee"].browse(employee_id)
+            employee_company = employee.company_id
+
+            # Use company context with admin rights (safe, controlled)
+            hr_attendance_model = self.env["hr.attendance"].with_company(employee_company).with_user(SUPERUSER_ID)
+
             for date, logs in dates.items():
                 check_in = None
                 check_out = None
 
                 for log in logs:
                     if log.status == "0":  # Check In
-                        check_in = (
-                            log.punching_time
-                            if not check_in
-                            else min(check_in, log.punching_time)
-                        )
+                        check_in = min(check_in, log.punching_time) if check_in else log.punching_time
                     elif log.status == "1":  # Check Out
-                        check_out = (
-                            log.punching_time
-                            if not check_out
-                            else max(check_out, log.punching_time)
-                        )
+                        check_out = max(check_out, log.punching_time) if check_out else log.punching_time
 
                 if check_in and check_out and check_in < check_out:
-                    # First, look for any open attendance (without check_out)
-                    open_attendance = hr_attendance.search([
+                    # Look for open attendance (in company context)
+                    open_attendance = hr_attendance_model.search([
                         ("employee_id", "=", employee_id),
                         ("check_out", "=", False)
                     ], limit=1)
 
                     if open_attendance:
-                        # Close the existing open attendance
                         open_attendance.write({"check_out": check_out})
                     else:
-                        # Check if an overlapping attendance already exists
-                        existing_attendance = hr_attendance.search([
+                        overlapping = hr_attendance_model.search([
                             ("employee_id", "=", employee_id),
                             ("check_in", "<", check_out),
                             ("check_out", ">", check_in)
                         ], limit=1)
 
-                        if not existing_attendance:
-                            hr_attendance.create({
+                        if not overlapping:
+                            hr_attendance_model.create({
                                 "employee_id": employee_id,
                                 "check_in": check_in,
                                 "check_out": check_out,
                             })
-                        else:
-                            # Skip to avoid overlapping records
-                            continue
 
-                # Mark logs as synced
-                logs_to_sync = self.search([
-                    ("employee_id", "=", employee_id),
-                    ("punching_time", ">=", datetime.combine(date, datetime.min.time())),
-                    ("punching_time", "<=", datetime.combine(date, datetime.max.time())),
-                ])
-                logs_to_sync.write({"is_synced": True})
+            # Update log sync flags (your model likely doesn't need elevated rights here)
+            logs_to_sync = self.env["attendance.log"].search([
+                ("employee_id", "=", employee_id),
+                ("punching_time", ">=", datetime.combine(date, datetime.min.time())),
+                ("punching_time", "<=", datetime.combine(date, datetime.max.time())),
+            ])
+            logs_to_sync.write({"is_synced": True})
 
 
 class HrEmployee(models.Model):
