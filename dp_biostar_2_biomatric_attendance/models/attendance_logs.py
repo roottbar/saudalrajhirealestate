@@ -124,6 +124,57 @@ class HrEmployee(models.Model):
             )
             return attendance_data
 
+    @api.model
+    def check_checkout_and_notify_manager(self):
+        now = fields.Datetime.now()
+
+        # Get all employees with today's attendance and checked out
+        attendances = self.env["hr.attendance"].search(
+            [("check_in", ">=", now.date()), ("check_out", "!=", False)]
+        )
+
+        for attendance in attendances:
+            employee = attendance.employee_id
+            calendar = employee.resource_calendar_id
+            if not calendar:
+                continue  # Skip if no working schedule
+
+            # Determine working intervals for today
+            tz = employee.tz or "UTC"
+            local_now = fields.Datetime.context_timestamp(self, now).astimezone()
+            weekday = local_now.weekday()  # Monday=0
+            work_intervals = calendar._work_intervals_batch(
+                fields.Datetime.to_datetime(now.date()),
+                fields.Datetime.to_datetime(now.date() + timedelta(days=1)),
+                resource=employee.resource_id,
+            ).get(employee.resource_id.id)
+
+            # Skip if no working hours today
+            if not work_intervals:
+                continue
+
+            # Check if now is within any work interval
+            in_working_hours = any(
+                interval[0] <= now <= interval[1] for interval in work_intervals
+            )
+            if not in_working_hours:
+                continue
+
+            # Check if checkout was more than 30 mins ago
+            if (now - attendance.check_out) > timedelta(minutes=30):
+                manager = employee.parent_id
+                if manager and manager.work_email:
+                    self.env["mail.mail"].create(
+                        {
+                            "subject": f"Employee {employee.name} checked out early",
+                            "body_html": f"""
+                            <p>Employee <strong>{employee.name}</strong> checked out at {attendance.check_out.strftime("%H:%M")} and it's still within their scheduled working hours.</p>
+                            <p>It has been more than 30 minutes since checkout.</p>
+                        """,
+                            "email_to": manager.work_email,
+                        }
+                    ).send()
+
     def send_overtime_email_with_report(self):
         employees = self.search([])
         for employee in employees:
