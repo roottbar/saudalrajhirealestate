@@ -41,6 +41,15 @@ class AttendanceLog(models.Model):
     timestamp = fields.Char("Timestamp")
     status_string = fields.Char("Status String")
     is_synced = fields.Boolean("Synced")
+    is_calculated = fields.Boolean('Calculated', default=False)
+    company_id = fields.Many2one('res.company', string='Company', readonly=True, default=lambda self: self.env.company)
+
+    # def unlink(self):
+    #     if any(self.filtered(lambda log: log.is_calculated == True)):
+    #         raise UserError(('You cannot delete a Record which is already Calculated !!!'))
+    #     return super(AttendanceLog, self).unlink()
+
+
 
     def create_attendance(self):
         # Fetch unsynced attendance logs
@@ -48,7 +57,6 @@ class AttendanceLog(models.Model):
             [("is_synced", "!=", True)], order="punching_time asc"
         )
 
-        # Group logs by employee and date
         grouped_attendance = defaultdict(lambda: defaultdict(list))
         for log in attendance_logs:
             if log.employee_id and log.punching_time:
@@ -57,7 +65,6 @@ class AttendanceLog(models.Model):
 
         hr_attendance = self.env["hr.attendance"]
 
-        # Process each employee's logs per day
         for employee_id, dates in grouped_attendance.items():
             for date, logs in dates.items():
                 check_in = None
@@ -77,32 +84,29 @@ class AttendanceLog(models.Model):
                             else max(check_out, log.punching_time)
                         )
 
-                # Create HR Attendance if valid check-in and check-out exist
                 if check_in and check_out and check_in < check_out:
-                    data = hr_attendance.create(
-                        {
+                    # Check if there's an open attendance to update
+                    open_attendance = hr_attendance.search([
+                        ("employee_id", "=", employee_id),
+                        ("check_in", "<=", check_in),
+                        ("check_out", "=", False)
+                    ], limit=1)
+
+                    if open_attendance:
+                        open_attendance.write({"check_out": check_out})
+                    else:
+                        hr_attendance.create({
                             "employee_id": employee_id,
                             "check_in": check_in,
                             "check_out": check_out,
-                        }
-                    )
+                        })
 
-                # Mark all logs for that day as synced
-                logs_to_sync = self.search(
-                    [
-                        ("employee_id", "=", employee_id),
-                        (
-                            "punching_time",
-                            ">=",
-                            datetime.combine(date, datetime.min.time()),
-                        ),
-                        (
-                            "punching_time",
-                            "<=",
-                            datetime.combine(date, datetime.max.time()),
-                        ),
-                    ]
-                )
+                # Mark logs as synced
+                logs_to_sync = self.search([
+                    ("employee_id", "=", employee_id),
+                    ("punching_time", ">=", datetime.combine(date, datetime.min.time())),
+                    ("punching_time", "<=", datetime.combine(date, datetime.max.time())),
+                ])
                 logs_to_sync.write({"is_synced": True})
 
 
