@@ -49,7 +49,8 @@ class AttendanceLog(models.Model):
     #         raise UserError(('You cannot delete a Record which is already Calculated !!!'))
     #     return super(AttendanceLog, self).unlink()
 
-
+    def action_calculate_attendance(self):
+        self.create_attendance()
 
     def create_attendance(self):
         attendance_logs = self.search(
