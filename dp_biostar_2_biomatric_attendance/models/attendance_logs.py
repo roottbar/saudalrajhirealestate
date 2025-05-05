@@ -66,7 +66,7 @@ class AttendanceLog(models.Model):
                 grouped_attendance[log.employee_id.id][date_key].append(log)
 
         for employee_id, dates in grouped_attendance.items():
-            employee = self.env["hr.employee"].browse(employee_id)
+            employee = self.env["hr.employee"].with_user(SUPERUSER_ID).browse(employee_id)
             employee_company = employee.company_id
 
             # Use company context with admin rights (safe, controlled)
