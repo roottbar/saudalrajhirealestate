@@ -41,8 +41,8 @@ class AttendanceLog(models.Model):
     timestamp = fields.Char("Timestamp")
     status_string = fields.Char("Status String")
     is_synced = fields.Boolean("Synced")
-    is_calculated = fields.Boolean('Calculated', default=False)
-    company_id = fields.Many2one('res.company', string='Company', readonly=True, default=lambda self: self.env.company)
+    # is_calculated = fields.Boolean('Calculated', default=False)
+    # company_id = fields.Many2one('res.company', string='Company', readonly=True, default=lambda self: self.env.company)
 
     # def unlink(self):
     #     if any(self.filtered(lambda log: log.is_calculated == True)):
