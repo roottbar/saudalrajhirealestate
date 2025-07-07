@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_invoice_form_ext" model="ir.ui.view">
+        <field name="name">account.move.form.ext</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/.." position="before">
+                <field name="paid_invoices_count"/>
+                <button name="action_process_pdf_schedule" 
+                        string="Process Rent Payments Schedule" 
+                        type="object" 
+                        class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_pdf_ai_processor" model="ir.actions.act_window">
+        <field name="name">Process Rent Payments Schedule</field>
+        <field name="res_model">pdf.ai.processor</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
