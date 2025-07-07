@@ -5,7 +5,8 @@ class AccountMove(models.Model):
 
     paid_invoices_count = fields.Integer(
         string='Paid Invoices Count',
-        help='Number of paid invoices extracted from Rent Payments Schedule PDF'
+        help='Number of paid invoices extracted from Rent Payments Schedule PDF',
+        default=0
     )
 
     def action_process_pdf_schedule(self):
@@ -17,5 +18,8 @@ class AccountMove(models.Model):
             'res_model': 'pdf.ai.processor',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'default_invoice_id': self.id},
+            'views': [(False, 'form')],
+            'context': {
+                'default_invoice_id': self.id,
+            },
         }
