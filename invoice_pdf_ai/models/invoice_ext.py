@@ -3,17 +3,21 @@ from odoo import models, fields, api
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    paid_invoices_count = fields.Integer(
-        string='Paid Invoices Count',
-        help='Number of paid invoices extracted from Rent Payments Schedule PDF',
+    invoice_months_count = fields.Integer(
+        string='Invoice Months Count',
+        help='Number of invoice months extracted from the document',
         default=0
     )
+    renting_attachment_ids = fields.Many2many(
+        'ir.attachment',
+        string='Renting Attachments'
+    )
 
-    def action_process_pdf_schedule(self):
-        """Action to process PDF and update paid invoices count"""
+    def action_process_invoice_months(self):
+        """Action to process PDF and update months count"""
         self.ensure_one()
         return {
-            'name': 'Process Rent Payments Schedule',
+            'name': 'Process Invoice Months',
             'type': 'ir.actions.act_window',
             'res_model': 'pdf.ai.processor',
             'view_mode': 'form',
