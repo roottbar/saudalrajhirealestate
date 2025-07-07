@@ -1,11 +1,9 @@
 import logging
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+import io
 import PyPDF2
 import re
-try:
-    from pdfminer.high_level import extract_text
-except ImportError:
-    extract_text = None
 
 _logger = logging.getLogger(__name__)
 
@@ -15,46 +13,59 @@ class PDFProcessor(models.TransientModel):
 
     pdf_file = fields.Binary(string='Upload PDF File', required=True)
     filename = fields.Char(string='Filename')
+    invoice_id = fields.Many2one('account.move', string='Related Invoice')
+    paid_count = fields.Integer(string='Paid Invoices Count', readonly=True)
 
-    def extract_rent_payments_schedule(self):
+    def action_process_pdf(self):
+        """Main processing method"""
+        self.ensure_one()
+        if not self.pdf_file:
+            raise UserError(_("Please upload a PDF file first."))
+
+        paid_count = self._extract_rent_payments_schedule()
+        if paid_count == 0:
+            raise UserError(_("No paid invoices found in the schedule or could not parse the PDF."))
+        
+        # Update both the wizard and the invoice
+        self.write({'paid_count': paid_count})
+        if self.invoice_id:
+            self.invoice_id.write({'paid_invoices_count': paid_count})
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'show_paid_count': True},
+        }
+
+    def _extract_rent_payments_schedule(self):
         """Extract Rent Payments Schedule table from PDF"""
         pdf_content = self._get_pdf_content()
         if not pdf_content:
             return 0
 
-        # Use AI/ML or regex to find the table (simplified example)
-        pattern = r'Rent Payments Schedule(.*?)Total|$'
+        # Improved regex pattern to find the table
+        pattern = r'(Rent\s*Payments\s*Schedule|جدول\s*دفعات\s*الإيجار)(.*?)(Total|المجموع|$)'
         matches = re.search(pattern, pdf_content, re.DOTALL | re.IGNORECASE)
         
         if matches:
-            table_content = matches.group(1)
-            # Count paid invoices (simplified - adjust based on your PDF structure)
-            paid_count = len(re.findall(r'paid|مسدد', table_content, re.IGNORECASE))
+            table_content = matches.group(2)
+            # Count paid invoices - adjust based on your PDF's actual wording
+            paid_count = len(re.findall(r'(paid|مسدد|تم الدفع)', table_content, re.IGNORECASE))
             return paid_count
         return 0
 
     def _get_pdf_content(self):
-        """Extract text from PDF using different methods"""
-        if not self.pdf_file:
-            return ""
-        
+        """Extract text from PDF"""
         try:
-            # Method 1: Use pdfminer if available
-            if extract_text:
-                import tempfile
-                with tempfile.NamedTemporaryFile(suffix='.pdf') as tmp:
-                    tmp.write(self.pdf_file)
-                    return extract_text(tmp.name)
-            
-            # Method 2: Fallback to PyPDF2
-            import io
-            import PyPDF2
             pdf_file = io.BytesIO(self.pdf_file)
-            reader = PyPDF2.PdfFileReader(pdf_file)
+            reader = PyPDF2.PdfReader(pdf_file)
             text = ""
-            for page in range(reader.numPages):
-                text += reader.getPage(page).extractText()
+            for page in reader.pages:
+                text += page.extract_text() or ""
             return text
         except Exception as e:
-            _logger.error("Error extracting PDF text: %s", str(e))
-            return ""
+            _logger.error("PDF extraction error: %s", str(e))
+            raise UserError(_("Could not read the PDF file. Please make sure it's a valid PDF."))
