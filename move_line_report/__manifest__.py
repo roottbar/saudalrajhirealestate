@@ -3,7 +3,7 @@
 
 {
     'name': 'Move Line Report',
-    'version': '15.0.2.0.0',
+    'version': '18.0.2.0.0',
     'category': ' ',
     'summary': '',
     'sequence': '10',
