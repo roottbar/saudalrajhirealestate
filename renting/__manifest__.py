@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Rent Customization",
-    "version": "15.0.0.6",
+    "version": "18.0.0.6",
     'summary': """
        Operational Addons""",
 
