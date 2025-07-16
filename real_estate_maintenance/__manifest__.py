@@ -1,6 +1,6 @@
 {
     'name': 'Property Maintenance',
-    'version': '15.0.0.0.3',
+    'version': '18.0.0.0.3',
     'author': 'Maintenance Requests Management',
     'category': 'Generic/Real Estate',
     'website': "www.plustech-it.com",
