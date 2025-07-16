@@ -3,7 +3,7 @@
 
 {
     "name": "Advance Multi Branch(Unit) Operation Setup for All Applications Odoo/OpenERP",
-    "version": "15.0.0.0",
+    "version": "18.0.0.0",
     "category": "Sales",
     "summary": "Advance Multiple Branch advance Multi Branch app Multiple Unit multiple Operating unit multi branch sequence branch address on report branch logo on report sales branch Purchase branch Invoicing branch billing branch Accounting Report logo Multi Branches",
     "description": """This odoo app helps user to create branch with name, address, phone and log, user can also apply branch prefix, when enable while createing sale order, purchase order, picking order, customer invoice and vendor bill the branch prefix will apply also on report branch logo will displayed and with header and footer.
