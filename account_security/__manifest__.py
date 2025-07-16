@@ -1,7 +1,7 @@
 
 {
     'name': 'Accounting Security',
-    'version': '15.0.0.0',
+    'version': '18.0.0.0',
     'category': 'Accounting/Accounting/Assets',
     'summary': 'accounting security',
     "description": """
