@@ -5,7 +5,7 @@
 
 {
     "name": "Open Map",
-    "version": "14.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Accounting & Finance",
     "license": "AGPL-3",
     "summary": "Add analytic account on products and product categories",
