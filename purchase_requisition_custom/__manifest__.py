@@ -1,6 +1,6 @@
 {
     "name": "Purchase Requisition Custom",
-    "version": "15.0.1.1.1",
+    "version": "18.0.1.1.1",
     "category": "Purchase Requisition",
     "depends": ["purchase_requisition", "stock_request"],
     "data": [
