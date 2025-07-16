@@ -2,7 +2,7 @@
 
 {
     'name': 'PlusTech HR Employee',
-    'version': '15.0.0.0.0',
+    'version': '18.0.0.0.0',
     'author': 'Plus Technology Team',
     'company': 'Plus Technology',
     'category': 'Human Resources/Employees',
