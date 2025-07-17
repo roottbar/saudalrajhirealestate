@@ -4,7 +4,7 @@
 {
     "name": "Purchase Request",
     "summary": "Internal request for stock",
-    "version": "15.0.2.0",
+    "version": "18.0.2.0",
     "license": "LGPL-3",
     "website": "www.plustech.com",
     "author": "Plus Tech",
