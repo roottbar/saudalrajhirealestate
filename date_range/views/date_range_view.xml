@@ -82,7 +82,7 @@
                             <group string="Defaults for generating date ranges" colspan="4">
                                 <label for="duration_count" />
                                 <div>
-                                    <field class="oe_inline" name="duration_count" />&nbsp;
+                                    <field class="oe_inline" name="duration_count" />&#160;
                                     <field class="oe_inline" name="unit_of_time" />
                                 </div>
                                 <label for="name_prefix" />
@@ -97,7 +97,7 @@
                                 <field name="autogeneration_date_start" />
                                 <label for="autogeneration_count" string="Create" />
                                 <div>
-                                    <field class="oe_inline" name="autogeneration_count" />&nbsp;
+                                    <field class="oe_inline" name="autogeneration_count" />&#160;
                                     <field class="oe_inline" name="autogeneration_unit" /> in advance
                                 </div>
                             </group>
