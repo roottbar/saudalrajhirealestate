@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_audit_log_tree" model="ir.ui.view">
+        <field name="name">custom.audit.log.tree</field>
+        <field name="model">custom.audit.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="user_id"/>
+                <field name="model"/>
+                <field name="record_id"/>
+                <field name="action"/>
+                <field name="changes"/>
+            </tree>
+        </field>
+    </record>
+    <menuitem id="menu_custom_audit_log_root" name="Audit Log"/>
+    <menuitem id="menu_custom_audit_log" name="Audit Log" parent="menu_custom_audit_log_root" action="action_custom_audit_log"/>
+    <record id="action_custom_audit_log" model="ir.actions.act_window">
+        <field name="name">Audit Log</field>
+        <field name="res_model">custom.audit.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
