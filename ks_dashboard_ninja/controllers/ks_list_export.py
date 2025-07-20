@@ -1,18 +1,19 @@
-
 import re
 import io
 import json
 import operator
 import logging
-from odoo.addons.web.controllers.export import ExportXlsxWriter
-from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
-import datetime
-from odoo import http
-from odoo.http import content_disposition, request
-from odoo.tools import pycompat
-from ..common_lib.ks_date_filter_selections import ks_get_date, ks_convert_into_utc, ks_convert_into_local
 import os
 import pytz
+import datetime
+
+from odoo import http
+from odoo.http import content_disposition, request, serialize_exception
+from odoo.tools import pycompat
+from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
+from odoo.addons.web.controllers.export import ExportXlsxWriter
+from ..common_lib.ks_date_filter_selections import ks_get_date, ks_convert_into_utc, ks_convert_into_local
+
 _logger = logging.getLogger(__name__)
 
 
