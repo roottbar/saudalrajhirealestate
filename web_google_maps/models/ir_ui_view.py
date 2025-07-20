@@ -3,7 +3,6 @@
 from lxml import etree
 from odoo import fields, models, _
 from odoo.addons.base.models.ir_ui_view import (
-    quick_eval,
     transfer_field_to_modifiers,
 )
 
@@ -13,8 +12,7 @@ class IrUiView(models.Model):
 
     type = fields.Selection(selection_add=[('google_map', 'Google Maps')])
 
-    # FIXME: this is a deep copy of the original method
-    # added 'google_map' as list of original views to be validated are hardcoded :/
+    # نسخة معدّلة بدون quick_eval
     def _validate_tag_field(self, node, name_manager, node_info):
         validate = node_info['validate']
 
@@ -33,8 +31,6 @@ class IrUiView(models.Model):
                     and field._description_domain(self.env)
                 )
                 if isinstance(domain, str):
-                    # dynamic domain: in [('foo', '=', bar)], field 'foo' must
-                    # exist on the comodel and field 'bar' must be in the view
                     desc = (
                         f'domain of <field name="{name}">'
                         if node.get('domain')
@@ -95,7 +91,8 @@ class IrUiView(models.Model):
             for attribute in ('invisible', 'readonly', 'required'):
                 val = node.get(attribute)
                 if val:
-                    res = quick_eval(val, {'context': self._context})
+                    # تقييم بسيط بدلاً من quick_eval
+                    res = val.strip() in ('1', 'True', 'true', 'yes')
                     if res not in (1, 0, True, False, None):
                         msg = _(
                             'Attribute %(attribute)s evaluation expects a boolean, got %(value)s',
@@ -104,19 +101,15 @@ class IrUiView(models.Model):
                         )
                         self._raise_view_error(msg, node)
 
-    # FIXME: this is a deep copy of the original method
-    # added 'google_map' as list of original views to be validated are hardcoded :/
     def _postprocess_tag_field(self, node, name_manager, node_info):
         if node.get('name'):
             attrs = {'id': node.get('id'), 'select': node.get('select')}
             field = name_manager.model._fields.get(node.get('name'))
             if field:
-                # apply groups (no tested)
                 if field.groups and not self.user_has_groups(
                     groups=field.groups
                 ):
                     node.getparent().remove(node)
-                    # no point processing view-level ``groups`` anymore, return
                     return
                 views = {}
                 for child in node:
