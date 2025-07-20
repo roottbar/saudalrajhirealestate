@@ -4,7 +4,7 @@ import io
 import json
 import operator
 import logging
-from odoo.addons.web.controllers.main import ExportFormat,serialize_exception, ExportXlsxWriter
+from odoo.addons.web.controllers.export import ExportXlsxWriter
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 import datetime
 from odoo import http
