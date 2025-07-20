@@ -3,9 +3,9 @@ import json
 import operator
 
 from odoo import http
-from odoo.http import content_disposition, request, serialize_exception
+from odoo.http import content_disposition, request
+from odoo.tools import serialize_exception, pycompat
 from odoo.addons.web.controllers.export import ExportXlsxWriter
-from odoo.tools import pycompat
 
 
 class KsChartExport(http.Controller):
@@ -26,8 +26,8 @@ class KsChartExport(http.Controller):
             self.from_data(columns_headers, import_data),
             headers=[
                 ('Content-Disposition', content_disposition(self.filename(header))),
-                ('Content-Type', self.content_type)
-            ],
+                ('Content-Type', self.content_type),
+            ]
         )
 
 
@@ -74,6 +74,7 @@ class KsChartCsvExport(KsChartExport):
         writer = pycompat.csv_writer(fp, quoting=1)
 
         writer.writerow(fields)
+
         for data in rows:
             row = []
             for d in data:
