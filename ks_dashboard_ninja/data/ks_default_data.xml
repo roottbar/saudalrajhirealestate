@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data noupdate="1">
         <!-- Default Templates -->
         <record id="ks_blank" model="ks_dashboard_ninja.board_template">
             <field name="name">Blank</field>
             <field name="ks_item_count">0</field>
         </record>
-    
+
         <record id="ks_template_1" model="ks_dashboard_ninja.board_template">
             <field name="name">Template 1</field>
             <field name="ks_gridstack_config"><![CDATA[
@@ -41,6 +42,7 @@
             ]]></field>
             <field name="ks_item_count">7</field>
         </record>
+
         <record id="ks_template_2" model="ks_dashboard_ninja.board_template">
             <field name="name">Template 2</field>
             <field name="ks_gridstack_config"><![CDATA[
@@ -536,31 +538,30 @@
             <field name="ks_company_id" eval="0"/>
         </record>
 
-        <!-- Item Actions -->
-        <record id="ks_default_item_10_action" model="ks_dashboard_ninja.item_action">
-            <field name="ks_dashboard_item_id" ref="ks_default_item_10"/>
-            <field name="ks_chart_type">ks_bar_chart</field>
-            <field name="ks_item_action_field" ref="base.field_res_country__phone_code"/>
-        </record>
-
-        <record id="ks_default_item_10_action1" model="ks_dashboard_ninja.item_action">
-            <field name="ks_dashboard_item_id" ref="ks_default_item_10"/>
-            <field name="ks_chart_type">ks_pie_chart</field>
-            <field name="ks_item_action_field" ref="base.field_res_country__name"/>
-        </record>
-
-        <!-- Default Dashboard -->
-        <record id="ks_my_default_dashboard_board" model="ks_dashboard_ninja.board" noupdate="1">
-            <field name="name">My Dashboard</field>
-            <field name="ks_dashboard_state">Locked</field>
-            <field name="ks_dashboard_menu_name">My Dashboard</field>
-            <field name="ks_dashboard_active">1</field>
-            <field name="ks_dashboard_default_template" ref="ks_dashboard_ninja.ks_blank"/>
-        </record>
-
-        <record id="ks_dashboard_ninja_precision" model="decimal.precision" noupdate="1">
-            <field name="name">Dashboard Ninja Decimal Precision</field>
-            <field name="digits">2</field>
-        </record>
+       <record id="ks_default_item_10_action" model="ks_dashboard_ninja.item_action">
+                    <field name="ks_dashboard_item_id" ref="ks_default_item_10"/>
+                    <field name="ks_chart_type">ks_bar_chart</field>
+                    <field name="ks_item_action_field" ref="base.field_res_country__phone_code"/>
+       </record>
+        
+       <record id="ks_default_item_10_action1" model="ks_dashboard_ninja.item_action">
+                    <field name="ks_dashboard_item_id" ref="ks_default_item_10"/>
+                    <field name="ks_chart_type">ks_pie_chart</field>
+                    <field name="ks_item_action_field" ref="base.field_res_country__name"/>
+       </record>
+        
+                <!-- Default Dashboard -->
+       <record id="ks_my_default_dashboard_board" model="ks_dashboard_ninja.board" noupdate="1">
+                    <field name="name">My Dashboard</field>
+                    <field name="ks_dashboard_state">Locked</field>
+                    <field name="ks_dashboard_menu_name">My Dashboard</field>
+                    <field name="ks_dashboard_active">1</field>
+                    <field name="ks_dashboard_default_template" ref="ks_dashboard_ninja.ks_blank"/>
+      </record>
+        
+      <record id="ks_dashboard_ninja_precision" model="decimal.precision" noupdate="1">
+                    <field name="name">Dashboard Ninja Decimal Precision</field>
+                    <field name="digits">2</field>
+      </record>
     </data>
 </odoo>
