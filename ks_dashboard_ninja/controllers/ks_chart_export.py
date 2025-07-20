@@ -3,8 +3,8 @@ import json
 import operator
 
 from odoo import http
-from odoo.http import content_disposition, request
-from odoo.tools import serialize_exception, pycompat
+from odoo.http import content_disposition, request, serialize_exception
+from odoo.tools import pycompat
 from odoo.addons.web.controllers.export import ExportXlsxWriter
 
 
