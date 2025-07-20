@@ -65,7 +65,7 @@ class ins_account_financial_report(models.Model):
         return res
 
     name = fields.Char('Report Name', required=True, translate=True)
-    parent_id = fields.Many2one('ins.account.financial.report', 'Parent')
+    parent_id = fields.Many2one('ins.account.financial.report', 'Parent', recursive=True)
     children_ids = fields.One2many('ins.account.financial.report', 'parent_id', 'Account Report')
     sequence = fields.Integer('Sequence')
     level = fields.Integer(compute='_get_level', string='Level', store=True)
