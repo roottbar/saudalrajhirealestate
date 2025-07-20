@@ -1,4 +1,5 @@
 <odoo>
+    <!-- تعريف الواجهة أولاً -->
     <record id="view_audit_log_tree" model="ir.ui.view">
         <field name="name">custom.audit.log.tree</field>
         <field name="model">custom.audit.log</field>
@@ -13,11 +14,37 @@
             </tree>
         </field>
     </record>
-    <menuitem id="menu_custom_audit_log_root" name="Audit Log"/>
-    <menuitem id="menu_custom_audit_log" name="Audit Log" parent="menu_custom_audit_log_root" action="action_custom_audit_log"/>
+
+    <record id="view_audit_log_form" model="ir.ui.view">
+        <field name="name">custom.audit.log.form</field>
+        <field name="model">custom.audit.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="date"/>
+                        <field name="user_id"/>
+                        <field name="model"/>
+                        <field name="record_id"/>
+                        <field name="action"/>
+                    </group>
+                    <group>
+                        <field name="changes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- تعريف الـ Action ثانياً -->
     <record id="action_custom_audit_log" model="ir.actions.act_window">
         <field name="name">Audit Log</field>
         <field name="res_model">custom.audit.log</field>
         <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_audit_log_tree"/>
     </record>
+
+    <!-- تعريف القوائم أخيراً -->
+    <menuitem id="menu_custom_audit_log_root" name="Audit Log" sequence="10"/>
+    <menuitem id="menu_custom_audit_log" name="View Audit Log" parent="menu_custom_audit_log_root" action="action_custom_audit_log" sequence="10"/>
 </odoo>
