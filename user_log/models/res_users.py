@@ -1,6 +1,6 @@
 from odoo import models, api
 
-class ResUsers(models.Model)
+class ResUsers(models.Model):
     _inherit = 'res.users'
 
     @api.model
