@@ -4,7 +4,7 @@ class ResUsers(models.Model):
     _inherit = 'res.users'
 
     @api.model
-    def _login(self, db, login, password)
+    def _login(self, db, login, password):
         user_id = super(ResUsers, self)._login(db, login, password)
         if user_id
             self.env['user.log'].create_log(
@@ -16,14 +16,14 @@ class ResUsers(models.Model):
             )
         return user_id
 
-    def _check_credentials(self, password)
+    def _check_credentials(self, password):
         try
             super(ResUsers, self)._check_credentials(password)
         except Exception as e
             # Log failed login attempts if neededs
             raise e
 
-    def _invalidate_session_cache(self)
+    def _invalidate_session_cache(self):
         if self.env.user and hasattr(self.env, 'request')
             self.env['user.log'].create_log(
                 user_id=self.env.user.id,
