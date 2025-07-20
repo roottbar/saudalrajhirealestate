@@ -4,18 +4,18 @@
         <field name="name">date.range.tree</field>
         <field name="model">date.range</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
-                <field name="name" />
-                <field name="type_id" />
-                <field name="date_start" />
-                <field name="date_end" />
-                <field
-                    name="company_id"
-                    groups="base.group_multi_company"
-                    options="{'no_create': True}"
-                />
-                <field name="active" />
-            </tree>
+        <list editable="bottom">
+            <field name="name" />
+            <field name="type_id" />
+            <field name="date_start" />
+            <field name="date_end" />
+            <field
+                name="company_id"
+                groups="base.group_multi_company"
+                options="{'no_create': True}"
+            />
+            <field name="active" />
+        </list>
         </field>
     </record>
     <record id="view_date_range_form_view" model="ir.ui.view">
