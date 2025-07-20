@@ -2,13 +2,13 @@
 
 <odoo>
 	<record id="query_deluxe_view_tree" model="ir.ui.view">
-		<field name="name">Type a query tree</field>
-		<field name="model">querydeluxe</field>
-		<field name="arch" type="xml">
-			<tree>
-				<field name="name" string="Query"/>
-			</tree>
-		</field>
+	    <field name="name">Type a query tree</field>
+	    <field name="model">querydeluxe</field>
+	    <field name="arch" type="xml">
+	        <list>
+	            <field name="name" string="Query"/>
+	        </list>
+	    </field>
 	</record>
 
 	<record id="query_deluxe_view_form" model="ir.ui.view">
