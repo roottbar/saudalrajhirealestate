@@ -81,8 +81,8 @@ class Employee(models.Model):
     fam_ids = fields.One2many(
         'hr.employee.family', 'employee_id',
         string='بيانات العائلة', help='Family Information')
-    ins_fam_ids = fields.One2many('hr.employee.family', related='fam_ids', string='بيانات التأمينات  العائلية',
-                                  store=True, readonly=False)
+    # ins_fam_ids = fields.One2many('hr.employee.family', related='fam_ids', string='بيانات التأمينات  العائلية',
+    #                               store=True, readonly=False)
     certificate_id = fields.Many2one('hr.certificates', string='مستوى الشهادة')
 
     start_work_request_count = fields.Integer(compute="_start_work_request_count")
