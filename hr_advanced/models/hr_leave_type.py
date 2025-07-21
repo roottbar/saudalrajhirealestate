@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 
+class HrEmployee(models.Model):
+    _inherit = 'hr.employee'
 
-class Hrleavetype(models.Model):
-    _inherit = 'hr.leave.type'
-    
-    is_include_balance = fields.Boolean(string="Include Balance", copy=False)
+    work_location_name = fields.Char(
+        string='Work Location Name',
+        compute='_compute_work_location_name_type',
+        store=True
+    )
 
-    @api.onchange('allocation_type')
-    def onchange_allocation_type(self):
-        if self.allocation_type == 'no':
-            self.is_include_balance = False
+    @api.depends('work_location_id.name')  # ✅ فقط يعتمد على حقل موجود فعلاً
+    def _compute_work_location_name_type(self):
+        for rec in self:
+            rec.work_location_name = rec.work_location_id.name if rec.work_location_id else ''
