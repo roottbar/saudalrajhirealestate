@@ -10,7 +10,7 @@ class AccountReport(models.AbstractModel):
     filter_level2 = None
     filter_level3 = None
 
-    def get_unfolded_levels(self,options):
+    def get_unfolded_levels(self, options):
         unfolded_levels = []
         if options.get('level1'):
             unfolded_levels.append(1)
@@ -30,7 +30,7 @@ class AccountReport(models.AbstractModel):
 
 
 class AccountChartOfAccountReport(models.AbstractModel):
-    _inherit = "account.coa.report"
+    _inherit = "account.report"
 
     filter_level1 = False
     filter_level2 = False
