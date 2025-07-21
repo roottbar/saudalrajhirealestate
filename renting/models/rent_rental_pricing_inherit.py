@@ -65,5 +65,5 @@ PERIOD_RATIO = {
 
 #             return vals
 
-except Exception as e:
-    _logger.warning("Model 'rental.pricing' not found or cannot be inherited: %s", e)
+# except Exception as e:
+#     _logger.warning("Model 'rental.pricing' not found or cannot be inherited: %s", e)
