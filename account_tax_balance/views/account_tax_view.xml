@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright 2016 Lorenzo Battistini - Agile Business Group
-     Copyright 2016 Antonio Espinosa <antonio.espinosa@tecnativa.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <record id="view_tax_tree_balance" model="ir.ui.view">
         <field name="name">account.tax.tree.balance</field>
         <field name="model">account.tax</field>
         <field eval="100" name="priority" />
         <field name="arch" type="xml">
-            <tree create="false" delete="false">
+            <list create="false" delete="false">
                 <field name="name" />
                 <field name="description" string="Short Name" />
                 <field name="balance_regular" sum="Total" />
@@ -53,9 +50,10 @@
                     title="View base lines"
                     icon="fa-search-plus"
                 />
-            </tree>
+            </list>
         </field>
     </record>
+
     <record id="view_tax_search_balance" model="ir.ui.view">
         <field name="name">account.tax.search.balance</field>
         <field name="model">account.tax</field>
@@ -82,6 +80,7 @@
             </search>
         </field>
     </record>
+
     <record id="action_tax_balances_tree" model="ir.actions.act_window">
         <field name="name">Taxes Balance</field>
         <field name="res_model">account.tax</field>
