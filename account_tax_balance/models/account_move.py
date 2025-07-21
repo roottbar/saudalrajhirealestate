@@ -1,6 +1,3 @@
-# Copyright 2016 Antonio Espinosa <antonio.espinosa@tecnativa.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import _, api, fields, models
 
 
@@ -26,26 +23,25 @@ class AccountMove(models.Model):
     )
 
     @api.depends(
-        "line_ids.account_id.internal_type",
+        "line_ids.account_id.user_type_id.type",  # هذا الحقل موجود وآمن
         "line_ids.balance",
-        "line_ids.account_id.user_type_id.type",
     )
     def _compute_financial_type(self):
-        def _balance_get(line_ids, internal_type):
+        def _balance_get(line_ids, user_type):
             return sum(
                 line_ids.filtered(
-                    lambda x: x.account_id.internal_type == internal_type
+                    lambda x: x.account_id.user_type_id.type == user_type
                 ).mapped("balance")
             )
 
         for move in self:
-            internal_types = move.line_ids.mapped("account_id.internal_type")
-            if "liquidity" in internal_types:
+            user_types = move.line_ids.mapped("account_id.user_type_id.type")
+            if "liquidity" in user_types:
                 move.financial_type = "liquidity"
-            elif "payable" in internal_types:
+            elif "payable" in user_types:
                 balance = _balance_get(move.line_ids, "payable")
                 move.financial_type = "payable" if balance < 0 else "payable_refund"
-            elif "receivable" in internal_types:
+            elif "receivable" in user_types:
                 balance = _balance_get(move.line_ids, "receivable")
                 move.financial_type = (
                     "receivable" if balance > 0 else "receivable_refund"
