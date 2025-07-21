@@ -73,8 +73,8 @@ class RentProduct(models.Model):
     ref_analytic_account = fields.Char(string='رقم اشارة الحساب التحليلي', readonly=True)
     property_analytic_account = fields.Many2one('account.analytic.account', string='الحساب التحليلي للعقار',
                                                 related='property_id.analytic_account')
-    property_analytic_account_parent = fields.Many2one('account.analytic.group',
-                                                       related='property_id.analytic_account.group_id')
+    # property_analytic_account_parent = fields.Many2one('account.analytic.group',
+    #                                                    related='property_id.analytic_account.group_id')
 
     @api.model_create_multi
     def create(self, vals_list):
