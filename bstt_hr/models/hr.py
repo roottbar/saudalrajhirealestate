@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError, Warning
+from odoo.exceptions import UserError, ValidationError
 from datetime import date
 import re
-from odoo.exceptions import ValidationError
 from stdnum import iban
 
 
@@ -36,16 +35,16 @@ class Employee(models.Model):
 
     @api.onchange('first_name', 'father_name', 'parent_name', 'family_name')
     def _onchange_name(self):
-        self.name = False
-        self.name = '%s %s %s %s' % (
-            self.first_name or '', self.father_name or '', self.parent_name or '', self.family_name or '',)
+        for rec in self:
+            rec.name = '%s %s %s %s' % (
+                rec.first_name or '', rec.father_name or '', rec.parent_name or '', rec.family_name or '')
 
     @api.onchange('first_foreign_name', 'father_foreign_name', 'parent_foreign_name', 'family_foreign_name')
     def _onchange_foreign_name(self):
-        self.foreign_name = False
-        self.foreign_name = '%s %s %s %s' % (
-            self.first_foreign_name or '', self.father_foreign_name or '', self.parent_foreign_name or '',
-            self.family_foreign_name or '',)
+        for rec in self:
+            rec.foreign_name = '%s %s %s %s' % (
+                rec.first_foreign_name or '', rec.father_foreign_name or '', rec.parent_foreign_name or '',
+                rec.family_foreign_name or '')
 
     sponsor = fields.Char(string="الكفيل", copy=False)
     employee_no = fields.Char(string='الرقم الوظيفي')
@@ -83,14 +82,9 @@ class Employee(models.Model):
         'hr.employee.family', 'employee_id',
         string='بيانات العائلة', help='Family Information')
     ins_fam_ids = fields.One2many('hr.employee.family', related='fam_ids', string='بيانات التأمينات  العائلية',
-                                  store_true=True, readonly=False)
+                                  store=True, readonly=False)
     certificate_id = fields.Many2one('hr.certificates', string='مستوى الشهادة')
-    # bank_account_id = fields.Many2one(
-    #     'res.partner.bank', 'Bank Account Number',
-    #     domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
-    #     groups="hr.group_hr_user",
-    #     tracking=True,
-    #     help='Employee bank salary account')
+
     start_work_request_count = fields.Integer(compute="_start_work_request_count")
 
     bank_account_no = fields.Char(string="رقم حساب البنك")
@@ -105,6 +99,7 @@ class Employee(models.Model):
     work_permit_fees = fields.Float(string='رسوم رخصة عمل')
     organization_permit_fees = fields.Float(string='رسوم رخصة الهيئة')
     organization_permit_end = fields.Date(string='تاريخ انتهاء الرخصة')
+
     """Start Insurance fields"""
     iqama = fields.Char(string="الاقامة")
     iqama_duration = fields.Text(string="المدة")
@@ -140,10 +135,8 @@ class Employee(models.Model):
 
     nationality_ar = fields.Char(string='Arabic Nationality', help="used for report purpose")
 
-
     @api.model
     def create(self, vals):
-        # vals['ref'] = self.env['ir.sequence'].next_by_code('hr.contract')
         emp = super(Employee, self).create(vals)
         if vals.get('bank_account_no', False) or vals.get('bank_id', False) or vals.get('address', False):
             partner = self.env['res.partner'].create(
@@ -155,8 +148,8 @@ class Employee(models.Model):
                 res_partner_bank = self.env['res.partner.bank'].search([('acc_number', '=', vals['bank_account_no'])],
                                                                        limit=1)
                 if res_partner_bank.partner_id.id and res_partner_bank.partner_id.id != emp.address_home_id.id:
-                    raise UserError(_("يجب ان يكون رقم الحساب البنكي فريد. الرقم الحساب البنكي مسجل باسم %s",
-                                      res_partner_bank.partner_id.name))
+                    raise UserError(_("يجب ان يكون رقم الحساب البنكي فريد. الرقم الحساب البنكي مسجل باسم %s") %
+                                    res_partner_bank.partner_id.name)
                 elif res_partner_bank.partner_id.id == emp.address_home_id.id:
                     emp.bank_account_id = res_partner_bank.id
                 else:
@@ -164,15 +157,8 @@ class Employee(models.Model):
                         'acc_number': emp.bank_account_no,
                         'bank_id': vals.get('bank_id', False),
                         'company_id': self.env.company.id,
-                        # 'currency_id': self.currency_id.id,
                         'partner_id': emp.address_home_id.id,
                     }).id
-
-        # Analytic Accounts
-        # emp.ref_analytic_account = str(emp.department_id.ref_analytic_account) + '-' + str(emp.unit_number)
-        # analytic_account = self.env['account.analytic.account'].sudo().create(
-        #     {'name': emp.name, 'group_id': emp.property_analytic_account_parent.id, 'code': emp.ref_analytic_account})
-        # emp.analytic_account = analytic_account
         return emp
 
     def write(self, vals):
@@ -192,8 +178,8 @@ class Employee(models.Model):
                     res_partner_bank = self.env['res.partner.bank'].search(
                         [('acc_number', '=', vals['bank_account_no'])], limit=1)
                     if res_partner_bank.partner_id.id and res_partner_bank.partner_id.id != rec.address_home_id.id:
-                        raise UserError(_("يجب ان يكون رقم الحساب البنكي فريد. الرقم الحساب البنكي مسجل باسم %s",
-                                          res_partner_bank.partner_id.name))
+                        raise UserError(_("يجب ان يكون رقم الحساب البنكي فريد. الرقم الحساب البنكي مسجل باسم %s") %
+                                        res_partner_bank.partner_id.name)
                     elif res_partner_bank.partner_id.id == rec.address_home_id.id:
                         rec.bank_account_id = res_partner_bank.id
                     else:
@@ -201,7 +187,6 @@ class Employee(models.Model):
                             'acc_number': vals.get('bank_account_no', False),
                             'bank_id': vals.get('bank_id', False),
                             'company_id': self.env.company.id,
-                            # 'currency_id': self.currency_id.id,
                             'partner_id': rec.address_home_id.id,
                         }).id
         return super().write(vals)
@@ -220,21 +205,22 @@ class Employee(models.Model):
 
     @api.depends('address_id')
     def _compute_work_location_id(self):
-        to_reset = self.filtered(lambda e: e.address_id != e.work_location_id.address_id)
-        to_reset.work_location_id = False
+        for rec in self:
+            if rec.address_id != rec.work_location_id.address_id if rec.work_location_id else None:
+                rec.work_location_id = False
 
     @api.depends('birthday')
     def _compute_employee_age(self):
-        age = False
-        if self.birthday:
-            dob = self.birthday
-            today = date.today()
-            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-        self.age = age
+        for rec in self:
+            age = False
+            if rec.birthday:
+                dob = rec.birthday
+                today = date.today()
+                age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+            rec.age = age
 
     def action_create_start_work(self):
-        """Create the Start Work.
-        """
+        """Create the Start Work."""
         employee_start_work_count = self.env['hr.employee.start.work'].search_count([
             ('employee_id', '=', self.id), ('state', 'not in', ['approve', 'refuse', 'cancel'])])
         if employee_start_work_count > 0:
@@ -267,8 +253,6 @@ class Employee(models.Model):
         '''
         res = ''
         if bank_account_no:
-            # _logger = logging.getLogger(__name__)
-            # _logger.dbug('FGF bank_account_no %s' % (bank_account_no))
             try:
                 a = iban.validate(bank_account_no)
             except:
@@ -276,21 +260,13 @@ class Employee(models.Model):
             res = iban.format(a)
         return res
 
-    # @api.onchange('bank_account_no')
-    # def onchange_acc_id(self):
-    #     result = {}
-    #     if self.bank_account_no:
-    #         result['bank_account_no'] = self._format_iban(self.bank_account_no)
-    #
-    #     return {'value': result}
-
 
 class EmployeeRelationInfo(models.Model):
     """Table for keep employee family information"""
     _name = 'hr.employee.relation'
 
     name = fields.Char(string="Relationship",
-                       help="Relationship with thw employee")
+                       help="Relationship with the employee")
 
 
 class HRCertificates(models.Model):
@@ -305,12 +281,18 @@ class HrEmployeeFamilyInfo(models.Model):
     _description = 'HR Employee Family'
 
     employee_id = fields.Many2one('hr.employee', string="Employee",
-                                  help='Select corresponding Employee',
-                                  invisible=1)
+                                  help='Select corresponding Employee')
     relation_id = fields.Many2one('hr.employee.relation', string="نوع الصلة", help="Relationship with the employee")
     member_name = fields.Char(string='الاسم')
     member_contact = fields.Char(string='رقم الجوال')
-    member_identification_id = fields.Char(string='رقم الهوية/الاقامة')
-    birth_date = fields.Date(string="تاريخ الميلاد", tracking=True)
+    member_identification_id = fields.Char(string='رقم الهوية / الاقامة')
+    member_dob = fields.Date(string='تاريخ الميلاد')
+    insurance = fields.Boolean(string="مسجل في التأمين")
+    insurance_card_no = fields.Char(string="رقم التأمين")
+    medical_insurance_no = fields.Char(string="رقم التأمين الطبي")
 
-    insurance_amount = fields.Float(string='قيمة التأمين')
+    @api.constrains('member_identification_id')
+    def _check_member_identification_id(self):
+        for rec in self:
+            if rec.member_identification_id and len(str(rec.member_identification_id)) != 10:
+                raise ValidationError(_('رقم الهوية/الإقامة يجب أن يكون 10 أرقام.'))
