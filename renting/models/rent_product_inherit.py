@@ -86,20 +86,20 @@ class RentProduct(models.Model):
         res.analytic_account = analytic_account
         return res
 
-    def _get_unit_price(self):
-        for rec in self:
-            prices = []
-            units = []
-            for price in rec.rental_pricing_ids:
-                prices.append(price.price)
-                units.append(price.unit)
-            if len(prices) > 0:
-                rec.unit_price = prices[0]
-            if len(units) > 0:
-                rec.unit_price_unit = units[0]
-            else:
-                rec.unit_price = 0
-                rec.unit_price_unit = ''
+    # def _get_unit_price(self):
+    #     for rec in self:
+    #         prices = []
+    #         units = []
+    #         for price in rec.rental_pricing_ids:
+    #             prices.append(price.price)
+    #             units.append(price.unit)
+    #         if len(prices) > 0:
+    #             rec.unit_price = prices[0]
+    #         if len(units) > 0:
+    #             rec.unit_price_unit = units[0]
+    #         else:
+    #             rec.unit_price = 0
+    #             rec.unit_price_unit = ''
 
     partner_id = fields.Many2one('res.partner', compute="get_sale_data", string='العميل')
     amount_paid = fields.Float(compute="get_sale_data", string='المبلغ المدفوع')
