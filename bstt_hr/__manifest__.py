@@ -13,7 +13,7 @@
     'version': '0.1',
     'license': 'AGPL-3',
     'images': ['static/description/logo.png'],
-    'depends': ['base', 'hr', 'hr_contract', 'project', 'bstt_account_invoice', 'hr_holidays'],
+    'depends': ['base', 'hr', 'hr_contract', 'project', 'bstt_account_invoice', 'hr_payroll','hr_holidays'],
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
