@@ -22,29 +22,26 @@ class AccountMove(models.Model):
         readonly=True,
     )
 
-    @api.depends(
-        "line_ids.account_id.user_type_id.type",  # هذا الحقل موجود وآمن
-        "line_ids.balance",
-    )
+    @api.depends("line_ids.balance")  # فقط المعتمد الآمن
     def _compute_financial_type(self):
-        def _balance_get(line_ids, user_type):
+        def _balance_get(line_ids, keywords):
             return sum(
-                line_ids.filtered(
-                    lambda x: x.account_id.user_type_id.type == user_type
-                ).mapped("balance")
+                line.balance
+                for line in line_ids
+                if any(kw in line.account_id.display_name.lower() for kw in keywords)
             )
 
         for move in self:
-            user_types = move.line_ids.mapped("account_id.user_type_id.type")
-            if "liquidity" in user_types:
+            lines = move.line_ids
+            account_names = " ".join(lines.mapped("account_id.display_name")).lower()
+
+            if "cash" in account_names or "bank" in account_names:
                 move.financial_type = "liquidity"
-            elif "payable" in user_types:
-                balance = _balance_get(move.line_ids, "payable")
+            elif "payable" in account_names:
+                balance = _balance_get(lines, ["payable"])
                 move.financial_type = "payable" if balance < 0 else "payable_refund"
-            elif "receivable" in user_types:
-                balance = _balance_get(move.line_ids, "receivable")
-                move.financial_type = (
-                    "receivable" if balance > 0 else "receivable_refund"
-                )
+            elif "receivable" in account_names:
+                balance = _balance_get(lines, ["receivable"])
+                move.financial_type = "receivable" if balance > 0 else "receivable_refund"
             else:
                 move.financial_type = "other"
