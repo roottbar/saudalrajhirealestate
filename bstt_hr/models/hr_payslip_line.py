@@ -10,11 +10,19 @@ class HrPayslipLine(models.Model):
     @api.depends('salary_rule_id', 'employee_id')
     def _compute_partner_id(self):
         for line in self:
-            if not line.employee_id.address_home_id:
-                partner = self.env['res.partner'].create(
-                    {'name': line.employee_id.name,
-                     'street': line.employee_id.address or False,
-                     })
-                line.employee_id.address_home_id = partner.id
-            partner = line.salary_rule_id.partner_id.id or line.employee_id.address_home_id.id
-            line.partner_id = partner
+            employee = line.employee_id
+            partner = False
+
+            # محاولة الحصول على عنوان الموظف
+            address = getattr(employee, 'private_address_id', False)
+
+            if not address:
+                address = self.env['res.partner'].create({
+                    'name': employee.name,
+                    'street': getattr(employee, 'address', False) or '',
+                })
+                if hasattr(employee, 'private_address_id'):
+                    employee.private_address_id = address.id
+
+            partner = line.salary_rule_id.partner_id or address
+            line.partner_id = partner.id if partner else False
