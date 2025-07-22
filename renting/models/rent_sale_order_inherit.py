@@ -82,11 +82,11 @@ class RentSaleOrder(models.Model):
     amount_rem = fields.Float('المبلغ المتبقي')
     iselec_remain = fields.Boolean('نعم')
     isnotelec_remain = fields.Boolean('لا')
-    current_state = fields.Selection(
-        related='order_property_state.name',
-        string='الحالة الحالية',
-        store=True,
-        tracking=True)
+    # current_state = fields.Selection(
+    # related='order_property_state.name',
+    #     string='الحالة الحالية',
+    #     store=True,
+    #     tracking=True)
 
     @api.model
     def create(self, vals):
