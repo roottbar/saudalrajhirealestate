@@ -435,10 +435,21 @@ class RentSaleOrderLine(models.Model):
         return ""
     @api.depends('return_date')
     def _compute_is_late(self):
-        now = fields.Date.today()
+        now_date = fields.Date.today()  # تاريخ فقط (بدون وقت)
+        now_datetime = fields.Datetime.now()  # تاريخ ووقت
+        
         for line in self:
-            # By default, an order line is considered late only if it has one hour of delay
-            line.is_late = line.return_date and line.return_date < now
+            if not line.return_date:
+                line.is_late = False
+                continue
+                
+            try:
+                # تحويل جميع القيم إلى datetime.date للمقارنة الصحيحة
+                return_date = fields.Date.to_date(line.return_date)
+                line.is_late = return_date < now_date
+            except (TypeError, ValueError):
+                # معالجة أي استثناءات في تحويل التاريخ
+                line.is_late = False
     # @api.depends('return_date')
     # def _compute_is_late(self):
     #     now = fields.Date.today()
