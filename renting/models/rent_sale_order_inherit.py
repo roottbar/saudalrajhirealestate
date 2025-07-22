@@ -33,7 +33,8 @@ class RentSaleOrder(models.Model):
                                  states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True,
                                  auto_join=True)
 
-    order_property_state = fields.One2many('rent.sale.state', 'sale_order_id', string='الحالة')
+    order_property_state = fields.One2many('rent.sale.state', 'sale_order_id', string='الحالة', tracking=True, auto_join=True)
+    
 
     # بنود الاستلام
     door_good = fields.Boolean('جيد')
@@ -81,7 +82,45 @@ class RentSaleOrder(models.Model):
     amount_rem = fields.Float('المبلغ المتبقي')
     iselec_remain = fields.Boolean('نعم')
     isnotelec_remain = fields.Boolean('لا')
+    current_state = fields.Selection(
+        related='order_property_state.name',
+        string='الحالة الحالية',
+        store=True,
+        tracking=True)
 
+    @api.model
+    def create(self, vals):
+        record = super(RentSaleOrder, self).create(vals)
+        # تسجيل الحالة الابتدائية عند الإنشاء
+        record._track_state_change('draft', 'تم إنشاء الطلب')
+        return record
+
+    def write(self, vals):
+        # تسجيل تغيير الحالة قبل التعديل
+        if 'state' in vals:
+            for order in self:
+                order._track_state_change(vals['state'], 'تم تعديل الحالة')
+        return super(RentSaleOrder, self).write(vals)
+
+    def _track_state_change(self, new_state, message):
+        """سجل تغيير الحالة في السجل وتتبع التغييرات"""
+        self.ensure_one()
+        self.env['rent.sale.state'].create({
+            'name': new_state,
+            'sale_order_id': self.id,
+            'notes': message
+        })
+        self.message_post(body=message)
+
+    def action_confirm(self):
+        res = super(RentSaleOrder, self).action_confirm()
+        self._track_state_change('sale', 'تم تأكيد أمر البيع')
+        return res
+
+    def action_cancel(self):
+        res = super(RentSaleOrder, self).action_cancel()
+        self._track_state_change('cancel', 'تم إلغاء الطلب')
+        return res
     def _get_remain(self):
         amount = 0
         invoices_paid = self.env['account.move'].sudo().search(
