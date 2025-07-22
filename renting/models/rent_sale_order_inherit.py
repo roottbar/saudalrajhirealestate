@@ -433,10 +433,21 @@ class RentSaleOrderLine(models.Model):
 
     def get_rental_order_line_description(self):
         return ""
-    
     @api.depends('return_date')
     def _compute_is_late(self):
-        now = fields.Date.today()
+        now_date = fields.Date.today()
+        now_datetime = fields.Datetime.now()
         for line in self:
-            # By default, an order line is considered late only if it has one hour of delay
-            line.is_late = line.return_date and line.return_date < now
+            if line.return_date:
+                if isinstance(line.return_date, date):
+                    line.is_late = line.return_date < now_date
+                else:
+                    line.is_late = line.return_date < now_datetime
+            else:
+                line.is_late = False
+    # @api.depends('return_date')
+    # def _compute_is_late(self):
+    #     now = fields.Date.today()
+    #     for line in self:
+    #         # By default, an order line is considered late only if it has one hour of delay
+    #         line.is_late = line.return_date and line.return_date < now
