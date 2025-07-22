@@ -18,7 +18,7 @@ class RentSaleInvoices(models.Model):
     amount = fields.Float(string='Amount')
     invoice_date = fields.Date(string='Invoice Date')
     status = fields.Selection([('uninvoiced', 'Un Invoiced'), ('invoiced', 'Invoiced')], string='Status',
-                              default="uninvoiced")
+                              default="uninvoiced",required=True,tracking=True)
     fromdate = fields.Datetime(string='From Date', default=fields.Date.context_today, copy=False, required=True)
     todate = fields.Datetime(string='To Date', default=fields.Date.context_today, copy=False, required=True)
     operating_unit = fields.Many2one('operating.unit', string='Operating Unit',
