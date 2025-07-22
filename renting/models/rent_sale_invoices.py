@@ -44,14 +44,8 @@ class RentSaleInvoices(models.Model):
         # 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)],
         if self.sequence == 1:
             res.update({
-                # 'property_price_unit': line.price_unit / self.sale_order_id.invoice_number,
-                # 'price_unit': (line.price_unit / self.sale_order_id.invoice_number) + line.contract_admin_sub_fees + line.contract_service_sub_fees,
                 'price_unit': (line.price_unit / self.sale_order_id.invoice_number),
-                # 'insurance_value': line.insurance_value,
-                # 'contract_admin_fees': line.contract_admin_fees,
-                # 'contract_service_fees': line.contract_service_fees,
-                # 'contract_admin_sub_fees': line.contract_admin_sub_fees,
-                # 'contract_service_sub_fees': line.contract_service_sub_fees
+             
             })
         return res
 
@@ -98,16 +92,11 @@ class RentSaleInvoices(models.Model):
                                                                                       'contract_service_sub_fees'] else False,
             'exclude_from_invoice_tab': False,
             'rent_fees': True,
-            # 'sale_line_ids': [(4, line.id)],
         }
         return res
 
     def _prepare_invoice(self, invoice_lines):
-        """
-        Prepare the dict of values to create the new invoice for a sales order. This method may be
-        overridden to implement custom invoice generation (making sure to call super() to establish
-        a clean extension chain).
-        """
+   
         self.ensure_one()
         journal = self.env['account.move'].with_context(default_move_type='out_invoice')._get_default_journal()
         if not journal:
@@ -168,7 +157,9 @@ class RentSaleInvoices(models.Model):
         print(vals)
         invoice = self.env['account.move'].create(vals)
         self.invoice_date = fields.Date.today()
-        self.status = 'invoiced'
+        self.write({
+            'invoice_date': fields.Date.today(),
+            'status': 'invoiced'})
         return invoice
 
 
