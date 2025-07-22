@@ -11,6 +11,7 @@ INSURANCE_ADMIN_FEES_FIELDS = ['insurance_value', 'contract_admin_fees', 'contra
 
 class RentSaleInvoices(models.Model):
     _name = 'rent.sale.invoices'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     sale_order_id = fields.Many2one('sale.order', copy=True, string='العقود', ondelete='cascade')
     name = fields.Char(string='Label')
