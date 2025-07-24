@@ -25,3 +25,7 @@ class RentalReport(models.Model):
             sol.fromdate,
             sol.todate
         """
+    def _price(self):
+        return """
+            sol.price_subtotal / (date_part('day',sol.return_date::timestamp - sol.pickup_date::timestamp) + 1)
+        """
