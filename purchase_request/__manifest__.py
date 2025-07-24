@@ -1,36 +1,33 @@
-# -*- coding: utf-8 -*-
+# Copyright 2018-2019 ForgeFlow, S.L.
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0).
+
 {
-    'name': "Purchase Request",
-
-    'summary': """Purchase Request""",
-
-    'description': """Create Request for Quotations from Purchase Requests""",
-
-    'author': "Crevisoft Corporate",
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Inventory/Purchase',
-    'version': '0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': ['purchase_stock', 'user_action_rule'],
-
-    # always loaded
-    'data': [
-        'security/security.xml',
-        'security/ir.model.access.csv',
-        'data/data.xml',
-        'data/sequense.xml',
-        'data/cron.xml',
-        'wizard/purchase_request_quotation_wizard_view.xml',
-        'wizard/purchase_request_reject_wizard_view.xml',
-        'views/purchase_request.xml',
-        'views/purchase_request_line.xml',
-        'views/res_config_settings.xml',
-        'views/product_category_view.xml',
-        'views/menus.xml'
-    ]
+    "name": "Purchase Request",
+    "author": "ForgeFlow, Odoo Community Association (OCA)",
+    "version": "14.0.1.2.4",
+    "summary": "Use this module to have notification of requirements of "
+    "materials and/or external services and keep track of such "
+    "requirements.",
+    "website": "https://github.com/OCA/purchase-workflow",
+    "category": "Purchase Management",
+    "depends": ["purchase", "product", "purchase_stock"],
+    "data": [
+        "security/purchase_request.xml",
+        "security/ir.model.access.csv",
+        "data/purchase_request_sequence.xml",
+        "data/purchase_request_data.xml",
+        "reports/report_purchase_request.xml",
+        "wizard/purchase_request_line_make_purchase_order_view.xml",
+        "views/purchase_request_view.xml",
+        "views/purchase_request_line_view.xml",
+        "views/purchase_request_report.xml",
+        "views/product_template.xml",
+        "views/purchase_order_view.xml",
+        "views/stock_move_views.xml",
+        "views/stock_picking_views.xml",
+    ],
+    "demo": ["demo/purchase_request_demo.xml"],
+    "license": "LGPL-3",
+    "installable": True,
+    "application": True,
 }
