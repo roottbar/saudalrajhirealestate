@@ -8,6 +8,13 @@ from odoo import models, fields
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
+    project_id = fields.Many2one(
+        comodel_name='project.project',
+        string='Project',
+        related='raw_material_production_id.project_id',
+        store=True
+    )
+    
     workorder_id = fields.Many2one(
         comodel_name='mrp.workorder',
         string='Work Order',
