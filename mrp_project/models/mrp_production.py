@@ -17,9 +17,6 @@ class MrpProduction(models.Model):
 
     @api.model
     def _prepare_project_vals(self, production):
-        # If this production come from a sale order and that order
-        # has an analytic account assigned, then project is child of
-        # that analytic account
         parent_id = False
         if 'sale_id' in production._fields:
             parent_id = production.sale_id.project_id.id
@@ -60,6 +57,14 @@ Planned Date: %s""") % (
                 project_vals = self._prepare_project_vals(production)
                 project = project_obj.create(project_vals)
                 production.project_id = project.id
+            # تحديث analytic_account_id في stock moves
+            if production.analytic_account_id:
+                production.move_raw_ids.write({
+                    'analytic_account_id': production.analytic_account_id.id
+                })
+                production.move_finished_ids.write({
+                    'analytic_account_id': production.analytic_account_id.id
+                })
         return result
 
     def unlink(self):
