@@ -12,10 +12,10 @@
     'license': 'OPL-1',
     'sequence': 20,
     'depends': [
-        # 'sync_hr_payroll_account',
+        'hr_payroll',
+        'hr_work_entry_contract',
         'hr_payroll_account',
         'hr_expense_payment',
-        # 'saudi_hr_contract',
         'hr_contract',
     ],
     'data': [
