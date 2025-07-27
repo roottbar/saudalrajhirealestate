@@ -16,12 +16,12 @@
                 <field name="is_deduction"/>
                 <field name="skip"/>
             </xpath>
-            <field name="validity_start" position="attributes">
+<!--             <field name="validity_start" position="attributes">
                 <attribute name="attrs">{'required': [('is_annual_leave', '=', True)]}</attribute>
             </field>
             <field name="validity_stop" position="attributes">
                 <attribute name="attrs">{'required': [('is_annual_leave', '=', True)]}</attribute>
-            </field>
+            </field> -->
 
             <xpath expr="//group[@name='notification']" poition="after">
                 <group name="notes" string="Notes" colspan="2">
