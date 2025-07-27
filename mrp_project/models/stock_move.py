@@ -1,33 +1,56 @@
 # -*- coding: utf-8 -*-
-# (c) 2014 Daniel Campos <danielcampos@avanzosc.es>
-# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from odoo import models, fields
-
+from odoo import api, fields, models
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
     project_id = fields.Many2one(
-        comodel_name='project.project',
+        'project.project',
         string='Project',
-        related='raw_material_production_id.project_id',
-        store=True
+        compute='_compute_project_id',
+        store=True,
+        help="Project related to the manufacturing order"
     )
     
     workorder_id = fields.Many2one(
-        comodel_name='mrp.workorder',
+        'mrp.workorder',
         string='Work Order',
         compute='_compute_workorder_id',
-        store=False
+        store=True
     )
 
+    @api.depends('raw_material_production_id', 'production_id')
+    def _compute_project_id(self):
+        for move in self:
+            project_id = False
+            if move.raw_material_production_id and move.raw_material_production_id.project_id:
+                project_id = move.raw_material_production_id.project_id.id
+            elif move.production_id and move.production_id.project_id:
+                project_id = move.production_id.project_id.id
+            move.project_id = project_id
+
+    @api.depends('workorder_ids')
     def _compute_workorder_id(self):
         for move in self:
-            workorder = False
-            if move.raw_material_production_id:
-                # For raw materials, find the workorder from the production
-                workorders = move.raw_material_production_id.workorder_ids
-                if workorders:
-                    workorder = workorders[0]  # Take the first workorder
-            move.workorder_id = workorder
+            if move.workorder_ids:
+                move.workorder_id = move.workorder_ids[0].id
+            else:
+                move.workorder_id = False
+
+    @api.model
+    def create(self, vals):
+        move = super(StockMove, self).create(vals)
+        move._update_analytic_account()
+        return move
+
+    def write(self, vals):
+        result = super(StockMove, self).write(vals)
+        if any(field in vals for field in ['raw_material_production_id', 'production_id', 'project_id']):
+            self._update_analytic_account()
+        return result
+
+    def _update_analytic_account(self):
+        for move in self:
+            if move.project_id and move.project_id.analytic_account_id:
+                move.analytic_account_id = move.project_id.analytic_account_id.id
