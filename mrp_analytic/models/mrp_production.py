@@ -8,5 +8,12 @@ from odoo import models, fields
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
+    partner_id = fields.Many2one(
+        comodel_name='res.partner', 
+        string='Customer',
+        help='Customer for this manufacturing order'
+    )
     analytic_account_id = fields.Many2one(
-        comodel_name='account.analytic.account', string='Analytic Account')
+        comodel_name='account.analytic.account', 
+        string='Analytic Account'
+    )
