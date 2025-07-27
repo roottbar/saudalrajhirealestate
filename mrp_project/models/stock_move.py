@@ -12,13 +12,6 @@ class StockMove(models.Model):
         store=True,
         help="Project related to the manufacturing order"
     )
-    
-    workorder_id = fields.Many2one(
-        'mrp.workorder',
-        string='Work Order',
-        compute='_compute_workorder_id',
-        store=True
-    )
 
     @api.depends('raw_material_production_id', 'production_id')
     def _compute_project_id(self):
@@ -29,14 +22,6 @@ class StockMove(models.Model):
             elif move.production_id and move.production_id.project_id:
                 project_id = move.production_id.project_id.id
             move.project_id = project_id
-
-    @api.depends('workorder_ids')
-    def _compute_workorder_id(self):
-        for move in self:
-            if move.workorder_ids:
-                move.workorder_id = move.workorder_ids[0].id
-            else:
-                move.workorder_id = False
 
     @api.model
     def create(self, vals):
