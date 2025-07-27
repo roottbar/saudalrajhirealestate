@@ -20,6 +20,6 @@
     <menuitem 
         action="action_hr_payslip_export" 
         id="menu_payslip_export" 
-        parent="hr_payroll.menu_hr_payroll_configuration"
+        parent="hr_payroll.menu_hr_payroll_root"
         groups="hr.group_hr_manager,account.group_account_user"/>
 </odoo>
