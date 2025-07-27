@@ -1,15 +1,45 @@
 <odoo>
-    <!-- Inherit Form View to Modify it -->
-    <record id="hr_holiday_status_view_form_inherit" model="ir.ui.view">
-        <field name="name">hr.leave.type.form</field>
+    <record model="ir.ui.view" id="edit_holiday_status_form_inherit">
+        <field name="name">hr.leave.type.form.inherit</field>
         <field name="model">hr.leave.type</field>
         <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
+            <xpath expr="//field[@name='request_unit']" position="before">
+                <field name="is_annual_leave"/>
+                <field name="one_time_usable"/>
+                <field name="is_deduction"/>
+                <field name="skip"/>
+            </xpath>
 
-                <field name="is_include_balance"/>
+            <xpath expr="//field[@name='request_unit']" position="after">
+                <group name="notes" string="Notes" colspan="2">
+                    <field name="notes"/>
+                </group>
+            </xpath>
 
-
+            <xpath expr="//sheet" position="inside">
+                <notebook attrs="{'invisible': [('is_deduction', '=', False)]}">
+                    <page string="Deduction">
+                        <group>
+                            <group>
+                                <field name="deduction_by" attrs="{'invisible': [('is_deduction', '=', False)], 'required': [('is_deduction', '=', True)]}"/>
+                            </group>
+                        </group>
+                        <group string="Rules" name="rules">
+                            <field name="rule_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="limit_from"/>
+                                    <field name="limit_to"/>
+                                    <field name="limit_per"/>
+                                    <field name="previous_line_id" invisible="1"/>
+                                    <field name="next_line_id" invisible="1"/>
+                                    <field name="leave_type_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
             </xpath>
         </field>
     </record>
