@@ -11,6 +11,7 @@
         "mrp_analytic",
         "project",
         "hr_timesheet",
+        "stock",
     ],
     'license': 'AGPL-3',
     "author": "OdooMRP team,"
@@ -23,7 +24,7 @@
         "views/mrp_production_view.xml",
         "views/project_project_view.xml",
         "views/account_analytic_line_view.xml",
-        "views/project_task_view.xml",
+        "views/project_task_view.xml"
     ],
     'installable': True,
     'application': False,
