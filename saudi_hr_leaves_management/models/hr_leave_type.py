@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See COPYRIGHT & LICENSE files for full copyright and licensing details.
 
 from odoo import fields, models, api, _
@@ -12,7 +13,10 @@ class LeaveRuleLine(models.Model):
         for rec in self:
             rec.previous_line_id = False
             if rec.leave_type_id and rec.leave_type_id.rule_ids:
-                previous_ids = rec.leave_type_id.rule_ids.filtered(lambda l: float(l.limit_from) < float(rec.limit_from) and float(l.limit_to) <= float(rec.limit_from))
+                previous_ids = rec.leave_type_id.rule_ids.filtered(
+                    lambda l: float(l.limit_from) < float(rec.limit_from)
+                    and float(l.limit_to) <= float(rec.limit_from)
+                )
                 if previous_ids:
                     rec.previous_line_id = previous_ids.ids[-1]
 
@@ -20,7 +24,10 @@ class LeaveRuleLine(models.Model):
         for rec in self:
             rec.next_line_id = False
             if rec.leave_type_id and rec.leave_type_id.rule_ids:
-                previous_ids = rec.leave_type_id.rule_ids.filtered(lambda l: float(l.limit_from) >= float(rec.limit_to) and float(l.limit_to) > float(rec.limit_to))
+                previous_ids = rec.leave_type_id.rule_ids.filtered(
+                    lambda l: float(l.limit_from) >= float(rec.limit_to)
+                    and float(l.limit_to) > float(rec.todate)
+                )
                 if previous_ids:
                     rec.next_line_id = previous_ids.ids[0]
 
@@ -37,10 +44,12 @@ class LeaveRuleLine(models.Model):
         for rule_id in self:
             if rule_id.limit_from > rule_id.limit_to:
                 raise ValidationError(_("'Limit To' should be greater than 'Limit From'!"))
-            line_ids = self.search([('limit_from', '<=', rule_id.limit_to),
-                                    ('limit_to', '>', rule_id.limit_from),
-                                    ('leave_type_id', '=', rule_id.leave_type_id.id),
-                                    ('id', '<>', rule_id.id)])
+            line_ids = self.search([
+                ('limit_from', '<=', rule_id.limit_to),
+                ('limit_to', '>', rule_id.limit_from),
+                ('leave_type_id', '=', rule_id.leave_type_id.id),
+                ('id', '<>', rule_id.id)
+            ])
             if line_ids:
                 raise ValidationError(_('Two (2) Rule Lines for leave are overlapping!'))
 
@@ -50,23 +59,25 @@ class HolidaysType(models.Model):
 
     is_deduction = fields.Boolean(string="Leave Deduction", default=False)
     skip = fields.Boolean('Allow to Skip', help="Allow to Skip Public Holidays", default=True)
-    # code = fields.Char(string="Code")
     one_time_usable = fields.Boolean('One Time Used', default=False)
     is_annual_leave = fields.Boolean('Annual Leave', default=False)
     rule_ids = fields.One2many('hr.leave.rule.line', 'leave_type_id', string="Rules")
-    deduction_by = fields.Selection([('day', 'Days'), ('year', 'Year'), ('hour', 'Hours')], string="Deduction By", default='day')
+    deduction_by = fields.Selection([
+        ('day', 'Days'),
+        ('year', 'Year'),
+        ('hour', 'Hours')
+    ], string="Deduction By", default='day')
     notes = fields.Text(string='Notes')
 
-    # @api.constrains('is_annual_leave')
-    # def _check_annual_leave(self):
-    #     annual_leave_ids = self.search_count([('is_annual_leave', '=', True)])
-    #     if annual_leave_ids > 1:
-    #         raise ValidationError(_('You can not allowed multiple leave as a Annual Leave.'))
+    # ✅ الحقول التي كانت ناقصة (سبب الخطأ في الـ XML)
+    validity_start = fields.Date(string='Validity Start')
+    validity_stop = fields.Date(string='Validity Stop')
 
     @api.constrains('deduction_by', 'request_unit')
     def _check_deduction_by(self):
         for rec in self:
-            if (rec.request_unit != 'hour' and rec.deduction_by == 'hour') or (rec.request_unit == 'hour' and rec.deduction_by != 'hour'):
+            if (rec.request_unit != 'hour' and rec.deduction_by == 'hour') or \
+               (rec.request_unit == 'hour' and rec.deduction_by != 'hour'):
                 raise ValidationError(_('Take Time Off in and Deduction By both must be hour type!!'))
 
     @api.constrains('validity_start', 'validity_stop')
