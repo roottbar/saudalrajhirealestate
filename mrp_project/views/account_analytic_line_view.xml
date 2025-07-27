@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_account_analytic_line_form_mrp" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.mrp</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='task_id']" position="after">
+                    <field name="mrp_production_id"/>
+                    <field name="workorder"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_analytic_line_tree_mrp" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree.mrp</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='task_id']" position="after">
+                    <field name="mrp_production_id" optional="hide"/>
+                    <field name="workorder" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

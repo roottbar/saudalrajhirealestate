@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_task_form_mrp" model="ir.ui.view">
+            <field name="name">project.task.form.mrp</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="mrp_production_id"/>
+                    <field name="workorder"/>
+                    <field name="final_product"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_task_tree_mrp" model="ir.ui.view">
+            <field name="name">project.task.tree.mrp</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="mrp_production_id" optional="hide"/>
+                    <field name="final_product" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

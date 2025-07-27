@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_project_project_form_mrp" model="ir.ui.view">
+            <field name="name">project.project.form.mrp</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="%(act_project_2_production_all)d" type="action"
+                            class="oe_stat_button" icon="fa-cogs">
+                        <field string="Manufacturing" name="production_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
