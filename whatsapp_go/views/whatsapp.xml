@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="res_users_inherit_form_view">
+            <field name="name">res.users.inherit.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='access_rights']" position="after">
+                    <page name="go4whatsapp" string="Go4Whatsapp">
+                        <button name="open_whatsapp_login_form" string="Login Go4Whatsapp" type="object" class="oe_highlight"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="whatsapp_login_form_view">
+            <field name="name">whatsapp.login.form</field>
+            <field name="model">whatsapp.login</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="mobileNo"/>
+                            <!-- <field name="email"/>
+                            <field name="isSocial"/> -->
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="open_otp_verify_form" string="Login" type="object" class="oe_highlight"/>
+                        or
+                        <!-- <a href="https://app.go4whatsup.com/registration"> <i class="text-muted">Don't have an account ? Sign Up</i></a> -->
+                        <button name="action_open_registration" string="Don't have an account? Sign Up" type="object" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="otp_verify_form_view">
+            <field name="name">otp.verify.form</field>
+            <field name="model">otp.verify</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="mobileNo" readonly="1"/>
+                            <field name="otp"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="set_user_access_token" string="Submit" type="object" class="oe_highlight"/>
+                        or
+                        <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
