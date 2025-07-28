@@ -1,0 +1,86 @@
+<odoo>
+    <template id="report_construction_project">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Construction Project Report</h2>
+                    <h3 t-field="object.name"/>
+                    
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <strong>Total Cost:</strong>
+                            <span t-field="object.total_cost" t-options="{'widget': 'monetary', 'display_currency': object.currency_id}"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>Completion:</strong>
+                            <span t-field="object.completion_percentage"/>%
+                        </div>
+                    </div>
+                    
+                    <h4 class="mt-4">Tasks Summary</h4>
+                    <table class="table table-bordered mt-2">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Stage</th>
+                                <th>Materials Cost</th>
+                                <th>Labor Cost</th>
+                                <th>Equipment Cost</th>
+                                <th>Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="object.task_ids" t-as="task">
+                                <tr>
+                                    <td t-field="task.name"/>
+                                    <td t-field="task.stage_id.name"/>
+                                    <td t-field="sum(task.material_ids.mapped('total_cost'))" t-options="{'widget': 'monetary', 'display_currency': object.currency_id}"/>
+                                    <td t-field="sum(task.labor_ids.mapped('total_cost'))" t-options="{'widget': 'monetary', 'display_currency': object.currency_id}"/>
+                                    <td t-field="sum(task.equipment_ids.mapped('total_cost'))" t-options="{'widget': 'monetary', 'display_currency': object.currency_id}"/>
+                                    <td t-field="task.stage_cost" t-options="{'widget': 'monetary', 'display_currency': object.currency_id}"/>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    
+                    <h4 class="mt-4">Materials Summary</h4>
+                    <table class="table table-bordered mt-2">
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Total Quantity</th>
+                                <th>Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="materials" t-value="{}"/>
+                            <t t-foreach="object.task_ids.mapped('material_ids')" t-as="material">
+                                <t t-set="materials" t-value="materials.setdefault(material.product_id.id, {'product': material.product_id, 'quantity': 0, 'cost': 0})"/>
+                                <t t-set="materials[material.product_id.id]['quantity']" t-value="materials[material.product_id.id]['quantity'] + material.quantity"/>
+                                <t t-set="materials[material.product_id.id]['cost']" t-value="materials[material.product_id.id]['cost'] + material.total_cost"/>
+                            </t>
+                            <t t-foreach="materials.values()" t-as="mat">
+                                <tr>
+                                    <td t-field="mat['product'].display_name"/>
+                                    <td t-field="mat['quantity']"/>
+                                    <td t-field="mat['cost']" t-options="{'widget': 'monetary', 'display_currency': object.currency_id}"/>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_construction_project" model="ir.actions.report">
+        <field name="name">Construction Project Report</field>
+        <field name="model">project.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">construction_management.report_construction_project</field>
+        <field name="report_file">construction_management.report_construction_project</field>
+        <field name="binding_model_id" ref="model_project_project"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Construction Project - %s' % (object.name)</field>
+    </record>
+</odoo>

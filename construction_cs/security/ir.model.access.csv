@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_construction_task_material,construction.task.material,model_construction_task_material,,1,1,1,1
+access_construction_task_labor,construction.task.labor,model_construction_task_labor,,1,1,1,1
+access_construction_task_equipment,construction.task.equipment,model_construction_task_equipment,,1,1,1,1
