@@ -115,35 +115,21 @@ class ConstructionTaskMaterial(models.Model):
 class ConstructionTaskLabor(models.Model):
     _name = 'construction.task.labor'
     _description = 'Construction Task Labor'
-
-    task_id = fields.Many2one(
-        'project.task',
-        string='Task'
-    )
-    employee_id = fields.Many2one(
-        'hr.employee',
-        string='Employee',
-        required=True
-    )
-    hours = fields.Float(
-        string='Hours',
-        default=1.0
-    )
-    hourly_rate = fields.Float(
-        string='Hourly Rate',
-        related='employee_id.timesheet_cost',
-        readonly=True
-    )
+    
+    task_id = fields.Many2one('project.task', string='Task')
+    employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
+    hours = fields.Float(string='Hours', default=1.0)
     total_cost = fields.Float(
         string='Total Cost',
         compute='_compute_total_cost',
         store=True
     )
-
-    @api.depends('hours', 'hourly_rate')
+    
+    @api.depends('hours', 'employee_id.timesheet_cost')
     def _compute_total_cost(self):
         for labor in self:
-            labor.total_cost = labor.hours * labor.hourly_rate
+            rate = labor.employee_id.timesheet_cost or 0.0
+            labor.total_cost = labor.hours * rate
 
 
 class ConstructionTaskEquipment(models.Model):
