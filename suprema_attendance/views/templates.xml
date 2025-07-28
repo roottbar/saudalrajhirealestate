@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="suprema_assets" inherit_id="web.assets_backend" name="Suprema Assets" primary="True">
+    <template id="suprema_assets" name="suprema.assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <script src="/suprema_attendance/static/src/js/suprema_connection.js"/>
         </xpath>
