@@ -83,7 +83,7 @@
         </field>
     </record>
 
-    <!-- عرض شجرة المشاريع (بديل بدون inherit_id) -->
+    <!-- عرض شجرة المشاريع -->
     <record id="view_construction_project_tree" model="ir.ui.view">
         <field name="name">construction.project.tree</field>
         <field name="model">project.project</field>
@@ -92,7 +92,6 @@
                 <field name="name"/>
                 <field name="total_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="completion_percentage" widget="progressbar"/>
-                <!-- يمكن إضافة حقول إضافية هنا حسب الحاجة -->
             </tree>
         </field>
     </record>
