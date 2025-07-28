@@ -13,7 +13,7 @@
     'author': 'Othmancs',
     'website': 'https://www.tbarholding.com',
     'category': 'Construction',
-    'depends': ['project', 'hr', 'maintenance', 'product'],
+    'depends': ['project', 'hr_timesheet', 'maintenance', 'product'],
     'data': [
         'security/ir.model.access.csv',
         'views/project_views.xml',
