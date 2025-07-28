@@ -47,14 +47,12 @@
                             <tree editable="bottom">
                                 <field name="employee_id"/>
                                 <field name="hours"/>
-                                <field name="hourly_rate" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 <field name="total_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </tree>
                             <form>
                                 <group>
                                     <field name="employee_id"/>
                                     <field name="hours"/>
-                                    <field name="hourly_rate" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                     <field name="total_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                 </group>
                             </form>
