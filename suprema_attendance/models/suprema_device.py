@@ -5,7 +5,6 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 class SupremaDevice(models.Model):
     _name = 'suprema.device'
     _description = 'Suprema Biometric Device'
@@ -21,8 +20,8 @@ class SupremaDevice(models.Model):
     active = fields.Boolean(string='Active', default=True)
     last_sync = fields.Datetime(string='Last Synchronization')
     attendance_ids = fields.One2many(
-        'suprema.attendance.log',
-        'device_id',
+        'suprema.attendance.log', 
+        'device_id', 
         string='Attendance Logs'
     )
     company_id = fields.Many2one(
@@ -85,26 +84,27 @@ class SupremaDevice(models.Model):
             conn.disable_device()
             attendance_logs = conn.get_attendance()
             conn.enable_device()
-
+            
             AttendanceLog = self.env['suprema.attendance.log']
             employees = self.env['hr.employee'].search([])
-
+            
             for log in attendance_logs:
                 employee = employees.filtered(
-                    lambda e: e.biometric_id == str(log.user_id)
-
+                    lambda e: e.biometric_id == str(log.user_id))
+                
                 if not employee:
+                    _logger.warning("No employee found with biometric ID: %s", log.user_id)
                     continue
-
+                    
                 AttendanceLog.create({
                     'device_id': self.id,
                     'employee_id': employee.id,
                     'punch_time': self._convert_time(log.timestamp),
                     'status': self._determine_status(employee, log.timestamp),
                 })
-
+            
             self.last_sync = fields.Datetime.now()
-
+            
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
