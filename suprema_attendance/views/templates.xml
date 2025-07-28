@@ -1,7 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="assets_backend" inherit_id="web.assets_backend">
+    <!-- إذا كنت تستخدم Odoo 15 أو أحدث -->
+    <template id="assets_backend" inherit_id="web.assets_backend" name="suprema_attendance_assets">
         <xpath expr="." position="inside">
             <script src="/suprema_attendance/static/src/js/suprema_connection.js" type="text/javascript"/>
         </xpath>
+    </template>
+    
+    <!-- كبديل آمن إذا لم يعمل الخيار الأول -->
+    <template id="assets_backend" name="suprema_attendance_assets" primary="True">
+        <t t-call-assets="web.assets_backend">
+            <script src="/suprema_attendance/static/src/js/suprema_connection.js" type="text/javascript"/>
+        </t>
     </template>
 </odoo>
