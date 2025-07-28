@@ -1,4 +1,5 @@
 <odoo>
+    <!-- نموذج عرض المشروع -->
     <record id="view_construction_project_form" model="ir.ui.view">
         <field name="name">construction.project.form</field>
         <field name="model">project.project</field>
@@ -12,6 +13,7 @@
         </field>
     </record>
 
+    <!-- نموذج عرض المهمة -->
     <record id="view_construction_task_form" model="ir.ui.view">
         <field name="name">construction.task.form</field>
         <field name="model">project.task</field>
@@ -81,15 +83,17 @@
         </field>
     </record>
 
+    <!-- عرض شجرة المشاريع (بديل بدون inherit_id) -->
     <record id="view_construction_project_tree" model="ir.ui.view">
         <field name="name">construction.project.tree</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.view_project_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
+            <tree string="Construction Projects">
+                <field name="name"/>
                 <field name="total_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="completion_percentage" widget="progressbar"/>
-            </xpath>
+                <!-- يمكن إضافة حقول إضافية هنا حسب الحاجة -->
+            </tree>
         </field>
     </record>
 </odoo>
