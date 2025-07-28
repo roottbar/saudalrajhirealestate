@@ -84,7 +84,7 @@
     <record id="view_construction_project_tree" model="ir.ui.view">
         <field name="name">construction.project.tree</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.view_project_project_tree"/>
+        <field name="inherit_id" ref="project.view_project_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="total_cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
