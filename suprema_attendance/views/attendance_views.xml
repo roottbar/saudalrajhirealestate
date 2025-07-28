@@ -43,12 +43,9 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='private']" position="before">
-                <page string="Biometric">
-                    <group>
-                        <field name="biometric_id" string="Biometric ID"/>
-                    </group>
-                </page>
+            <!-- استبدال xpath القديم بهذا التعديل الأكثر أماناً -->
+            <xpath expr="//field[@name='address_home_id']" position="after">
+                <field name="biometric_id" string="Biometric ID"/>
             </xpath>
         </field>
     </record>
