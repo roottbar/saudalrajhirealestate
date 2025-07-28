@@ -136,34 +136,15 @@ class ConstructionTaskEquipment(models.Model):
     _name = 'construction.task.equipment'
     _description = 'Construction Task Equipment'
 
-    task_id = fields.Many2one(
-        'project.task',
-        string='Task'
-    )
-    equipment_id = fields.Many2one(
-        'maintenance.equipment',
-        string='Equipment',
-        required=True
-    )
-    hours = fields.Float(
-        string='Hours Used',
-        default=1.0
-    )
-    hourly_cost = fields.Float(
-        string='Hourly Cost',
-        compute='_compute_hourly_cost'
-    )
+    task_id = fields.Many2one('project.task', string='Task')
+    equipment_id = fields.Many2one('maintenance.equipment', string='Equipment', required=True)
+    hours = fields.Float(string='Hours Used', default=1.0)
+    hourly_cost = fields.Float(string='Hourly Cost', default=0.0)
     total_cost = fields.Float(
         string='Total Cost',
         compute='_compute_total_cost',
         store=True
     )
-
-    @api.depends('equipment_id')
-    def _compute_hourly_cost(self):
-        for equipment in self:
-            # You can customize this calculation based on your equipment cost model
-            equipment.hourly_cost = equipment.equipment_id.maintenance_cost_period == 'hour' and equipment.equipment_id.maintenance_cost_amount or 0.0
 
     @api.depends('hours', 'hourly_cost')
     def _compute_total_cost(self):
