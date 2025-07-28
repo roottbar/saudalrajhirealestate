@@ -15,7 +15,7 @@
         'security/security_rules.xml',
         'views/device_views.xml',
         'views/attendance_views.xml',
-        'views/templates.xml',
+        # 'views/templates.xml',
         'views/menu.xml',
     ],
     'assets': {
