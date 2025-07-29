@@ -29,17 +29,11 @@ class SupremaDevice(models.Model):
     
     def _get_zk_library(self):
         try:
-            from pyzk import zk
-            # تسجيل إصدار المكتبة
-            try:
-                version = pkg_resources.get_distribution("pyzk").version
-                _logger.info("Using pyzk version: %s", version)
-            except Exception:
-                _logger.warning("Could not determine pyzk version")
-            return zk
+            from zk import ZK
+            return ZK
         except ImportError:
-            _logger.error("pyzk library not found")
-            raise UserError(_("Please install pyzk library: pip install pyzk"))
+            _logger.error("zk library not found")
+            raise UserError(_("Please install zk library: pip install zk"))
 
     def connect_device(self):
         """Establish connection with biometric device"""
@@ -47,15 +41,15 @@ class SupremaDevice(models.Model):
                     self.name, self.ip_address, self.port)
         
         try:
-            zk = self._get_zk_library()
-            device = zk.ZK(
+            ZK = self._get_zk_library()
+            device = ZK(
                 self.ip_address,
                 port=self.port,
                 timeout=60,
-                password=0,  # Default password
+                password=0,
                 force_udp=False,
                 ommit_ping=False,
-                verbose=True  # Enable verbose logging
+                verbose=True
             )
             
             conn = device.connect()
