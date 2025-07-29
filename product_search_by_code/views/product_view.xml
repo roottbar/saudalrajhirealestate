@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_product_product_search_form_inherit" model="ir.ui.view">
+        <field name="name">product.product.search.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_search_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="attributes">
+                <attribute name="operator">=ilike</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
