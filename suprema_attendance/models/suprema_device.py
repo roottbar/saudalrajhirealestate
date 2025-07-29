@@ -22,7 +22,11 @@ class SupremaDevice(models.Model):
     active = fields.Boolean(string='Active', default=True)
     last_sync = fields.Datetime(string='Last Synchronization')
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-
+    attendance_ids = fields.One2many(
+        'suprema.attendance.log',  # موديل السجلات
+        'device_id',               # الحقل العكسي في attendance.log
+        string='Attendance Logs')
+    
     def _get_zk_library(self):
         try:
             from pyzk import zk
