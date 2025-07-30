@@ -1,5 +1,6 @@
 <odoo>
-    <template id="cost_center_report_template" inherit_id="web.html_report">
+    <!-- قالب التقرير المعدل بدون inherit_id -->
+    <template id="cost_center_report_template">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">
@@ -54,12 +55,13 @@
         </t>
     </template>
 
+    <!-- تعريف التقرير المعدل -->
     <report 
         id="action_cost_center_report"
         name="cost_center_reports.cost_center_report_template"
         model="cost.center.report"
         report_type="qweb-html"
         string="Cost Center Report"
-        file="cost_center_reports.cost_center_report_template"
-        attachment_use="False"/>
+        paperformat="paperformat_a4"
+    />
 </odoo>
