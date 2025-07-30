@@ -13,7 +13,7 @@
     'author': 'Othmancs',
     'website': 'https://www.tbarholdingcs.com',
     'license': 'AGPL-3',
-    'depends': ['account', 'analytic'],
+    'depends': ['base', 'report', 'account', 'analytic'],
     'data': [
         'security/ir.model.access.csv',
         'views/cost_center_report_views.xml',
