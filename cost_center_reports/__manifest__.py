@@ -8,7 +8,7 @@
         - Revenues by cost center
         - Collections
         - Debts
-    """,
+    """, 
     'category': 'Accounting',
     'author': 'Othmancs',
     'website': 'https://www.tbarholdingcs.com',
