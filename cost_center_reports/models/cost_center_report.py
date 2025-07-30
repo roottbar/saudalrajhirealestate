@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from datetime import date
 
 class CostCenterReport(models.TransientModel):
     _name = 'cost.center.report'
@@ -26,8 +25,7 @@ class CostCenterReport(models.TransientModel):
     def _onchange_group_id(self):
         if self.group_id:
             return {'domain': {'analytic_account_ids': [('group_id', '=', self.group_id.id)]}}
-        else:
-            return {'domain': {'analytic_account_ids': []}}
+        return {'domain': {'analytic_account_ids': []}}
     
     def action_generate_report(self):
         data = {
@@ -39,7 +37,7 @@ class CostCenterReport(models.TransientModel):
         return self.env.ref('cost_center_reports.action_cost_center_report').report_action(self, data=data)
     
     def _get_report_data(self, data):
-        # Get expenses
+        # حساب المصروفات
         expense_lines = self.env['account.move.line'].search([
             ('date', '>=', data['date_from']),
             ('date', '<=', data['date_to']),
@@ -48,7 +46,7 @@ class CostCenterReport(models.TransientModel):
             ('account_id.internal_group', '=', 'expense'),
         ])
         
-        # Get revenues
+        # حساب الإيرادات
         revenue_lines = self.env['account.move.line'].search([
             ('date', '>=', data['date_from']),
             ('date', '<=', data['date_to']),
@@ -57,7 +55,7 @@ class CostCenterReport(models.TransientModel):
             ('account_id.internal_group', '=', 'income'),
         ])
         
-        # Get collections (customer payments)
+        # حساب التحصيلات
         collection_lines = self.env['account.move.line'].search([
             ('date', '>=', data['date_from']),
             ('date', '<=', data['date_to']),
@@ -67,7 +65,7 @@ class CostCenterReport(models.TransientModel):
             ('credit', '>', 0),
         ])
         
-        # Get debts (unpaid invoices)
+        # حساب المديونيات
         debt_lines = self.env['account.move.line'].search([
             ('date', '<=', data['date_to']),
             ('analytic_account_id', 'in', data['analytic_account_ids']),
@@ -77,7 +75,7 @@ class CostCenterReport(models.TransientModel):
             ('balance', '>', 0),
         ])
         
-        # Organize data by analytic account
+        # تنظيم البيانات حسب مركز التكلفة
         report_data = {}
         analytic_accounts = self.env['account.analytic.account'].browse(data['analytic_account_ids'])
         
@@ -107,4 +105,5 @@ class CostCenterReport(models.TransientModel):
             'date_to': data['date_to'],
             'group_name': self.env['account.analytic.group'].browse(data['group_id']).name,
             'report_data': report_data,
+            'currency': self.env.company.currency_id,
         }
