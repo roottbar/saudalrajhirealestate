@@ -1,1 +1,1 @@
-from . import cost_center_report
+from . import cost_center_reports
