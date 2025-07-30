@@ -21,11 +21,10 @@
         </field>
     </record>
 
-    <act_window id="action_cost_center_report"
-                name="Cost Center Report"
-                res_model="cost.center.report"
-                view_mode="form"
-                target="new"
-                context="{'default_date_from': fields.Date.context_today().replace(day=1), 'default_date_to': fields.Date.context_today()}"
-                binding_model="account.analytic.account"/>
+ <act_window id="action_cost_center_report"
+            name="Cost Center Report"
+            res_model="cost.center.report"
+            view_mode="form"
+            target="new"
+            binding_model="account.analytic.account"/>
 </odoo>
