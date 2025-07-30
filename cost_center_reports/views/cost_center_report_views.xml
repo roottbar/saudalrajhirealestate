@@ -26,6 +26,6 @@
                 res_model="cost.center.report"
                 view_mode="form"
                 target="new"
-                context="{'default_date_from': context_today().replace(day=1), 'default_date_to': context_today()}"
+                context="{'default_date_from': fields.Date.context_today().replace(day=1), 'default_date_to': fields.Date.context_today()}"
                 binding_model="account.analytic.account"/>
 </odoo>
