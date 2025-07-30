@@ -1,67 +1,27 @@
 <odoo>
-    <!-- قالب التقرير المعدل بدون inherit_id -->
-    <template id="cost_center_report_template">
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <t t-call="web.external_layout">
-                    <div class="page">
-                        <h2>Cost Center Report</h2>
-                        <p>
-                            <strong>Period:</strong> 
-                            <span t-esc="doc['date_from']"/> to <span t-esc="doc['date_to']"/>
-                        </p>
-                        <p>
-                            <strong>Group:</strong> 
-                            <span t-esc="doc['group_name']"/>
-                        </p>
-                        
-                        <table class="table table-bordered mt-3">
-                            <thead>
-                                <tr>
-                                    <th>Cost Center</th>
-                                    <th>Expenses</th>
-                                    <th>Revenues</th>
-                                    <th>Collections</th>
-                                    <th>Debts</th>
-                                    <th>Profit/Loss</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="doc['report_data'].values()" t-as="data">
-                                    <tr>
-                                        <td t-esc="data['name']"/>
-                                        <td t-esc="format_amount(data['expenses'], doc['currency'])"/>
-                                        <td t-esc="format_amount(data['revenues'], doc['currency'])"/>
-                                        <td t-esc="format_amount(data['collections'], doc['currency'])"/>
-                                        <td t-esc="format_amount(data['debts'], doc['currency'])"/>
-                                        <td t-esc="format_amount(data['revenues'] - data['expenses'], doc['currency'])"/>
-                                    </tr>
-                                </t>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Total</th>
-                                    <th t-esc="format_amount(sum(d['expenses'] for d in doc['report_data'].values()), doc['currency'])"/>
-                                    <th t-esc="format_amount(sum(d['revenues'] for d in doc['report_data'].values()), doc['currency'])"/>
-                                    <th t-esc="format_amount(sum(d['collections'] for d in doc['report_data'].values()), doc['currency'])"/>
-                                    <th t-esc="format_amount(sum(d['debts'] for d in doc['report_data'].values()), doc['currency'])"/>
-                                    <th t-esc="format_amount(sum(d['revenues'] - d['expenses'] for d in doc['report_data'].values()), doc['currency'])"/>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </t>
-            </t>
-        </t>
-    </template>
+    <!-- تعريف تنسيق الورق A4 -->
+    <record id="paperformat_a4" model="report.paperformat">
+        <field name="name">A4</field>
+        <field name="format">A4</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
 
-    <!-- تعريف التقرير المعدل -->
+    <!-- تعريف التقرير الرئيسي -->
     <report 
         id="action_cost_center_report"
         name="cost_center_reports.cost_center_report_template"
         model="cost.center.report"
         report_type="qweb-html"
         string="Cost Center Report"
-        paperformat="paperformat_a4"
+        paperformat="cost_center_reports.paperformat_a4"
     />
 </odoo>
