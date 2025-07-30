@@ -13,7 +13,6 @@
                     </group>
                     <footer>
                         <button name="action_generate_report" string="Generate Report" type="object" class="oe_highlight"/>
-                        or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </sheet>
@@ -21,10 +20,10 @@
         </field>
     </record>
 
- <act_window id="action_cost_center_report"
-            name="Cost Center Report"
-            res_model="cost.center.report"
-            view_mode="form"
-            target="new"
-            binding_model="account.analytic.account"/>
+    <act_window id="action_cost_center_report"
+                name="Cost Center Report"
+                res_model="cost.center.report"
+                view_mode="form"
+                target="new"
+                binding_model="account.analytic.account"/>
 </odoo>
