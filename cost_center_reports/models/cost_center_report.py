@@ -6,16 +6,22 @@ class CostCenterReport(models.TransientModel):
     _name = 'cost.center.report'
     _description = 'Cost Center Report'
 
-    date_from = fields.Date(
-        string='From Date', 
-        required=True, 
-        default=lambda self: fields.Date.context_today(self).replace(day=1)
+       date_from = fields.Date(
+        string='From Date',
+        required=True,
+        default=lambda self: self._default_date_from()
     )
     date_to = fields.Date(
-        string='To Date', 
-        required=True, 
-        default=lambda self: fields.Date.context_today(self)
+        string='To Date',
+        required=True,
+        default=lambda self: self._default_date_to()
     )
+    
+    def _default_date_from(self):
+        return fields.Date.context_today(self).replace(day=1)
+    
+    def _default_date_to(self):
+        return fields.Date.context_today(self)
     group_id = fields.Many2one('account.analytic.group', string='Analytic Group')
     analytic_account_ids = fields.Many2many(
         'account.analytic.account',
