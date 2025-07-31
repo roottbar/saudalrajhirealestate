@@ -97,6 +97,7 @@
                 <sheet>
                     <group>
                         <field name="company_id" string="الشركة"/>
+                        <field name="company_ids" widget="many2many_tags" string="الشركات"/>
                         <field name="parent_group_id" string="المجموعة الرئيسية"/>
                         <field name="child_group_id" string="المجموعة الفرعية"/>
                         <field name="date_from" string="من تاريخ"/>
