@@ -34,27 +34,31 @@ class AnalyticAccountReport(models.Model):
         required=True
     )
     
-    # تعديل حقول العلاقات مع إضافة domain ديناميكي
+        # تعديل حقول العلاقات مع إضافة domain ديناميكي
     branch_id = fields.Many2one(
         'res.branch', 
         string='الفرع',
-        domain=lambda self: [('company_id', 'in', self.company_ids.ids if self.company_ids else [])]
+        domain="""[
+            ('company_id', 'in', company_ids.ids if company_ids else [])
+        ]"""
     )
     
     group_id = fields.Many2one(
         'account.analytic.group', 
         string='مجموعة مراكز التكلفة',
-        domain=lambda self: [('company_id', 'in', self.company_ids.ids if self.company_ids else [])]
+        domain="""[
+            ('company_id', 'in', company_ids.ids if company_ids else [])
+        ]"""
     )
     
     analytic_account_id = fields.Many2one(
         'account.analytic.account', 
         string='مركز التكلفة',
-        domain=lambda self: [
-            ('company_id', 'in', self.company_ids.ids if self.company_ids else []),
-            ('group_id', '=', self.group_id.id if self.group_id else False)
-        ]
-    )  
+        domain="""[
+            ('company_id', 'in', company_ids.ids if company_ids else []),
+            ('group_id', '=', group_id.id if group_id else False)
+        ]"""
+    )
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
@@ -357,7 +361,7 @@ class AnalyticAccountReport(models.Model):
         self.ensure_one()
         company_ids = self.company_ids.ids if self.company_ids else []
         
-        # إعادة تعيين القيم إذا لم تعد متوافقة مع الشركات المحددة
+        # إعادة تعيين القيم غير المتوافقة
         if self.branch_id and (not self.branch_id.company_id or self.branch_id.company_id.id not in company_ids):
             self.branch_id = False
         if self.group_id and (not self.group_id.company_id or self.group_id.company_id.id not in company_ids):
@@ -369,10 +373,13 @@ class AnalyticAccountReport(models.Model):
             'domain': {
                 'branch_id': [('company_id', 'in', company_ids)],
                 'group_id': [('company_id', 'in', company_ids)],
-                'analytic_account_id': [('company_id', 'in', company_ids)]
+                'analytic_account_id': [
+                    ('company_id', 'in', company_ids),
+                    ('group_id', '=', self.group_id.id if self.group_id else False)
+                ]
             }
         }
-    
+
     @api.onchange('group_id')
     def _onchange_group_id(self):
         self.ensure_one()
@@ -387,6 +394,19 @@ class AnalyticAccountReport(models.Model):
         return {
             'domain': {'analytic_account_id': domain}
         }
+    @api.constrains('company_ids', 'branch_id', 'group_id', 'analytic_account_id')
+    def _check_company_consistency(self):
+        for record in self:
+            if not record.company_ids:
+                continue
+                
+            company_ids = record.company_ids.ids
+            if record.branch_id and record.branch_id.company_id.id not in company_ids:
+                raise ValidationError("الفرع المحدد لا ينتمي لأي من الشركات المحددة")
+            if record.group_id and record.group_id.company_id.id not in company_ids:
+                raise ValidationError("المجموعة المحددة لا تنتمي لأي من الشركات المحددة")
+            if record.analytic_account_id and record.analytic_account_id.company_id.id not in company_ids:
+                raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")     
     @api.onchange('analytic_account_id')
     def _onchange_analytic_account_id(self):
         self._compute_analytic_accounts()
