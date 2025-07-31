@@ -896,23 +896,23 @@ class AnalyticAccountReport(models.Model):
     #         if record.date_from and record.date_to and record.date_from > record.date_to:
     #             raise models.ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
 
-    # def action_view_analytic_lines(self):
-    #     """عرض حركات مراكز التكلفة"""
-    #     self.ensure_one()
-    #     action = self.env.ref('analytic.account_analytic_line_action').read()[0]
-    #     domain = [
-    #         ('date', '>=', self.date_from),
-    #         ('date', '<=', self.date_to),
-    #         ('company_id', '=', self.company_id.id),
-    #         ('account_id', '!=', False)
-    #     ]
-    #     if self.group_id:
-    #         domain.append(('account_id.group_id', '=', self.group_id.id))
-    #     if self.analytic_account_ids:
-    #         domain.append(('account_id', 'in', self.analytic_account_ids.ids))
-    #     action['domain'] = domain
-    #     action['context'] = {
-    #         'search_default_group_by_account': 1,
-    #         'create': False
-    #     }
-    #     return action
+    def action_view_analytic_lines(self):
+        """عرض حركات مراكز التكلفة"""
+        self.ensure_one()
+        action = self.env.ref('analytic.account_analytic_line_action').read()[0]
+        domain = [
+            ('date', '>=', self.date_from),
+            ('date', '<=', self.date_to),
+            ('company_id', '=', self.company_id.id),
+            ('account_id', '!=', False)
+        ]
+        if self.group_id:
+            domain.append(('account_id.group_id', '=', self.group_id.id))
+        if self.analytic_account_ids:
+            domain.append(('account_id', 'in', self.analytic_account_ids.ids))
+        action['domain'] = domain
+        action['context'] = {
+            'search_default_group_by_account': 1,
+            'create': False
+        }
+        return action
