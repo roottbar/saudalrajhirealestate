@@ -19,7 +19,7 @@
     'category': 'Accounting',
     'depends': ['base', 'account', 'analytic'],
     'data': [
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/analytic_account_report_views.xml',
     ],
     'demo': [],
