@@ -94,12 +94,14 @@ class AnalyticAccountReport(models.Model):
             try:
                 domain = []
                 
-                # Add company filter if available
+                # Add company filter if available - safely handle company_ids
                 if record.company_ids:
-                    # Check if analytic account has company_id field
-                    account_model = self.env['account.analytic.account']
-                    if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
-                        domain.append(('company_id', 'in', record.company_ids.ids))
+                    company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
+                    if company_ids:
+                        # Check if analytic account has company_id field
+                        account_model = self.env['account.analytic.account']
+                        if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
+                            domain.append(('company_id', 'in', company_ids))
 
                 # Add branch filter if available and the field exists
                 if record.branch_id:
@@ -418,6 +420,7 @@ class AnalyticAccountReport(models.Model):
 
             except Exception as e:
                 logger.error("Error in _onchange_company_ids: %s", str(e))
+
     @api.onchange('group_id')
     def _onchange_group_id(self):
         for record in self:
@@ -430,6 +433,7 @@ class AnalyticAccountReport(models.Model):
                         record.analytic_account_id = False
             except Exception as e:
                 logger.error("Error in _onchange_group_id: %s", str(e))
+        self._compute_analytic_accounts()
 
     @api.constrains('company_ids', 'branch_id', 'group_id', 'analytic_account_id')
     def _check_company_consistency(self):
@@ -453,11 +457,11 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('analytic_account_id')
     def _onchange_analytic_account_id(self):
-        self._compute_analytic_accounts()
+        pass
 
     @api.onchange('branch_id')
     def _onchange_branch_id(self):
-        self._compute_analytic_accounts()
+        pass
 
     @api.onchange('date_from')
     def _onchange_date_from(self):
