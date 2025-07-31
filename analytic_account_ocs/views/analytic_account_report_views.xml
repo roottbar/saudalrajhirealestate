@@ -154,20 +154,15 @@
                             type="object"/>
                 </header>
                 <sheet>
-                    <group>
-                        <field name="company_ids" widget="many2many_tags" string="الشركات"/>
-                        
-                        <!-- تعديل حقول العلاقات مع إزالة الـ domain المباشر -->
-                        <field name="branch_id" string="الفرع"/>
-                        
-                        <field name="group_id" string="مجموعة مراكز التكلفة"/>
-                        
-                        <field name="analytic_account_id" string="مركز التكلفة"/>
-
-                        <field name="date_from" string="من تاريخ"/>
-                        <field name="date_to" string="إلى تاريخ"/>
-                    </group>
-    
+                        <group>
+                            <field name="company_ids" widget="many2many_tags" string="الشركات"/>
+                            <field name="branch_id" string="الفرع"/>
+                            <field name="group_id" string="مجموعة مراكز التكلفة"/>
+                            <field name="analytic_account_id" string="مركز التكلفة"/>
+                            <field name="date_from" string="من تاريخ"/>
+                            <field name="date_to" string="إلى تاريخ"/>
+                        </group>
+            
                     <notebook>
                         <page string="الملخص">
                             <group>
