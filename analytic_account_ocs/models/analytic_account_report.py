@@ -71,6 +71,7 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_report_lines',
         sanitize=False
     )
+    analytic_account_ids = fields.Many2many('account.analytic.account', string='Analytic Accounts')
 
     @api.depends('company_ids')
     def _compute_company_currency(self):
