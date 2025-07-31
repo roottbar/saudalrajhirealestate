@@ -154,15 +154,18 @@
                             type="object"/>
                 </header>
                 <sheet>
-                        <group>
-                            <field name="company_ids" widget="many2many_tags" string="الشركات"/>
-                            <field name="branch_id" string="الفرع"/>
-                            <field name="group_id" string="مجموعة مراكز التكلفة"/>
-                            <field name="analytic_account_id" string="مركز التكلفة"/>
-                            <field name="date_from" string="من تاريخ"/>
-                            <field name="date_to" string="إلى تاريخ"/>
-                        </group>
-            
+                    <group>
+                        <field name="company_ids" widget="many2many_tags" string="الشركات"/>
+                        <field name="branch_id" string="الفرع"
+                               domain="[('company_id','in',company_ids.ids if company_ids else [])]"/>
+                        <field name="group_id" string="مجموعة مراكز التكلفة"
+                               domain="[('company_id','in',company_ids.ids if company_ids else [])]"/>
+                        <field name="analytic_account_id" string="مركز التكلفة"
+                               domain="[('company_id','in',company_ids.ids if company_ids else []),('group_id','=',group_id)]"/>
+                        <field name="date_from" string="من تاريخ"/>
+                        <field name="date_to" string="إلى تاريخ"/>
+                    </group>
+        
                     <notebook>
                         <page string="الملخص">
                             <group>
@@ -180,7 +183,7 @@
                                 </group>
                             </group>
                         </page>
-    
+        
                         <page string="التفاصيل">
                             <field name="report_lines" widget="html" nolabel="1"/>
                         </page>
