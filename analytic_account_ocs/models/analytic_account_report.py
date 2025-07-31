@@ -71,6 +71,8 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_report_lines',
         sanitize=False
     )
+    group_id = fields.Many2one('account.analytic.group', string="مجموعة مراكز التكلفة")
+
 
     @api.depends('parent_group_id')
     def _compute_analytic_accounts(self):
