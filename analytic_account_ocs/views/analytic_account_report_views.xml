@@ -38,8 +38,9 @@
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
             <search>
-                <field name="group_id" string="مجموعة مركز التكلفة"/>
-                <field name="analytic_account_ids" widget="many2many_tags" string="مراكز التكلفة"/>
+                <field name="company_id" string="الشركة"/>
+                <field name="parent_group_id" string="المجموعة الرئيسية"/>
+                <field name="child_group_id" string="المجموعة الفرعية"/>
                 <field name="date_from" string="من تاريخ"/>
                 <field name="date_to" string="إلى تاريخ"/>
                 <filter string="هذا الشهر" name="current_month"
@@ -84,21 +85,21 @@
                             string="تقرير مراكز التكلفة (Excel)"
                             type="object"
                             class="oe_highlight"/>
-                    <button name="action_generate_pdf_report"
-                            string="تقرير مراكز التكلفة (PDF)"
-                            type="object"
+                    <button name="action_generate_pdf_report" 
+                            string="تقرير مراكز التكلفة (PDF)" 
+                            type="object" 
                             class="oe_highlight"/>
-                    <button name="action_view_analytic_lines"
-                            string="عرض حركات مراكز التكلفة"
+                    <button name="action_view_analytic_lines" 
+                            string="عرض حركات مراكز التكلفة" 
                             type="object"/>
                 </header>
                 <sheet>
                     <group>
-                        <field name="group_id" string="مجموعة مركز التكلفة"/>
-                        <field name="analytic_account_ids" widget="many2many_tags" string="مراكز التكلفة"/>
+                        <field name="company_id" string="الشركة"/>
+                        <field name="parent_group_id" string="المجموعة الرئيسية"/>
+                        <field name="child_group_id" string="المجموعة الفرعية"/>
                         <field name="date_from" string="من تاريخ"/>
                         <field name="date_to" string="إلى تاريخ"/>
-                        <field name="company_id" groups="base.group_multi_company"/>
                     </group>
 
                     <notebook>
