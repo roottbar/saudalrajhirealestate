@@ -55,7 +55,7 @@ class AnalyticAccountReport(models.Model):
             ('group_id', '=', self.group_id.id if self.group_id else False)
         ]
     )  
-  company_currency_id = fields.Many2one(
+    company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
     )
