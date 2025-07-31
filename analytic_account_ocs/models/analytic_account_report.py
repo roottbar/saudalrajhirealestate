@@ -332,42 +332,51 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('company_ids')
     def _onchange_company_ids(self):
-        self.ensure_one()
-        company_ids = self.company_ids.ids if self.company_ids else []
-        
-        # إعادة تعيين القيم إذا لم تعد متوافقة
-        if self.branch_id and (not self.branch_id.company_id or self.branch_id.company_id.id not in company_ids):
-            self.branch_id = False
-        if self.group_id and (not self.group_id.company_id or self.group_id.company_id.id not in company_ids):
-            self.group_id = False
-        if self.analytic_account_id and (not self.analytic_account_id.company_id or self.analytic_account_id.company_id.id not in company_ids):
-            self.analytic_account_id = False
-        
-        return {
-            'domain': {
-                'branch_id': [('company_id', 'in', company_ids)],
-                'group_id': [('company_id', 'in', company_ids)],
-                'analytic_account_id': [
-                    ('company_id', 'in', company_ids),
-                    ('group_id', '=', self.group_id.id if self.group_id else False)
-                ]
-            }
-        }
+        for record in self:
+            try:
+                company_ids = record.company_ids.ids if record.company_ids else []
+                
+                # التحقق من وجود القيم قبل الوصول إليها
+                if record.branch_id and (not record.branch_id.company_id or record.branch_id.company_id.id not in company_ids):
+                    record.branch_id = False
+                if record.group_id and (not record.group_id.company_id or record.group_id.company_id.id not in company_ids):
+                    record.group_id = False
+                if record.analytic_account_id and (not record.analytic_account_id.company_id or record.analytic_account_id.company_id.id not in company_ids):
+                    record.analytic_account_id = False
+                
+                return {
+                    'domain': {
+                        'branch_id': [('company_id', 'in', company_ids)],
+                        'group_id': [('company_id', 'in', company_ids)],
+                        'analytic_account_id': [
+                            ('company_id', 'in', company_ids),
+                            ('group_id', '=', record.group_id.id if record.group_id else False)
+                        ]
+                    }
+                }
+            except Exception as e:
+                logger.error("Error in _onchange_company_ids: %s", str(e))
+                return {}
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
-        self.ensure_one()
-        company_ids = self.company_ids.ids if self.company_ids else []
-        domain = [('company_id', 'in', company_ids)]
-        
-        if self.group_id:
-            domain.append(('group_id', '=', self.group_id.id))
-            if self.analytic_account_id and self.analytic_account_id.group_id != self.group_id:
-                self.analytic_account_id = False
-        
-        return {
-            'domain': {'analytic_account_id': domain}
-        }
+        for record in self:
+            try:
+                company_ids = record.company_ids.ids if record.company_ids else []
+                domain = [('company_id', 'in', company_ids)]
+                
+                if record.group_id:
+                    domain.append(('group_id', '=', record.group_id.id))
+                    if record.analytic_account_id and record.analytic_account_id.group_id != record.group_id:
+                        record.analytic_account_id = False
+                
+                return {
+                    'domain': {'analytic_account_id': domain}
+                }
+            except Exception as e:
+                logger.error("Error in _onchange_group_id: %s", str(e))
+                return {}
+
     @api.constrains('company_ids', 'branch_id', 'group_id', 'analytic_account_id')
     def _check_company_consistency(self):
         for record in self:
