@@ -26,32 +26,20 @@ class AnalyticAccountReport(models.Model):
 
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
-    company_ids = fields.Many2many(
-        'res.company', string='الشركات',
-        default=lambda self: self.env.company, required=True
-    )
+    company_ids = fields.Many2many('res.company', string='الشركات')
     company_id = fields.Many2one(
         'res.company',
         string='Company',
         default=lambda self: self.env.company,
         required=True
     )
-    branch_id = fields.Many2one(
-        'res.branch', string='الفرع',
-        domain="[('company_id', 'in', company_ids)]"
-    )
-    group_id = fields.Many2one(
-        'account.analytic.group', string='مجموعة مراكز التكلفة',
-        domain="[('company_id', 'in', company_ids)]"
-    )
+    branch_id = fields.Many2one('res.branch', string='الفرع')
+    group_id = fields.Many2one('account.analytic.group', string='مجموعة مراكز التكلفة')
     analytic_account_id = fields.Many2one(
         'account.analytic.account', string='مركز التكلفة',
         domain="[('company_id', 'in', company_ids), ('group_id', '=', group_id)]"
     )
-    analytic_account_ids = fields.Many2many(
-        'account.analytic.account', string='مراكز التكلفة',
-        compute='_compute_analytic_accounts', store=True
-    )
+    analytic_account_id = fields.Many2one('account.analytic.account', string='مركز التكلفة')
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
@@ -345,14 +333,23 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('company_ids')
     def _onchange_company_ids(self):
-        self.group_id = False
-        self.analytic_account_id = False
-        self.branch_id = False
+        domain = [('company_id', 'in', self.company_ids.ids)]
+        return {
+            'domain': {
+                'branch_id': domain,
+                'group_id': domain,
+                'analytic_account_id': domain,
+            }
+        }
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
-        self.analytic_account_id = False
-        self._compute_analytic_accounts()
+        domain = [('company_id', 'in', self.company_ids.ids)]
+        if self.group_id:
+            domain.append(('group_id', '=', self.group_id.id))
+        return {
+            'domain': {'analytic_account_id': domain}
+        }
 
     @api.onchange('analytic_account_id')
     def _onchange_analytic_account_id(self):
