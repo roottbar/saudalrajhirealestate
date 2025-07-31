@@ -38,19 +38,22 @@ class AnalyticAccountReport(models.Model):
     branch_id = fields.Many2one(
         'res.branch', 
         string='الفرع',
-        domain="[('company_id', 'in', company_ids)]"
+        domain=lambda self: [('company_id', 'in', self.company_ids.ids)]
     )
     
     group_id = fields.Many2one(
         'account.analytic.group', 
         string='مجموعة مراكز التكلفة',
-        domain="[('company_id', 'in', company_ids)]"
+        domain=lambda self: [('company_id', 'in', self.company_ids.ids)]
     )
     
     analytic_account_id = fields.Many2one(
         'account.analytic.account', 
         string='مركز التكلفة',
-        domain="[('company_id', 'in', company_ids), ('group_id', '=', group_id)]"
+        domain=lambda self: [
+            ('company_id', 'in', self.company_ids.ids),
+            ('group_id', '=', self.group_id.id if self.group_id else False)
+        ]
     )
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
