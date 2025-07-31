@@ -394,7 +394,11 @@ class AnalyticAccountReport(models.Model):
                 if not record.company_ids:
                     continue
 
-                company_ids = record.company_ids.ids
+                # Safely get company IDs, filtering out _unknown objects
+                company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
+                
+                if not company_ids:
+                    continue
 
                 # التحقق من وجود القيم قبل الوصول إليها
                 if record.branch_id and (not hasattr(record.branch_id, 'company_id') or
@@ -414,7 +418,6 @@ class AnalyticAccountReport(models.Model):
 
             except Exception as e:
                 logger.error("Error in _onchange_company_ids: %s", str(e))
-
     @api.onchange('group_id')
     def _onchange_group_id(self):
         for record in self:
