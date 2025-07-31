@@ -100,12 +100,13 @@
                         <field name="company_ids" widget="many2many_tags" string="الشركات"/>
                         
                         <field name="branch_id" string="الفرع"
-                               domain="[('company_id', 'in', company_ids[0][2] if company_ids else [])]"/>
+                               domain="[('company_id', 'in', company_ids)]"/>
+                        
                         <field name="group_id" string="مجموعة مراكز التكلفة"
-                               domain="[('company_id', 'in', company_ids[0][2] if company_ids else [])]"/>                        
+                               domain="[('company_id', 'in', company_ids)]"/>
+                        
                         <field name="analytic_account_id" string="مركز التكلفة"
                                domain="[('company_id', 'in', company_ids), ('group_id', '=', group_id)]"/>
-                        
                         <field name="date_from" string="من تاريخ"/>
                         <field name="date_to" string="إلى تاريخ"/>
                     </group>
