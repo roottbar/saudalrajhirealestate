@@ -30,6 +30,12 @@ class AnalyticAccountReport(models.Model):
         'res.company', string='الشركات',
         default=lambda self: self.env.company, required=True
     )
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        default=lambda self: self.env.company,
+        required=True
+    )
     branch_id = fields.Many2one(
         'res.branch', string='الفرع',
         domain="[('company_id', 'in', company_ids)]"
