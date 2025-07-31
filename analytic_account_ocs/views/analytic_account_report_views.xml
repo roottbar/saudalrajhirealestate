@@ -77,7 +77,7 @@
     </record>
 
     <!-- Form View -->
-    <record id="view_analytic_account_report_form" model="ir.ui.view">
+<!--     <record id="view_analytic_account_report_form" model="ir.ui.view">
         <field name="name">analytic.account.report.form</field>
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
@@ -104,6 +104,66 @@
                                domain="[('company_id','in',company_ids.ids if company_ids else [])]"/>
                         <field name="analytic_account_id" string="مركز التكلفة"
                                domain="[('company_id','in',company_ids.ids if company_ids else []),('group_id','=',group_id)]"/>
+                        <field name="date_from" string="من تاريخ"/>
+                        <field name="date_to" string="إلى تاريخ"/>
+                    </group>
+    
+                    <notebook>
+                        <page string="الملخص">
+                            <group>
+                                <group string="إجمالي المصروفات">
+                                    <field name="total_expenses" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                                <group string="إجمالي الإيرادات">
+                                    <field name="total_revenues" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                                <group string="إجمالي التحصيل">
+                                    <field name="total_collections" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                                <group string="إجمالي المديونية">
+                                    <field name="total_debts" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                            </group>
+                        </page>
+    
+                        <page string="التفاصيل">
+                            <field name="report_lines" widget="html" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+    
+    <record id="view_analytic_account_report_form" model="ir.ui.view">
+        <field name="name">analytic.account.report.form</field>
+        <field name="model">analytic.account.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_generate_excel_report"
+                            string="تقرير مراكز التكلفة (Excel)"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button name="action_generate_pdf_report" 
+                            string="تقرير مراكز التكلفة (PDF)" 
+                            type="object" 
+                            class="oe_highlight"/>
+                    <button name="action_view_analytic_lines" 
+                            string="عرض حركات مراكز التكلفة" 
+                            type="object"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="company_ids" widget="many2many_tags" string="الشركات"/>
+                        
+                        <!-- تعديل حقول العلاقات مع إزالة الـ domain المباشر -->
+                        <field name="branch_id" string="الفرع"/>
+                        
+                        <field name="group_id" string="مجموعة مراكز التكلفة"/>
+                        
+                        <field name="analytic_account_id" string="مركز التكلفة"/>
+
                         <field name="date_from" string="من تاريخ"/>
                         <field name="date_to" string="إلى تاريخ"/>
                     </group>
