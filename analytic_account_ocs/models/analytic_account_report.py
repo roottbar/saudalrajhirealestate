@@ -13,6 +13,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.units import inch
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 logger = logging.getLogger(__name__)
 
@@ -24,17 +26,21 @@ class AnalyticAccountReport(models.Model):
 
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
-    company_id = fields.Many2one(
-        'res.company', string='الشركة',
+    company_ids = fields.Many2many(
+        'res.company', string='الشركات',
         default=lambda self: self.env.company, required=True
+    )
+    branch_id = fields.Many2one(
+        'res.branch', string='الفرع',
+        domain="[('company_id', 'in', company_ids)]"
     )
     parent_group_id = fields.Many2one(
         'account.analytic.group', string='المجموعة الرئيسية',
-        domain="[('company_id', '=', company_id), ('parent_id', '=', False)]"
+        domain="[('company_id', 'in', company_ids), ('parent_id', '=', False)]"
     )
     child_group_id = fields.Many2one(
         'account.analytic.group', string='المجموعة الفرعية',
-        domain="[('company_id', '=', company_id), ('parent_id', '=', parent_group_id)]"
+        domain="[('company_id', 'in', company_ids), ('parent_id', '=', parent_group_id)]"
     )
     analytic_account_ids = fields.Many2many(
         'account.analytic.account', string='مراكز التكلفة',
@@ -42,7 +48,7 @@ class AnalyticAccountReport(models.Model):
     )
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
-        related='company_id.currency_id', store=True
+        compute='_compute_company_currency', store=True
     )
 
     # الحقول المحسوبة
@@ -73,11 +79,20 @@ class AnalyticAccountReport(models.Model):
     )
     group_id = fields.Many2one('account.analytic.group', string="مجموعة مراكز التكلفة")
 
+    @api.depends('company_ids')
+    def _compute_company_currency(self):
+        for record in self:
+            if record.company_ids and len(record.company_ids) == 1:
+                record.company_currency_id = record.company_ids[0].currency_id
+            else:
+                record.company_currency_id = self.env.company.currency_id
 
-    @api.depends('parent_group_id')
+    @api.depends('parent_group_id', 'company_ids', 'branch_id')
     def _compute_analytic_accounts(self):
         for record in self:
-            domain = [('company_id', '=', record.company_id.id)]
+            domain = [('company_id', 'in', record.company_ids.ids)]
+            if record.branch_id:
+                domain.append(('branch_id', '=', record.branch_id.id))
             if record.parent_group_id:
                 domain.extend([
                     '|',
@@ -87,18 +102,20 @@ class AnalyticAccountReport(models.Model):
             analytic_accounts = self.env['account.analytic.account'].search(domain)
             record.analytic_account_ids = analytic_accounts
 
-    @api.depends('date_from', 'date_to', 'company_id', 'analytic_account_ids')
+    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'branch_id')
     def _compute_totals(self):
         for record in self:
             # حساب المصروفات (حركات ذات رصيد مدين)
             expenses_domain = [
                 ('date', '>=', record.date_from),
                 ('date', '<=', record.date_to),
-                ('company_id', '=', record.company_id.id),
+                ('company_id', 'in', record.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', 'in', record.analytic_account_ids.ids),
                 ('balance', '<', 0)
             ]
+            if record.branch_id:
+                expenses_domain.append(('branch_id', '=', record.branch_id.id))
             
             expense_lines = self.env['account.move.line'].search(expenses_domain)
             record.total_expenses = abs(sum(line.balance for line in expense_lines))
@@ -107,11 +124,13 @@ class AnalyticAccountReport(models.Model):
             revenues_domain = [
                 ('date', '>=', record.date_from),
                 ('date', '<=', record.date_to),
-                ('company_id', '=', record.company_id.id),
+                ('company_id', 'in', record.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', 'in', record.analytic_account_ids.ids),
                 ('balance', '>', 0)
             ]
+            if record.branch_id:
+                revenues_domain.append(('branch_id', '=', record.branch_id.id))
             
             revenue_lines = self.env['account.move.line'].search(revenues_domain)
             record.total_revenues = sum(line.balance for line in revenue_lines)
@@ -120,11 +139,13 @@ class AnalyticAccountReport(models.Model):
             payments_domain = [
                 ('date', '>=', record.date_from),
                 ('date', '<=', record.date_to),
-                ('company_id', '=', record.company_id.id),
+                ('company_id', 'in', record.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', 'in', record.analytic_account_ids.ids),
                 ('payment_id', '!=', False)
             ]
+            if record.branch_id:
+                payments_domain.append(('branch_id', '=', record.branch_id.id))
             
             payment_lines = self.env['account.move.line'].search(payments_domain)
             record.total_collections = abs(sum(line.balance for line in payment_lines))
@@ -133,17 +154,19 @@ class AnalyticAccountReport(models.Model):
             invoices_domain = [
                 ('date', '>=', record.date_from),
                 ('date', '<=', record.date_to),
-                ('company_id', '=', record.company_id.id),
+                ('company_id', 'in', record.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', 'in', record.analytic_account_ids.ids),
                 ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                 ('move_id.payment_state', '!=', 'paid')
             ]
+            if record.branch_id:
+                invoices_domain.append(('branch_id', '=', record.branch_id.id))
             
             invoice_lines = self.env['account.move.line'].search(invoices_domain)
             record.total_debts = abs(sum(line.amount_residual for line in invoice_lines))
 
-    @api.depends('date_from', 'date_to', 'company_id', 'analytic_account_ids')
+    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'branch_id')
     def _compute_report_lines(self):
         for record in self:
             html_lines = []
@@ -164,6 +187,7 @@ class AnalyticAccountReport(models.Model):
                         <tr>
                             <th>مركز التكلفة</th>
                             <th>المجموعة</th>
+                            <th>الشريك</th>
                             <th>المصروفات</th>
                             <th>الإيرادات</th>
                             <th>التحصيل</th>
@@ -187,11 +211,13 @@ class AnalyticAccountReport(models.Model):
                 expenses_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
-                    ('company_id', '=', record.company_id.id),
+                    ('company_id', 'in', record.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('balance', '<', 0)
                 ]
+                if record.branch_id:
+                    expenses_domain.append(('branch_id', '=', record.branch_id.id))
                 expense_lines = self.env['account.move.line'].search(expenses_domain)
                 account_expenses = abs(sum(line.balance for line in expense_lines))
                 
@@ -199,11 +225,13 @@ class AnalyticAccountReport(models.Model):
                 revenues_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
-                    ('company_id', '=', record.company_id.id),
+                    ('company_id', 'in', record.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('balance', '>', 0)
                 ]
+                if record.branch_id:
+                    revenues_domain.append(('branch_id', '=', record.branch_id.id))
                 revenue_lines = self.env['account.move.line'].search(revenues_domain)
                 account_revenues = sum(line.balance for line in revenue_lines)
                 
@@ -211,11 +239,13 @@ class AnalyticAccountReport(models.Model):
                 payments_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
-                    ('company_id', '=', record.company_id.id),
+                    ('company_id', 'in', record.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('payment_id', '!=', False)
                 ]
+                if record.branch_id:
+                    payments_domain.append(('branch_id', '=', record.branch_id.id))
                 payment_lines = self.env['account.move.line'].search(payments_domain)
                 account_collections = abs(sum(line.balance for line in payment_lines))
                 
@@ -223,18 +253,24 @@ class AnalyticAccountReport(models.Model):
                 invoices_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
-                    ('company_id', '=', record.company_id.id),
+                    ('company_id', 'in', record.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', '!=', 'paid')
                 ]
+                if record.branch_id:
+                    invoices_domain.append(('branch_id', '=', record.branch_id.id))
                 invoice_lines = self.env['account.move.line'].search(invoices_domain)
                 account_debts = abs(sum(line.amount_residual for line in invoice_lines))
+                
+                # الحصول على الشريك من حساب التحليلي
+                partner = account.partner_id or False
                 
                 # تخزين النتائج
                 group_dict[account.group_id]['accounts'].append({
                     'account': account,
+                    'partner': partner,
                     'expenses': account_expenses,
                     'revenues': account_revenues,
                     'collections': account_collections,
@@ -255,17 +291,19 @@ class AnalyticAccountReport(models.Model):
                 # عنوان المجموعة
                 html_lines.append(f"""
                     <tr class="section-row">
-                        <td colspan="6">{group.name}</td>
+                        <td colspan="7">{group.name}</td>
                     </tr>
                 """)
                 
                 # تفاصيل مراكز التكلفة في هذه المجموعة
                 for account_data in data['accounts']:
                     account = account_data['account']
+                    partner_name = account_data['partner'].name if account_data['partner'] else ''
                     html_lines.append(f"""
                         <tr>
                             <td>{account.name}</td>
                             <td>{account.group_id.name if account.group_id else ''}</td>
+                            <td>{partner_name}</td>
                             <td class="text-right">{format(account_data['expenses'], '.2f')}</td>
                             <td class="text-right">{format(account_data['revenues'], '.2f')}</td>
                             <td class="text-right">{format(account_data['collections'], '.2f')}</td>
@@ -276,7 +314,7 @@ class AnalyticAccountReport(models.Model):
                 # إجمالي المجموعة
                 html_lines.append(f"""
                     <tr class="total-row">
-                        <td colspan="2">إجمالي المجموعة</td>
+                        <td colspan="3">إجمالي المجموعة</td>
                         <td class="text-right">{format(data['total_expenses'], '.2f')}</td>
                         <td class="text-right">{format(data['total_revenues'], '.2f')}</td>
                         <td class="text-right">{format(data['total_collections'], '.2f')}</td>
@@ -287,7 +325,7 @@ class AnalyticAccountReport(models.Model):
             # إجمالي عام
             html_lines.append(f"""
                 <tr class="total-row">
-                    <td colspan="2">الإجمالي العام</td>
+                    <td colspan="3">الإجمالي العام</td>
                     <td class="text-right">{format(record.total_expenses, '.2f')}</td>
                     <td class="text-right">{format(record.total_revenues, '.2f')}</td>
                     <td class="text-right">{format(record.total_collections, '.2f')}</td>
@@ -302,10 +340,11 @@ class AnalyticAccountReport(models.Model):
 
             record.report_lines = '\n'.join(html_lines)
 
-    @api.onchange('company_id')
-    def _onchange_company_id(self):
+    @api.onchange('company_ids')
+    def _onchange_company_ids(self):
         self.parent_group_id = False
         self.child_group_id = False
+        self.branch_id = False
 
     @api.onchange('parent_group_id')
     def _onchange_parent_group_id(self):
@@ -314,6 +353,10 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('child_group_id')
     def _onchange_child_group_id(self):
+        self._compute_analytic_accounts()
+
+    @api.onchange('branch_id')
+    def _onchange_branch_id(self):
         self._compute_analytic_accounts()
 
     @api.onchange('date_from')
@@ -364,11 +407,11 @@ class AnalyticAccountReport(models.Model):
 
         # إضافة شعار الشركة
         row = 0
-        if self.company_id and self.company_id.logo:
+        if len(self.company_ids) == 1 and self.company_ids[0].logo:
             try:
-                image_data = io.BytesIO(base64.b64decode(self.company_id.logo))
-                worksheet.merge_range(row, 3, row + 1, 3, '')
-                worksheet.insert_image(row, 3, 'logo.png', {
+                image_data = io.BytesIO(base64.b64decode(self.company_ids[0].logo))
+                worksheet.merge_range(row, 4, row + 1, 4, '')
+                worksheet.insert_image(row, 4, 'logo.png', {
                     'image_data': image_data,
                     'x_scale': 0.15,
                     'y_scale': 0.15,
@@ -386,13 +429,27 @@ class AnalyticAccountReport(models.Model):
                 pass
 
         # إضافة عنوان التقرير
-        worksheet.merge_range(row, 0, row, 5, 'تقرير مراكز التكلفة', title_format)
+        worksheet.merge_range(row, 0, row, 6, 'تقرير مراكز التكلفة', title_format)
         row += 1
+        
+        # إضافة معلومات الشركات المختارة
+        if self.company_ids:
+            companies = ", ".join(self.company_ids.mapped('name'))
+            worksheet.merge_range(row, 0, row, 6, f'الشركات: {companies}',
+                              workbook.add_format({'align': 'center', 'font_size': 12}))
+            row += 1
+            
+        # إضافة معلومات الفرع إن وجد
+        if self.branch_id:
+            worksheet.merge_range(row, 0, row, 6, f'الفرع: {self.branch_id.name}',
+                              workbook.add_format({'align': 'center', 'font_size': 12}))
+            row += 1
+            
         if self.group_id:
-            worksheet.merge_range(row, 0, row, 5, f'المجموعة: {self.group_id.name}',
+            worksheet.merge_range(row, 0, row, 6, f'المجموعة: {self.group_id.name}',
                                   workbook.add_format({'align': 'center', 'font_size': 12}))
             row += 1
-        worksheet.merge_range(row, 0, row, 5, f'من {self.date_from} إلى {self.date_to}',
+        worksheet.merge_range(row, 0, row, 6, f'من {self.date_from} إلى {self.date_to}',
                               workbook.add_format({'align': 'center', 'font_size': 12}))
         row += 2
 
@@ -417,6 +474,7 @@ class AnalyticAccountReport(models.Model):
         headers = [
             'المجموعة',
             'مركز التكلفة',
+            'الشريك',
             'المصروفات',
             'الإيرادات',
             'التحصيل',
@@ -428,7 +486,9 @@ class AnalyticAccountReport(models.Model):
         row += 1
 
         # البحث عن جميع مراكز التكلفة المطلوبة
-        analytic_domain = [('company_id', '=', self.company_id.id)]
+        analytic_domain = [('company_id', 'in', self.company_ids.ids)]
+        if self.branch_id:
+            analytic_domain.append(('branch_id', '=', self.branch_id.id))
         if self.group_id:
             analytic_domain.append(('group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
@@ -450,11 +510,13 @@ class AnalyticAccountReport(models.Model):
             expenses_domain = [
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
-                ('company_id', '=', self.company_id.id),
+                ('company_id', 'in', self.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', '=', account.id),
                 ('balance', '<', 0)
             ]
+            if self.branch_id:
+                expenses_domain.append(('branch_id', '=', self.branch_id.id))
             expense_lines = self.env['account.move.line'].search(expenses_domain)
             account_expenses = abs(sum(line.balance for line in expense_lines))
 
@@ -462,11 +524,13 @@ class AnalyticAccountReport(models.Model):
             revenues_domain = [
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
-                ('company_id', '=', self.company_id.id),
+                ('company_id', 'in', self.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', '=', account.id),
                 ('balance', '>', 0)
             ]
+            if self.branch_id:
+                revenues_domain.append(('branch_id', '=', self.branch_id.id))
             revenue_lines = self.env['account.move.line'].search(revenues_domain)
             account_revenues = sum(line.balance for line in revenue_lines)
 
@@ -474,11 +538,13 @@ class AnalyticAccountReport(models.Model):
             payments_domain = [
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
-                ('company_id', '=', self.company_id.id),
+                ('company_id', 'in', self.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', '=', account.id),
                 ('payment_id', '!=', False)
             ]
+            if self.branch_id:
+                payments_domain.append(('branch_id', '=', self.branch_id.id))
             payment_lines = self.env['account.move.line'].search(payments_domain)
             account_collections = abs(sum(line.balance for line in payment_lines))
 
@@ -486,18 +552,24 @@ class AnalyticAccountReport(models.Model):
             invoices_domain = [
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
-                ('company_id', '=', self.company_id.id),
+                ('company_id', 'in', self.company_ids.ids),
                 ('move_id.state', '=', 'posted'),
                 ('analytic_account_id', '=', account.id),
                 ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                 ('move_id.payment_state', '!=', 'paid')
             ]
+            if self.branch_id:
+                invoices_domain.append(('branch_id', '=', self.branch_id.id))
             invoice_lines = self.env['account.move.line'].search(invoices_domain)
             account_debts = abs(sum(line.amount_residual for line in invoice_lines))
+
+            # الحصول على الشريك من حساب التحليلي
+            partner = account.partner_id or False
 
             # تخزين النتائج
             group_dict[account.group_id]['accounts'].append({
                 'account': account,
+                'partner': partner,
                 'expenses': account_expenses,
                 'revenues': account_revenues,
                 'collections': account_collections,
@@ -514,42 +586,47 @@ class AnalyticAccountReport(models.Model):
         for group, data in group_dict.items():
             # عنوان المجموعة
             worksheet.write(row, 0, group.name if group else 'بدون مجموعة', section_format)
-            worksheet.merge_range(row, 1, row, 5, '', section_format)
+            worksheet.merge_range(row, 1, row, 6, '', section_format)
             row += 1
 
             # تفاصيل مراكز التكلفة في هذه المجموعة
             for account_data in data['accounts']:
                 account = account_data['account']
+                partner_name = account_data['partner'].name if account_data['partner'] else ''
                 worksheet.write(row, 0, '', text_format)
                 worksheet.write(row, 1, account.name, text_format)
-                worksheet.write(row, 2, round(account_data['expenses'], 2), currency_format)
-                worksheet.write(row, 3, round(account_data['revenues'], 2), currency_format)
-                worksheet.write(row, 4, round(account_data['collections'], 2), currency_format)
-                worksheet.write(row, 5, round(account_data['debts'], 2), currency_format)
+                worksheet.write(row, 2, partner_name, text_format)
+                worksheet.write(row, 3, round(account_data['expenses'], 2), currency_format)
+                worksheet.write(row, 4, round(account_data['revenues'], 2), currency_format)
+                worksheet.write(row, 5, round(account_data['collections'], 2), currency_format)
+                worksheet.write(row, 6, round(account_data['debts'], 2), currency_format)
                 row += 1
 
             # إجمالي المجموعة
             worksheet.write(row, 0, '', total_format)
             worksheet.write(row, 1, 'إجمالي المجموعة', total_format)
-            worksheet.write(row, 2, round(data['total_expenses'], 2), total_format)
-            worksheet.write(row, 3, round(data['total_revenues'], 2), total_format)
-            worksheet.write(row, 4, round(data['total_collections'], 2), total_format)
-            worksheet.write(row, 5, round(data['total_debts'], 2), total_format)
+            worksheet.write(row, 2, '', total_format)
+            worksheet.write(row, 3, round(data['total_expenses'], 2), total_format)
+            worksheet.write(row, 4, round(data['total_revenues'], 2), total_format)
+            worksheet.write(row, 5, round(data['total_collections'], 2), total_format)
+            worksheet.write(row, 6, round(data['total_debts'], 2), total_format)
             row += 1
 
         # إجمالي عام
         worksheet.write(row, 0, '', total_format)
         worksheet.write(row, 1, 'الإجمالي العام', total_format)
-        worksheet.write(row, 2, round(self.total_expenses, 2), total_format)
-        worksheet.write(row, 3, round(self.total_revenues, 2), total_format)
-        worksheet.write(row, 4, round(self.total_collections, 2), total_format)
-        worksheet.write(row, 5, round(self.total_debts, 2), total_format)
+        worksheet.write(row, 2, '', total_format)
+        worksheet.write(row, 3, round(self.total_expenses, 2), total_format)
+        worksheet.write(row, 4, round(self.total_revenues, 2), total_format)
+        worksheet.write(row, 5, round(self.total_collections, 2), total_format)
+        worksheet.write(row, 6, round(self.total_debts, 2), total_format)
         row += 1
 
         # ضبط عرض الأعمدة
         worksheet.set_column(0, 0, 25)  # المجموعة
         worksheet.set_column(1, 1, 30)  # مركز التكلفة
-        worksheet.set_column(2, 5, 15)  # الأرقام
+        worksheet.set_column(2, 2, 25)  # الشريك
+        worksheet.set_column(3, 6, 15)  # الأرقام
 
         # إغلاق الكتاب وحفظه
         workbook.close()
@@ -640,6 +717,17 @@ class AnalyticAccountReport(models.Model):
             title = Paragraph("تقرير مراكز التكلفة", title_style)
             elements.append(title)
 
+            # إضافة معلومات الشركات المختارة
+            if self.company_ids:
+                companies = ", ".join(self.company_ids.mapped('name'))
+                company_info = Paragraph(f"الشركات: {companies}", normal_style)
+                elements.append(company_info)
+
+            # إضافة معلومات الفرع إن وجد
+            if self.branch_id:
+                branch_info = Paragraph(f"الفرع: {self.branch_id.name}", normal_style)
+                elements.append(branch_info)
+
             # إضافة معلومات المجموعة
             if self.group_id:
                 group_info = Paragraph(f"المجموعة: {self.group_id.name}", normal_style)
@@ -678,6 +766,7 @@ class AnalyticAccountReport(models.Model):
             report_header = [
                 'المجموعة',
                 'مركز التكلفة',
+                'الشريك',
                 'المصروفات',
                 'الإيرادات',
                 'التحصيل',
@@ -687,7 +776,9 @@ class AnalyticAccountReport(models.Model):
             report_data = [report_header]
 
             # البحث عن جميع مراكز التكلفة المطلوبة
-            analytic_domain = [('company_id', '=', self.company_id.id)]
+            analytic_domain = [('company_id', 'in', self.company_ids.ids)]
+            if self.branch_id:
+                analytic_domain.append(('branch_id', '=', self.branch_id.id))
             if self.group_id:
                 analytic_domain.append(('group_id', '=', self.group_id.id))
             if self.analytic_account_ids:
@@ -709,11 +800,13 @@ class AnalyticAccountReport(models.Model):
                 expenses_domain = [
                     ('date', '>=', self.date_from),
                     ('date', '<=', self.date_to),
-                    ('company_id', '=', self.company_id.id),
+                    ('company_id', 'in', self.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('balance', '<', 0)
                 ]
+                if self.branch_id:
+                    expenses_domain.append(('branch_id', '=', self.branch_id.id))
                 expense_lines = self.env['account.move.line'].search(expenses_domain)
                 account_expenses = abs(sum(line.balance for line in expense_lines))
 
@@ -721,11 +814,13 @@ class AnalyticAccountReport(models.Model):
                 revenues_domain = [
                     ('date', '>=', self.date_from),
                     ('date', '<=', self.date_to),
-                    ('company_id', '=', self.company_id.id),
+                    ('company_id', 'in', self.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('balance', '>', 0)
                 ]
+                if self.branch_id:
+                    revenues_domain.append(('branch_id', '=', self.branch_id.id))
                 revenue_lines = self.env['account.move.line'].search(revenues_domain)
                 account_revenues = sum(line.balance for line in revenue_lines)
 
@@ -733,11 +828,13 @@ class AnalyticAccountReport(models.Model):
                 payments_domain = [
                     ('date', '>=', self.date_from),
                     ('date', '<=', self.date_to),
-                    ('company_id', '=', self.company_id.id),
+                    ('company_id', 'in', self.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('payment_id', '!=', False)
                 ]
+                if self.branch_id:
+                    payments_domain.append(('branch_id', '=', self.branch_id.id))
                 payment_lines = self.env['account.move.line'].search(payments_domain)
                 account_collections = abs(sum(line.balance for line in payment_lines))
 
@@ -745,18 +842,24 @@ class AnalyticAccountReport(models.Model):
                 invoices_domain = [
                     ('date', '>=', self.date_from),
                     ('date', '<=', self.date_to),
-                    ('company_id', '=', self.company_id.id),
+                    ('company_id', 'in', self.company_ids.ids),
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', '!=', 'paid')
                 ]
+                if self.branch_id:
+                    invoices_domain.append(('branch_id', '=', self.branch_id.id))
                 invoice_lines = self.env['account.move.line'].search(invoices_domain)
                 account_debts = abs(sum(line.amount_residual for line in invoice_lines))
+
+                # الحصول على الشريك من حساب التحليلي
+                partner = account.partner_id or False
 
                 # تخزين النتائج
                 group_dict[account.group_id]['accounts'].append({
                     'account': account,
+                    'partner': partner,
                     'expenses': account_expenses,
                     'revenues': account_revenues,
                     'collections': account_collections,
@@ -773,15 +876,17 @@ class AnalyticAccountReport(models.Model):
             for group, data in group_dict.items():
                 # عنوان المجموعة
                 report_data.append([
-                    group.name if group else 'بدون مجموعة', '', '', '', '', ''
+                    group.name if group else 'بدون مجموعة', '', '', '', '', '', ''
                 ])
 
                 # تفاصيل مراكز التكلفة في هذه المجموعة
                 for account_data in data['accounts']:
                     account = account_data['account']
+                    partner_name = account_data['partner'].name if account_data['partner'] else ''
                     report_data.append([
                         '',
                         account.name,
+                        partner_name,
                         format(round(account_data['expenses'], 2), ',.2f'),
                         format(round(account_data['revenues'], 2), ',.2f'),
                         format(round(account_data['collections'], 2), ',.2f'),
@@ -792,6 +897,7 @@ class AnalyticAccountReport(models.Model):
                 report_data.append([
                     '',
                     'إجمالي المجموعة',
+                    '',
                     format(round(data['total_expenses'], 2), ',.2f'),
                     format(round(data['total_revenues'], 2), ',.2f'),
                     format(round(data['total_collections'], 2), ',.2f'),
@@ -802,6 +908,7 @@ class AnalyticAccountReport(models.Model):
             report_data.append([
                 '',
                 'الإجمالي العام',
+                '',
                 format(round(self.total_expenses, 2), ',.2f'),
                 format(round(self.total_revenues, 2), ',.2f'),
                 format(round(self.total_collections, 2), ',.2f'),
@@ -809,7 +916,7 @@ class AnalyticAccountReport(models.Model):
             ])
 
             # إنشاء جدول التقرير
-            report_table = Table(report_data, colWidths=[70, 100, 60, 60, 60, 60])
+            report_table = Table(report_data, colWidths=[60, 90, 70, 50, 50, 50, 50])
             report_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4472C4')),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
@@ -887,17 +994,6 @@ class AnalyticAccountReport(models.Model):
             logger.error("Failed to generate PDF report: %s", str(e))
             raise
 
-    # @api.onchange('date_from')
-    # def _onchange_date_from(self):
-    #     if self.date_from and not self.date_to:
-    #         self.date_to = self.date_from
-
-    # @api.constrains('date_from', 'date_to')
-    # def _check_dates(self):
-    #     for record in self:
-    #         if record.date_from and record.date_to and record.date_from > record.date_to:
-    #             raise models.ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
-
     def action_view_analytic_lines(self):
         """عرض حركات مراكز التكلفة"""
         self.ensure_one()
@@ -905,9 +1001,11 @@ class AnalyticAccountReport(models.Model):
         domain = [
             ('date', '>=', self.date_from),
             ('date', '<=', self.date_to),
-            ('company_id', '=', self.company_id.id),
+            ('company_id', 'in', self.company_ids.ids),
             ('account_id', '!=', False)
         ]
+        if self.branch_id:
+            domain.append(('branch_id', '=', self.branch_id.id))
         if self.group_id:
             domain.append(('account_id.group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
