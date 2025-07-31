@@ -24,41 +24,15 @@ class AnalyticAccountReport(models.Model):
     _rec_name = 'group_id'
     _order = 'date_from desc'
 
+    # الحقول الأساسية
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
     company_ids = fields.Many2many('res.company', string='الشركات')
-    company_id = fields.Many2one(
-        'res.company',
-        string='Company',
-        default=lambda self: self.env.company,
-        required=True
-    )
     
-        # تعديل حقول العلاقات مع إضافة domain ديناميكي
-    branch_id = fields.Many2one(
-        'res.branch', 
-        string='الفرع',
-        domain="""[
-            ('company_id', 'in', company_ids.ids if company_ids else [])
-        ]"""
-    )
-    
-    group_id = fields.Many2one(
-        'account.analytic.group', 
-        string='مجموعة مراكز التكلفة',
-        domain="""[
-            ('company_id', 'in', company_ids.ids if company_ids else [])
-        ]"""
-    )
-    
-    analytic_account_id = fields.Many2one(
-        'account.analytic.account', 
-        string='مركز التكلفة',
-        domain="""[
-            ('company_id', 'in', company_ids.ids if company_ids else []),
-            ('group_id', '=', group_id.id if group_id else False)
-        ]"""
-    )
+    # حقول العلاقات بدون domain في التعريف
+    branch_id = fields.Many2one('res.branch', string='الفرع')
+    group_id = fields.Many2one('account.analytic.group', string='مجموعة مراكز التكلفة')
+    analytic_account_id = fields.Many2one('account.analytic.account', string='مركز التكلفة')
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
@@ -361,7 +335,7 @@ class AnalyticAccountReport(models.Model):
         self.ensure_one()
         company_ids = self.company_ids.ids if self.company_ids else []
         
-        # إعادة تعيين القيم غير المتوافقة
+        # إعادة تعيين القيم إذا لم تعد متوافقة
         if self.branch_id and (not self.branch_id.company_id or self.branch_id.company_id.id not in company_ids):
             self.branch_id = False
         if self.group_id and (not self.group_id.company_id or self.group_id.company_id.id not in company_ids):
