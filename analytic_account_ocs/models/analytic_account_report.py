@@ -38,24 +38,24 @@ class AnalyticAccountReport(models.Model):
     branch_id = fields.Many2one(
         'res.branch', 
         string='الفرع',
-        domain=lambda self: [('company_id', 'in', self.company_ids.ids)]
+        domain=lambda self: [('company_id', 'in', self.company_ids.ids if self.company_ids else [])]
     )
     
     group_id = fields.Many2one(
         'account.analytic.group', 
         string='مجموعة مراكز التكلفة',
-        domain=lambda self: [('company_id', 'in', self.company_ids.ids)]
+        domain=lambda self: [('company_id', 'in', self.company_ids.ids if self.company_ids else [])]
     )
     
     analytic_account_id = fields.Many2one(
         'account.analytic.account', 
         string='مركز التكلفة',
         domain=lambda self: [
-            ('company_id', 'in', self.company_ids.ids),
+            ('company_id', 'in', self.company_ids.ids if self.company_ids else []),
             ('group_id', '=', self.group_id.id if self.group_id else False)
         ]
-    )
-    company_currency_id = fields.Many2one(
+    )  
+  company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
     )
@@ -354,44 +354,34 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('company_ids')
     def _onchange_company_ids(self):
-        self = self.with_context(onchange_company_ids=True)
-        company_ids = self.company_ids.ids or []
+        self.ensure_one()
+        company_ids = self.company_ids.ids if self.company_ids else []
         
-        # إعادة تعيين القيم لضمان التحديث الصحيح
-        if self.branch_id and self.branch_id.company_id.id not in company_ids:
+        # إعادة تعيين القيم إذا لم تعد متوافقة مع الشركات المحددة
+        if self.branch_id and (not self.branch_id.company_id or self.branch_id.company_id.id not in company_ids):
             self.branch_id = False
-        if self.group_id and self.group_id.company_id.id not in company_ids:
+        if self.group_id and (not self.group_id.company_id or self.group_id.company_id.id not in company_ids):
             self.group_id = False
-        if self.analytic_account_id and self.analytic_account_id.company_id.id not in company_ids:
+        if self.analytic_account_id and (not self.analytic_account_id.company_id or self.analytic_account_id.company_id.id not in company_ids):
             self.analytic_account_id = False
-        
-        domain_branch = [('company_id', 'in', company_ids)]
-        domain_group = [('company_id', 'in', company_ids)]
-        domain_analytic = [('company_id', 'in', company_ids)]
-        
-        if self.group_id:
-            domain_analytic.append(('group_id', '=', self.group_id.id))
         
         return {
             'domain': {
-                'branch_id': domain_branch,
-                'group_id': domain_group,
-                'analytic_account_id': domain_analytic,
+                'branch_id': [('company_id', 'in', company_ids)],
+                'group_id': [('company_id', 'in', company_ids)],
+                'analytic_account_id': [('company_id', 'in', company_ids)]
             }
         }
     
     @api.onchange('group_id')
     def _onchange_group_id(self):
-        self = self.with_context(onchange_group_id=True)
-        company_ids = self.company_ids.ids or []
+        self.ensure_one()
+        company_ids = self.company_ids.ids if self.company_ids else []
         domain = [('company_id', 'in', company_ids)]
         
         if self.group_id:
             domain.append(('group_id', '=', self.group_id.id))
             if self.analytic_account_id and self.analytic_account_id.group_id != self.group_id:
-                self.analytic_account_id = False
-        else:
-            if self.analytic_account_id:
                 self.analytic_account_id = False
         
         return {
