@@ -35,11 +35,8 @@ class AnalyticAccountReport(models.Model):
     )
     branch_id = fields.Many2one('res.branch', string='الفرع')
     group_id = fields.Many2one('account.analytic.group', string='مجموعة مراكز التكلفة')
-    analytic_account_id = fields.Many2one(
-        'account.analytic.account', string='مركز التكلفة',
-        domain="[('company_id', 'in', company_ids), ('group_id', '=', group_id)]"
-    )
     analytic_account_id = fields.Many2one('account.analytic.account', string='مركز التكلفة')
+    # analytic_account_id = fields.Many2one('account.analytic.account', string='مركز التكلفة')
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
@@ -334,12 +331,15 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('company_ids')
     def _onchange_company_ids(self):
-        domain = [('company_id', 'in', self.company_ids.ids)]
+        company_ids = self.company_ids.ids or []
+        domain_branch = [('company_id', 'in', company_ids)]
+        domain_group = [('company_id', 'in', company_ids)]
+        domain_analytic_account = [('company_id', 'in', company_ids)]
         return {
             'domain': {
-                'branch_id': domain,
-                'group_id': domain,
-                'analytic_account_id': domain,
+                'branch_id': domain_branch,
+                'group_id': domain_group,
+                'analytic_account_id': domain_analytic_account,
             }
         }
 
