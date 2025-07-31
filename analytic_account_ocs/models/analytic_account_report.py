@@ -364,7 +364,7 @@ class AnalyticAccountReport(models.Model):
 
         # إضافة شعار الشركة
         row = 0
-        if self.company_id.logo:
+        if self.company_id and self.company_id.logo:
             try:
                 image_data = io.BytesIO(base64.b64decode(self.company_id.logo))
                 worksheet.merge_range(row, 3, row + 1, 3, '')
