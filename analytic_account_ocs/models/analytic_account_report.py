@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class AnalyticAccountReport(models.Model):
     _name = 'analytic.account.report'
     _description = 'تقرير مراكز التكلفة'
-    _rec_name = 'parent_group_id'
+    _rec_name = 'group_id'
     _order = 'date_from desc'
 
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
@@ -40,13 +40,13 @@ class AnalyticAccountReport(models.Model):
         'res.branch', string='الفرع',
         domain="[('company_id', 'in', company_ids)]"
     )
-    parent_group_id = fields.Many2one(
-        'account.analytic.group', string='المجموعة الرئيسية',
-        domain="[('company_id', 'in', company_ids), ('parent_id', '=', False)]"
+    group_id = fields.Many2one(
+        'account.analytic.group', string='مجموعة مراكز التكلفة',
+        domain="[('company_id', 'in', company_ids)]"
     )
-    child_group_id = fields.Many2one(
-        'account.analytic.group', string='المجموعة الفرعية',
-        domain="[('company_id', 'in', company_ids), ('parent_id', '=', parent_group_id)]"
+    analytic_account_id = fields.Many2one(
+        'account.analytic.account', string='مركز التكلفة',
+        domain="[('company_id', 'in', company_ids), ('group_id', '=', group_id)]"
     )
     analytic_account_ids = fields.Many2many(
         'account.analytic.account', string='مراكز التكلفة',
@@ -83,7 +83,6 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_report_lines',
         sanitize=False
     )
-    group_id = fields.Many2one('account.analytic.group', string="مجموعة مراكز التكلفة")
 
     @api.depends('company_ids')
     def _compute_company_currency(self):
@@ -93,18 +92,16 @@ class AnalyticAccountReport(models.Model):
             else:
                 record.company_currency_id = self.env.company.currency_id
 
-    @api.depends('parent_group_id', 'company_ids', 'branch_id')
+    @api.depends('group_id', 'analytic_account_id', 'company_ids', 'branch_id')
     def _compute_analytic_accounts(self):
         for record in self:
             domain = [('company_id', 'in', record.company_ids.ids)]
             if record.branch_id:
                 domain.append(('branch_id', '=', record.branch_id.id))
-            if record.parent_group_id:
-                domain.extend([
-                    '|',
-                    ('group_id', '=', record.parent_group_id.id),
-                    ('group_id', '=', record.child_group_id.id)
-                ])
+            if record.group_id:
+                domain.append(('group_id', '=', record.group_id.id))
+            if record.analytic_account_id:
+                domain.append(('id', '=', record.analytic_account_id.id))
             analytic_accounts = self.env['account.analytic.account'].search(domain)
             record.analytic_account_ids = analytic_accounts
 
@@ -348,17 +345,17 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('company_ids')
     def _onchange_company_ids(self):
-        self.parent_group_id = False
-        self.child_group_id = False
+        self.group_id = False
+        self.analytic_account_id = False
         self.branch_id = False
 
-    @api.onchange('parent_group_id')
-    def _onchange_parent_group_id(self):
-        self.child_group_id = False
+    @api.onchange('group_id')
+    def _onchange_group_id(self):
+        self.analytic_account_id = False
         self._compute_analytic_accounts()
 
-    @api.onchange('child_group_id')
-    def _onchange_child_group_id(self):
+    @api.onchange('analytic_account_id')
+    def _onchange_analytic_account_id(self):
         self._compute_analytic_accounts()
 
     @api.onchange('branch_id')
