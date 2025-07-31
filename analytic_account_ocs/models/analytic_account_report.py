@@ -33,10 +33,25 @@ class AnalyticAccountReport(models.Model):
         default=lambda self: self.env.company,
         required=True
     )
-    branch_id = fields.Many2one('res.branch', string='الفرع')
-    group_id = fields.Many2one('account.analytic.group', string='مجموعة مراكز التكلفة')
-    analytic_account_id = fields.Many2one('account.analytic.account', string='مركز التكلفة')
-    # analytic_account_id = fields.Many2one('account.analytic.account', string='مركز التكلفة')
+    
+    # تعديل حقول العلاقات مع إضافة domain ديناميكي
+    branch_id = fields.Many2one(
+        'res.branch', 
+        string='الفرع',
+        domain="[('company_id', 'in', company_ids)]" if not self.env.context.get('onchange_company_ids') else []
+    )
+    
+    group_id = fields.Many2one(
+        'account.analytic.group', 
+        string='مجموعة مراكز التكلفة',
+        domain="[('company_id', 'in', company_ids)]" if not self.env.context.get('onchange_company_ids') else []
+    )
+    
+    analytic_account_id = fields.Many2one(
+        'account.analytic.account', 
+        string='مركز التكلفة',
+        domain="[('company_id', 'in', company_ids), ('group_id', '=', group_id)]" if not self.env.context.get('onchange_company_ids') else []
+    )
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
@@ -81,16 +96,21 @@ class AnalyticAccountReport(models.Model):
     @api.depends('group_id', 'analytic_account_id', 'company_ids', 'branch_id')
     def _compute_analytic_accounts(self):
         for record in self:
-            domain = [('company_id', 'in', record.company_ids.ids)]
-            if record.branch_id:
-                domain.append(('branch_id', '=', record.branch_id.id))
-            if record.group_id:
-                domain.append(('group_id', '=', record.group_id.id))
-            if record.analytic_account_id:
-                domain.append(('id', '=', record.analytic_account_id.id))
-            analytic_accounts = self.env['account.analytic.account'].search(domain)
-            record.analytic_account_ids = analytic_accounts
-
+            try:
+                domain = [('company_id', 'in', record.company_ids.ids or [])]
+                
+                if record.branch_id:
+                    domain.append(('branch_id', '=', record.branch_id.id))
+                if record.group_id:
+                    domain.append(('group_id', '=', record.group_id.id))
+                if record.analytic_account_id:
+                    domain.append(('id', '=', record.analytic_account_id.id))
+                
+                analytic_accounts = self.env['account.analytic.account'].search(domain)
+                record.analytic_account_ids = analytic_accounts
+            except Exception as e:
+                logger.error("Error computing analytic accounts: %s", str(e))
+                record.analytic_account_ids = False
     @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'branch_id')
     def _compute_totals(self):
         for record in self:
@@ -331,27 +351,49 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('company_ids')
     def _onchange_company_ids(self):
+        self = self.with_context(onchange_company_ids=True)
         company_ids = self.company_ids.ids or []
+        
+        # إعادة تعيين القيم لضمان التحديث الصحيح
+        if self.branch_id and self.branch_id.company_id.id not in company_ids:
+            self.branch_id = False
+        if self.group_id and self.group_id.company_id.id not in company_ids:
+            self.group_id = False
+        if self.analytic_account_id and self.analytic_account_id.company_id.id not in company_ids:
+            self.analytic_account_id = False
+        
         domain_branch = [('company_id', 'in', company_ids)]
         domain_group = [('company_id', 'in', company_ids)]
-        domain_analytic_account = [('company_id', 'in', company_ids)]
+        domain_analytic = [('company_id', 'in', company_ids)]
+        
+        if self.group_id:
+            domain_analytic.append(('group_id', '=', self.group_id.id))
+        
         return {
             'domain': {
                 'branch_id': domain_branch,
                 'group_id': domain_group,
-                'analytic_account_id': domain_analytic_account,
+                'analytic_account_id': domain_analytic,
             }
         }
-
+    
     @api.onchange('group_id')
     def _onchange_group_id(self):
-        domain = [('company_id', 'in', self.company_ids.ids)]
+        self = self.with_context(onchange_group_id=True)
+        company_ids = self.company_ids.ids or []
+        domain = [('company_id', 'in', company_ids)]
+        
         if self.group_id:
             domain.append(('group_id', '=', self.group_id.id))
+            if self.analytic_account_id and self.analytic_account_id.group_id != self.group_id:
+                self.analytic_account_id = False
+        else:
+            if self.analytic_account_id:
+                self.analytic_account_id = False
+        
         return {
             'domain': {'analytic_account_id': domain}
         }
-
     @api.onchange('analytic_account_id')
     def _onchange_analytic_account_id(self):
         self._compute_analytic_accounts()
