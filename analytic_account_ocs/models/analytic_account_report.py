@@ -30,9 +30,26 @@ class AnalyticAccountReport(models.Model):
     company_ids = fields.Many2many('res.company', string='الشركات')
     
     # حقول العلاقات بدون domain في التعريف
-    branch_id = fields.Many2one('res.branch', string='الفرع')
-    group_id = fields.Many2one('account.analytic.group', string='مجموعة مراكز التكلفة')
-    analytic_account_id = fields.Many2one('account.analytic.account', string='مركز التكلفة')
+    branch_id = fields.Many2one(
+        'res.branch', 
+        string='الفرع',
+        domain="""[('company_id', 'in', company_ids.ids if hasattr(company_ids, 'ids') else [])]"""
+    )
+    
+    group_id = fields.Many2one(
+        'account.analytic.group', 
+        string='مجموعة مراكز التكلفة',
+        domain="""[('company_id', 'in', company_ids.ids if hasattr(company_ids, 'ids') else [])]"""
+    )
+    
+    analytic_account_id = fields.Many2one(
+        'account.analytic.account', 
+        string='مركز التكلفة',
+        domain="""[
+            ('company_id', 'in', company_ids.ids if hasattr(company_ids, 'ids') else []),
+            ('group_id', '=', group_id.id if group_id and hasattr(group_id, 'id') else False)
+        ]"""
+    )
     company_currency_id = fields.Many2one(
         'res.currency', string='العملة',
         compute='_compute_company_currency', store=True
@@ -334,48 +351,42 @@ class AnalyticAccountReport(models.Model):
     def _onchange_company_ids(self):
         for record in self:
             try:
-                company_ids = record.company_ids.ids if record.company_ids else []
+                if not record.company_ids:
+                    continue
+                    
+                company_ids = record.company_ids.ids
                 
                 # التحقق من وجود القيم قبل الوصول إليها
-                if record.branch_id and (not record.branch_id.company_id or record.branch_id.company_id.id not in company_ids):
+                if record.branch_id and (not hasattr(record.branch_id, 'company_id') or 
+                                       not record.branch_id.company_id or 
+                                       record.branch_id.company_id.id not in company_ids):
                     record.branch_id = False
-                if record.group_id and (not record.group_id.company_id or record.group_id.company_id.id not in company_ids):
+                
+                if record.group_id and (not hasattr(record.group_id, 'company_id') or 
+                                      not record.group_id.company_id or 
+                                      record.group_id.company_id.id not in company_ids):
                     record.group_id = False
-                if record.analytic_account_id and (not record.analytic_account_id.company_id or record.analytic_account_id.company_id.id not in company_ids):
+                
+                if record.analytic_account_id and (not hasattr(record.analytic_account_id, 'company_id') or 
+                                                 not record.analytic_account_id.company_id or 
+                                                 record.analytic_account_id.company_id.id not in company_ids):
                     record.analytic_account_id = False
                 
-                return {
-                    'domain': {
-                        'branch_id': [('company_id', 'in', company_ids)],
-                        'group_id': [('company_id', 'in', company_ids)],
-                        'analytic_account_id': [
-                            ('company_id', 'in', company_ids),
-                            ('group_id', '=', record.group_id.id if record.group_id else False)
-                        ]
-                    }
-                }
             except Exception as e:
-                logger.error("Error in _onchange_company_ids: %s", str(e))
-                return {}
+                _logger.error("Error in _onchange_company_ids: %s", str(e))
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
         for record in self:
             try:
-                company_ids = record.company_ids.ids if record.company_ids else []
-                domain = [('company_id', 'in', company_ids)]
-                
-                if record.group_id:
-                    domain.append(('group_id', '=', record.group_id.id))
-                    if record.analytic_account_id and record.analytic_account_id.group_id != record.group_id:
+                if not record.company_ids:
+                    continue
+                    
+                if record.group_id and record.analytic_account_id and hasattr(record.analytic_account_id, 'group_id'):
+                    if record.analytic_account_id.group_id != record.group_id:
                         record.analytic_account_id = False
-                
-                return {
-                    'domain': {'analytic_account_id': domain}
-                }
             except Exception as e:
-                logger.error("Error in _onchange_group_id: %s", str(e))
-                return {}
+                _logger.error("Error in _onchange_group_id: %s", str(e))
 
     @api.constrains('company_ids', 'branch_id', 'group_id', 'analytic_account_id')
     def _check_company_consistency(self):
