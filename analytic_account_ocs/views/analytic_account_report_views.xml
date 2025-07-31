@@ -39,8 +39,9 @@
         <field name="arch" type="xml">
             <search>
                 <field name="company_id" string="الشركة"/>
-                <field name="parent_group_id" string="المجموعة الرئيسية"/>
-                <field name="child_group_id" string="المجموعة الفرعية"/>
+                <field name="branch_id" string="الفرع"/>
+                <field name="group_id" string="مجموعة مراكز التكلفة"/>
+                <field name="analytic_account_id" string="مركز التكلفة"/>
                 <field name="date_from" string="من تاريخ"/>
                 <field name="date_to" string="إلى تاريخ"/>
                 <filter string="هذا الشهر" name="current_month"
@@ -63,8 +64,8 @@
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="parent_group_id" string="المجموعة الرئيسية"/>
-                <field name="child_group_id" string="المجموعة الفرعية"/>
+                <field name="branch_id" string="الفرع"/>
+                <field name="group_id" string="مجموعة مراكز التكلفة"/>
                 <field name="date_from" string="من تاريخ"/>
                 <field name="date_to" string="إلى تاريخ"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -98,8 +99,9 @@
                     <group>
                         <field name="company_id" string="الشركة"/>
                         <field name="company_ids" widget="many2many_tags" string="الشركات"/>
-                        <field name="parent_group_id" string="المجموعة الرئيسية"/>
-                        <field name="child_group_id" string="المجموعة الفرعية"/>
+                        <field name="branch_id" string="الفرع"/>
+                        <field name="group_id" string="مجموعة مراكز التكلفة"/>
+                        <field name="analytic_account_id" string="مركز التكلفة"/>
                         <field name="date_from" string="من تاريخ"/>
                         <field name="date_to" string="إلى تاريخ"/>
                     </group>
