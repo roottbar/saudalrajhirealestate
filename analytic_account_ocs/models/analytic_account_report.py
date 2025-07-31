@@ -72,18 +72,18 @@ class AnalyticAccountReport(models.Model):
         sanitize=False
     )
 
-    @api.depends('parent_group_id', 'child_group_id', 'company_id')
+    @api.depends('parent_group_id')
     def _compute_analytic_accounts(self):
         for record in self:
             domain = [('company_id', '=', record.company_id.id)]
-            
-            if record.child_group_id:
-                domain.append(('group_id', '=', record.child_group_id.id))
-            elif record.parent_group_id:
-                domain.append('|', ('group_id', '=', record.parent_group_id.id),
-                              ('group_id.parent_id', '=', record.parent_group_id.id))
-            
-            record.analytic_account_ids = self.env['account.analytic.account'].search(domain)
+            if record.parent_group_id:
+                domain.extend([
+                    '|',
+                    ('group_id', '=', record.parent_group_id.id),
+                    ('group_id', '=', record.child_group_id.id)
+                ])
+            analytic_accounts = self.env['account.analytic.account'].search(domain)
+            record.analytic_account_ids = analytic_accounts
 
     @api.depends('date_from', 'date_to', 'company_id', 'analytic_account_ids')
     def _compute_totals(self):
