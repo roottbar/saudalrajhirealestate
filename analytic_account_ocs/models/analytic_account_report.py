@@ -28,7 +28,8 @@ class AnalyticAccountReport(models.Model):
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
     company_ids = fields.Many2many('res.company', string='الشركات')
-    
+    company_id = fields.Many2one('res.company', string='Company')
+
     # حقول العلاقات بدون domain في التعريف
     branch_id = fields.Many2one(
         'res.branch', 
