@@ -76,6 +76,7 @@ class AnalyticAccountReport(models.Model):
     report_lines = fields.Html(
         string='تفاصيل التقرير',
         compute='_compute_report_lines',
+        store=True,
         sanitize=False
     )
     analytic_account_ids = fields.Many2many('account.analytic.account', string='Analytic Accounts')
@@ -131,9 +132,6 @@ class AnalyticAccountReport(models.Model):
                 logger.error("Error computing analytic accounts: %s", str(e))
                 record.analytic_account_ids = self.env['account.analytic.account']
 
-        # Call compute analytic accounts after setting up the domain
-        self._compute_analytic_accounts()
-
     @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'branch_id')
     def _compute_totals(self):
         for record in self:
@@ -145,94 +143,56 @@ class AnalyticAccountReport(models.Model):
                     record.total_debts = 0.0
                     continue
 
-                # Safely get company IDs, filtering out _unknown objects
                 company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
-                if not company_ids:
-                    record.total_expenses = 0.0
-                    record.total_revenues = 0.0
-                    record.total_collections = 0.0
-                    record.total_debts = 0.0
-                    continue
-
-                # Safely get analytic account IDs, filtering out _unknown objects
                 analytic_account_ids = [a.id for a in record.analytic_account_ids if hasattr(a, 'id') and a.id]
-                if not analytic_account_ids:
+                
+                if not company_ids or not analytic_account_ids:
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
                     record.total_collections = 0.0
                     record.total_debts = 0.0
                     continue
 
-                # حساب المصروفات (حركات ذات رصيد مدين)
-                expenses_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('balance', '<', 0)
-                ]
-                # Add branch filter only if the field exists on account.move.line
+                # استعلام واحد مجمع لجميع الإجماليات
+                query = """
+                    SELECT 
+                        SUM(CASE WHEN balance < 0 THEN ABS(balance) ELSE 0 END) as total_expenses,
+                        SUM(CASE WHEN balance > 0 THEN balance ELSE 0 END) as total_revenues,
+                        SUM(CASE WHEN payment_id IS NOT NULL THEN ABS(balance) ELSE 0 END) as total_collections,
+                        SUM(CASE WHEN am.move_type IN ('out_invoice', 'in_invoice') 
+                                 AND am.payment_state != 'paid' 
+                                 THEN ABS(aml.amount_residual) ELSE 0 END) as total_debts
+                    FROM account_move_line aml
+                    JOIN account_move am ON aml.move_id = am.id
+                    WHERE aml.date >= %s 
+                        AND aml.date <= %s
+                        AND aml.company_id = ANY(%s)
+                        AND am.state = 'posted'
+                        AND aml.analytic_account_id = ANY(%s)
+                """
+                
+                params = [record.date_from, record.date_to, company_ids, analytic_account_ids]
+                
                 if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     move_line_model = self.env['account.move.line']
                     if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
-                        expenses_domain.append(('branch_id', '=', record.branch_id.id))
-
-                expense_lines = self.env['account.move.line'].search(expenses_domain)
-                record.total_expenses = abs(sum(line.balance for line in expense_lines))
-
-                # حساب الإيرادات (حركات ذات رصيد دائن)
-                revenues_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('balance', '>', 0)
-                ]
-                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
-                    move_line_model = self.env['account.move.line']
-                    if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
-                        revenues_domain.append(('branch_id', '=', record.branch_id.id))
-
-                revenue_lines = self.env['account.move.line'].search(revenues_domain)
-                record.total_revenues = sum(line.balance for line in revenue_lines)
-
-                # حساب التحصيل (مدفوعات مرتبطة بمراكز التكلفة)
-                payments_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('payment_id', '!=', False)
-                ]
-                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
-                    move_line_model = self.env['account.move.line']
-                    if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
-                        payments_domain.append(('branch_id', '=', record.branch_id.id))
-
-                payment_lines = self.env['account.move.line'].search(payments_domain)
-                record.total_collections = abs(sum(line.balance for line in payment_lines))
-
-                # حساب المديونية (فواتير غير مدفوعة مرتبطة بمراكز التكلفة)
-                invoices_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', '!=', 'paid')
-                ]
-                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
-                    move_line_model = self.env['account.move.line']
-                    if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
-                        invoices_domain.append(('branch_id', '=', record.branch_id.id))
-
-                invoice_lines = self.env['account.move.line'].search(invoices_domain)
-                record.total_debts = abs(sum(line.amount_residual for line in invoice_lines))
-            
+                        query += " AND aml.branch_id = %s"
+                        params.append(record.branch_id.id)
+                
+                self.env.cr.execute(query, params)
+                result = self.env.cr.fetchone()
+                
+                if result:
+                    record.total_expenses = result[0] or 0.0
+                    record.total_revenues = result[1] or 0.0
+                    record.total_collections = result[2] or 0.0
+                    record.total_debts = result[3] or 0.0
+                else:
+                    record.total_expenses = 0.0
+                    record.total_revenues = 0.0
+                    record.total_collections = 0.0
+                    record.total_debts = 0.0
+                    
             except Exception as e:
                 logger.error("Error computing totals: %s", str(e))
                 record.total_expenses = 0.0
@@ -243,6 +203,11 @@ class AnalyticAccountReport(models.Model):
     @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'branch_id')
     def _compute_report_lines(self):
         for record in self:
+            # في بداية _compute_report_lines
+            if len(record.analytic_account_ids) > 100:
+                record.report_lines = "<p>عدد مراكز التكلفة كبير جداً. يرجى تحديد فلاتر أكثر تحديداً.</p>"
+                continue
+            
             # Safely get company IDs, filtering out _unknown objects
             company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id] if record.company_ids else []
             
@@ -274,6 +239,56 @@ class AnalyticAccountReport(models.Model):
                     <tbody>
             """)
 
+            # استخدم استعلام واحد بدلاً من 4 استعلامات لكل مركز
+            if not record.analytic_account_ids or not company_ids:
+                record.report_lines = "<p>لا توجد بيانات لعرضها</p>"
+                continue
+                
+            analytic_account_ids = [a.id for a in record.analytic_account_ids if hasattr(a, 'id') and a.id]
+            if not analytic_account_ids:
+                record.report_lines = "<p>لا توجد مراكز تكلفة صالحة</p>"
+                continue
+                
+            # استعلام واحد لجميع البيانات
+            base_domain = [
+                ('date', '>=', record.date_from),
+                ('date', '<=', record.date_to),
+                ('company_id', 'in', company_ids),
+                ('move_id.state', '=', 'posted'),
+                ('analytic_account_id', 'in', analytic_account_ids)
+            ]
+            
+            if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
+                move_line_model = self.env['account.move.line']
+                if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
+                    base_domain.append(('branch_id', '=', record.branch_id.id))
+            
+            # جلب جميع البيانات مرة واحدة
+            all_lines = self.env['account.move.line'].search(base_domain)
+            
+            # تجميع البيانات حسب مركز التكلفة
+            account_data = {}
+            for line in all_lines:
+                account_id = line.analytic_account_id.id
+                if account_id not in account_data:
+                    account_data[account_id] = {
+                        'expenses': 0.0,
+                        'revenues': 0.0,
+                        'collections': 0.0,
+                        'debts': 0.0
+                    }
+                
+                if line.balance < 0:
+                    account_data[account_id]['expenses'] += abs(line.balance)
+                elif line.balance > 0:
+                    account_data[account_id]['revenues'] += line.balance
+                    
+                if line.payment_id:
+                    account_data[account_id]['collections'] += abs(line.balance)
+                    
+                if line.move_id.move_type in ['out_invoice', 'in_invoice'] and line.move_id.payment_state != 'paid':
+                    account_data[account_id]['debts'] += abs(line.amount_residual)
+
             # تجميع النتائج حسب المجموعة ومركز التكلفة
             group_dict = defaultdict(lambda: {
                 'accounts': [],
@@ -284,62 +299,19 @@ class AnalyticAccountReport(models.Model):
             })
 
             for account in record.analytic_account_ids:
-                # حساب المصروفات لهذا المركز
-                expenses_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('balance', '<', 0)
-                ]
-                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
-                    expenses_domain.append(('branch_id', '=', record.branch_id.id))
-                expense_lines = self.env['account.move.line'].search(expenses_domain)
-                account_expenses = abs(sum(line.balance for line in expense_lines))
-
-                # حساب الإيرادات لهذا المركز
-                revenues_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('balance', '>', 0)
-                ]
-                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
-                    revenues_domain.append(('branch_id', '=', record.branch_id.id))
-                revenue_lines = self.env['account.move.line'].search(revenues_domain)
-                account_revenues = sum(line.balance for line in revenue_lines)
-
-                # حساب التحصيل لهذا المركز
-                payments_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('payment_id', '!=', False)
-                ]
-                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
-                    payments_domain.append(('branch_id', '=', record.branch_id.id))
-                payment_lines = self.env['account.move.line'].search(payments_domain)
-                account_collections = abs(sum(line.balance for line in payment_lines))
-
-                # حساب المديونية لهذا المركز
-                invoices_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', '!=', 'paid')
-                ]
-                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
-                    invoices_domain.append(('branch_id', '=', record.branch_id.id))
-                invoice_lines = self.env['account.move.line'].search(invoices_domain)
-                account_debts = abs(sum(line.amount_residual for line in invoice_lines))
+                # استخدام البيانات المجمعة بدلاً من الاستعلامات المتعددة
+                account_id = account.id
+                data = account_data.get(account_id, {
+                    'expenses': 0.0,
+                    'revenues': 0.0,
+                    'collections': 0.0,
+                    'debts': 0.0
+                })
+                
+                account_expenses = data['expenses']
+                account_revenues = data['revenues']
+                account_collections = data['collections']
+                account_debts = data['debts']
 
                 # الحصول على الشريك من حساب التحليلي
                 partner = account.partner_id or False
