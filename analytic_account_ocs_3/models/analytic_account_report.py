@@ -84,12 +84,12 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_totals'
     )
     total_collections = fields.Monetary(
-        string='إجمالي التحصيل',
+        string='إجمالي التحصيل (المدفوعات)',
         currency_field='company_currency_id',
         compute='_compute_totals'
     )
     total_debts = fields.Monetary(
-        string='إجمالي المديونية',
+        string='إجمالي المديونية (المتبقي)',
         currency_field='company_currency_id',
         compute='_compute_totals'
     )
@@ -229,6 +229,7 @@ class AnalyticAccountReport(models.Model):
 
                 company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
                 analytic_account_ids = [a.id for a in record.analytic_account_ids if hasattr(a, 'id') and a.id]
+                
                 if not company_ids or not analytic_account_ids:
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
@@ -236,12 +237,16 @@ class AnalyticAccountReport(models.Model):
                     record.total_debts = 0.0
                     continue
 
+                # استعلام واحد مجمع لجميع الإجماليات
                 query = """
                     SELECT 
-                        SUM(CASE WHEN aml.balance < 0 THEN ABS(aml.balance) ELSE 0 END) as total_expenses,
-                        SUM(CASE WHEN aml.balance > 0 THEN aml.balance ELSE 0 END) as total_revenues,
-                        SUM(CASE WHEN am.payment_state = 'paid' THEN ABS(aml.balance) ELSE 0 END) as total_collections,
-                        SUM(CASE WHEN am.move_type IN ('out_invoice', 'in_invoice') AND am.payment_state != 'paid' THEN ABS(aml.amount_residual) ELSE 0 END) as total_debts
+                        SUM(CASE WHEN balance < 0 THEN ABS(balance) ELSE 0 END) as total_expenses,
+                        SUM(CASE WHEN balance > 0 THEN balance ELSE 0 END) as total_revenues,
+                        SUM(CASE WHEN aml.payment_id IS NOT NULL THEN ABS(aml.balance) ELSE 0 END) as total_collections,
+                        SUM(CASE WHEN am.move_type IN ('out_invoice', 'in_invoice') 
+                                 AND am.payment_state != 'paid' 
+                                 AND aml.balance > 0 
+                                 THEN aml.amount_residual ELSE 0 END) as total_debts
                     FROM account_move_line aml
                     JOIN account_move am ON aml.move_id = am.id
                     WHERE aml.date >= %s 
@@ -250,9 +255,12 @@ class AnalyticAccountReport(models.Model):
                         AND am.state = 'posted'
                         AND aml.analytic_account_id = ANY(%s)
                 """
+                
                 params = [record.date_from, record.date_to, company_ids, analytic_account_ids]
+                
                 self.env.cr.execute(query, params)
                 result = self.env.cr.fetchone()
+                
                 if result:
                     record.total_expenses = result[0] or 0.0
                     record.total_revenues = result[1] or 0.0
@@ -263,6 +271,7 @@ class AnalyticAccountReport(models.Model):
                     record.total_revenues = 0.0
                     record.total_collections = 0.0
                     record.total_debts = 0.0
+                    
             except Exception as e:
                 logger.error("Error computing totals: %s", str(e))
                 record.total_expenses = 0.0
@@ -301,8 +310,8 @@ class AnalyticAccountReport(models.Model):
                                 <th>الشريك</th>
                                 <th>المصروفات</th>
                                 <th>الإيرادات</th>
-                                <th>التحصيل</th>
-                                <th>المديونية</th>
+                                <th>التحصيل (المدفوعات)</th>
+                                <th>المديونية (المتبقي)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -348,8 +357,8 @@ class AnalyticAccountReport(models.Model):
                     if line.payment_id:
                         account_data[account_id]['collections'] += abs(line.balance)
                         
-                    if line.move_id.move_type in ['out_invoice', 'in_invoice'] and line.move_id.payment_state != 'paid':
-                        account_data[account_id]['debts'] += abs(line.amount_residual)
+                    if line.move_id.move_type in ['out_invoice', 'in_invoice'] and line.move_id.payment_state != 'paid' and line.balance > 0:
+                        account_data[account_id]['debts'] += line.amount_residual
 
                 # تجميع النتائج حسب المجموعة ومركز التكلفة
                 group_dict = defaultdict(lambda: {
@@ -600,11 +609,11 @@ class AnalyticAccountReport(models.Model):
             worksheet.write(row, 1, round(self.total_revenues, 2), currency_format)
             row += 1
 
-            worksheet.write(row, 0, 'إجمالي التحصيل', label_format)
+            worksheet.write(row, 0, 'إجمالي التحصيل (المدفوعات)', label_format)
             worksheet.write(row, 1, round(self.total_collections, 2), currency_format)
             row += 1
 
-            worksheet.write(row, 0, 'إجمالي المديونية', label_format)
+            worksheet.write(row, 0, 'إجمالي المديونية (المتبقي)', label_format)
             worksheet.write(row, 1, round(self.total_debts, 2), currency_format)
             row += 2
 
@@ -615,8 +624,8 @@ class AnalyticAccountReport(models.Model):
                 'الشريك',
                 'المصروفات',
                 'الإيرادات',
-                'التحصيل',
-                'المديونية'
+                'التحصيل (المدفوعات)',
+                'المديونية (المتبقي)'
             ]
 
             for col, header in enumerate(headers):
@@ -702,11 +711,12 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', '!=', 'paid')
+                    ('move_id.payment_state', '!=', 'paid'),
+                    ('balance', '>', 0)
                 ]
                 # Remove branch handling - no longer needed
                 invoice_lines = self.env['account.move.line'].search(invoices_domain)
-                account_debts = abs(sum(line.amount_residual for line in invoice_lines))
+                account_debts = sum(line.amount_residual for line in invoice_lines)
 
                 # الحصول على الشريك من حساب التحليلي
                 partner = account.partner_id or False
@@ -888,8 +898,8 @@ class AnalyticAccountReport(models.Model):
             summary_data = [
                 ['إجمالي المصروفات', format(round(self.total_expenses, 2), ',.2f')],
                 ['إجمالي الإيرادات', format(round(self.total_revenues, 2), ',.2f')],
-                ['إجمالي التحصيل', format(round(self.total_collections, 2), ',.2f')],
-                ['إجمالي المديونية', format(round(self.total_debts, 2), ',.2f')]
+                ['إجمالي التحصيل (المدفوعات)', format(round(self.total_collections, 2), ',.2f')],
+                ['إجمالي المديونية (المتبقي)', format(round(self.total_debts, 2), ',.2f')]
             ]
 
             summary_table = Table(summary_data, colWidths=[200, 100])
@@ -914,8 +924,8 @@ class AnalyticAccountReport(models.Model):
                 'الشريك',
                 'المصروفات',
                 'الإيرادات',
-                'التحصيل',
-                'المديونية'
+                'التحصيل (المدفوعات)',
+                'المديونية (المتبقي)'
             ]
 
             report_data = [report_header]
@@ -998,11 +1008,12 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', '=', account.id),
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', '!=', 'paid')
+                    ('move_id.payment_state', '!=', 'paid'),
+                    ('balance', '>', 0)
                 ]
                 # Remove branch handling - no longer needed
                 invoice_lines = self.env['account.move.line'].search(invoices_domain)
-                account_debts = abs(sum(line.amount_residual for line in invoice_lines))
+                account_debts = sum(line.amount_residual for line in invoice_lines)
 
                 # الحصول على الشريك من حساب التحليلي
                 partner = account.partner_id or False
