@@ -151,13 +151,22 @@ class AnalyticAccountReport(models.Model):
                     record.total_debts = 0.0
                     continue
 
+                # Safely get analytic account IDs, filtering out _unknown objects
+                analytic_account_ids = [a.id for a in record.analytic_account_ids if hasattr(a, 'id') and a.id]
+                if not analytic_account_ids:
+                    record.total_expenses = 0.0
+                    record.total_revenues = 0.0
+                    record.total_collections = 0.0
+                    record.total_debts = 0.0
+                    continue
+
                 # حساب المصروفات (حركات ذات رصيد مدين)
                 expenses_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
                     ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', record.analytic_account_ids.ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
                     ('balance', '<', 0)
                 ]
                 # Add branch filter only if the field exists on account.move.line
@@ -175,7 +184,7 @@ class AnalyticAccountReport(models.Model):
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
                     ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', record.analytic_account_ids.ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
                     ('balance', '>', 0)
                 ]
                 if record.branch_id:
@@ -192,7 +201,7 @@ class AnalyticAccountReport(models.Model):
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
                     ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', record.analytic_account_ids.ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
                     ('payment_id', '!=', False)
                 ]
                 if record.branch_id:
@@ -209,7 +218,7 @@ class AnalyticAccountReport(models.Model):
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
                     ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', record.analytic_account_ids.ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', '!=', 'paid')
                 ]
@@ -658,13 +667,23 @@ class AnalyticAccountReport(models.Model):
                 'file_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             }
         
-        analytic_domain = [('company_id', 'in', company_ids)]
+        analytic_domain = []
+        # Check if account.analytic.account model has company_id field
+        account_model = self.env['account.analytic.account']
+        if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
+            analytic_domain.append(('company_id', 'in', company_ids))
+        
         if self.branch_id:
-            analytic_domain.append(('branch_id', '=', self.branch_id.id))
+            # Check if account.analytic.account model has branch_id field
+            if hasattr(account_model, '_fields') and 'branch_id' in account_model._fields:
+                analytic_domain.append(('branch_id', '=', self.branch_id.id))
         if self.group_id:
             analytic_domain.append(('group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
-            analytic_domain.append(('id', 'in', self.analytic_account_ids.ids))
+            # Safely get analytic account IDs, filtering out _unknown objects
+            analytic_account_ids = [a.id for a in self.analytic_account_ids if hasattr(a, 'id') and a.id]
+            if analytic_account_ids:
+                analytic_domain.append(('id', 'in', analytic_account_ids))
 
         analytic_accounts = self.env['account.analytic.account'].search(analytic_domain)
 
@@ -957,13 +976,23 @@ class AnalyticAccountReport(models.Model):
                     'file_type': 'application/pdf'
                 }
             
-            analytic_domain = [('company_id', 'in', company_ids)]
+            analytic_domain = []
+            # Check if account.analytic.account model has company_id field
+            account_model = self.env['account.analytic.account']
+            if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
+                analytic_domain.append(('company_id', 'in', company_ids))
+            
             if self.branch_id:
-                analytic_domain.append(('branch_id', '=', self.branch_id.id))
+                # Check if account.analytic.account model has branch_id field
+                if hasattr(account_model, '_fields') and 'branch_id' in account_model._fields:
+                    analytic_domain.append(('branch_id', '=', self.branch_id.id))
             if self.group_id:
                 analytic_domain.append(('group_id', '=', self.group_id.id))
             if self.analytic_account_ids:
-                analytic_domain.append(('id', 'in', self.analytic_account_ids.ids))
+                # Safely get analytic account IDs, filtering out _unknown objects
+                analytic_account_ids = [a.id for a in self.analytic_account_ids if hasattr(a, 'id') and a.id]
+                if analytic_account_ids:
+                    analytic_domain.append(('id', 'in', analytic_account_ids))
 
             analytic_accounts = self.env['account.analytic.account'].search(analytic_domain)
 
@@ -1196,7 +1225,10 @@ class AnalyticAccountReport(models.Model):
         if self.group_id:
             domain.append(('account_id.group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
-            domain.append(('account_id', 'in', self.analytic_account_ids.ids))
+            # Safely get analytic account IDs, filtering out _unknown objects
+            analytic_account_ids = [a.id for a in self.analytic_account_ids if hasattr(a, 'id') and a.id]
+            if analytic_account_ids:
+                domain.append(('account_id', 'in', analytic_account_ids))
         action['domain'] = domain
         action['context'] = {
             'search_default_group_by_account': 1,
