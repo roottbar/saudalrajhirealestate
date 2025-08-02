@@ -436,7 +436,8 @@ class AnalyticAccountReport(models.Model):
                         record.analytic_account_id = False
             except Exception as e:
                 logger.error("Error in _onchange_group_id: %s", str(e))
-        self._compute_analytic_accounts()
+        # إزالة هذا السطر لمنع الاستدعاء المتكرر
+        # self._compute_analytic_accounts()
 
     @api.constrains('company_ids', 'branch_id', 'group_id', 'analytic_account_id')
     def _check_company_consistency(self):
@@ -654,11 +655,11 @@ class AnalyticAccountReport(models.Model):
         if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
             analytic_domain.append(('company_id', 'in', company_ids))
         
-        if self.branch_id:
+        if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
             # Check if account.analytic.account model has branch_id field
             if hasattr(account_model, '_fields') and 'branch_id' in account_model._fields:
                 analytic_domain.append(('branch_id', '=', self.branch_id.id))
-        if self.group_id:
+        if self.group_id and hasattr(self.group_id, 'id') and self.group_id.id:
             analytic_domain.append(('group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
             # Safely get analytic account IDs, filtering out _unknown objects
