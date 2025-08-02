@@ -28,6 +28,11 @@ class AnalyticAccountReport(models.Model):
 
     # الحقول الأساسية
     name = fields.Char(string='اسم التقرير', default='تقرير جديد')
+    state = fields.Selection([
+        ('draft', 'مسودة'),
+        ('confirmed', 'مؤكد'),
+        ('done', 'منتهي')
+    ], string='الحالة', default='draft')
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
     company_ids = fields.Many2many(
