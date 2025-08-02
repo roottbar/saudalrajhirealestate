@@ -50,20 +50,8 @@
             <form>
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
-                    <button name="action_generate_excel_report"
-                            string="تقرير Excel"
-                            type="object"
-                            class="oe_highlight"
-                            attrs="{'invisible': [('state','=','draft')]}"/>
-                    <button name="action_generate_pdf_report"
-                            string="تقرير PDF"
-                            type="object"
-                            class="oe_highlight"
-                            attrs="{'invisible': [('state','=','draft')]}"/>
-                    <button name="action_view_analytic_lines"
-                            string="عرض الحركات"
-                            type="object"
-                            attrs="{'invisible': [('state','=','draft')]}"/>
+                    <button name="action_generate_excel_report" type="object" string="تصدير إكسل" class="btn-primary"/>
+                    <!-- أزرار أخرى -->
                 </header>
                 <sheet>
                     <div class="oe_title">
