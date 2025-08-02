@@ -396,30 +396,27 @@ class AnalyticAccountReport(models.Model):
                 if not record.company_ids:
                     continue
 
-                # Safely get company IDs, filtering out _unknown objects
                 company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
-                
                 if not company_ids:
                     continue
 
-                # التحقق من وجود القيم قبل الوصول إليها
-                if (record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id and 
-                    (not hasattr(record.branch_id, 'company_id') or
-                     not record.branch_id.company_id or
-                     record.branch_id.company_id.id not in company_ids)):
-                    record.branch_id = False
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
+                    if not hasattr(record.branch_id, 'company_id') or not record.branch_id.company_id:
+                        record.branch_id = False
+                    elif record.branch_id.company_id.id not in company_ids:
+                        record.branch_id = False
 
-                if (record.group_id and hasattr(record.group_id, 'id') and record.group_id.id and 
-                    (not hasattr(record.group_id, 'company_id') or
-                     not record.group_id.company_id or
-                     record.group_id.company_id.id not in company_ids)):
-                    record.group_id = False
+                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                    if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
+                        record.group_id = False
+                    elif record.group_id.company_id.id not in company_ids:
+                        record.group_id = False
 
-                if (record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id and 
-                    (not hasattr(record.analytic_account_id, 'company_id') or
-                     not record.analytic_account_id.company_id or
-                     record.analytic_account_id.company_id.id not in company_ids)):
-                    record.analytic_account_id = False
+                if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
+                    if not hasattr(record.analytic_account_id, 'company_id') or not record.analytic_account_id.company_id:
+                        record.analytic_account_id = False
+                    elif record.analytic_account_id.company_id.id not in company_ids:
+                        record.analytic_account_id = False
 
             except Exception as e:
                 logger.error("Error in _onchange_company_ids: %s", str(e))
@@ -436,6 +433,8 @@ class AnalyticAccountReport(models.Model):
                         record.analytic_account_id = False
             except Exception as e:
                 logger.error("Error in _onchange_group_id: %s", str(e))
+        # إزالة هذا السطر لمنع الاستدعاء المتكرر
+        # self._compute_analytic_accounts()
 
     @api.constrains('company_ids', 'branch_id', 'group_id', 'analytic_account_id')
     def _check_company_consistency(self):
