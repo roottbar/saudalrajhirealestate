@@ -106,39 +106,39 @@ class AnalyticAccountReport(models.Model):
         store=True
     )
 
-    def action_generate_excel_report(self):
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
-        # مثال: كتابة رؤوس الأعمدة
-        worksheet.write(0, 0, 'الاسم')
-        worksheet.write(0, 1, 'الإيرادات')
-        worksheet.write(0, 2, 'المصروفات')
-        # مثال: كتابة بيانات التقرير
-        row = 1
-        for rec in self:
-            worksheet.write(row, 0, rec.name)
-            worksheet.write(row, 1, rec.total_revenues)
-            worksheet.write(row, 2, rec.total_expenses)
-            row += 1
-        workbook.close()
-        output.seek(0)
-        file_data = output.read()
-        output.close()
-        attachment = self.env['ir.attachment'].create({
-            'name': 'تقرير مراكز التكلفة.xlsx',
-            'type': 'binary',
-            'datas': base64.b64encode(file_data),
-            'res_model': self._name,
-            'res_id': self.id,
-            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        })
-        download_url = '/web/content/%s?download=true' % (attachment.id)
-        return {
-            'type': 'ir.actions.act_url',
-            'url': download_url,
-            'target': 'new',
-        }
+    # def action_generate_excel_report(self):
+    #     output = io.BytesIO()
+    #     workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+    #     worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
+    #     # مثال: كتابة رؤوس الأعمدة
+    #     worksheet.write(0, 0, 'الاسم')
+    #     worksheet.write(0, 1, 'الإيرادات')
+    #     worksheet.write(0, 2, 'المصروفات')
+    #     # مثال: كتابة بيانات التقرير
+    #     row = 1
+    #     for rec in self:
+    #         worksheet.write(row, 0, rec.name)
+    #         worksheet.write(row, 1, rec.total_revenues)
+    #         worksheet.write(row, 2, rec.total_expenses)
+    #         row += 1
+    #     workbook.close()
+    #     output.seek(0)
+    #     file_data = output.read()
+    #     output.close()
+    #     attachment = self.env['ir.attachment'].create({
+    #         'name': 'تقرير مراكز التكلفة.xlsx',
+    #         'type': 'binary',
+    #         'datas': base64.b64encode(file_data),
+    #         'res_model': self._name,
+    #         'res_id': self.id,
+    #         'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    #     })
+    #     download_url = '/web/content/%s?download=true' % (attachment.id)
+    #     return {
+    #         'type': 'ir.actions.act_url',
+    #         'url': download_url,
+    #         'target': 'new',
+    #     }
 
     @api.depends('company_ids')
     def _compute_main_company(self):
