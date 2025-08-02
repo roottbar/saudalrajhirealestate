@@ -27,6 +27,7 @@ class AnalyticAccountReport(models.Model):
     _order = 'date_from desc'
 
     # الحقول الأساسية
+    name = fields.Char(string='اسم التقرير', default='تقرير جديد')
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
     company_ids = fields.Many2many(
