@@ -1,119 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-
-    <!-- Search View -->
+    <!-- Search View with improved filters and layout -->
     <record id="view_analytic_account_report_search" model="ir.ui.view">
         <field name="name">analytic.account.report.search</field>
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
             <search>
-                <field name="company_ids" string="الشركات" widget="many2many_tags"/>
-                <field name="branch_id" string="الفرع"/>
-                <field name="group_id" string="مجموعة مراكز التكلفة"/>
-                <field name="analytic_account_id" string="مركز التكلفة"/>
-                <field name="date_from" string="من تاريخ"/>
-                <field name="date_to" string="إلى تاريخ"/>
+                <field name="company_ids" string="الشركات" widget="many2many_tags" options="{'no_create': True}"/>
+                <field name="branch_id" string="الفرع" filter_domain="[('branch_id', '=', self)]"/>
+                <field name="group_id" string="مجموعة مراكز التكلفة" filter_domain="[('group_id', '=', self)]"/>
+                <field name="analytic_account_id" string="مركز التكلفة" filter_domain="[('analytic_account_id', '=', self)]"/>
+                
+                <separator/>
+                
+                <filter string="الفترة الزمنية" name="date_range" date="date_from">
+                    <field name="date_from" string="من تاريخ"/>
+                    <field name="date_to" string="إلى تاريخ"/>
+                </filter>
+                
+                <separator/>
+                
                 <filter string="هذا الشهر" name="current_month"
                         domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
-                <group expand="0" string="تصفية حسب">
+                
+                <group expand="0" string="فلاتر سريعة">
                     <filter string="اليوم" name="today"
                             domain="[('date_from','=',context_today()),('date_to','=',context_today())]"/>
-                    <filter string="الأسبوع الحالي" name="this_week"
+                    <filter string="هذا الأسبوع" name="this_week"
                             domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
-                    <filter string="الشهر الحالي" name="this_month"
+                    <filter string="هذا الشهر" name="this_month"
+                            domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
+                    <filter string="هذا العام" name="this_year"
                             domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
                 </group>
             </search>
         </field>
     </record>
 
-    <!-- Tree View -->
+    <!-- Tree View with improved columns and formatting -->
     <record id="view_analytic_account_report_tree" model="ir.ui.view">
         <field name="name">analytic.account.report.tree</field>
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree string="تقارير مراكز التكلفة" decoration-danger="total_debts &gt; total_revenues" decoration-success="total_revenues &gt; total_expenses">
+                <field name="name" string="الاسم" invisible="1"/>
                 <field name="company_ids" widget="many2many_tags" string="الشركات" groups="base.group_multi_company"/>
                 <field name="branch_id" string="الفرع"/>
-                <field name="group_id" string="مجموعة مراكز التكلفة"/>
-                <field name="date_from" string="من تاريخ"/>
-                <field name="date_to" string="إلى تاريخ"/>
-                <field name="total_expenses" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                <field name="total_revenues" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                <field name="total_debts" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="group_id" string="المجموعة"/>
+                <field name="date_from" string="من تاريخ" widget="date"/>
+                <field name="date_to" string="إلى تاريخ" widget="date"/>
+                <field name="total_expenses" string="المصروفات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="total_revenues" string="الإيرادات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="total_collections" string="التحصيل" widget="monetary" options="{'currency_field': 'company_currency_id'}" invisible="1"/>
+                <field name="total_debts" string="المديونية" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="company_currency_id" invisible="1"/>
             </tree>
         </field>
     </record>
 
-
-
+    <!-- Form View with enhanced layout and usability -->
     <record id="view_analytic_account_report_form" model="ir.ui.view">
         <field name="name">analytic.account.report.form</field>
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="تقرير مراكز التكلفة">
                 <header>
                     <button name="action_generate_excel_report"
-                            string="تقرير مراكز التكلفة (Excel)"
+                            string="تصدير Excel"
                             type="object"
-                            class="oe_highlight"/>
+                            class="btn-primary"
+                            icon="fa-file-excel-o"/>
                     <button name="action_generate_pdf_report"
-                            string="تقرير مراكز التكلفة (PDF)"
+                            string="تصدير PDF"
                             type="object"
-                            class="oe_highlight"/>
+                            class="btn-primary"
+                            icon="fa-file-pdf-o"/>
                     <button name="action_view_analytic_lines"
-                            string="عرض حركات مراكز التكلفة"
-                            type="object"/>
+                            string="عرض الحركات"
+                            type="object"
+                            class="btn-default"
+                            icon="fa-list"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" string="اسم التقرير" placeholder="أدخل اسم التقرير (اختياري)"/>
+                        </h1>
+                    </div>
+                    
                     <group>
-                        <field name="company_ids" widget="many2many_tags" string="الشركات"/>
-                        <field name="branch_id" string="الفرع"/>
-                        <field name="group_id" string="مجموعة مراكز التكلفة"/>
-                        <field name="analytic_account_id" string="مركز التكلفة"/>
-                        <field name="date_from" string="من تاريخ"/>
-                        <field name="date_to" string="إلى تاريخ"/>
+                        <group string="معايير التقرير">
+                            <field name="company_ids" widget="many2many_tags" string="الشركات" options="{'no_create': True}"/>
+                            <field name="branch_id" string="الفرع" options="{'no_create': True}"/>
+                            <field name="group_id" string="المجموعة" options="{'no_create': True}"/>
+                        </group>
+                        <group string="الفترة الزمنية">
+                            <field name="date_from" string="من تاريخ" widget="date" options="{'datepicker': {'minDate': false}}"/>
+                            <field name="date_to" string="إلى تاريخ" widget="date" options="{'datepicker': {'minDate': false}}"/>
+                            <field name="analytic_account_id" string="مركز التكلفة" options="{'no_create': True}"/>
+                        </group>
                     </group>
 
                     <notebook>
-                        <page string="الملخص">
+                        <page string="الملخص" attrs="{'invisible': [('id', '=', False)]}">
                             <group>
-                                <group string="إجمالي المصروفات">
-                                    <field name="total_expenses" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                <group string="الإيرادات والمصروفات">
+                                    <field name="total_revenues" string="إجمالي الإيرادات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                    <field name="total_expenses" string="إجمالي المصروفات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                    <field name="total_collections" string="إجمالي التحصيل" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                    <field name="total_debts" string="إجمالي المديونية" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
                                 </group>
-                                <group string="إجمالي الإيرادات">
-                                    <field name="total_revenues" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                                </group>
-                                <group string="إجمالي التحصيل">
-                                    <field name="total_collections" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                                </group>
-                                <group string="إجمالي المديونية">
-                                    <field name="total_debts" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                <group string="النتائج">
+                                    <field name="net_result" string="صافي النتيجة" widget="monetary" 
+                                           options="{'currency_field': 'company_currency_id'}"
+                                           attrs="{'invisible': [('total_revenues', '=', 0), ('total_expenses', '=', 0)]}"/>
+                                    <field name="debt_ratio" string="نسبة المديونية (%)" widget="percentage"
+                                           attrs="{'invisible': [('total_revenues', '=', 0)]}"/>
                                 </group>
                             </group>
                         </page>
 
-                        <page string="التفاصيل">
-                            <field name="report_lines" widget="html" nolabel="1"/>
+                        <page string="التفاصيل" attrs="{'invisible': [('id', '=', False)]}">
+                            <field name="report_lines" widget="html" nolabel="1" class="oe_no_button"/>
+                        </page>
+                        
+                        <page string="التحليل" attrs="{'invisible': [('id', '=', False)]}">
+                            <field name="analysis_data" widget="graph" nolabel="1"/>
                         </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-    <!-- Action and Menu -->
+
+    <!-- Action with improved settings -->
     <record id="action_analytic_account_report" model="ir.actions.act_window">
         <field name="name">تقارير مراكز التكلفة</field>
         <field name="res_model">analytic.account.report</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,graph</field>
         <field name="view_id" ref="view_analytic_account_report_tree"/>
         <field name="search_view_id" ref="view_analytic_account_report_search"/>
+        <field name="context">{'search_default_current_month': 1}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">اضغط على إنشاء لإنشاء تقرير جديد</p>
+            <p class="o_view_nocontent_smiling_face">
+                <i class="fa fa-smile-o"/>
+                لا توجد تقارير متاحة. اضغط على "إنشاء" لإنشاء تقرير جديد.
+            </p>
         </field>
     </record>
 
-    <menuitem id="menu_accounting_analytic_reports_root" name="تقارير المحاسبة التحليلية" parent="account.menu_finance"/>
-    <menuitem id="menu_analytic_account_report" name="تقارير مراكز التكلفة" parent="menu_accounting_analytic_reports_root" action="action_analytic_account_report"/>
+    <!-- Menu Structure with better organization -->
+    <menuitem id="menu_accounting_analytic_reports_root" 
+              name="التقارير التحليلية" 
+              parent="account.menu_finance"
+              sequence="10"/>
+              
+    <menuitem id="menu_analytic_account_report" 
+              name="تقارير مراكز التكلفة" 
+              parent="menu_accounting_analytic_reports_root" 
+              action="action_analytic_account_report"
+              sequence="10"/>
 </odoo>
