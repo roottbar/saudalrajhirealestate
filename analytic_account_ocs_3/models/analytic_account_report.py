@@ -120,27 +120,30 @@ class AnalyticAccountReport(models.Model):
 
     @api.depends('company_ids')
     def _compute_company_currency(self):
-        try:
-            # محاولة الحصول على عملة الشركة الأساسية
-            default_currency = self.env.company.currency_id
-        except Exception as e:
-            # تسجيل الخطأ للفحص لاحقاً
-            _logger.error("Failed to get company currency: %s", str(e))
+        for record in self:
+            try:
+                # Initialize with default company currency
+                default_currency = self.env.company.currency_id
+            except Exception:
+                # Fallback to base currency if company access fails
+                default_currency = self.env['res.currency'].search([('name', '=', 'USD')], limit=1)
+                if not default_currency:
+                    default_currency = self.env['res.currency'].search([], limit=1)
             
-            # البحث عن عملة الشركة مباشرةً من قاعدة البيانات
-            self.env.cr.execute("""
-                SELECT currency_id 
-                FROM res_company 
-                WHERE id = %s
-            """, [self.env.company.id])
+            record.company_currency_id = default_currency
             
-            currency_id = self.env.cr.fetchone()
-            if currency_id:
-                default_currency = self.env['res.currency'].browse(currency_id[0])
-            else:
-                # استخدام عملة افتراضية إذا فشل كل شيء
-                default_currency = self.env['res.currency'].search([('name','=','SAR')], limit=1)
-        
+            # Only proceed if we have valid company_ids
+            if not record.company_ids:
+                continue
+                
+            try:
+                # Safely get the first valid company
+                valid_companies = [c for c in record.company_ids if c._name == 'res.company' and c.id]
+                if valid_companies:
+                    record.company_currency_id = valid_companies[0].currency_id
+            except Exception as e:
+                logger.error("Error computing company currency: %s", str(e))
+                # Keep the default currency set above        
     # متابعة العمليات باستخدام default_currency
     # def _compute_company_currency(self):
     #     for record in self:
