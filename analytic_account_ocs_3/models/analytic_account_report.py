@@ -113,13 +113,30 @@ class AnalyticAccountReport(models.Model):
             if record.company_ids and len(record.company_ids) == 1:
                 record.company_id = record.company_ids[0]
             else:
-                record.company_id = self.env.company
+                try:
+                    # Try to get the current company safely
+                    record.company_id = self.env.company
+                except Exception:
+                    # Fallback to the first available company or create a default
+                    companies = self.env['res.company'].search([], limit=1)
+                    if companies:
+                        record.company_id = companies[0]
+                    else:
+                        record.company_id = False
 
     @api.depends('company_ids')
     def _compute_company_currency(self):
         for record in self:
-            # Initialize with default company currency
-            record.company_currency_id = self.env.company.currency_id
+            try:
+                # Initialize with default company currency
+                default_currency = self.env.company.currency_id
+            except Exception:
+                # Fallback to base currency if company access fails
+                default_currency = self.env['res.currency'].search([('name', '=', 'USD')], limit=1)
+                if not default_currency:
+                    default_currency = self.env['res.currency'].search([], limit=1)
+            
+            record.company_currency_id = default_currency
             
             # Only proceed if we have valid company_ids
             if not record.company_ids:
@@ -132,8 +149,7 @@ class AnalyticAccountReport(models.Model):
                     record.company_currency_id = valid_companies[0].currency_id
             except Exception as e:
                 logger.error("Error computing company currency: %s", str(e))
-                # Fallback to default company currency
-                record.company_currency_id = self.env.company.currency_id
+                # Keep the default currency set above
 
     @api.depends('group_id', 'analytic_account_id', 'company_ids')
     def _compute_analytic_accounts(self):
