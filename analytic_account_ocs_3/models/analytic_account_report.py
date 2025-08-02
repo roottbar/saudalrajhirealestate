@@ -104,19 +104,16 @@ class AnalyticAccountReport(models.Model):
     @api.depends('company_ids')
     def _compute_main_company(self):
         for record in self:
+            # إذا كان هناك شركة واحدة فقط، استخدمها
             if record.company_ids and len(record.company_ids) == 1:
                 record.company_id = record.company_ids[0]
+            # إذا كان هناك عدة شركات، استخدم الأولى
+            elif record.company_ids and len(record.company_ids) > 1:
+                record.company_id = record.company_ids[0]
             else:
-                try:
-                    # Try to get the current company safely
-                    record.company_id = self.env.company
-                except Exception:
-                    # Fallback to the first available company or create a default
-                    companies = self.env['res.company'].search([], limit=1)
-                    if companies:
-                        record.company_id = companies[0]
-                    else:
-                        record.company_id = False
+                # تجنب استعلامات قاعدة البيانات أثناء المعاملات الفاشلة
+                # ببساطة اتركه فارغاً أو استخدم قيمة افتراضية
+                record.company_id = False
 
     @api.depends('company_ids')
     def _compute_company_currency(self):
@@ -143,33 +140,7 @@ class AnalyticAccountReport(models.Model):
                     record.company_currency_id = valid_companies[0].currency_id
             except Exception as e:
                 logger.error("Error computing company currency: %s", str(e))
-                # Keep the default currency set above        
-    # متابعة العمليات باستخدام default_currency
-    # def _compute_company_currency(self):
-    #     for record in self:
-    #         try:
-    #             # Initialize with default company currency
-    #             default_currency = self.env.company.currency_id
-    #         except Exception:
-    #             # Fallback to base currency if company access fails
-    #             default_currency = self.env['res.currency'].search([('name', '=', 'USD')], limit=1)
-    #             if not default_currency:
-    #                 default_currency = self.env['res.currency'].search([], limit=1)
-            
-    #         record.company_currency_id = default_currency
-            
-    #         # Only proceed if we have valid company_ids
-    #         if not record.company_ids:
-    #             continue
-                
-    #         try:
-    #             # Safely get the first valid company
-    #             valid_companies = [c for c in record.company_ids if c._name == 'res.company' and c.id]
-    #             if valid_companies:
-    #                 record.company_currency_id = valid_companies[0].currency_id
-    #         except Exception as e:
-    #             logger.error("Error computing company currency: %s", str(e))
-    #             # Keep the default currency set above
+                # Keep the default currency set above
 
     @api.depends('group_id', 'analytic_account_id', 'company_ids')
     def _compute_analytic_accounts(self):
