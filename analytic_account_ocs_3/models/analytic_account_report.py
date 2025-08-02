@@ -108,17 +108,17 @@ class AnalyticAccountReport(models.Model):
                             domain.append(('company_id', 'in', company_ids))
 
                 # Add branch filter if available and the field exists
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     account_model = self.env['account.analytic.account']
                     if hasattr(account_model, '_fields') and 'branch_id' in account_model._fields:
                         domain.append(('branch_id', '=', record.branch_id.id))
                         
                 # Add group filter if available
-                if record.group_id:
+                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                     domain.append(('group_id', '=', record.group_id.id))
                     
                 # Add specific account filter if available
-                if record.analytic_account_id:
+                if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
                     domain.append(('id', '=', record.analytic_account_id.id))
 
                 # If no domain, get all analytic accounts
@@ -170,7 +170,7 @@ class AnalyticAccountReport(models.Model):
                     ('balance', '<', 0)
                 ]
                 # Add branch filter only if the field exists on account.move.line
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     move_line_model = self.env['account.move.line']
                     if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
                         expenses_domain.append(('branch_id', '=', record.branch_id.id))
@@ -187,7 +187,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', 'in', analytic_account_ids),
                     ('balance', '>', 0)
                 ]
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     move_line_model = self.env['account.move.line']
                     if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
                         revenues_domain.append(('branch_id', '=', record.branch_id.id))
@@ -204,7 +204,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', 'in', analytic_account_ids),
                     ('payment_id', '!=', False)
                 ]
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     move_line_model = self.env['account.move.line']
                     if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
                         payments_domain.append(('branch_id', '=', record.branch_id.id))
@@ -222,7 +222,7 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', '!=', 'paid')
                 ]
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     move_line_model = self.env['account.move.line']
                     if hasattr(move_line_model, '_fields') and 'branch_id' in move_line_model._fields:
                         invoices_domain.append(('branch_id', '=', record.branch_id.id))
@@ -290,7 +290,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('balance', '<', 0)
                 ]
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     expenses_domain.append(('branch_id', '=', record.branch_id.id))
                 expense_lines = self.env['account.move.line'].search(expenses_domain)
                 account_expenses = abs(sum(line.balance for line in expense_lines))
@@ -304,7 +304,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('balance', '>', 0)
                 ]
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     revenues_domain.append(('branch_id', '=', record.branch_id.id))
                 revenue_lines = self.env['account.move.line'].search(revenues_domain)
                 account_revenues = sum(line.balance for line in revenue_lines)
@@ -318,7 +318,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('payment_id', '!=', False)
                 ]
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     payments_domain.append(('branch_id', '=', record.branch_id.id))
                 payment_lines = self.env['account.move.line'].search(payments_domain)
                 account_collections = abs(sum(line.balance for line in payment_lines))
@@ -333,7 +333,7 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', '!=', 'paid')
                 ]
-                if record.branch_id:
+                if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
                     invoices_domain.append(('branch_id', '=', record.branch_id.id))
                 invoice_lines = self.env['account.move.line'].search(invoices_domain)
                 account_debts = abs(sum(line.amount_residual for line in invoice_lines))
@@ -428,19 +428,22 @@ class AnalyticAccountReport(models.Model):
                     continue
 
                 # التحقق من وجود القيم قبل الوصول إليها
-                if record.branch_id and (not hasattr(record.branch_id, 'company_id') or
-                                         not record.branch_id.company_id or
-                                         record.branch_id.company_id.id not in company_ids):
+                if (record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id and 
+                    (not hasattr(record.branch_id, 'company_id') or
+                     not record.branch_id.company_id or
+                     record.branch_id.company_id.id not in company_ids)):
                     record.branch_id = False
 
-                if record.group_id and (not hasattr(record.group_id, 'company_id') or
-                                        not record.group_id.company_id or
-                                        record.group_id.company_id.id not in company_ids):
+                if (record.group_id and hasattr(record.group_id, 'id') and record.group_id.id and 
+                    (not hasattr(record.group_id, 'company_id') or
+                     not record.group_id.company_id or
+                     record.group_id.company_id.id not in company_ids)):
                     record.group_id = False
 
-                if record.analytic_account_id and (not hasattr(record.analytic_account_id, 'company_id') or
-                                                   not record.analytic_account_id.company_id or
-                                                   record.analytic_account_id.company_id.id not in company_ids):
+                if (record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id and 
+                    (not hasattr(record.analytic_account_id, 'company_id') or
+                     not record.analytic_account_id.company_id or
+                     record.analytic_account_id.company_id.id not in company_ids)):
                     record.analytic_account_id = False
 
             except Exception as e:
@@ -472,17 +475,20 @@ class AnalyticAccountReport(models.Model):
                 continue
                 
             # Check branch only if it has company_id field
-            if record.branch_id and hasattr(record.branch_id, 'company_id') and record.branch_id.company_id:
-                if record.branch_id.company_id.id not in company_ids:
-                    raise ValidationError("الفرع المحدد لا ينتمي لأي من الشركات المحددة")
+            if record.branch_id and hasattr(record.branch_id, 'id') and record.branch_id.id:
+                if hasattr(record.branch_id, 'company_id') and record.branch_id.company_id:
+                    if record.branch_id.company_id.id not in company_ids:
+                        raise ValidationError("الفرع المحدد لا ينتمي لأي من الشركات المحددة")
             # Check group only if it has company_id field
-            if record.group_id and hasattr(record.group_id, 'company_id') and record.group_id.company_id:
-                if record.group_id.company_id.id not in company_ids:
-                    raise ValidationError("المجموعة المحددة لا تنتمي لأي من الشركات المحددة")
+            if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                if hasattr(record.group_id, 'company_id') and record.group_id.company_id:
+                    if record.group_id.company_id.id not in company_ids:
+                        raise ValidationError("المجموعة المحددة لا تنتمي لأي من الشركات المحددة")
             # Check analytic account only if it has company_id field
-            if record.analytic_account_id and hasattr(record.analytic_account_id, 'company_id') and record.analytic_account_id.company_id:
-                if record.analytic_account_id.company_id.id not in company_ids:
-                    raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")
+            if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
+                if hasattr(record.analytic_account_id, 'company_id') and record.analytic_account_id.company_id:
+                    if record.analytic_account_id.company_id.id not in company_ids:
+                        raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")
 
     @api.onchange('analytic_account_id')
     def _onchange_analytic_account_id(self):
@@ -706,7 +712,7 @@ class AnalyticAccountReport(models.Model):
                 ('analytic_account_id', '=', account.id),
                 ('balance', '<', 0)
             ]
-            if self.branch_id:
+            if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                 expenses_domain.append(('branch_id', '=', self.branch_id.id))
             expense_lines = self.env['account.move.line'].search(expenses_domain)
             account_expenses = abs(sum(line.balance for line in expense_lines))
@@ -720,7 +726,7 @@ class AnalyticAccountReport(models.Model):
                 ('analytic_account_id', '=', account.id),
                 ('balance', '>', 0)
             ]
-            if self.branch_id:
+            if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                 revenues_domain.append(('branch_id', '=', self.branch_id.id))
             revenue_lines = self.env['account.move.line'].search(revenues_domain)
             account_revenues = sum(line.balance for line in revenue_lines)
@@ -734,7 +740,7 @@ class AnalyticAccountReport(models.Model):
                 ('analytic_account_id', '=', account.id),
                 ('payment_id', '!=', False)
             ]
-            if self.branch_id:
+            if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                 payments_domain.append(('branch_id', '=', self.branch_id.id))
             payment_lines = self.env['account.move.line'].search(payments_domain)
             account_collections = abs(sum(line.balance for line in payment_lines))
@@ -749,7 +755,7 @@ class AnalyticAccountReport(models.Model):
                 ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                 ('move_id.payment_state', '!=', 'paid')
             ]
-            if self.branch_id:
+            if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                 invoices_domain.append(('branch_id', '=', self.branch_id.id))
             invoice_lines = self.env['account.move.line'].search(invoices_domain)
             account_debts = abs(sum(line.amount_residual for line in invoice_lines))
@@ -982,11 +988,11 @@ class AnalyticAccountReport(models.Model):
             if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
                 analytic_domain.append(('company_id', 'in', company_ids))
             
-            if self.branch_id:
+            if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                 # Check if account.analytic.account model has branch_id field
                 if hasattr(account_model, '_fields') and 'branch_id' in account_model._fields:
                     analytic_domain.append(('branch_id', '=', self.branch_id.id))
-            if self.group_id:
+            if self.group_id and hasattr(self.group_id, 'id') and self.group_id.id:
                 analytic_domain.append(('group_id', '=', self.group_id.id))
             if self.analytic_account_ids:
                 # Safely get analytic account IDs, filtering out _unknown objects
@@ -1015,7 +1021,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('balance', '<', 0)
                 ]
-                if self.branch_id:
+                if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                     expenses_domain.append(('branch_id', '=', self.branch_id.id))
                 expense_lines = self.env['account.move.line'].search(expenses_domain)
                 account_expenses = abs(sum(line.balance for line in expense_lines))
@@ -1029,7 +1035,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('balance', '>', 0)
                 ]
-                if self.branch_id:
+                if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                     revenues_domain.append(('branch_id', '=', self.branch_id.id))
                 revenue_lines = self.env['account.move.line'].search(revenues_domain)
                 account_revenues = sum(line.balance for line in revenue_lines)
@@ -1043,7 +1049,7 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('payment_id', '!=', False)
                 ]
-                if self.branch_id:
+                if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                     payments_domain.append(('branch_id', '=', self.branch_id.id))
                 payment_lines = self.env['account.move.line'].search(payments_domain)
                 account_collections = abs(sum(line.balance for line in payment_lines))
@@ -1058,7 +1064,7 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', '!=', 'paid')
                 ]
-                if self.branch_id:
+                if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
                     invoices_domain.append(('branch_id', '=', self.branch_id.id))
                 invoice_lines = self.env['account.move.line'].search(invoices_domain)
                 account_debts = abs(sum(line.amount_residual for line in invoice_lines))
@@ -1220,7 +1226,7 @@ class AnalyticAccountReport(models.Model):
             ('company_id', 'in', company_ids),
             ('account_id', '!=', False)
         ]
-        if self.branch_id:
+        if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
             domain.append(('branch_id', '=', self.branch_id.id))
         if self.group_id:
             domain.append(('account_id.group_id', '=', self.group_id.id))
