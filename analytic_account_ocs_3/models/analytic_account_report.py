@@ -433,8 +433,7 @@ class AnalyticAccountReport(models.Model):
                         record.analytic_account_id = False
             except Exception as e:
                 logger.error("Error in _onchange_group_id: %s", str(e))
-        # إزالة هذا السطر لمنع الاستدعاء المتكرر
-        # self._compute_analytic_accounts()
+                record.analytic_account_id = False
 
     @api.constrains('company_ids', 'branch_id', 'group_id', 'analytic_account_id')
     def _check_company_consistency(self):
