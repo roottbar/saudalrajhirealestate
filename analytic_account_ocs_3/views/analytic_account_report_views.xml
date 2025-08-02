@@ -92,13 +92,6 @@
                                     <field name="total_collections" string="إجمالي التحصيل" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
                                     <field name="total_debts" string="إجمالي المديونية" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
                                 </group>
-                                <group string="النتائج">
-                                    <field name="net_result" string="صافي النتيجة" widget="monetary" 
-                                           options="{'currency_field': 'company_currency_id'}"
-                                           attrs="{'invisible': [('total_revenues', '=', 0), ('total_expenses', '=', 0)]}"/>
-                                    <field name="debt_ratio" string="نسبة المديونية (%)" widget="percentage"
-                                           attrs="{'invisible': [('total_revenues', '=', 0)]}"/>
-                                </group>
                             </group>
                         </page>
 
