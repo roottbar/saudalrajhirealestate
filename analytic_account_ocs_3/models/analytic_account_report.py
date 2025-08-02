@@ -48,12 +48,6 @@ class AnalyticAccountReport(models.Model):
     )
 
     # حقول العلاقات
-    branch_id = fields.Many2one(
-        'res.branch',
-        string='الفرع',
-        domain="[('company_id', 'in', company_ids)]"
-    )
-
     group_id = fields.Many2one(
         'account.analytic.group',
         string='مجموعة مراكز التكلفة',
