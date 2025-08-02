@@ -457,7 +457,11 @@ class AnalyticAccountReport(models.Model):
             if not record.company_ids:
                 continue
 
-            company_ids = record.company_ids.ids
+            # Safely get company IDs, filtering out _unknown objects
+            company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
+            if not company_ids:
+                continue
+                
             # Check branch only if it has company_id field
             if record.branch_id and hasattr(record.branch_id, 'company_id') and record.branch_id.company_id:
                 if record.branch_id.company_id.id not in company_ids:
