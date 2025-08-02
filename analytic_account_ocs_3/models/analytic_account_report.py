@@ -520,282 +520,241 @@ class AnalyticAccountReport(models.Model):
         for record in self:
             if record.date_from and record.date_to and record.date_from > record.date_to:
                 raise ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
-
+    
     def generate_excel_report(self):
         """إنشاء تقرير Excel لتقرير مراكز التكلفة"""
         self.ensure_one()
-        try:
-            output = io.BytesIO()
-            workbook = xlsxwriter.Workbook(output, {'in_memory': True, 'right_to_left': True})
-            worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
-            worksheet.right_to_left()
-
-            # تنسيقات الخلايا
-            title_format = workbook.add_format({
-                'bold': True, 'align': 'center', 'valign': 'vcenter',
-                'font_size': 16, 'font_color': '#4472C4'
-            })
-            header_format = workbook.add_format({
-                'bold': True, 'align': 'center', 'valign': 'vcenter',
-                'bg_color': '#4472C4', 'font_color': 'white', 'border': 1,
-                'font_size': 12, 'text_wrap': True
-            })
-            currency_format = workbook.add_format({
-                'num_format': '#,##0.00', 'border': 1, 'align': 'right'
-            })
-            text_format = workbook.add_format({'border': 1, 'align': 'right'})
-            total_format = workbook.add_format({
-                'bold': True, 'num_format': '#,##0.00', 'border': 1,
-                'align': 'right', 'bg_color': '#D9E1F2'
-            })
-            label_format = workbook.add_format({
-                'bold': True, 'align': 'right', 'border': 1
-            })
-            section_format = workbook.add_format({
-                'bold': True, 'align': 'right', 'border': 1,
-                'bg_color': '#E6F2FF'
-            })
-
-            # إضافة شعار الشركة
-            row = 0
-            if len(self.company_ids) == 1 and self.company_ids[0].logo:
-                try:
-                    image_data = io.BytesIO(base64.b64decode(self.company_ids[0].logo))
-                    worksheet.merge_range(row, 4, row + 1, 4, '')
-                    worksheet.insert_image(row, 4, 'logo.png', {
-                        'image_data': image_data,
-                        'x_scale': 0.15,
-                        'y_scale': 0.15,
-                        'x_offset': 10,
-                        'y_offset': 10,
-                        'object_position': 3,
-                        'positioning': 1
-                    })
-                    worksheet.set_row(row, 80)
-                    row += 1
-                    worksheet.set_row(row, 15)
-                    row += 1
-                except Exception as e:
-                    logger.error(f"Failed to insert company logo: {str(e)}")
-                    pass
-
-            # إضافة عنوان التقرير
-            worksheet.merge_range(row, 0, row, 6, 'تقرير مراكز التكلفة', title_format)
-            row += 1
-
-            # إضافة معلومات الشركات المختارة
-            if self.company_ids:
-                companies = ", ".join(self.company_ids.mapped('name'))
-                worksheet.merge_range(row, 0, row, 6, f'الشركات: {companies}',
-                                      workbook.add_format({'align': 'center', 'font_size': 12}))
-                row += 1
-
-            # Remove branch handling - no longer needed
-
-            if self.group_id:
-                worksheet.merge_range(row, 0, row, 6, f'المجموعة: {self.group_id.name}',
-                                      workbook.add_format({'align': 'center', 'font_size': 12}))
-                row += 1
-            worksheet.merge_range(row, 0, row, 6, f'من {self.date_from} إلى {self.date_to}',
-                                  workbook.add_format({'align': 'center', 'font_size': 12}))
-            row += 2
-
-            # إضافة ملخص التقرير
-            worksheet.write(row, 0, 'إجمالي المصروفات', label_format)
-            worksheet.write(row, 1, round(self.total_expenses, 2), currency_format)
-            row += 1
-
-            worksheet.write(row, 0, 'إجمالي الإيرادات', label_format)
-            worksheet.write(row, 1, round(self.total_revenues, 2), currency_format)
-            row += 1
-
-            worksheet.write(row, 0, 'إجمالي التحصيل (المدفوعات)', label_format)
-            worksheet.write(row, 1, round(self.total_collections, 2), currency_format)
-            row += 1
-
-            worksheet.write(row, 0, 'إجمالي المديونية (المتبقي)', label_format)
-            worksheet.write(row, 1, round(self.total_debts, 2), currency_format)
-            row += 2
-
-            # إنشاء صف العناوين
-            headers = [
-                'المجموعة',
-                'مركز التكلفة',
-                'الشريك',
-                'المصروفات',
-                'الإيرادات',
-                'التحصيل (المدفوعات)',
-                'المديونية (المتبقي)'
-            ]
-
-            for col, header in enumerate(headers):
-                worksheet.write(row, col, header, header_format)
-            row += 1
-
-            # البحث عن جميع مراكز التكلفة المطلوبة
-            company_ids = [c.id for c in self.company_ids if c._name == 'res.company' and c.id]
-            if not company_ids:
-                workbook.close()
-                return {
-                    'file_name': f"تقرير_مراكز_التكلفة_{self.date_from}_إلى_{self.date_to}.xlsx",
-                    'file_content': b'',
-                    'file_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                }
-            
-            analytic_domain = [('company_id', 'in', company_ids)]
-            
-            # Remove branch handling - no longer needed
-            if self.group_id and self.group_id.id:
-                analytic_domain.append(('group_id', '=', self.group_id.id))
-            if self.analytic_account_ids:
-                analytic_account_ids = [a.id for a in self.analytic_account_ids if a._name == 'account.analytic.account' and a.id]
-                if analytic_account_ids:
-                    analytic_domain.append(('id', 'in', analytic_account_ids))
-
-            analytic_accounts = self.env['account.analytic.account'].search(analytic_domain)
-
-            # تجميع النتائج حسب المجموعة
-            group_dict = defaultdict(lambda: {
-                'accounts': [],
-                'total_expenses': 0.0,
-                'total_revenues': 0.0,
-                'total_collections': 0.0,
-                'total_debts': 0.0
-            })
-
-            for account in analytic_accounts:
-                # حساب المصروفات لهذا المركز
-                expenses_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('balance', '<', 0)
-                ]
-                # Remove branch handling - no longer needed
-                expense_lines = self.env['account.move.line'].search(expenses_domain)
-                account_expenses = abs(sum(line.balance for line in expense_lines))
-
-                # حساب الإيرادات لهذا المركز
-                revenues_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('balance', '>', 0)
-                ]
-                # Remove branch handling - no longer needed
-                revenue_lines = self.env['account.move.line'].search(revenues_domain)
-                account_revenues = sum(line.balance for line in revenue_lines)
-
-                # حساب التحصيل لهذا المركز
-                payments_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('payment_id', '!=', False)
-                ]
-                # Remove branch handling - no longer needed
-                payment_lines = self.env['account.move.line'].search(payments_domain)
-                account_collections = abs(sum(line.balance for line in payment_lines))
-
-                # حساب المديونية لهذا المركز
-                invoices_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', '!=', 'paid'),
-                    ('balance', '>', 0)
-                ]
-                # Remove branch handling - no longer needed
-                invoice_lines = self.env['account.move.line'].search(invoices_domain)
-                account_debts = sum(line.amount_residual for line in invoice_lines)
-
-                # الحصول على الشريك من حساب التحليلي
-                partner = account.partner_id or False
-
-                # تخزين النتائج
-                group_dict[account.group_id]['accounts'].append({
-                    'account': account,
-                    'partner': partner,
-                    'expenses': account_expenses,
-                    'revenues': account_revenues,
-                    'collections': account_collections,
-                    'debts': account_debts
+        # إنشاء كتاب Excel
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True, 'right_to_left': True})
+        worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
+        worksheet.right_to_left()
+    
+        # تنسيقات الخلايا
+        title_format = workbook.add_format({
+            'bold': True, 'align': 'center', 'valign': 'vcenter',
+            'font_size': 16, 'font_color': '#4472C4'
+        })
+        header_format = workbook.add_format({
+            'bold': True, 'align': 'center', 'valign': 'vcenter',
+            'bg_color': '#4472C4', 'font_color': 'white', 'border': 1,
+            'font_size': 12, 'text_wrap': True
+        })
+        currency_format = workbook.add_format({
+            'num_format': '#,##0.00', 'border': 1, 'align': 'right'
+        })
+        text_format = workbook.add_format({'border': 1, 'align': 'right'})
+        total_format = workbook.add_format({
+            'bold': True, 'num_format': '#,##0.00', 'border': 1,
+            'align': 'right', 'bg_color': '#D9E1F2'
+        })
+        label_format = workbook.add_format({
+            'bold': True, 'align': 'right', 'border': 1
+        })
+        section_format = workbook.add_format({
+            'bold': True, 'align': 'right', 'border': 1,
+            'bg_color': '#E6F2FF'
+        })
+    
+        # إضافة شعار الشركة
+        row = 0
+        if self.company_id.logo:
+            try:
+                image_data = io.BytesIO(base64.b64decode(self.company_id.logo))
+                worksheet.merge_range(row, 3, row + 1, 3, '')
+                worksheet.insert_image(row, 3, 'logo.png', {
+                    'image_data': image_data,
+                    'x_scale': 0.15,
+                    'y_scale': 0.15,
+                    'x_offset': 10,
+                    'y_offset': 10,
+                    'object_position': 3,
+                    'positioning': 1
                 })
-
-                # تحديث إجماليات المجموعة
-                group_dict[account.group_id]['total_expenses'] += account_expenses
-                group_dict[account.group_id]['total_revenues'] += account_revenues
-                group_dict[account.group_id]['total_collections'] += account_collections
-                group_dict[account.group_id]['total_debts'] += account_debts
-
-            # عرض النتائج حسب المجموعة
-            for group, data in group_dict.items():
-                # عنوان المجموعة
-                worksheet.write(row, 0, group.name if group else 'بدون مجموعة', section_format)
-                worksheet.merge_range(row, 1, row, 6, '', section_format)
+                worksheet.set_row(row, 80)
                 row += 1
-
-                # تفاصيل مراكز التكلفة في هذه المجموعة
-                for account_data in data['accounts']:
-                    account = account_data['account']
-                    partner_name = account_data['partner'].name if account_data['partner'] else ''
-                    worksheet.write(row, 0, '', text_format)
-                    worksheet.write(row, 1, account.name, text_format)
-                    worksheet.write(row, 2, partner_name, text_format)
-                    worksheet.write(row, 3, round(account_data['expenses'], 2), currency_format)
-                    worksheet.write(row, 4, round(account_data['revenues'], 2), currency_format)
-                    worksheet.write(row, 5, round(account_data['collections'], 2), currency_format)
-                    worksheet.write(row, 6, round(account_data['debts'], 2), currency_format)
-                    row += 1
-
-                # إجمالي المجموعة
-                worksheet.write(row, 0, '', total_format)
-                worksheet.write(row, 1, 'إجمالي المجموعة', total_format)
-                worksheet.write(row, 2, '', total_format)
-                worksheet.write(row, 3, round(data['total_expenses'], 2), total_format)
-                worksheet.write(row, 4, round(data['total_revenues'], 2), total_format)
-                worksheet.write(row, 5, round(data['total_collections'], 2), total_format)
-                worksheet.write(row, 6, round(data['total_debts'], 2), total_format)
+                worksheet.set_row(row, 15)
                 row += 1
-
-            # إجمالي عام
-            worksheet.write(row, 0, '', total_format)
-            worksheet.write(row, 1, 'الإجمالي العام', total_format)
-            worksheet.write(row, 2, '', total_format)
-            worksheet.write(row, 3, round(self.total_expenses, 2), total_format)
-            worksheet.write(row, 4, round(self.total_revenues, 2), total_format)
-            worksheet.write(row, 5, round(self.total_collections, 2), total_format)
-            worksheet.write(row, 6, round(self.total_debts, 2), total_format)
+            except Exception as e:
+                logger.error(f"Failed to insert company logo: {str(e)}")
+                pass
+    
+        # إضافة عنوان التقرير
+        worksheet.merge_range(row, 0, row, 5, 'تقرير مراكز التكلفة', title_format)
+        row += 1
+        if self.group_id:
+            worksheet.merge_range(row, 0, row, 5, f'المجموعة: {self.group_id.name}',
+                                  workbook.add_format({'align': 'center', 'font_size': 12}))
             row += 1
-
-            # ضبط عرض الأعمدة
-            worksheet.set_column(0, 0, 25)  # المجموعة
-            worksheet.set_column(1, 1, 30)  # مركز التكلفة
-            worksheet.set_column(2, 2, 25)  # الشريك
-            worksheet.set_column(3, 6, 15)  # الأرقام
-
-            # إغلاق الكتاب وحفظه
-            workbook.close()
-            output.seek(0)
-
-            return {
-                'file_name': f"تقرير_مراكز_التكلفة_{self.date_from}_إلى_{self.date_to}.xlsx",
-                'file_content': output.read(),
-                'file_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }
-        except Exception as e:
-            logger.error("Error generating Excel report: %s", str(e))
-            raise
-
+        worksheet.merge_range(row, 0, row, 5, f'من {self.date_from} إلى {self.date_to}',
+                              workbook.add_format({'align': 'center', 'font_size': 12}))
+        row += 2
+    
+        # إضافة ملخص التقرير
+        worksheet.write(row, 0, 'إجمالي المصروفات', label_format)
+        worksheet.write(row, 1, round(self.total_expenses, 2), currency_format)
+        row += 1
+    
+        worksheet.write(row, 0, 'إجمالي الإيرادات', label_format)
+        worksheet.write(row, 1, round(self.total_revenues, 2), currency_format)
+        row += 1
+    
+        worksheet.write(row, 0, 'إجمالي التحصيل (المدفوعات)', label_format)
+        worksheet.write(row, 1, round(self.total_collections, 2), currency_format)
+        row += 1
+    
+        worksheet.write(row, 0, 'إجمالي المديونية (المتبقي)', label_format)
+        worksheet.write(row, 1, round(self.total_debts, 2), currency_format)
+        row += 2
+    
+        # إنشاء صف العناوين
+        headers = [
+            'المجموعة',
+            'مركز التكلفة',
+            'المصروفات',
+            'الإيرادات',
+            'التحصيل (المدفوعات)',
+            'المديونية (المتبقي)'
+        ]
+    
+        for col, header in enumerate(headers):
+            worksheet.write(row, col, header, header_format)
+        row += 1
+    
+        # البحث عن جميع مراكز التكلفة المطلوبة
+        analytic_domain = [('company_id', '=', self.company_id.id)]
+        if self.group_id:
+            analytic_domain.append(('group_id', '=', self.group_id.id))
+        if self.analytic_account_ids:
+            analytic_domain.append(('id', 'in', self.analytic_account_ids.ids))
+    
+        analytic_accounts = self.env['account.analytic.account'].search(analytic_domain)
+    
+        # تجميع النتائج حسب المجموعة
+        group_dict = defaultdict(lambda: {
+            'accounts': [],
+            'total_expenses': 0.0,
+            'total_revenues': 0.0,
+            'total_collections': 0.0,
+            'total_debts': 0.0
+        })
+    
+        for account in analytic_accounts:
+            # حساب المصروفات لهذا المركز
+            expenses_domain = [
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('company_id', '=', self.company_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('analytic_account_id', '=', account.id),
+                ('balance', '<', 0)
+            ]
+            expense_lines = self.env['account.move.line'].search(expenses_domain)
+            account_expenses = abs(sum(line.balance for line in expense_lines))
+    
+            # حساب الإيرادات لهذا المركز
+            revenues_domain = [
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('company_id', '=', self.company_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('analytic_account_id', '=', account.id),
+                ('balance', '>', 0)
+            ]
+            revenue_lines = self.env['account.move.line'].search(revenues_domain)
+            account_revenues = sum(line.balance for line in revenue_lines)
+    
+            # حساب التحصيل لهذا المركز
+            payments_domain = [
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('company_id', '=', self.company_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('analytic_account_id', '=', account.id),
+                ('payment_id', '!=', False)
+            ]
+            payment_lines = self.env['account.move.line'].search(payments_domain)
+            account_collections = abs(sum(line.balance for line in payment_lines))
+    
+            # حساب المديونية لهذا المركز
+            invoices_domain = [
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('company_id', '=', self.company_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('analytic_account_id', '=', account.id),
+                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                ('move_id.payment_state', '!=', 'paid'),
+                ('balance', '>', 0)
+            ]
+            invoice_lines = self.env['account.move.line'].search(invoices_domain)
+            account_debts = sum(line.amount_residual for line in invoice_lines)
+    
+            # تخزين النتائج
+            group_dict[account.group_id]['accounts'].append({
+                'account': account,
+                'expenses': account_expenses,
+                'revenues': account_revenues,
+                'collections': account_collections,
+                'debts': account_debts
+            })
+    
+            # تحديث إجماليات المجموعة
+            group_dict[account.group_id]['total_expenses'] += account_expenses
+            group_dict[account.group_id]['total_revenues'] += account_revenues
+            group_dict[account.group_id]['total_collections'] += account_collections
+            group_dict[account.group_id]['total_debts'] += account_debts
+    
+        # عرض النتائج حسب المجموعة
+        for group, data in group_dict.items():
+            # عنوان المجموعة
+            worksheet.write(row, 0, group.name if group else 'بدون مجموعة', section_format)
+            worksheet.merge_range(row, 1, row, 5, '', section_format)
+            row += 1
+    
+            # تفاصيل مراكز التكلفة في هذه المجموعة
+            for account_data in data['accounts']:
+                account = account_data['account']
+                worksheet.write(row, 0, '', text_format)
+                worksheet.write(row, 1, account.name, text_format)
+                worksheet.write(row, 2, round(account_data['expenses'], 2), currency_format)
+                worksheet.write(row, 3, round(account_data['revenues'], 2), currency_format)
+                worksheet.write(row, 4, round(account_data['collections'], 2), currency_format)
+                worksheet.write(row, 5, round(account_data['debts'], 2), currency_format)
+                row += 1
+    
+            # إجمالي المجموعة
+            worksheet.write(row, 0, '', total_format)
+            worksheet.write(row, 1, 'إجمالي المجموعة', total_format)
+            worksheet.write(row, 2, round(data['total_expenses'], 2), total_format)
+            worksheet.write(row, 3, round(data['total_revenues'], 2), total_format)
+            worksheet.write(row, 4, round(data['total_collections'], 2), total_format)
+            worksheet.write(row, 5, round(data['total_debts'], 2), total_format)
+            row += 1
+    
+        # إجمالي عام
+        worksheet.write(row, 0, '', total_format)
+        worksheet.write(row, 1, 'الإجمالي العام', total_format)
+        worksheet.write(row, 2, round(self.total_expenses, 2), total_format)
+        worksheet.write(row, 3, round(self.total_revenues, 2), total_format)
+        worksheet.write(row, 4, round(self.total_collections, 2), total_format)
+        worksheet.write(row, 5, round(self.total_debts, 2), total_format)
+        row += 1
+    
+        # ضبط عرض الأعمدة
+        worksheet.set_column(0, 0, 25)  # المجموعة
+        worksheet.set_column(1, 1, 30)  # مركز التكلفة
+        worksheet.set_column(2, 5, 15)  # الأرقام
+    
+        # إغلاق الكتاب وحفظه
+        workbook.close()
+        output.seek(0)
+    
+        return {
+            'file_name': f"تقرير_مراكز_التكلفة_{self.date_from}_إلى_{self.date_to}.xlsx",
+            'file_content': output.read(),
+            'file_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        }
     def generate_pdf_report(self):
         """إنشاء تقرير PDF لتقرير مراكز التكلفة"""
         self.ensure_one()
