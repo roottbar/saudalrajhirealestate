@@ -98,10 +98,6 @@
                         <page string="التفاصيل" attrs="{'invisible': [('id', '=', False)]}">
                             <field name="report_lines" widget="html" nolabel="1" class="oe_no_button"/>
                         </page>
-                        
-                        <page string="التحليل" attrs="{'invisible': [('id', '=', False)]}">
-                            <field name="analysis_data" widget="graph" nolabel="1"/>
-                        </page>
                     </notebook>
                 </sheet>
             </form>
