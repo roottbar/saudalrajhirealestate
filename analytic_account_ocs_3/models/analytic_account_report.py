@@ -131,6 +131,9 @@ class AnalyticAccountReport(models.Model):
                 logger.error("Error computing analytic accounts: %s", str(e))
                 record.analytic_account_ids = self.env['account.analytic.account']
 
+        # Call compute analytic accounts after setting up the domain
+        self._compute_analytic_accounts()
+
     @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'branch_id')
     def _compute_totals(self):
         for record in self:
@@ -1228,7 +1231,7 @@ class AnalyticAccountReport(models.Model):
         ]
         if self.branch_id and hasattr(self.branch_id, 'id') and self.branch_id.id:
             domain.append(('branch_id', '=', self.branch_id.id))
-        if self.group_id:
+        if self.group_id and hasattr(self.group_id, 'id') and self.group_id.id:
             domain.append(('account_id.group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
             # Safely get analytic account IDs, filtering out _unknown objects
