@@ -20,6 +20,11 @@ from reportlab.pdfbase.ttfonts import TTFont
 logger = logging.getLogger(__name__)
 
 
+from odoo.http import request
+import base64
+import io
+import xlsxwriter
+
 class AnalyticAccountReport(models.Model):
     _name = 'analytic.account.report'
     _description = 'تقرير مراكز التكلفة'
@@ -100,6 +105,40 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_analytic_accounts',
         store=True
     )
+
+    def action_generate_excel_report(self):
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
+        # مثال: كتابة رؤوس الأعمدة
+        worksheet.write(0, 0, 'الاسم')
+        worksheet.write(0, 1, 'الإيرادات')
+        worksheet.write(0, 2, 'المصروفات')
+        # مثال: كتابة بيانات التقرير
+        row = 1
+        for rec in self:
+            worksheet.write(row, 0, rec.name)
+            worksheet.write(row, 1, rec.total_revenues)
+            worksheet.write(row, 2, rec.total_expenses)
+            row += 1
+        workbook.close()
+        output.seek(0)
+        file_data = output.read()
+        output.close()
+        attachment = self.env['ir.attachment'].create({
+            'name': 'تقرير مراكز التكلفة.xlsx',
+            'type': 'binary',
+            'datas': base64.b64encode(file_data),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        })
+        download_url = '/web/content/%s?download=true' % (attachment.id)
+        return {
+            'type': 'ir.actions.act_url',
+            'url': download_url,
+            'target': 'new',
+        }
 
     @api.depends('company_ids')
     def _compute_main_company(self):
@@ -1069,27 +1108,38 @@ class AnalyticAccountReport(models.Model):
             raise
 
     def action_generate_excel_report(self):
-        """إجراء لإنشاء وتنزيل التقرير"""
-        self.ensure_one()
-        try:
-            report_data = self.generate_excel_report()
-
-            attachment = self.env['ir.attachment'].create({
-                'name': report_data['file_name'],
-                'datas': base64.b64encode(report_data['file_content']),
-                'res_model': 'analytic.account.report',
-                'res_id': self.id,
-                'type': 'binary'
-            })
-
-            return {
-                'type': 'ir.actions.act_url',
-                'url': '/web/content/%s?download=true' % attachment.id,
-                'target': 'self',
-            }
-        except Exception as e:
-            logger.error("Failed to generate account statement report: %s", str(e))
-            raise
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
+        # مثال: كتابة رؤوس الأعمدة
+        worksheet.write(0, 0, 'الاسم')
+        worksheet.write(0, 1, 'الإيرادات')
+        worksheet.write(0, 2, 'المصروفات')
+        # مثال: كتابة بيانات التقرير
+        row = 1
+        for rec in self:
+            worksheet.write(row, 0, rec.name)
+            worksheet.write(row, 1, rec.total_revenues)
+            worksheet.write(row, 2, rec.total_expenses)
+            row += 1
+        workbook.close()
+        output.seek(0)
+        file_data = output.read()
+        output.close()
+        attachment = self.env['ir.attachment'].create({
+            'name': 'تقرير مراكز التكلفة.xlsx',
+            'type': 'binary',
+            'datas': base64.b64encode(file_data),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        })
+        download_url = '/web/content/%s?download=true' % (attachment.id)
+        return {
+            'type': 'ir.actions.act_url',
+            'url': download_url,
+            'target': 'new',
+        }
 
     def action_generate_pdf_report(self):
         """إجراء لإنشاء وتنزيل تقرير PDF"""
