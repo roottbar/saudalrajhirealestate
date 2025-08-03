@@ -61,7 +61,7 @@ class AnalyticAccountReport(models.Model):
     analytic_account_id = fields.Many2one(
         'account.analytic.account',
         string='مركز التكلفة',
-        domain="[('company_id', 'in', company_ids), ('group_id', '=?', group_id), ('operating_unit_id', '=?', operating_unit_id)]"
+        domain="[('company_id', 'in', company_ids), ('active', '=', True), ('group_id', '=?', group_id), ('operating_unit_id', '=?', operating_unit_id)]"
     )
     
     company_currency_id = fields.Many2one(
@@ -139,46 +139,49 @@ class AnalyticAccountReport(models.Model):
 
     @api.depends('group_id', 'analytic_account_id', 'company_ids', 'operating_unit_id')
     def _compute_analytic_accounts(self):
-        """حساب مراكز التكلفة بناءً على المعايير المحددة"""
+        """حساب مراكز التكلفة بناءً على المعايير المحددة مع التسلسل الهرمي"""
         for record in self:
             try:
                 domain = [('active', '=', True)]
                 
-                # تصفية حسب الشركات
+                # 1. تصفية حسب الشركات (إجباري)
                 if record.company_ids:
                     company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
                     if company_ids:
                         domain.append(('company_id', 'in', company_ids))
                     else:
-                        # إذا لم توجد شركات صالحة، لا تعرض أي مراكز تكلفة
                         record.analytic_account_ids = self.env['account.analytic.account']
                         continue
                 else:
                     # إذا لم يتم اختيار شركات، استخدم الشركة الحالية
                     domain.append(('company_id', '=', self.env.company.id))
 
-                # تصفية حسب الفرع
+                # 2. تصفية حسب الفرع (اختياري)
                 if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
                     domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
                     
-                # تصفية حسب المجموعة
+                # 3. تصفية حسب المجموعة (اختياري)
                 if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
-                    # إذا تم اختيار مجموعة، عرض مراكز التكلفة في هذه المجموعة فقط
-                    domain.append(('group_id', '=', record.group_id.id))
-                    
-                # تصفية حسب مركز التكلفة المحدد
+                    # إذا تم اختيار مجموعة، عرض مراكز التكلفة في هذه المجموعة أو مجموعاتها الفرعية
+                    group_ids = [record.group_id.id]
+                    # إضافة المجموعات الفرعية
+                    child_groups = self.env['account.analytic.group'].search([('parent_id', 'child_of', record.group_id.id)])
+                    group_ids.extend(child_groups.ids)
+                    domain.append(('group_id', 'in', group_ids))
+                        
+                # 4. تصفية حسب مركز التكلفة المحدد (اختياري)
                 if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
                     domain.append(('id', '=', record.analytic_account_id.id))
 
                 analytic_accounts = self.env['account.analytic.account'].search(domain)
                 record.analytic_account_ids = analytic_accounts
                 
-                # تسجيل معلومات التشخيص المحسنة
+                # تسجيل معلومات التشخيص
                 logger.info(f"=== تشخيص مراكز التكلفة للسجل {record.id} ===")
                 logger.info(f"الشركات المختارة: {[c.name for c in record.company_ids] if record.company_ids else ['الشركة الحالية']}")
-                logger.info(f"الفرع المختار: {record.operating_unit_id.name if record.operating_unit_id else 'غير محدد'}")
-                logger.info(f"المجموعة المختارة: {record.group_id.name if record.group_id else 'غير محددة'}")
-                logger.info(f"مركز التكلفة المحدد: {record.analytic_account_id.name if record.analytic_account_id else 'غير محدد'}")
+                logger.info(f"الفرع المختار: {record.operating_unit_id.name if record.operating_unit_id else 'جميع الفروع'}")
+                logger.info(f"المجموعة المختارة: {record.group_id.name if record.group_id else 'جميع المجموعات'}")
+                logger.info(f"مركز التكلفة المحدد: {record.analytic_account_id.name if record.analytic_account_id else 'جميع مراكز التكلفة'}")
                 logger.info(f"Domain المستخدم: {domain}")
                 logger.info(f"عدد مراكز التكلفة الموجودة: {len(analytic_accounts)}")
                 
@@ -187,27 +190,15 @@ class AnalyticAccountReport(models.Model):
                 else:
                     logger.warning("لم يتم العثور على أي مراكز تكلفة تطابق المعايير المحددة")
                     
-                    # فحص إضافي لمعرفة سبب عدم وجود مراكز تكلفة
-                    all_accounts = self.env['account.analytic.account'].search([('active', '=', True)])
-                    logger.info(f"إجمالي مراكز التكلفة النشطة في النظام: {len(all_accounts)}")
-                    
-                    if record.company_ids:
-                        company_accounts = self.env['account.analytic.account'].search([
-                            ('active', '=', True),
-                            ('company_id', 'in', [c.id for c in record.company_ids])
-                        ])
-                        logger.info(f"مراكز التكلفة للشركات المختارة: {len(company_accounts)}")
-                    
-                
             except Exception as e:
                 logger.error("خطأ في حساب مراكز التكلفة: %s", str(e))
                 record.analytic_account_ids = self.env['account.analytic.account']
 
-    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id')
+    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id', 'group_id', 'analytic_account_id')
     def _compute_totals(self):
         for record in self:
             try:
-                if not record.company_ids or not record.analytic_account_ids:
+                if not record.company_ids:
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
                     record.total_collections = 0.0
@@ -215,68 +206,60 @@ class AnalyticAccountReport(models.Model):
                     continue
 
                 company_ids = [c.id for c in record.company_ids]
-                analytic_account_ids = [a.id for a in record.analytic_account_ids]
                 
-                # حساب المصروفات (الحسابات المدينة)
-                expense_domain = [
+                # استخدام مراكز التكلفة المحسوبة أو جميع مراكز التكلفة للشركة
+                if record.analytic_account_ids:
+                    analytic_account_ids = [a.id for a in record.analytic_account_ids]
+                else:
+                    # إذا لم توجد مراكز تكلفة محسوبة، استخدم جميع مراكز التكلفة للشركة
+                    all_accounts = self.env['account.analytic.account'].search([
+                        ('company_id', 'in', company_ids),
+                        ('active', '=', True)
+                    ])
+                    analytic_account_ids = all_accounts.ids
+                
+                if not analytic_account_ids:
+                    record.total_expenses = 0.0
+                    record.total_revenues = 0.0
+                    record.total_collections = 0.0
+                    record.total_debts = 0.0
+                    continue
+                
+                # بناء Domain أساسي للبحث
+                base_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
                     ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('account_id.internal_group', '=', 'expense')
+                    ('move_id.state', '=', 'posted')
                 ]
-                if record.operating_unit_id:
-                    expense_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
                 
+                # حساب المصروفات
+                expense_domain = base_domain + [('account_id.internal_group', '=', 'expense')]
                 expense_lines = self.env['account.move.line'].search(expense_domain)
                 record.total_expenses = sum(expense_lines.mapped('balance'))
                 
-                # حساب الإيرادات (الحسابات الدائنة)
-                revenue_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('account_id.internal_group', '=', 'income')
-                ]
-                if record.operating_unit_id:
-                    revenue_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
-                
+                # حساب الإيرادات
+                revenue_domain = base_domain + [('account_id.internal_group', '=', 'income')]
                 revenue_lines = self.env['account.move.line'].search(revenue_domain)
                 record.total_revenues = sum(revenue_lines.mapped('balance'))
                 
-                # حساب التحصيلات (المدفوعات)
-                payment_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('payment_id', '!=', False)
-                ]
-                if record.operating_unit_id:
-                    payment_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
-                
+                # حساب التحصيلات
+                payment_domain = base_domain + [('payment_id', '!=', False)]
                 payment_lines = self.env['account.move.line'].search(payment_domain)
                 record.total_collections = sum(abs(line.balance) for line in payment_lines)
                 
-                # حساب الديون (الفواتير غير المدفوعة)
-                invoice_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
+                # حساب الديون
+                invoice_domain = base_domain + [
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', 'in', ['not_paid', 'partial'])
                 ]
-                if record.operating_unit_id:
-                    invoice_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
-                
                 invoice_lines = self.env['account.move.line'].search(invoice_domain)
                 record.total_debts = sum(line.amount_residual for line in invoice_lines)
+                
+                logger.info(f"حساب الإجماليات - الشركات: {len(company_ids)}, مراكز التكلفة: {len(analytic_account_ids)}")
+                logger.info(f"المصروفات: {record.total_expenses}, الإيرادات: {record.total_revenues}")
+                logger.info(f"التحصيلات: {record.total_collections}, الديون: {record.total_debts}")
                 
             except Exception as e:
                 logger.error("Error in _compute_totals: %s", str(e))
@@ -506,112 +489,133 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('company_ids')
     def _onchange_company_ids(self):
-        for record in self:
-            try:
-                if not record.company_ids:
-                    continue
-
-                company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
-                if not company_ids:
-                    continue
-
-                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
-                    if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
-                        record.group_id = False
-                    elif record.group_id.company_id.id not in company_ids:
-                        record.group_id = False
-
-                if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
-                    if not hasattr(record.analytic_account_id, 'company_id') or not record.analytic_account_id.company_id:
-                        record.analytic_account_id = False
-                    elif record.analytic_account_id.company_id.id not in company_ids:
-                        record.analytic_account_id = False
-
-            except Exception as e:
-                logger.error("Error in _onchange_company_ids: %s", str(e))
+        """تحديث الفروع والمجموعات ومراكز التكلفة عند تغيير الشركات"""
+        if self.company_ids:
+            company_ids = [c.id for c in self.company_ids]
+            
+            # إعادة تعيين الحقول إذا لم تعد صالحة
+            if self.operating_unit_id and self.operating_unit_id.company_id.id not in company_ids:
+                self.operating_unit_id = False
+                
+            if self.group_id and self.group_id.company_id.id not in company_ids:
+                self.group_id = False
+                
+            if self.analytic_account_id and self.analytic_account_id.company_id.id not in company_ids:
+                self.analytic_account_id = False
+                
+            return {
+                'domain': {
+                    'operating_unit_id': [('company_id', 'in', company_ids)],
+                    'group_id': [('company_id', 'in', company_ids)],
+                    'analytic_account_id': [('company_id', 'in', company_ids), ('active', '=', True)]
+                }
+            }
+        else:
+            # إذا لم يتم اختيار شركات، إعادة تعيين جميع الحقول
+            self.operating_unit_id = False
+            self.group_id = False
+            self.analytic_account_id = False
+            
+            return {
+                'domain': {
+                    'operating_unit_id': [],
+                    'group_id': [],
+                    'analytic_account_id': []
+                }
+            }
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
-        """عند تغيير الفرع، تصفية المجموعات ومراكز التكلفة"""
-        result = {'domain': {}}
-        
+        """تحديث المجموعات المتاحة عند تغيير الفرع"""
         if self.operating_unit_id:
-            # تصفية المجموعات المتاحة لهذا الفرع
-            available_groups = self.env['account.analytic.group'].search([
-                ('company_id', 'in', [c.id for c in self.company_ids])
+            # تصفية المجموعات حسب الشركة والفرع
+            domain = [('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id])]
+            
+            # البحث عن المجموعات التي لها مراكز تكلفة مرتبطة بالفرع المختار
+            analytic_accounts = self.env['account.analytic.account'].search([
+                ('operating_unit_id', '=', self.operating_unit_id.id),
+                ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
+                ('active', '=', True)
             ])
             
-            # البحث عن المجموعات التي تحتوي على مراكز تكلفة في هذا الفرع
-            valid_group_ids = []
-            for group in available_groups:
-                accounts_in_group = self.env['account.analytic.account'].search([
-                    ('operating_unit_id', '=', self.operating_unit_id.id),
-                    ('group_id', '=', group.id),
-                    ('active', '=', True)
-                ])
-                if accounts_in_group:
-                    valid_group_ids.append(group.id)
-            
-            result['domain']['group_id'] = [
-                ('company_id', 'in', [c.id for c in self.company_ids]),
-                ('id', 'in', valid_group_ids)
-            ]
-            
-            # إعادة تعيين المجموعة إذا لم تعد صالحة
-            if self.group_id and self.group_id.id not in valid_group_ids:
-                self.group_id = False
+            group_ids = analytic_accounts.mapped('group_id').ids
+            if group_ids:
+                domain.append(('id', 'in', group_ids))
+            else:
+                # إذا لم توجد مجموعات مرتبطة، عرض جميع المجموعات للشركة
+                pass
                 
-            # إعادة تعيين مركز التكلفة
+            # إعادة تعيين المجموعة ومركز التكلفة إذا لم تعد صالحة
+            if self.group_id and self.group_id.id not in group_ids:
+                self.group_id = False
             if self.analytic_account_id and self.analytic_account_id.operating_unit_id != self.operating_unit_id:
                 self.analytic_account_id = False
+                
+            return {
+                'domain': {
+                    'group_id': domain,
+                    'analytic_account_id': [
+                        ('operating_unit_id', '=', self.operating_unit_id.id),
+                        ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
+                        ('active', '=', True)
+                    ]
+                }
+            }
         else:
-            # إذا لم يتم اختيار فرع، إظهار جميع المجموعات
-            result['domain']['group_id'] = [
-                ('company_id', 'in', [c.id for c in self.company_ids])
-            ]
-            self.group_id = False
-            self.analytic_account_id = False
-        
-        return result
+            # إذا لم يتم اختيار فرع، عرض جميع المجموعات ومراكز التكلفة للشركة
+            company_domain = [('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id])]
+            
+            return {
+                'domain': {
+                    'group_id': company_domain,
+                    'analytic_account_id': company_domain + [('active', '=', True)]
+                }
+            }
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
-        """عند تغيير المجموعة، تصفية مراكز التكلفة"""
-        result = {'domain': {}}
-        
+        """تحديث مراكز التكلفة المتاحة عند تغيير المجموعة"""
         if self.group_id:
+            # تصفية مراكز التكلفة حسب المجموعة والفرع والشركة
             domain = [
-                ('company_id', 'in', [c.id for c in self.company_ids]),
-                ('group_id', '=', self.group_id.id),
+                ('group_id', 'child_of', self.group_id.id),  # تشمل المجموعات الفرعية
+                ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
                 ('active', '=', True)
             ]
             
             if self.operating_unit_id:
                 domain.append(('operating_unit_id', '=', self.operating_unit_id.id))
-            
-            result['domain']['analytic_account_id'] = domain
-            
-            # التحقق من توافق مركز التكلفة الحالي
+                
+            # إعادة تعيين مركز التكلفة إذا لم يعد صالحاً
             if self.analytic_account_id:
-                if (self.analytic_account_id.group_id != self.group_id or 
-                    (self.operating_unit_id and self.analytic_account_id.operating_unit_id != self.operating_unit_id)):
+                valid_accounts = self.env['account.analytic.account'].search(domain)
+                if self.analytic_account_id not in valid_accounts:
                     self.analytic_account_id = False
+                    
+            return {
+                'domain': {
+                    'analytic_account_id': domain
+                }
+            }
         else:
-            # إذا لم يتم اختيار مجموعة، إظهار جميع مراكز التكلفة
+            # إذا لم يتم اختيار مجموعة، عرض جميع مراكز التكلفة حسب الفرع والشركة
             domain = [
-                ('company_id', 'in', [c.id for c in self.company_ids]),
+                ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
                 ('active', '=', True)
             ]
+            
             if self.operating_unit_id:
                 domain.append(('operating_unit_id', '=', self.operating_unit_id.id))
-            
-            result['domain']['analytic_account_id'] = domain
-            self.analytic_account_id = False
-        
-        return result
+                
+            return {
+                'domain': {
+                    'analytic_account_id': domain
+                }
+            }
 
     @api.constrains('company_ids', 'group_id', 'analytic_account_id', 'operating_unit_id')
     def _check_company_consistency(self):
+        """التحقق من تطابق الشركات مع الحقول المرتبطة"""
         for record in self:
             if not record.company_ids:
                 continue
@@ -620,19 +624,34 @@ class AnalyticAccountReport(models.Model):
             if not company_ids:
                 continue
 
+            # التحقق من الفرع
+            if record.operating_unit_id and record.operating_unit_id.id:
+                if hasattr(record.operating_unit_id, 'company_id') and record.operating_unit_id.company_id:
+                    if record.operating_unit_id.company_id.id not in company_ids:
+                        raise ValidationError("الفرع المحدد لا ينتمي لأي من الشركات المحددة")
+
+            # التحقق من المجموعة
             if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                 if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
                     raise ValidationError("المجموعة المحددة لا تحتوي على شركة")
                 elif record.group_id.company_id.id not in company_ids:
                     raise ValidationError("المجموعة المحددة لا تنتمي لأي من الشركات المحددة")
                     
+            # التحقق من مركز التكلفة
             if record.analytic_account_id and record.analytic_account_id.id:
-                if record.analytic_account_id.company_id.id not in company_ids:
-                    raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")
-            
-            if record.operating_unit_id and record.operating_unit_id.id:
-                if record.operating_unit_id.company_id.id not in company_ids:
-                    raise ValidationError("الفرع المحدد لا ينتمي لأي من الشركات المحددة")
+                if hasattr(record.analytic_account_id, 'company_id') and record.analytic_account_id.company_id:
+                    if record.analytic_account_id.company_id.id not in company_ids:
+                        raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")
+                        
+                # التحقق من تطابق الفرع
+                if record.operating_unit_id and hasattr(record.analytic_account_id, 'operating_unit_id'):
+                    if record.analytic_account_id.operating_unit_id != record.operating_unit_id:
+                        raise ValidationError("مركز التكلفة المحدد لا ينتمي للفرع المختار")
+                        
+                # التحقق من تطابق المجموعة
+                if record.group_id and hasattr(record.analytic_account_id, 'group_id'):
+                    if record.analytic_account_id.group_id != record.group_id:
+                        raise ValidationError("مركز التكلفة المحدد لا ينتمي للمجموعة المختارة")
 
     @api.onchange('date_from')
     def _onchange_date_from(self):
