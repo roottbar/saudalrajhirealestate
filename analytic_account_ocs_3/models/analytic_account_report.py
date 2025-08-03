@@ -539,25 +539,28 @@ class AnalyticAccountReport(models.Model):
             if record.date_from and record.date_to and record.date_from > record.date_to:
                 raise ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
     def generate_excel_report(self):
-        """إنشاء تقرير Excel لتقرير مراكز التكلفة"""
+        """إنشاء وتنزيل تقرير Excel لمراكز التكلفة"""
         self.ensure_one()
+        
         # إنشاء كتاب Excel
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {
             'in_memory': True,
             'right_to_left': True,
             'strings_to_numbers': True,
-            'remove_timezone': True
+            'remove_timezone': True,
+            'default_date_format': 'dd/mm/yyyy'
         })
         
-        # إعداد التنسيقات
+        # إعداد التنسيقات مع دعم اللغة العربية
         title_format = workbook.add_format({
             'bold': True,
             'font_size': 16,
             'align': 'center',
             'valign': 'vcenter',
             'font_color': '#4472C4',
-            'border': 1
+            'border': 1,
+            'font_name': 'Arial'
         })
         
         header_format = workbook.add_format({
@@ -568,20 +571,23 @@ class AnalyticAccountReport(models.Model):
             'bg_color': '#4472C4',
             'font_color': 'white',
             'border': 1,
-            'text_wrap': True
+            'text_wrap': True,
+            'font_name': 'Arial'
         })
         
         currency_format = workbook.add_format({
             'num_format': '#,##0.00',
             'border': 1,
             'align': 'right',
-            'font_size': 10
+            'font_size': 10,
+            'font_name': 'Arial'
         })
         
         text_format = workbook.add_format({
             'border': 1,
             'align': 'right',
-            'font_size': 10
+            'font_size': 10,
+            'font_name': 'Arial'
         })
         
         total_format = workbook.add_format({
@@ -590,7 +596,8 @@ class AnalyticAccountReport(models.Model):
             'border': 1,
             'align': 'right',
             'bg_color': '#D9E1F2',
-            'font_size': 10
+            'font_size': 10,
+            'font_name': 'Arial'
         })
         
         section_format = workbook.add_format({
@@ -598,25 +605,27 @@ class AnalyticAccountReport(models.Model):
             'border': 1,
             'align': 'right',
             'bg_color': '#E6F2FF',
-            'font_size': 10
+            'font_size': 10,
+            'font_name': 'Arial'
         })
         
         label_format = workbook.add_format({
             'bold': True,
             'border': 1,
             'align': 'right',
-            'font_size': 10
+            'font_size': 10,
+            'font_name': 'Arial'
         })
     
         worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
         worksheet.right_to_left()
         
         # إعداد أعمدة الورقة
-        worksheet.set_column('A:A', 25)  # عمود المجموعة/مركز التكلفة
+        worksheet.set_column('A:A', 30)  # عمود المجموعة/مركز التكلفة
         worksheet.set_column('B:B', 15)  # عمود المصروفات
         worksheet.set_column('C:C', 15)  # عمود الإيرادات
-        worksheet.set_column('D:D', 15)  # عمود التحصيل
-        worksheet.set_column('E:E', 15)  # عمود المديونية
+        worksheet.set_column('D:D', 20)  # عمود التحصيل
+        worksheet.set_column('E:E', 20)  # عمود المديونية
         
         # بدء كتابة البيانات
         row = 0
@@ -632,7 +641,8 @@ class AnalyticAccountReport(models.Model):
                                 workbook.add_format({
                                     'align': 'center',
                                     'font_size': 12,
-                                    'border': 0
+                                    'border': 0,
+                                    'font_name': 'Arial'
                                 }))
             row += 1
         
@@ -642,7 +652,8 @@ class AnalyticAccountReport(models.Model):
                                 workbook.add_format({
                                     'align': 'center',
                                     'font_size': 12,
-                                    'border': 0
+                                    'border': 0,
+                                    'font_name': 'Arial'
                                 }))
             row += 1
         
@@ -651,7 +662,8 @@ class AnalyticAccountReport(models.Model):
                              workbook.add_format({
                                  'align': 'center',
                                  'font_size': 12,
-                                 'border': 0
+                                 'border': 0,
+                                 'font_name': 'Arial'
                              }))
         row += 2
         
@@ -754,12 +766,21 @@ class AnalyticAccountReport(models.Model):
         workbook.close()
         output.seek(0)
         
+        # إنشاء المرفق وإرجاع إجراء التنزيل
+        attachment = self.env['ir.attachment'].create({
+            'name': f"تقرير_مراكز_التكلفة_{self.date_from}_إلى_{self.date_to}.xlsx",
+            'type': 'binary',
+            'datas': base64.b64encode(output.getvalue()),
+            'res_model': 'analytic.account.report',
+            'res_id': self.id,
+            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        })
+        
         return {
-            'file_name': f"تقرير_مراكز_التكلفة_{self.date_from}_إلى_{self.date_to}.xlsx",
-            'file_content': output.read(),
-            'file_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'self',
         }
-
     def _calculate_analytic_amount(self, account, amount_type):
         """حساب المبالغ لكل حساب تحليلي"""
         domain = [
