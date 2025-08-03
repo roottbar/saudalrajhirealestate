@@ -64,8 +64,7 @@
                             <field name="operating_unit_id" string="الفرع" 
                                    options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="group_id" string="المجموعة" 
-                                   options="{'no_create': True, 'no_create_edit': True}"
-                                   attrs="{'readonly': [('operating_unit_id', '=', False)]}"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                         </group>
                         <group string="الفترة الزمنية">
                             <field name="date_from" string="من تاريخ"/>
