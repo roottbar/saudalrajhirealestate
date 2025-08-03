@@ -61,13 +61,17 @@
                     <group>
                         <group string="المعايير الأساسية">
                             <field name="company_ids" widget="many2many_tags" string="الشركات"/>
-                            <field name="operating_unit_id" string="الفرع"/>
-                            <field name="group_id" string="المجموعة"/>
+                            <field name="operating_unit_id" string="الفرع" 
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="group_id" string="المجموعة" 
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   attrs="{'readonly': [('operating_unit_id', '=', False)]}"/>
                         </group>
                         <group string="الفترة الزمنية">
                             <field name="date_from" string="من تاريخ"/>
                             <field name="date_to" string="إلى تاريخ"/>
-                            <field name="analytic_account_id" string="مركز التكلفة"/>
+                            <field name="analytic_account_id" string="مركز التكلفة" 
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                         </group>
                     </group>
 
