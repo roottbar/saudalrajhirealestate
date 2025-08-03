@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="company_ids" string="الشركات" widget="many2many_tags"/>
-                <!-- <field name="branch_id" string="الفرع"/> -->
+                <field name="operating_unit_id" string="الفرع"/>
                 <field name="group_id" string="مجموعة مراكز التكلفة"/>
                 <field name="analytic_account_id" string="مركز التكلفة"/>
                 <field name="date_from" string="من تاريخ"/>
@@ -31,7 +31,7 @@
                 <field name="name" string="الاسم"/>
                 <field name="state" widget="statusbar"/>
                 <field name="company_ids" widget="many2many_tags" string="الشركات" groups="base.group_multi_company"/>
-                <!-- <field name="branch_id" string="الفرع"/> -->
+                <field name="operating_unit_id" string="الفرع"/>
                 <field name="group_id" string="المجموعة"/>
                 <field name="date_from" string="من تاريخ"/>
                 <field name="date_to" string="إلى تاريخ"/>
@@ -52,8 +52,6 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
                     <button name="generate_excel_report" type="object" string="تصدير إكسل" class="btn-primary"/>
                     <button name="generate_pdf_report" type="object" string="تصدير PDF" class="btn-secondary"/>
-<!--                         <button name="action_print_excel" type="object" string="طباعة Excel" class="btn-primary"/>
-                        <button name="action_print_pdf" type="object" string="طباعة PDF" class="btn-default"/> -->
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -63,7 +61,7 @@
                     <group>
                         <group string="المعايير الأساسية">
                             <field name="company_ids" widget="many2many_tags" string="الشركات"/>
-                            <!-- <field name="branch_id" string="الفرع"/> -->
+                            <field name="operating_unit_id" string="الفرع"/>
                             <field name="group_id" string="المجموعة"/>
                         </group>
                         <group string="الفترة الزمنية">
