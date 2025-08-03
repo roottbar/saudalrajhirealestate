@@ -10,10 +10,16 @@ class OperatingUnit(models.Model):
 
     _name = "operating.unit"
     _description = "Operating Unit"
+    _order = "name"
 
     name = fields.Char(required=True)
     code = fields.Char(required=True)
     active = fields.Boolean(default=True)
+    automated_sequence = fields.Boolean(
+        string='Automated Sequence',
+        default=False,
+        help="If checked, the system will automatically generate sequence numbers"
+    )
     ref_analytic_account = fields.Integer(string='رقم اشارة الحساب التحليلي')
     company_id = fields.Many2one(
         "res.company",
