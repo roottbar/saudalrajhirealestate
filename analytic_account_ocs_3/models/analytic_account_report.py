@@ -237,15 +237,17 @@ class AnalyticAccountReport(models.Model):
                     record.total_debts = 0.0
                     continue
 
-                # استعلام واحد مجمع لجميع الإجماليات
+                # استعلام محسن ومصحح
                 query = """
                     SELECT 
-                        SUM(CASE WHEN balance < 0 THEN ABS(balance) ELSE 0 END) as total_expenses,
-                        SUM(CASE WHEN balance > 0 THEN balance ELSE 0 END) as total_revenues,
-                        SUM(CASE WHEN aml.payment_id IS NOT NULL THEN ABS(aml.balance) ELSE 0 END) as total_collections,
+                        SUM(CASE WHEN aml.balance < 0 THEN ABS(aml.balance) ELSE 0 END) as total_expenses,
+                        SUM(CASE WHEN aml.balance > 0 THEN aml.balance ELSE 0 END) as total_revenues,
+                        SUM(CASE WHEN (am.move_type IN ('out_payment', 'in_payment') OR 
+                                      (am.move_type IN ('out_invoice', 'in_invoice') AND am.payment_state = 'paid'))
+                                 THEN ABS(aml.balance) ELSE 0 END) as total_collections,
                         SUM(CASE WHEN am.move_type IN ('out_invoice', 'in_invoice') 
-                                 AND am.payment_state != 'paid' 
-                                 AND aml.balance > 0 
+                                 AND am.payment_state IN ('not_paid', 'partial')
+                                 AND aml.amount_residual > 0 
                                  THEN aml.amount_residual ELSE 0 END) as total_debts
                     FROM account_move_line aml
                     JOIN account_move am ON aml.move_id = am.id
@@ -254,12 +256,18 @@ class AnalyticAccountReport(models.Model):
                         AND aml.company_id = ANY(%s)
                         AND am.state = 'posted'
                         AND aml.analytic_account_id = ANY(%s)
+                        AND aml.analytic_account_id IS NOT NULL
                 """
                 
                 params = [record.date_from, record.date_to, company_ids, analytic_account_ids]
                 
+                # إضافة تسجيل للتشخيص
+                logger.info(f"Executing query with params: date_from={record.date_from}, date_to={record.date_to}, companies={len(company_ids)}, accounts={len(analytic_account_ids)}")
+                
                 self.env.cr.execute(query, params)
                 result = self.env.cr.fetchone()
+                
+                logger.info(f"Query result: {result}")
                 
                 if result:
                     record.total_expenses = result[0] or 0.0
@@ -288,6 +296,9 @@ class AnalyticAccountReport(models.Model):
                     continue
                 
                 company_ids = [c.id for c in record.company_ids if c._name == 'res.company' and c.id] if record.company_ids else []
+                
+                # إضافة تسجيل للتشخيص
+                logger.info(f"Computing report lines for {len(record.analytic_account_ids)} accounts, {len(company_ids)} companies")
                 
                 html_lines = []
                 html_lines.append("""
@@ -318,7 +329,7 @@ class AnalyticAccountReport(models.Model):
                 """)
 
                 if not record.analytic_account_ids or not company_ids:
-                    record.report_lines = "<p>لا توجد بيانات لعرضها</p>"
+                    record.report_lines = "<p>لا توجد بيانات لعرضها. تأكد من اختيار مراكز التكلفة والشركات.</p>"
                     continue
                     
                 analytic_account_ids = [a.id for a in record.analytic_account_ids if a._name == 'account.analytic.account' and a.id]
@@ -326,16 +337,18 @@ class AnalyticAccountReport(models.Model):
                     record.report_lines = "<p>لا توجد مراكز تكلفة صالحة</p>"
                     continue
                     
-                # جلب جميع البيانات مرة واحدة
+                # جلب جميع البيانات مرة واحدة مع تحسين الاستعلام
                 base_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
                     ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', analytic_account_ids)
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('analytic_account_id', '!=', False)  # تأكد من وجود مركز تكلفة
                 ]
                 
                 all_lines = self.env['account.move.line'].search(base_domain)
+                logger.info(f"Found {len(all_lines)} account move lines matching criteria")
                 
                 # تجميع البيانات حسب مركز التكلفة
                 account_data = {}
@@ -349,15 +362,21 @@ class AnalyticAccountReport(models.Model):
                             'debts': 0.0
                         }
                     
+                    # حساب المصروفات والإيرادات
                     if line.balance < 0:
                         account_data[account_id]['expenses'] += abs(line.balance)
                     elif line.balance > 0:
                         account_data[account_id]['revenues'] += line.balance
                         
-                    if line.payment_id:
+                    # حساب التحصيل - تحسين المنطق
+                    if line.move_id.move_type in ['out_payment', 'in_payment'] or \
+                       (line.move_id.move_type in ['out_invoice', 'in_invoice'] and line.move_id.payment_state == 'paid'):
                         account_data[account_id]['collections'] += abs(line.balance)
                         
-                    if line.move_id.move_type in ['out_invoice', 'in_invoice'] and line.move_id.payment_state != 'paid' and line.balance > 0:
+                    # حساب المديونية
+                    if line.move_id.move_type in ['out_invoice', 'in_invoice'] and \
+                       line.move_id.payment_state in ['not_paid', 'partial'] and \
+                       line.amount_residual > 0:
                         account_data[account_id]['debts'] += line.amount_residual
 
                 # تجميع النتائج حسب المجموعة ومركز التكلفة
@@ -752,35 +771,55 @@ class AnalyticAccountReport(models.Model):
             ('analytic_account_id', '=', account.id)
         ]
         
+        # إضافة تسجيل للتشخيص
+        logger.info(f"Calculating {amount_type} for account {account.name} with domain: {domain}")
+        
         if amount_type == 'expenses':
             domain.append(('balance', '<', 0))
             lines = self.env['account.move.line'].search(domain)
-            return abs(sum(lines.mapped('balance')))
+            result = abs(sum(lines.mapped('balance')))
+            logger.info(f"Expenses for {account.name}: {result} (from {len(lines)} lines)")
+            return result
         
         elif amount_type == 'revenues':
             domain.append(('balance', '>', 0))
             lines = self.env['account.move.line'].search(domain)
-            return sum(lines.mapped('balance'))
+            result = sum(lines.mapped('balance'))
+            logger.info(f"Revenues for {account.name}: {result} (from {len(lines)} lines)")
+            return result
         
         elif amount_type == 'collections':
-            domain.append(('payment_id', '!=', False))
-            lines = self.env['account.move.line'].search(domain)
-            return abs(sum(lines.mapped('balance')))
+            # تصحيح منطق التحصيل - البحث عن المدفوعات الفعلية
+            domain_payments = domain + [
+                ('move_id.move_type', 'in', ['out_payment', 'in_payment']),
+                ('balance', '!=', 0)
+            ]
+            payment_lines = self.env['account.move.line'].search(domain_payments)
+            
+            # أو البحث عن الفواتير المدفوعة
+            domain_paid_invoices = domain + [
+                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                ('move_id.payment_state', '=', 'paid'),
+                ('balance', '!=', 0)
+            ]
+            paid_invoice_lines = self.env['account.move.line'].search(domain_paid_invoices)
+            
+            result = abs(sum(payment_lines.mapped('balance'))) + abs(sum(paid_invoice_lines.mapped('balance')))
+            logger.info(f"Collections for {account.name}: {result} (payments: {len(payment_lines)}, paid invoices: {len(paid_invoice_lines)})")
+            return result
         
         elif amount_type == 'debts':
             domain += [
                 ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                ('move_id.payment_state', '!=', 'paid'),
-                ('balance', '>', 0)
+                ('move_id.payment_state', 'in', ['not_paid', 'partial']),
+                ('amount_residual', '>', 0)
             ]
             lines = self.env['account.move.line'].search(domain)
-            return sum(lines.mapped('amount_residual'))
+            result = sum(lines.mapped('amount_residual'))
+            logger.info(f"Debts for {account.name}: {result} (from {len(lines)} lines)")
+            return result
         
-        return 0.0            
-    
-
-
-
+        return 0.0
 
     def generate_pdf_report(self):
         """إنشاء تقرير PDF لتقرير مراكز التكلفة"""
@@ -1181,3 +1220,39 @@ class AnalyticAccountReport(models.Model):
             'create': False
         }
         return action
+
+    def debug_data(self):
+        """دالة للتشخيص وفحص البيانات"""
+        self.ensure_one()
+        
+        logger.info("=== تشخيص البيانات ===")
+        logger.info(f"الفترة: من {self.date_from} إلى {self.date_to}")
+        logger.info(f"الشركات: {[c.name for c in self.company_ids]}")
+        logger.info(f"مراكز التكلفة: {len(self.analytic_account_ids)}")
+        
+        # فحص وجود قيود يومية
+        domain = [
+            ('date', '>=', self.date_from),
+            ('date', '<=', self.date_to),
+            ('company_id', 'in', self.company_ids.ids),
+            ('move_id.state', '=', 'posted')
+        ]
+        
+        all_lines = self.env['account.move.line'].search(domain)
+        logger.info(f"إجمالي القيود في الفترة: {len(all_lines)}")
+        
+        lines_with_analytic = all_lines.filtered(lambda l: l.analytic_account_id)
+        logger.info(f"القيود المرتبطة بمراكز تكلفة: {len(lines_with_analytic)}")
+        
+        # فحص كل مركز تكلفة
+        for account in self.analytic_account_ids:
+            account_lines = lines_with_analytic.filtered(lambda l: l.analytic_account_id.id == account.id)
+            logger.info(f"مركز التكلفة {account.name}: {len(account_lines)} قيد")
+            
+            if account_lines:
+                total_debit = sum(line.debit for line in account_lines)
+                total_credit = sum(line.credit for line in account_lines)
+                total_balance = sum(line.balance for line in account_lines)
+                logger.info(f"  - إجمالي المدين: {total_debit}")
+                logger.info(f"  - إجمالي الدائن: {total_credit}")
+                logger.info(f"  - إجمالي الرصيد: {total_balance}")
