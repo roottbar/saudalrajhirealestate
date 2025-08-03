@@ -142,13 +142,20 @@ class AnalyticAccountReport(models.Model):
         """حساب مراكز التكلفة بناءً على المعايير المحددة"""
         for record in self:
             try:
-                domain = []
+                domain = [('active', '=', True)]
                 
                 # تصفية حسب الشركات
                 if record.company_ids:
                     company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
                     if company_ids:
                         domain.append(('company_id', 'in', company_ids))
+                    else:
+                        # إذا لم توجد شركات صالحة، لا تعرض أي مراكز تكلفة
+                        record.analytic_account_ids = self.env['account.analytic.account']
+                        continue
+                else:
+                    # إذا لم يتم اختيار شركات، استخدم الشركة الحالية
+                    domain.append(('company_id', '=', self.env.company.id))
 
                 # تصفية حسب الفرع
                 if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
@@ -162,18 +169,38 @@ class AnalyticAccountReport(models.Model):
                 # تصفية حسب مركز التكلفة المحدد
                 if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
                     domain.append(('id', '=', record.analytic_account_id.id))
-                
-                # إضافة شرط للتأكد من أن الحساب نشط
-                domain.append(('active', '=', True))
 
                 analytic_accounts = self.env['account.analytic.account'].search(domain)
                 record.analytic_account_ids = analytic_accounts
                 
-                # تسجيل معلومات التشخيص
-                logger.info(f"Computed analytic accounts for record {record.id}: {len(analytic_accounts)} accounts found with domain: {domain}")
+                # تسجيل معلومات التشخيص المحسنة
+                logger.info(f"=== تشخيص مراكز التكلفة للسجل {record.id} ===")
+                logger.info(f"الشركات المختارة: {[c.name for c in record.company_ids] if record.company_ids else ['الشركة الحالية']}")
+                logger.info(f"الفرع المختار: {record.operating_unit_id.name if record.operating_unit_id else 'غير محدد'}")
+                logger.info(f"المجموعة المختارة: {record.group_id.name if record.group_id else 'غير محددة'}")
+                logger.info(f"مركز التكلفة المحدد: {record.analytic_account_id.name if record.analytic_account_id else 'غير محدد'}")
+                logger.info(f"Domain المستخدم: {domain}")
+                logger.info(f"عدد مراكز التكلفة الموجودة: {len(analytic_accounts)}")
+                
+                if analytic_accounts:
+                    logger.info(f"أسماء مراكز التكلفة: {[acc.name for acc in analytic_accounts[:5]]}{'...' if len(analytic_accounts) > 5 else ''}")
+                else:
+                    logger.warning("لم يتم العثور على أي مراكز تكلفة تطابق المعايير المحددة")
+                    
+                    # فحص إضافي لمعرفة سبب عدم وجود مراكز تكلفة
+                    all_accounts = self.env['account.analytic.account'].search([('active', '=', True)])
+                    logger.info(f"إجمالي مراكز التكلفة النشطة في النظام: {len(all_accounts)}")
+                    
+                    if record.company_ids:
+                        company_accounts = self.env['account.analytic.account'].search([
+                            ('active', '=', True),
+                            ('company_id', 'in', [c.id for c in record.company_ids])
+                        ])
+                        logger.info(f"مراكز التكلفة للشركات المختارة: {len(company_accounts)}")
+                    
                 
             except Exception as e:
-                logger.error("Error computing analytic accounts: %s", str(e))
+                logger.error("خطأ في حساب مراكز التكلفة: %s", str(e))
                 record.analytic_account_ids = self.env['account.analytic.account']
 
     @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id')
@@ -1517,3 +1544,47 @@ class AnalyticAccountReport(models.Model):
                 logger.info(f"  - إجمالي المدين: {total_debit}")
                 logger.info(f"  - إجمالي الدائن: {total_credit}")
                 logger.info(f"  - إجمالي الرصيد: {total_balance}")
+
+    def check_analytic_accounts_availability(self):
+        """دالة للتحقق من توفر مراكز التكلفة"""
+        self.ensure_one()
+        
+        logger.info("=== فحص توفر مراكز التكلفة ===")
+        
+        # فحص إجمالي مراكز التكلفة
+        all_accounts = self.env['account.analytic.account'].search([])
+        active_accounts = self.env['account.analytic.account'].search([('active', '=', True)])
+        
+        logger.info(f"إجمالي مراكز التكلفة: {len(all_accounts)}")
+        logger.info(f"مراكز التكلفة النشطة: {len(active_accounts)}")
+        
+        # فحص حسب الشركة
+        if self.company_ids:
+            for company in self.company_ids:
+                company_accounts = self.env['account.analytic.account'].search([
+                    ('active', '=', True),
+                    ('company_id', '=', company.id)
+                ])
+                logger.info(f"مراكز التكلفة للشركة {company.name}: {len(company_accounts)}")
+        
+        # فحص حسب الفرع
+        if self.operating_unit_id:
+            unit_accounts = self.env['account.analytic.account'].search([
+                ('active', '=', True),
+                ('operating_unit_id', '=', self.operating_unit_id.id)
+            ])
+            logger.info(f"مراكز التكلفة للفرع {self.operating_unit_id.name}: {len(unit_accounts)}")
+        
+        # فحص حسب المجموعة
+        if self.group_id:
+            group_accounts = self.env['account.analytic.account'].search([
+                ('active', '=', True),
+                ('group_id', '=', self.group_id.id)
+            ])
+            logger.info(f"مراكز التكلفة للمجموعة {self.group_id.name}: {len(group_accounts)}")
+        
+        return {
+            'total_accounts': len(all_accounts),
+            'active_accounts': len(active_accounts),
+            'computed_accounts': len(self.analytic_account_ids)
+        }
