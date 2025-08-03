@@ -50,10 +50,10 @@
             <form>
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
-<!--                     <button name="generate_excel_report" type="object" string="تصدير إكسل" class="btn-primary"/>
-                    <button name="generate_pdf_report" type="object" string="تصدير PDF" class="btn-secondary"/> -->
-                        <button name="action_print_excel" type="object" string="طباعة Excel" class="btn-primary"/>
-                        <button name="action_print_pdf" type="object" string="طباعة PDF" class="btn-default"/>
+                    <button name="generate_excel_report" type="object" string="تصدير إكسل" class="btn-primary"/>
+                    <button name="generate_pdf_report" type="object" string="تصدير PDF" class="btn-secondary"/>
+<!--                         <button name="action_print_excel" type="object" string="طباعة Excel" class="btn-primary"/>
+                        <button name="action_print_pdf" type="object" string="طباعة PDF" class="btn-default"/> -->
                 </header>
                 <sheet>
                     <div class="oe_title">
