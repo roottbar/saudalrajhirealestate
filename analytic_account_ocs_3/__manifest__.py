@@ -17,7 +17,7 @@
     'author': 'othmancs',
     'website': 'https://www.tbarholdingocs.com',
     'category': 'Accounting',
-    'depends': ['base', 'account', 'analytic'],
+    'depends': ['base', 'account', 'analytic', 'operating_unit'],
     'data': [
         'security/ir.model.access.csv',
         'views/analytic_account_report_views.xml',
