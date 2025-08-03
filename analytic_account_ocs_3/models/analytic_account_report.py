@@ -158,13 +158,13 @@ class AnalyticAccountReport(models.Model):
                 if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                     # إذا تم اختيار مجموعة، عرض مراكز التكلفة في هذه المجموعة فقط
                     domain.append(('group_id', '=', record.group_id.id))
-                elif record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
-                    # إذا تم اختيار فرع بدون مجموعة، عرض جميع مراكز التكلفة في هذا الفرع
-                    pass  # لا نضيف قيد على المجموعة
                     
                 # تصفية حسب مركز التكلفة المحدد
                 if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
                     domain.append(('id', '=', record.analytic_account_id.id))
+                
+                # إضافة شرط للتأكد من أن الحساب نشط
+                domain.append(('active', '=', True))
 
                 analytic_accounts = self.env['account.analytic.account'].search(domain)
                 record.analytic_account_ids = analytic_accounts
@@ -506,69 +506,82 @@ class AnalyticAccountReport(models.Model):
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
         """عند تغيير الفرع، تصفية المجموعات ومراكز التكلفة"""
-        for record in self:
-            try:
-                if record.operating_unit_id:
-                    # البحث عن المجموعات المتاحة لهذا الفرع
-                    available_groups = self.env['account.analytic.group'].search([
-                        ('company_id', 'in', [c.id for c in record.company_ids]),
-                    ])
-                    
-                    # تصفية المجموعات التي تحتوي على مراكز تكلفة في هذا الفرع
-                    valid_group_ids = []
-                    for group in available_groups:
-                        accounts_in_group = self.env['account.analytic.account'].search([
-                            ('operating_unit_id', '=', record.operating_unit_id.id),
-                            ('group_id', '=', group.id)
-                        ])
-                        if accounts_in_group:
-                            valid_group_ids.append(group.id)
-                    
-                    # إعادة تعيين المجموعة إذا لم تعد صالحة
-                    if record.group_id and record.group_id.id not in valid_group_ids:
-                        record.group_id = False
-                    
-                    # إعادة تعيين مركز التكلفة إذا لم يعد متوافقاً
-                    if record.analytic_account_id:
-                        if record.analytic_account_id.operating_unit_id != record.operating_unit_id:
-                            record.analytic_account_id = False
-                else:
-                    # إذا لم يتم اختيار فرع، إعادة تعيين المجموعة ومركز التكلفة
-                    record.group_id = False
-                    record.analytic_account_id = False
-                    
-            except Exception as e:
-                logger.error("Error in _onchange_operating_unit_id: %s", str(e))
-                record.analytic_account_id = False
-                record.group_id = False
+        result = {'domain': {}}
+        
+        if self.operating_unit_id:
+            # تصفية المجموعات المتاحة لهذا الفرع
+            available_groups = self.env['account.analytic.group'].search([
+                ('company_id', 'in', [c.id for c in self.company_ids])
+            ])
+            
+            # البحث عن المجموعات التي تحتوي على مراكز تكلفة في هذا الفرع
+            valid_group_ids = []
+            for group in available_groups:
+                accounts_in_group = self.env['account.analytic.account'].search([
+                    ('operating_unit_id', '=', self.operating_unit_id.id),
+                    ('group_id', '=', group.id),
+                    ('active', '=', True)
+                ])
+                if accounts_in_group:
+                    valid_group_ids.append(group.id)
+            
+            result['domain']['group_id'] = [
+                ('company_id', 'in', [c.id for c in self.company_ids]),
+                ('id', 'in', valid_group_ids)
+            ]
+            
+            # إعادة تعيين المجموعة إذا لم تعد صالحة
+            if self.group_id and self.group_id.id not in valid_group_ids:
+                self.group_id = False
+                
+            # إعادة تعيين مركز التكلفة
+            if self.analytic_account_id and self.analytic_account_id.operating_unit_id != self.operating_unit_id:
+                self.analytic_account_id = False
+        else:
+            # إذا لم يتم اختيار فرع، إظهار جميع المجموعات
+            result['domain']['group_id'] = [
+                ('company_id', 'in', [c.id for c in self.company_ids])
+            ]
+            self.group_id = False
+            self.analytic_account_id = False
+        
+        return result
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
-        """عند تغيير المجموعة، إعادة تعيين مركز التكلفة"""
-        for record in self:
-            try:
-                if record.group_id:
-                    # التحقق من توافق مركز التكلفة الحالي مع المجموعة والفرع الجديدين
-                    if record.analytic_account_id:
-                        compatible = True
-                        
-                        # التحقق من المجموعة
-                        if record.analytic_account_id.group_id != record.group_id:
-                            compatible = False
-                        
-                        # التحقق من الفرع إذا كان محدداً
-                        if record.operating_unit_id and record.analytic_account_id.operating_unit_id != record.operating_unit_id:
-                            compatible = False
-                            
-                        if not compatible:
-                            record.analytic_account_id = False
-                else:
-                    # إذا لم يتم اختيار مجموعة، إعادة تعيين مركز التكلفة
-                    record.analytic_account_id = False
-                    
-            except Exception as e:
-                logger.error("Error in _onchange_group_id: %s", str(e))
-                record.analytic_account_id = False
+        """عند تغيير المجموعة، تصفية مراكز التكلفة"""
+        result = {'domain': {}}
+        
+        if self.group_id:
+            domain = [
+                ('company_id', 'in', [c.id for c in self.company_ids]),
+                ('group_id', '=', self.group_id.id),
+                ('active', '=', True)
+            ]
+            
+            if self.operating_unit_id:
+                domain.append(('operating_unit_id', '=', self.operating_unit_id.id))
+            
+            result['domain']['analytic_account_id'] = domain
+            
+            # التحقق من توافق مركز التكلفة الحالي
+            if self.analytic_account_id:
+                if (self.analytic_account_id.group_id != self.group_id or 
+                    (self.operating_unit_id and self.analytic_account_id.operating_unit_id != self.operating_unit_id)):
+                    self.analytic_account_id = False
+        else:
+            # إذا لم يتم اختيار مجموعة، إظهار جميع مراكز التكلفة
+            domain = [
+                ('company_id', 'in', [c.id for c in self.company_ids]),
+                ('active', '=', True)
+            ]
+            if self.operating_unit_id:
+                domain.append(('operating_unit_id', '=', self.operating_unit_id.id))
+            
+            result['domain']['analytic_account_id'] = domain
+            self.analytic_account_id = False
+        
+        return result
 
     @api.constrains('company_ids', 'group_id', 'analytic_account_id', 'operating_unit_id')
     def _check_company_consistency(self):
@@ -606,54 +619,61 @@ class AnalyticAccountReport(models.Model):
                 raise ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
 
     def _calculate_analytic_amount(self, account, amount_type):
-        """حساب المبالغ لكل حساب تحليلي"""
-        domain = [
-            ('date', '>=', self.date_from),
-            ('date', '<=', self.date_to),
-            ('company_id', 'in', self.company_ids.ids),
-            ('move_id.state', '=', 'posted'),
-            ('analytic_account_id', '=', account.id)
-        ]
-        
-        if self.operating_unit_id:
-            domain.append(('analytic_account_id.operating_unit_id', '=', self.operating_unit_id.id))
-        
-        if amount_type == 'expenses':
-            domain.append(('balance', '<', 0))
-            lines = self.env['account.move.line'].search(domain)
-            return abs(sum(lines.mapped('balance')))
-        
-        elif amount_type == 'revenues':
-            domain.append(('balance', '>', 0))
-            lines = self.env['account.move.line'].search(domain)
-            return sum(lines.mapped('balance'))
-        
-        elif amount_type == 'collections':
-            domain_payments = domain + [
-                ('move_id.move_type', 'in', ['out_payment', 'in_payment']),
-                ('balance', '!=', 0)
+        """حساب المبلغ لحساب تحليلي محدد"""
+        try:
+            if not account or not account.id:
+                return 0.0
+                
+            company_ids = [c.id for c in self.company_ids if hasattr(c, 'id') and c.id]
+            if not company_ids:
+                return 0.0
+                
+            base_domain = [
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('company_id', 'in', company_ids),
+                ('analytic_account_id', '=', account.id),
+                ('move_id.state', '=', 'posted')
             ]
-            payment_lines = self.env['account.move.line'].search(domain_payments)
             
-            domain_paid_invoices = domain + [
-                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                ('move_id.payment_state', '=', 'paid'),
-                ('balance', '!=', 0)
-            ]
-            paid_invoice_lines = self.env['account.move.line'].search(domain_paid_invoices)
+            if amount_type == 'expenses':
+                # المصروفات - البحث في حسابات المصروفات
+                domain = base_domain + [
+                    ('account_id.user_type_id.name', 'in', ['Expenses', 'Cost of Revenue'])
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.debit - line.credit) for line in lines if line.debit > line.credit)
+                
+            elif amount_type == 'revenues':
+                # الإيرادات - البحث في حسابات الإيرادات
+                domain = base_domain + [
+                    ('account_id.user_type_id.name', 'in', ['Income', 'Other Income'])
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.credit - line.debit) for line in lines if line.credit > line.debit)
+                
+            elif amount_type == 'collections':
+                # التحصيلات - البحث في المدفوعات
+                domain = base_domain + [
+                    ('payment_id', '!=', False)
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.credit) for line in lines)
+                
+            elif amount_type == 'debts':
+                # الديون - البحث في الفواتير غير المدفوعة
+                domain = base_domain + [
+                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                    ('move_id.payment_state', 'in', ['not_paid', 'partial'])
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(line.amount_residual for line in lines if line.amount_residual > 0)
+                
+            return 0.0
             
-            return abs(sum(payment_lines.mapped('balance'))) + abs(sum(paid_invoice_lines.mapped('balance')))
-        
-        elif amount_type == 'debts':
-            domain += [
-                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                ('move_id.payment_state', 'in', ['not_paid', 'partial']),
-                ('amount_residual', '>', 0)
-            ]
-            lines = self.env['account.move.line'].search(domain)
-            return sum(lines.mapped('amount_residual'))
-        
-        return 0.0
+        except Exception as e:
+            logger.error(f"Error calculating {amount_type} for account {account.name}: {str(e)}")
+            return 0.0
 
     def generate_excel_report(self):
         """إنشاء وتنزيل تقرير Excel لمراكز التكلفة"""
