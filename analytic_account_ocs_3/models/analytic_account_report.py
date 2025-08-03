@@ -518,32 +518,31 @@ class AnalyticAccountReport(models.Model):
             
             return {
                 'domain': {
-                    'operating_unit_id': [],
-                    'group_id': [],
-                    'analytic_account_id': []
+                    'operating_unit_id': [('id', '=', False)],
+                    'group_id': [('id', '=', False)],
+                    'analytic_account_id': [('id', '=', False)]
                 }
             }
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
         """تحديث المجموعات المتاحة عند تغيير الفرع"""
+        company_ids = [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]
+        
         if self.operating_unit_id:
-            # تصفية المجموعات حسب الشركة والفرع
-            domain = [('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id])]
-            
             # البحث عن المجموعات التي لها مراكز تكلفة مرتبطة بالفرع المختار
             analytic_accounts = self.env['account.analytic.account'].search([
                 ('operating_unit_id', '=', self.operating_unit_id.id),
-                ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
+                ('company_id', 'in', company_ids),
                 ('active', '=', True)
             ])
             
             group_ids = analytic_accounts.mapped('group_id').ids
+            
+            # تصفية المجموعات
+            group_domain = [('company_id', 'in', company_ids)]
             if group_ids:
-                domain.append(('id', 'in', group_ids))
-            else:
-                # إذا لم توجد مجموعات مرتبطة، عرض جميع المجموعات للشركة
-                pass
+                group_domain.append(('id', 'in', group_ids))
                 
             # إعادة تعيين المجموعة ومركز التكلفة إذا لم تعد صالحة
             if self.group_id and self.group_id.id not in group_ids:
@@ -553,33 +552,33 @@ class AnalyticAccountReport(models.Model):
                 
             return {
                 'domain': {
-                    'group_id': domain,
+                    'group_id': group_domain,
                     'analytic_account_id': [
                         ('operating_unit_id', '=', self.operating_unit_id.id),
-                        ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
+                        ('company_id', 'in', company_ids),
                         ('active', '=', True)
                     ]
                 }
             }
         else:
             # إذا لم يتم اختيار فرع، عرض جميع المجموعات ومراكز التكلفة للشركة
-            company_domain = [('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id])]
-            
             return {
                 'domain': {
-                    'group_id': company_domain,
-                    'analytic_account_id': company_domain + [('active', '=', True)]
+                    'group_id': [('company_id', 'in', company_ids)],
+                    'analytic_account_id': [('company_id', 'in', company_ids), ('active', '=', True)]
                 }
             }
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
         """تحديث مراكز التكلفة المتاحة عند تغيير المجموعة"""
+        company_ids = [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]
+        
         if self.group_id:
             # تصفية مراكز التكلفة حسب المجموعة والفرع والشركة
             domain = [
                 ('group_id', 'child_of', self.group_id.id),  # تشمل المجموعات الفرعية
-                ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
+                ('company_id', 'in', company_ids),
                 ('active', '=', True)
             ]
             
@@ -600,7 +599,7 @@ class AnalyticAccountReport(models.Model):
         else:
             # إذا لم يتم اختيار مجموعة، عرض جميع مراكز التكلفة حسب الفرع والشركة
             domain = [
-                ('company_id', 'in', [c.id for c in self.company_ids] if self.company_ids else [self.env.company.id]),
+                ('company_id', 'in', company_ids),
                 ('active', '=', True)
             ]
             
@@ -1514,7 +1513,7 @@ class AnalyticAccountReport(models.Model):
     @api.model
     def get_available_accounts_for_group_and_unit(self, group_id, operating_unit_id, company_ids):
         """الحصول على مراكز التكلفة المتاحة لمجموعة وفرع معينين"""
-        domain = [('company_id', 'in', company_ids)]
+        domain = [('company_id', 'in', company_ids), ('active', '=', True)]
         
         if group_id:
             domain.append(('group_id', '=', group_id))
