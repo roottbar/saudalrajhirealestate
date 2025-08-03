@@ -237,51 +237,69 @@ class AnalyticAccountReport(models.Model):
                     record.total_debts = 0.0
                     continue
 
-                # استعلام محسن ومصحح
-                query = """
-                    SELECT 
-                        SUM(CASE WHEN aml.balance < 0 THEN ABS(aml.balance) ELSE 0 END) as total_expenses,
-                        SUM(CASE WHEN aml.balance > 0 THEN aml.balance ELSE 0 END) as total_revenues,
-                        SUM(CASE WHEN (am.move_type IN ('out_payment', 'in_payment') OR 
-                                      (am.move_type IN ('out_invoice', 'in_invoice') AND am.payment_state = 'paid'))
-                                 THEN ABS(aml.balance) ELSE 0 END) as total_collections,
-                        SUM(CASE WHEN am.move_type IN ('out_invoice', 'in_invoice') 
-                                 AND am.payment_state IN ('not_paid', 'partial')
-                                 AND aml.amount_residual > 0 
-                                 THEN aml.amount_residual ELSE 0 END) as total_debts
-                    FROM account_move_line aml
-                    JOIN account_move am ON aml.move_id = am.id
-                    WHERE aml.date >= %s 
-                        AND aml.date <= %s
-                        AND aml.company_id = ANY(%s)
-                        AND am.state = 'posted'
-                        AND aml.analytic_account_id = ANY(%s)
-                        AND aml.analytic_account_id IS NOT NULL
-                """
+                # البحث عن جميع القيود المحاسبية في الفترة المحددة
+                domain = [
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('move_id.state', '=', 'posted'),
+                    ('analytic_account_id', 'in', analytic_account_ids)
+                ]
                 
-                params = [record.date_from, record.date_to, company_ids, analytic_account_ids]
+                move_lines = self.env['account.move.line'].search(domain)
                 
-                # إضافة تسجيل للتشخيص
-                logger.info(f"Executing query with params: date_from={record.date_from}, date_to={record.date_to}, companies={len(company_ids)}, accounts={len(analytic_account_ids)}")
+                logger.info(f"عدد القيود الموجودة: {len(move_lines)}")
                 
-                self.env.cr.execute(query, params)
-                result = self.env.cr.fetchone()
+                # حساب المصروفات والإيرادات من الرصيد
+                total_expenses = 0.0
+                total_revenues = 0.0
                 
-                logger.info(f"Query result: {result}")
+                for line in move_lines:
+                    if line.balance < 0:  # مصروفات (رصيد سالب)
+                        total_expenses += abs(line.balance)
+                    elif line.balance > 0:  # إيرادات (رصيد موجب)
+                        total_revenues += line.balance
                 
-                if result:
-                    record.total_expenses = result[0] or 0.0
-                    record.total_revenues = result[1] or 0.0
-                    record.total_collections = result[2] or 0.0
-                    record.total_debts = result[3] or 0.0
-                else:
-                    record.total_expenses = 0.0
-                    record.total_revenues = 0.0
-                    record.total_collections = 0.0
-                    record.total_debts = 0.0
+                # حساب المحصلات (المدفوعات)
+                payment_domain = [
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('move_id.state', '=', 'posted'),
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.move_type', 'in', ['out_payment', 'in_payment'])
+                ]
+                
+                payment_lines = self.env['account.move.line'].search(payment_domain)
+                total_collections = sum(abs(line.balance) for line in payment_lines)
+                
+                # حساب الديون (الفواتير غير المدفوعة)
+                invoice_domain = [
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('move_id.state', '=', 'posted'),
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                    ('move_id.payment_state', 'in', ['not_paid', 'partial'])
+                ]
+                
+                debt_lines = self.env['account.move.line'].search(invoice_domain)
+                total_debts = sum(line.amount_residual for line in debt_lines if line.amount_residual > 0)
+                
+                # تسجيل النتائج
+                logger.info(f"المصروفات: {total_expenses}")
+                logger.info(f"الإيرادات: {total_revenues}")
+                logger.info(f"المحصلات: {total_collections}")
+                logger.info(f"الديون: {total_debts}")
+                
+                record.total_expenses = total_expenses
+                record.total_revenues = total_revenues
+                record.total_collections = total_collections
+                record.total_debts = total_debts
                     
             except Exception as e:
-                logger.error("Error computing totals: %s", str(e))
+                logger.error("خطأ في حساب الإجماليات: %s", str(e))
                 record.total_expenses = 0.0
                 record.total_revenues = 0.0
                 record.total_collections = 0.0
