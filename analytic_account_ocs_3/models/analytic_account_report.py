@@ -19,12 +19,6 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 logger = logging.getLogger(__name__)
 
-
-from odoo.http import request
-import base64
-import io
-import xlsxwriter
-
 class AnalyticAccountReport(models.Model):
     _name = 'analytic.account.report'
     _description = 'تقرير مراكز التكلفة'
@@ -51,6 +45,11 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_main_company',
         store=True
     )
+    operating_unit_id = fields.Many2one(
+        'operating.unit',
+        string='الفرع',
+        domain="[('company_id', 'in', company_ids)]"
+    )
 
     # حقول العلاقات
     group_id = fields.Many2one(
@@ -62,7 +61,7 @@ class AnalyticAccountReport(models.Model):
     analytic_account_id = fields.Many2one(
         'account.analytic.account',
         string='مركز التكلفة',
-        domain="[('company_id', 'in', company_ids), ('group_id', '=?', group_id)]"
+        domain="[('company_id', 'in', company_ids), ('group_id', '=?', group_id), ('operating_unit_id', '=?', operating_unit_id)]"
     )
     
     company_currency_id = fields.Many2one(
@@ -106,109 +105,57 @@ class AnalyticAccountReport(models.Model):
         store=True
     )
 
-    # def action_generate_excel_report(self):
-    #     output = io.BytesIO()
-    #     workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-    #     worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
-    #     # مثال: كتابة رؤوس الأعمدة
-    #     worksheet.write(0, 0, 'الاسم')
-    #     worksheet.write(0, 1, 'الإيرادات')
-    #     worksheet.write(0, 2, 'المصروفات')
-    #     # مثال: كتابة بيانات التقرير
-    #     row = 1
-    #     for rec in self:
-    #         worksheet.write(row, 0, rec.name)
-    #         worksheet.write(row, 1, rec.total_revenues)
-    #         worksheet.write(row, 2, rec.total_expenses)
-    #         row += 1
-    #     workbook.close()
-    #     output.seek(0)
-    #     file_data = output.read()
-    #     output.close()
-    #     attachment = self.env['ir.attachment'].create({
-    #         'name': 'تقرير مراكز التكلفة.xlsx',
-    #         'type': 'binary',
-    #         'datas': base64.b64encode(file_data),
-    #         'res_model': self._name,
-    #         'res_id': self.id,
-    #         'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    #     })
-    #     download_url = '/web/content/%s?download=true' % (attachment.id)
-    #     return {
-    #         'type': 'ir.actions.act_url',
-    #         'url': download_url,
-    #         'target': 'new',
-    #     }
-
     @api.depends('company_ids')
     def _compute_main_company(self):
         for record in self:
-            # إذا كان هناك شركة واحدة فقط، استخدمها
             if record.company_ids and len(record.company_ids) == 1:
                 record.company_id = record.company_ids[0]
-            # إذا كان هناك عدة شركات، استخدم الأولى
             elif record.company_ids and len(record.company_ids) > 1:
                 record.company_id = record.company_ids[0]
             else:
-                # تجنب استعلامات قاعدة البيانات أثناء المعاملات الفاشلة
-                # ببساطة اتركه فارغاً أو استخدم قيمة افتراضية
                 record.company_id = False
 
     @api.depends('company_ids')
     def _compute_company_currency(self):
         for record in self:
             try:
-                # Initialize with default company currency
                 default_currency = self.env.company.currency_id
             except Exception:
-                # Fallback to base currency if company access fails
                 default_currency = self.env['res.currency'].search([('name', '=', 'USD')], limit=1)
                 if not default_currency:
                     default_currency = self.env['res.currency'].search([], limit=1)
             
             record.company_currency_id = default_currency
             
-            # Only proceed if we have valid company_ids
             if not record.company_ids:
                 continue
                 
             try:
-                # Safely get the first valid company
                 valid_companies = [c for c in record.company_ids if c._name == 'res.company' and c.id]
                 if valid_companies:
                     record.company_currency_id = valid_companies[0].currency_id
             except Exception as e:
                 logger.error("Error computing company currency: %s", str(e))
-                # Keep the default currency set above
 
-    @api.depends('group_id', 'analytic_account_id', 'company_ids')
+    @api.depends('group_id', 'analytic_account_id', 'company_ids', 'operating_unit_id')
     def _compute_analytic_accounts(self):
         for record in self:
             try:
                 domain = []
                 
-                # Add company filter if available - safely handle company_ids
                 if record.company_ids:
                     company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
                     if company_ids:
-                        # Check if analytic account has company_id field
-                        account_model = self.env['account.analytic.account']
-                        if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
-                            domain.append(('company_id', 'in', company_ids))
+                        domain.append(('company_id', 'in', company_ids))
 
-                # Remove branch filter - no longer needed
-                        
-                # Add group filter if available
+                if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
+                    domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
+                    
                 if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                     domain.append(('group_id', '=', record.group_id.id))
                     
-                # Add specific account filter if available
                 if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
                     domain.append(('id', '=', record.analytic_account_id.id))
-
-                # If no domain, get all analytic accounts
-                if not domain:
-                    domain = []
 
                 analytic_accounts = self.env['account.analytic.account'].search(domain)
                 record.analytic_account_ids = analytic_accounts
@@ -216,7 +163,7 @@ class AnalyticAccountReport(models.Model):
                 logger.error("Error computing analytic accounts: %s", str(e))
                 record.analytic_account_ids = self.env['account.analytic.account']
 
-    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids')
+    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id')
     def _compute_totals(self):
         for record in self:
             try:
@@ -226,7 +173,7 @@ class AnalyticAccountReport(models.Model):
                     record.total_collections = 0.0
                     record.total_debts = 0.0
                     continue
-    
+
                 company_ids = [c.id for c in record.company_ids]
                 analytic_account_ids = [a.id for a in record.analytic_account_ids]
                 
@@ -239,6 +186,9 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.state', '=', 'posted'),
                     ('account_id.internal_group', '=', 'expense')
                 ]
+                if record.operating_unit_id:
+                    expense_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
+                
                 expense_lines = self.env['account.move.line'].search(expense_domain)
                 record.total_expenses = sum(expense_lines.mapped('balance'))
                 
@@ -251,6 +201,9 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.state', '=', 'posted'),
                     ('account_id.internal_group', '=', 'income')
                 ]
+                if record.operating_unit_id:
+                    revenue_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
+                
                 revenue_lines = self.env['account.move.line'].search(revenue_domain)
                 record.total_revenues = sum(revenue_lines.mapped('balance'))
                 
@@ -263,6 +216,9 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.state', '=', 'posted'),
                     ('payment_id', '!=', False)
                 ]
+                if record.operating_unit_id:
+                    payment_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
+                
                 payment_lines = self.env['account.move.line'].search(payment_domain)
                 record.total_collections = sum(abs(line.balance) for line in payment_lines)
                 
@@ -276,6 +232,9 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', 'in', ['not_paid', 'partial'])
                 ]
+                if record.operating_unit_id:
+                    invoice_domain.append(('analytic_account_id.operating_unit_id', '=', record.operating_unit_id.id))
+                
                 invoice_lines = self.env['account.move.line'].search(invoice_domain)
                 record.total_debts = sum(line.amount_residual for line in invoice_lines)
                 
@@ -286,7 +245,7 @@ class AnalyticAccountReport(models.Model):
                 record.total_collections = 0.0
                 record.total_debts = 0.0
 
-    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids')
+    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id')
     def _compute_report_lines(self):
         for record in self:
             try:
@@ -295,9 +254,6 @@ class AnalyticAccountReport(models.Model):
                     continue
                 
                 company_ids = [c.id for c in record.company_ids if c._name == 'res.company' and c.id] if record.company_ids else []
-                
-                # إضافة تسجيل للتشخيص
-                logger.info(f"Computing report lines for {len(record.analytic_account_ids)} accounts, {len(company_ids)} companies")
                 
                 html_lines = []
                 html_lines.append("""
@@ -315,9 +271,10 @@ class AnalyticAccountReport(models.Model):
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>الفرع</th>
+                                <th>المجموعة الرئيسية</th>
+                                <th>المجموعة الفرعية</th>
                                 <th>مركز التكلفة</th>
-                                <th>المجموعة</th>
-                                <th>الشريك</th>
                                 <th>المصروفات</th>
                                 <th>الإيرادات</th>
                                 <th>التحصيل (المدفوعات)</th>
@@ -330,57 +287,27 @@ class AnalyticAccountReport(models.Model):
                 if not record.analytic_account_ids or not company_ids:
                     record.report_lines = "<p>لا توجد بيانات لعرضها. تأكد من اختيار مراكز التكلفة والشركات.</p>"
                     continue
-                    
+                
                 analytic_account_ids = [a.id for a in record.analytic_account_ids if a._name == 'account.analytic.account' and a.id]
                 if not analytic_account_ids:
                     record.report_lines = "<p>لا توجد مراكز تكلفة صالحة</p>"
                     continue
                     
-                # جلب جميع البيانات مرة واحدة مع تحسين الاستعلام
-                base_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('analytic_account_id', '!=', False)  # تأكد من وجود مركز تكلفة
-                ]
-                
-                all_lines = self.env['account.move.line'].search(base_domain)
-                logger.info(f"Found {len(all_lines)} account move lines matching criteria")
-                
-                # تجميع البيانات حسب مركز التكلفة
-                account_data = {}
-                for line in all_lines:
-                    account_id = line.analytic_account_id.id
-                    if account_id not in account_data:
-                        account_data[account_id] = {
-                            'expenses': 0.0,
-                            'revenues': 0.0,
-                            'collections': 0.0,
-                            'debts': 0.0
-                        }
-                    
-                    # حساب المصروفات والإيرادات
-                    if line.balance < 0:
-                        account_data[account_id]['expenses'] += abs(line.balance)
-                    elif line.balance > 0:
-                        account_data[account_id]['revenues'] += line.balance
-                        
-                    # حساب التحصيل - تحسين المنطق
-                    if line.move_id.move_type in ['out_payment', 'in_payment'] or \
-                       (line.move_id.move_type in ['out_invoice', 'in_invoice'] and line.move_id.payment_state == 'paid'):
-                        account_data[account_id]['collections'] += abs(line.balance)
-                        
-                    # حساب المديونية
-                    if line.move_id.move_type in ['out_invoice', 'in_invoice'] and \
-                       line.move_id.payment_state in ['not_paid', 'partial'] and \
-                       line.amount_residual > 0:
-                        account_data[account_id]['debts'] += line.amount_residual
-
-                # تجميع النتائج حسب المجموعة ومركز التكلفة
-                group_dict = defaultdict(lambda: {
-                    'accounts': [],
+                # تجميع البيانات حسب الفرع والمجموعات
+                operating_unit_dict = defaultdict(lambda: {
+                    'groups': defaultdict(lambda: {
+                        'subgroups': defaultdict(lambda: {
+                            'accounts': [],
+                            'total_expenses': 0.0,
+                            'total_revenues': 0.0,
+                            'total_collections': 0.0,
+                            'total_debts': 0.0
+                        }),
+                        'total_expenses': 0.0,
+                        'total_revenues': 0.0,
+                        'total_collections': 0.0,
+                        'total_debts': 0.0
+                    }),
                     'total_expenses': 0.0,
                     'total_revenues': 0.0,
                     'total_collections': 0.0,
@@ -388,68 +315,138 @@ class AnalyticAccountReport(models.Model):
                 })
 
                 for account in record.analytic_account_ids:
-                    data = account_data.get(account.id, {
-                        'expenses': 0.0,
-                        'revenues': 0.0,
-                        'collections': 0.0,
-                        'debts': 0.0
+                    # حساب القيم لكل حساب تحليلي
+                    expenses = self._calculate_analytic_amount(account, 'expenses')
+                    revenues = self._calculate_analytic_amount(account, 'revenues')
+                    collections = self._calculate_analytic_amount(account, 'collections')
+                    debts = self._calculate_analytic_amount(account, 'debts')
+                    
+                    # الحصول على الفرع
+                    operating_unit = account.operating_unit_id or 'بدون فرع'
+                    operating_unit_name = operating_unit.name if operating_unit != 'بدون فرع' else 'بدون فرع'
+                    
+                    # الحصول على المجموعة الرئيسية (المستوى الأول)
+                    root_group = account.group_id
+                    while root_group and root_group.parent_id:
+                        root_group = root_group.parent_id
+                    root_group_name = root_group.name if root_group else 'بدون مجموعة رئيسية'
+                    
+                    # الحصول على المجموعة الفرعية (المستوى الثاني)
+                    subgroup = account.group_id if account.group_id and account.group_id.parent_id == root_group else None
+                    subgroup_name = subgroup.name if subgroup else 'بدون مجموعة فرعية'
+                    
+                    # تخزين البيانات في الهيكل الهرمي
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['accounts'].append({
+                        'account': account,
+                        'expenses': expenses,
+                        'revenues': revenues,
+                        'collections': collections,
+                        'debts': debts
                     })
                     
-                    partner = account.partner_id or False
+                    # تحديث الإجماليات
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_expenses'] += expenses
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_revenues'] += revenues
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_collections'] += collections
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_debts'] += debts
+                    
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_expenses'] += expenses
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_revenues'] += revenues
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_collections'] += collections
+                    operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_debts'] += debts
+                    
+                    operating_unit_dict[operating_unit_name]['total_expenses'] += expenses
+                    operating_unit_dict[operating_unit_name]['total_revenues'] += revenues
+                    operating_unit_dict[operating_unit_name]['total_collections'] += collections
+                    operating_unit_dict[operating_unit_name]['total_debts'] += debts
 
-                    group_dict[account.group_id]['accounts'].append({
-                        'account': account,
-                        'partner': partner,
-                        'expenses': data['expenses'],
-                        'revenues': data['revenues'],
-                        'collections': data['collections'],
-                        'debts': data['debts']
-                    })
-
-                    group_dict[account.group_id]['total_expenses'] += data['expenses']
-                    group_dict[account.group_id]['total_revenues'] += data['revenues']
-                    group_dict[account.group_id]['total_collections'] += data['collections']
-                    group_dict[account.group_id]['total_debts'] += data['debts']
-
-                # عرض النتائج حسب المجموعة
-                for group, data in group_dict.items():
-                    if not group:
-                        continue
-
+                # عرض النتائج حسب التسلسل الهرمي
+                for operating_unit_name, operating_unit_data in operating_unit_dict.items():
+                    # عنوان الفرع
                     html_lines.append(f"""
                         <tr class="section-row">
-                            <td colspan="7">{group.name}</td>
+                            <td colspan="8">{operating_unit_name}</td>
                         </tr>
                     """)
 
-                    for account_data in data['accounts']:
-                        account = account_data['account']
-                        partner_name = account_data['partner'].name if account_data['partner'] else ''
+                    for root_group_name, root_group_data in operating_unit_data['groups'].items():
+                        # عنوان المجموعة الرئيسية
                         html_lines.append(f"""
-                            <tr>
-                                <td>{account.name}</td>
-                                <td>{account.group_id.name if account.group_id else ''}</td>
-                                <td>{partner_name}</td>
-                                <td class="text-right">{format(account_data['expenses'], '.2f')}</td>
-                                <td class="text-right">{format(account_data['revenues'], '.2f')}</td>
-                                <td class="text-right">{format(account_data['collections'], '.2f')}</td>
-                                <td class="text-right">{format(account_data['debts'], '.2f')}</td>
+                            <tr class="section-row">
+                                <td></td>
+                                <td colspan="7">{root_group_name}</td>
                             </tr>
                         """)
 
+                        for subgroup_name, subgroup_data in root_group_data['subgroups'].items():
+                            # عنوان المجموعة الفرعية
+                            html_lines.append(f"""
+                                <tr class="section-row">
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="6">{subgroup_name}</td>
+                                </tr>
+                            """)
+
+                            # بيانات مراكز التكلفة
+                            for account_data in subgroup_data['accounts']:
+                                account = account_data['account']
+                                html_lines.append(f"""
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{account.name}</td>
+                                        <td class="text-right">{format(account_data['expenses'], '.2f')}</td>
+                                        <td class="text-right">{format(account_data['revenues'], '.2f')}</td>
+                                        <td class="text-right">{format(account_data['collections'], '.2f')}</td>
+                                        <td class="text-right">{format(account_data['debts'], '.2f')}</td>
+                                    </tr>
+                                """)
+
+                            # إجمالي المجموعة الفرعية
+                            html_lines.append(f"""
+                                <tr class="total-row">
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="1">إجمالي {subgroup_name}</td>
+                                    <td></td>
+                                    <td class="text-right">{format(subgroup_data['total_expenses'], '.2f')}</td>
+                                    <td class="text-right">{format(subgroup_data['total_revenues'], '.2f')}</td>
+                                    <td class="text-right">{format(subgroup_data['total_collections'], '.2f')}</td>
+                                    <td class="text-right">{format(subgroup_data['total_debts'], '.2f')}</td>
+                                </tr>
+                            """)
+
+                        # إجمالي المجموعة الرئيسية
+                        html_lines.append(f"""
+                            <tr class="total-row">
+                                <td></td>
+                                <td colspan="2">إجمالي {root_group_name}</td>
+                                <td></td>
+                                <td class="text-right">{format(root_group_data['total_expenses'], '.2f')}</td>
+                                <td class="text-right">{format(root_group_data['total_revenues'], '.2f')}</td>
+                                <td class="text-right">{format(root_group_data['total_collections'], '.2f')}</td>
+                                <td class="text-right">{format(root_group_data['total_debts'], '.2f')}</td>
+                            </tr>
+                        """)
+
+                    # إجمالي الفرع
                     html_lines.append(f"""
                         <tr class="total-row">
-                            <td colspan="3">إجمالي المجموعة</td>
-                            <td class="text-right">{format(data['total_expenses'], '.2f')}</td>
-                            <td class="text-right">{format(data['total_revenues'], '.2f')}</td>
-                            <td class="text-right">{format(data['total_collections'], '.2f')}</td>
-                            <td class="text-right">{format(data['total_debts'], '.2f')}</td>
+                            <td colspan="3">إجمالي {operating_unit_name}</td>
+                            <td></td>
+                            <td class="text-right">{format(operating_unit_data['total_expenses'], '.2f')}</td>
+                            <td class="text-right">{format(operating_unit_data['total_revenues'], '.2f')}</td>
+                            <td class="text-right">{format(operating_unit_data['total_collections'], '.2f')}</td>
+                            <td class="text-right">{format(operating_unit_data['total_debts'], '.2f')}</td>
                         </tr>
                     """)
 
+                # الإجمالي العام
                 html_lines.append(f"""
                     <tr class="total-row">
-                        <td colspan="3">الإجمالي العام</td>
+                        <td colspan="4">الإجمالي العام</td>
                         <td class="text-right">{format(record.total_expenses, '.2f')}</td>
                         <td class="text-right">{format(record.total_revenues, '.2f')}</td>
                         <td class="text-right">{format(record.total_collections, '.2f')}</td>
@@ -478,8 +475,6 @@ class AnalyticAccountReport(models.Model):
                 if not company_ids:
                     continue
 
-                # Remove branch handling - no longer needed
-
                 if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                     if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
                         record.group_id = False
@@ -506,7 +501,18 @@ class AnalyticAccountReport(models.Model):
                 logger.error("Error in _onchange_group_id: %s", str(e))
                 record.analytic_account_id = False
 
-    @api.constrains('company_ids', 'group_id', 'analytic_account_id')
+    @api.onchange('operating_unit_id')
+    def _onchange_operating_unit_id(self):
+        for record in self:
+            try:
+                if record.operating_unit_id and record.analytic_account_id:
+                    if record.analytic_account_id.operating_unit_id != record.operating_unit_id:
+                        record.analytic_account_id = False
+            except Exception as e:
+                logger.error("Error in _onchange_operating_unit_id: %s", str(e))
+                record.analytic_account_id = False
+
+    @api.constrains('company_ids', 'group_id', 'analytic_account_id', 'operating_unit_id')
     def _check_company_consistency(self):
         for record in self:
             if not record.company_ids:
@@ -515,8 +521,6 @@ class AnalyticAccountReport(models.Model):
             company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
             if not company_ids:
                 continue
-
-            # Remove branch validation - no longer needed
 
             if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                 if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
@@ -527,6 +531,10 @@ class AnalyticAccountReport(models.Model):
             if record.analytic_account_id and record.analytic_account_id.id:
                 if record.analytic_account_id.company_id.id not in company_ids:
                     raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")
+            
+            if record.operating_unit_id and record.operating_unit_id.id:
+                if record.operating_unit_id.company_id.id not in company_ids:
+                    raise ValidationError("الفرع المحدد لا ينتمي لأي من الشركات المحددة")
 
     @api.onchange('date_from')
     def _onchange_date_from(self):
@@ -538,6 +546,57 @@ class AnalyticAccountReport(models.Model):
         for record in self:
             if record.date_from and record.date_to and record.date_from > record.date_to:
                 raise ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
+
+    def _calculate_analytic_amount(self, account, amount_type):
+        """حساب المبالغ لكل حساب تحليلي"""
+        domain = [
+            ('date', '>=', self.date_from),
+            ('date', '<=', self.date_to),
+            ('company_id', 'in', self.company_ids.ids),
+            ('move_id.state', '=', 'posted'),
+            ('analytic_account_id', '=', account.id)
+        ]
+        
+        if self.operating_unit_id:
+            domain.append(('analytic_account_id.operating_unit_id', '=', self.operating_unit_id.id))
+        
+        if amount_type == 'expenses':
+            domain.append(('balance', '<', 0))
+            lines = self.env['account.move.line'].search(domain)
+            return abs(sum(lines.mapped('balance')))
+        
+        elif amount_type == 'revenues':
+            domain.append(('balance', '>', 0))
+            lines = self.env['account.move.line'].search(domain)
+            return sum(lines.mapped('balance'))
+        
+        elif amount_type == 'collections':
+            domain_payments = domain + [
+                ('move_id.move_type', 'in', ['out_payment', 'in_payment']),
+                ('balance', '!=', 0)
+            ]
+            payment_lines = self.env['account.move.line'].search(domain_payments)
+            
+            domain_paid_invoices = domain + [
+                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                ('move_id.payment_state', '=', 'paid'),
+                ('balance', '!=', 0)
+            ]
+            paid_invoice_lines = self.env['account.move.line'].search(domain_paid_invoices)
+            
+            return abs(sum(payment_lines.mapped('balance'))) + abs(sum(paid_invoice_lines.mapped('balance')))
+        
+        elif amount_type == 'debts':
+            domain += [
+                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                ('move_id.payment_state', 'in', ['not_paid', 'partial']),
+                ('amount_residual', '>', 0)
+            ]
+            lines = self.env['account.move.line'].search(domain)
+            return sum(lines.mapped('amount_residual'))
+        
+        return 0.0
+
     def generate_excel_report(self):
         """إنشاء وتنزيل تقرير Excel لمراكز التكلفة"""
         self.ensure_one()
@@ -621,22 +680,25 @@ class AnalyticAccountReport(models.Model):
         worksheet.right_to_left()
         
         # إعداد أعمدة الورقة
-        worksheet.set_column('A:A', 30)  # عمود المجموعة/مركز التكلفة
-        worksheet.set_column('B:B', 15)  # عمود المصروفات
-        worksheet.set_column('C:C', 15)  # عمود الإيرادات
-        worksheet.set_column('D:D', 20)  # عمود التحصيل
-        worksheet.set_column('E:E', 20)  # عمود المديونية
+        worksheet.set_column('A:A', 30)  # عمود الفرع/المجموعة/مركز التكلفة
+        worksheet.set_column('B:B', 20)  # عمود المجموعة الرئيسية
+        worksheet.set_column('C:C', 20)  # عمود المجموعة الفرعية
+        worksheet.set_column('D:D', 30)  # عمود مركز التكلفة
+        worksheet.set_column('E:E', 15)  # عمود المصروفات
+        worksheet.set_column('F:F', 15)  # عمود الإيرادات
+        worksheet.set_column('G:G', 20)  # عمود التحصيل
+        worksheet.set_column('H:H', 20)  # عمود المديونية
         
         # بدء كتابة البيانات
         row = 0
         
         # إضافة عنوان التقرير
-        worksheet.merge_range(row, 0, row, 4, 'تقرير مراكز التكلفة', title_format)
+        worksheet.merge_range(row, 0, row, 7, 'تقرير مراكز التكلفة', title_format)
         row += 1
         
         # إضافة معلومات الشركة والفترة الزمنية
         if self.company_id:
-            worksheet.merge_range(row, 0, row, 4, 
+            worksheet.merge_range(row, 0, row, 7, 
                                 f'الشركة: {self.company_id.name}', 
                                 workbook.add_format({
                                     'align': 'center',
@@ -646,8 +708,19 @@ class AnalyticAccountReport(models.Model):
                                 }))
             row += 1
         
+        if self.operating_unit_id:
+            worksheet.merge_range(row, 0, row, 7, 
+                                f'الفرع: {self.operating_unit_id.name}', 
+                                workbook.add_format({
+                                    'align': 'center',
+                                    'font_size': 12,
+                                    'border': 0,
+                                    'font_name': 'Arial'
+                                }))
+            row += 1
+        
         if self.group_id:
-            worksheet.merge_range(row, 0, row, 4, 
+            worksheet.merge_range(row, 0, row, 7, 
                                 f'المجموعة: {self.group_id.name}', 
                                 workbook.add_format({
                                     'align': 'center',
@@ -657,7 +730,7 @@ class AnalyticAccountReport(models.Model):
                                 }))
             row += 1
         
-        worksheet.merge_range(row, 0, row, 4,
+        worksheet.merge_range(row, 0, row, 7,
                              f'من {self.date_from} إلى {self.date_to}',
                              workbook.add_format({
                                  'align': 'center',
@@ -686,6 +759,9 @@ class AnalyticAccountReport(models.Model):
         
         # عناوين الأعمدة
         headers = [
+            'الفرع',
+            'المجموعة الرئيسية',
+            'المجموعة الفرعية',
             'مركز التكلفة',
             'المصروفات',
             'الإيرادات',
@@ -699,68 +775,141 @@ class AnalyticAccountReport(models.Model):
         
         # جلب البيانات من قاعدة البيانات
         analytic_domain = [('company_id', 'in', self.company_ids.ids)]
+        if self.operating_unit_id:
+            analytic_domain.append(('operating_unit_id', '=', self.operating_unit_id.id))
         if self.group_id:
             analytic_domain.append(('group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
             analytic_domain.append(('id', 'in', self.analytic_account_ids.ids))
         
-        analytic_accounts = self.env['account.analytic.account'].search(analytic_domain, order='group_id, name')
+        analytic_accounts = self.env['account.analytic.account'].search(analytic_domain, order='operating_unit_id, group_id, name')
         
-        # تجميع البيانات حسب المجموعة
-        groups = {}
+        # تجميع البيانات حسب الفرع والمجموعات
+        operating_unit_dict = defaultdict(lambda: {
+            'groups': defaultdict(lambda: {
+                'subgroups': defaultdict(lambda: {
+                    'accounts': [],
+                    'total_expenses': 0.0,
+                    'total_revenues': 0.0,
+                    'total_collections': 0.0,
+                    'total_debts': 0.0
+                }),
+                'total_expenses': 0.0,
+                'total_revenues': 0.0,
+                'total_collections': 0.0,
+                'total_debts': 0.0
+            }),
+            'total_expenses': 0.0,
+            'total_revenues': 0.0,
+            'total_collections': 0.0,
+            'total_debts': 0.0
+        })
+
         for account in analytic_accounts:
-            group_name = account.group_id.name if account.group_id else 'بدون مجموعة'
-            if group_name not in groups:
-                groups[group_name] = []
-            groups[group_name].append(account)
-        
-        # كتابة البيانات في Excel
-        for group_name, accounts in groups.items():
-            group_expenses = 0
-            group_revenues = 0
-            group_collections = 0
-            group_debts = 0
+            # حساب القيم لكل حساب تحليلي
+            expenses = self._calculate_analytic_amount(account, 'expenses')
+            revenues = self._calculate_analytic_amount(account, 'revenues')
+            collections = self._calculate_analytic_amount(account, 'collections')
+            debts = self._calculate_analytic_amount(account, 'debts')
             
-            # عنوان المجموعة
-            worksheet.write(row, 0, group_name, section_format)
-            worksheet.merge_range(row, 1, row, 4, '', section_format)
+            # الحصول على الفرع
+            operating_unit = account.operating_unit_id or 'بدون فرع'
+            operating_unit_name = operating_unit.name if operating_unit != 'بدون فرع' else 'بدون فرع'
+            
+            # الحصول على المجموعة الرئيسية (المستوى الأول)
+            root_group = account.group_id
+            while root_group and root_group.parent_id:
+                root_group = root_group.parent_id
+            root_group_name = root_group.name if root_group else 'بدون مجموعة رئيسية'
+            
+            # الحصول على المجموعة الفرعية (المستوى الثاني)
+            subgroup = account.group_id if account.group_id and account.group_id.parent_id == root_group else None
+            subgroup_name = subgroup.name if subgroup else 'بدون مجموعة فرعية'
+            
+            # تخزين البيانات في الهيكل الهرمي
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['accounts'].append({
+                'account': account,
+                'expenses': expenses,
+                'revenues': revenues,
+                'collections': collections,
+                'debts': debts
+            })
+            
+            # تحديث الإجماليات
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_expenses'] += expenses
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_revenues'] += revenues
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_collections'] += collections
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_debts'] += debts
+            
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_expenses'] += expenses
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_revenues'] += revenues
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_collections'] += collections
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_debts'] += debts
+            
+            operating_unit_dict[operating_unit_name]['total_expenses'] += expenses
+            operating_unit_dict[operating_unit_name]['total_revenues'] += revenues
+            operating_unit_dict[operating_unit_name]['total_collections'] += collections
+            operating_unit_dict[operating_unit_name]['total_debts'] += debts
+
+        # كتابة البيانات في Excel حسب التسلسل الهرمي
+        for operating_unit_name, operating_unit_data in operating_unit_dict.items():
+            # عنوان الفرع
+            worksheet.write(row, 0, operating_unit_name, section_format)
+            worksheet.merge_range(row, 1, row, 7, '', section_format)
             row += 1
-            
-            # بيانات كل حساب
-            for account in accounts:
-                # حساب القيم لكل حساب تحليلي
-                expenses = self._calculate_analytic_amount(account, 'expenses')
-                revenues = self._calculate_analytic_amount(account, 'revenues')
-                collections = self._calculate_analytic_amount(account, 'collections')
-                debts = self._calculate_analytic_amount(account, 'debts')
-                
-                worksheet.write(row, 0, account.name, text_format)
-                worksheet.write(row, 1, expenses, currency_format)
-                worksheet.write(row, 2, revenues, currency_format)
-                worksheet.write(row, 3, collections, currency_format)
-                worksheet.write(row, 4, debts, currency_format)
+
+            for root_group_name, root_group_data in operating_unit_data['groups'].items():
+                # عنوان المجموعة الرئيسية
+                worksheet.write(row, 1, root_group_name, section_format)
+                worksheet.merge_range(row, 2, row, 7, '', section_format)
                 row += 1
-                
-                # تجميع إجماليات المجموعة
-                group_expenses += expenses
-                group_revenues += revenues
-                group_collections += collections
-                group_debts += debts
-            
-            # إجمالي المجموعة
-            worksheet.write(row, 0, 'إجمالي المجموعة', total_format)
-            worksheet.write(row, 1, group_expenses, total_format)
-            worksheet.write(row, 2, group_revenues, total_format)
-            worksheet.write(row, 3, group_collections, total_format)
-            worksheet.write(row, 4, group_debts, total_format)
+
+                for subgroup_name, subgroup_data in root_group_data['subgroups'].items():
+                    # عنوان المجموعة الفرعية
+                    worksheet.write(row, 2, subgroup_name, section_format)
+                    worksheet.merge_range(row, 3, row, 7, '', section_format)
+                    row += 1
+
+                    # بيانات مراكز التكلفة
+                    for account_data in subgroup_data['accounts']:
+                        account = account_data['account']
+                        worksheet.write(row, 3, account.name, text_format)
+                        worksheet.write(row, 4, account_data['expenses'], currency_format)
+                        worksheet.write(row, 5, account_data['revenues'], currency_format)
+                        worksheet.write(row, 6, account_data['collections'], currency_format)
+                        worksheet.write(row, 7, account_data['debts'], currency_format)
+                        row += 1
+
+                    # إجمالي المجموعة الفرعية
+                    worksheet.write(row, 2, f'إجمالي {subgroup_name}', total_format)
+                    worksheet.write(row, 4, subgroup_data['total_expenses'], total_format)
+                    worksheet.write(row, 5, subgroup_data['total_revenues'], total_format)
+                    worksheet.write(row, 6, subgroup_data['total_collections'], total_format)
+                    worksheet.write(row, 7, subgroup_data['total_debts'], total_format)
+                    row += 1
+
+                # إجمالي المجموعة الرئيسية
+                worksheet.write(row, 1, f'إجمالي {root_group_name}', total_format)
+                worksheet.write(row, 4, root_group_data['total_expenses'], total_format)
+                worksheet.write(row, 5, root_group_data['total_revenues'], total_format)
+                worksheet.write(row, 6, root_group_data['total_collections'], total_format)
+                worksheet.write(row, 7, root_group_data['total_debts'], total_format)
+                row += 1
+
+            # إجمالي الفرع
+            worksheet.write(row, 0, f'إجمالي {operating_unit_name}', total_format)
+            worksheet.write(row, 4, operating_unit_data['total_expenses'], total_format)
+            worksheet.write(row, 5, operating_unit_data['total_revenues'], total_format)
+            worksheet.write(row, 6, operating_unit_data['total_collections'], total_format)
+            worksheet.write(row, 7, operating_unit_data['total_debts'], total_format)
             row += 1
         
         # الإجمالي العام
         worksheet.write(row, 0, 'الإجمالي العام', total_format)
-        worksheet.write(row, 1, self.total_expenses, total_format)
-        worksheet.write(row, 2, self.total_revenues, total_format)
-        worksheet.write(row, 3, self.total_collections, total_format)
-        worksheet.write(row, 4, self.total_debts, total_format)
+        worksheet.write(row, 4, self.total_expenses, total_format)
+        worksheet.write(row, 5, self.total_revenues, total_format)
+        worksheet.write(row, 6, self.total_collections, total_format)
+        worksheet.write(row, 7, self.total_debts, total_format)
         
         # إغلاق الكتاب
         workbook.close()
@@ -781,65 +930,6 @@ class AnalyticAccountReport(models.Model):
             'url': f'/web/content/{attachment.id}?download=true',
             'target': 'self',
         }
-    def _calculate_analytic_amount(self, account, amount_type):
-        """حساب المبالغ لكل حساب تحليلي"""
-        domain = [
-            ('date', '>=', self.date_from),
-            ('date', '<=', self.date_to),
-            ('company_id', 'in', self.company_ids.ids),
-            ('move_id.state', '=', 'posted'),
-            ('analytic_account_id', '=', account.id)
-        ]
-        
-        # إضافة تسجيل للتشخيص
-        logger.info(f"Calculating {amount_type} for account {account.name} with domain: {domain}")
-        
-        if amount_type == 'expenses':
-            domain.append(('balance', '<', 0))
-            lines = self.env['account.move.line'].search(domain)
-            result = abs(sum(lines.mapped('balance')))
-            logger.info(f"Expenses for {account.name}: {result} (from {len(lines)} lines)")
-            return result
-        
-        elif amount_type == 'revenues':
-            domain.append(('balance', '>', 0))
-            lines = self.env['account.move.line'].search(domain)
-            result = sum(lines.mapped('balance'))
-            logger.info(f"Revenues for {account.name}: {result} (from {len(lines)} lines)")
-            return result
-        
-        elif amount_type == 'collections':
-            # تصحيح منطق التحصيل - البحث عن المدفوعات الفعلية
-            domain_payments = domain + [
-                ('move_id.move_type', 'in', ['out_payment', 'in_payment']),
-                ('balance', '!=', 0)
-            ]
-            payment_lines = self.env['account.move.line'].search(domain_payments)
-            
-            # أو البحث عن الفواتير المدفوعة
-            domain_paid_invoices = domain + [
-                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                ('move_id.payment_state', '=', 'paid'),
-                ('balance', '!=', 0)
-            ]
-            paid_invoice_lines = self.env['account.move.line'].search(domain_paid_invoices)
-            
-            result = abs(sum(payment_lines.mapped('balance'))) + abs(sum(paid_invoice_lines.mapped('balance')))
-            logger.info(f"Collections for {account.name}: {result} (payments: {len(payment_lines)}, paid invoices: {len(paid_invoice_lines)})")
-            return result
-        
-        elif amount_type == 'debts':
-            domain += [
-                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                ('move_id.payment_state', 'in', ['not_paid', 'partial']),
-                ('amount_residual', '>', 0)
-            ]
-            lines = self.env['account.move.line'].search(domain)
-            result = sum(lines.mapped('amount_residual'))
-            logger.info(f"Debts for {account.name}: {result} (from {len(lines)} lines)")
-            return result
-        
-        return 0.0
 
     def generate_pdf_report(self):
         """إنشاء تقرير PDF لتقرير مراكز التكلفة"""
@@ -926,7 +1016,10 @@ class AnalyticAccountReport(models.Model):
                 company_info = Paragraph(f"الشركات: {companies}", normal_style)
                 elements.append(company_info)
 
-            # Remove branch handling - no longer needed
+            # إضافة معلومات الفرع
+            if self.operating_unit_id:
+                operating_unit_info = Paragraph(f"الفرع: {self.operating_unit_id.name}", normal_style)
+                elements.append(operating_unit_info)
 
             # إضافة معلومات المجموعة
             if self.group_id:
@@ -964,9 +1057,10 @@ class AnalyticAccountReport(models.Model):
 
             # إضافة تفاصيل التقرير
             report_header = [
-                'المجموعة',
+                'الفرع',
+                'المجموعة الرئيسية',
+                'المجموعة الفرعية',
                 'مركز التكلفة',
-                'الشريك',
                 'المصروفات',
                 'الإيرادات',
                 'التحصيل (المدفوعات)',
@@ -986,8 +1080,9 @@ class AnalyticAccountReport(models.Model):
             
             analytic_domain = [('company_id', 'in', company_ids)]
             
-            # Remove branch handling - no longer needed
-            if self.group_id and self.group_id.id:
+            if self.operating_unit_id:
+                analytic_domain.append(('operating_unit_id', '=', self.operating_unit_id.id))
+            if self.group_id:
                 analytic_domain.append(('group_id', '=', self.group_id.id))
             if self.analytic_account_ids:
                 analytic_account_ids = [a.id for a in self.analytic_account_ids if a._name == 'account.analytic.account' and a.id]
@@ -996,9 +1091,21 @@ class AnalyticAccountReport(models.Model):
 
             analytic_accounts = self.env['account.analytic.account'].search(analytic_domain)
 
-            # تجميع النتائج حسب المجموعة
-            group_dict = defaultdict(lambda: {
-                'accounts': [],
+            # تجميع النتائج حسب الفرع والمجموعات
+            operating_unit_dict = defaultdict(lambda: {
+                'groups': defaultdict(lambda: {
+                    'subgroups': defaultdict(lambda: {
+                        'accounts': [],
+                        'total_expenses': 0.0,
+                        'total_revenues': 0.0,
+                        'total_collections': 0.0,
+                        'total_debts': 0.0
+                    }),
+                    'total_expenses': 0.0,
+                    'total_revenues': 0.0,
+                    'total_collections': 0.0,
+                    'total_debts': 0.0
+                }),
                 'total_expenses': 0.0,
                 'total_revenues': 0.0,
                 'total_collections': 0.0,
@@ -1015,7 +1122,8 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('balance', '<', 0)
                 ]
-                # Remove branch handling - no longer needed
+                if self.operating_unit_id:
+                    expenses_domain.append(('analytic_account_id.operating_unit_id', '=', self.operating_unit_id.id))
                 expense_lines = self.env['account.move.line'].search(expenses_domain)
                 account_expenses = abs(sum(line.balance for line in expense_lines))
 
@@ -1028,7 +1136,8 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('balance', '>', 0)
                 ]
-                # Remove branch handling - no longer needed
+                if self.operating_unit_id:
+                    revenues_domain.append(('analytic_account_id.operating_unit_id', '=', self.operating_unit_id.id))
                 revenue_lines = self.env['account.move.line'].search(revenues_domain)
                 account_revenues = sum(line.balance for line in revenue_lines)
 
@@ -1041,7 +1150,8 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', '=', account.id),
                     ('payment_id', '!=', False)
                 ]
-                # Remove branch handling - no longer needed
+                if self.operating_unit_id:
+                    payments_domain.append(('analytic_account_id.operating_unit_id', '=', self.operating_unit_id.id))
                 payment_lines = self.env['account.move.line'].search(payments_domain)
                 account_collections = abs(sum(line.balance for line in payment_lines))
 
@@ -1056,17 +1166,28 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.payment_state', '!=', 'paid'),
                     ('balance', '>', 0)
                 ]
-                # Remove branch handling - no longer needed
+                if self.operating_unit_id:
+                    invoices_domain.append(('analytic_account_id.operating_unit_id', '=', self.operating_unit_id.id))
                 invoice_lines = self.env['account.move.line'].search(invoices_domain)
                 account_debts = sum(line.amount_residual for line in invoice_lines)
 
-                # الحصول على الشريك من حساب التحليلي
-                partner = account.partner_id or False
+                # الحصول على الفرع
+                operating_unit = account.operating_unit_id or 'بدون فرع'
+                operating_unit_name = operating_unit.name if operating_unit != 'بدون فرع' else 'بدون فرع'
+                
+                # الحصول على المجموعة الرئيسية (المستوى الأول)
+                root_group = account.group_id
+                while root_group and root_group.parent_id:
+                    root_group = root_group.parent_id
+                root_group_name = root_group.name if root_group else 'بدون مجموعة رئيسية'
+                
+                # الحصول على المجموعة الفرعية (المستوى الثاني)
+                subgroup = account.group_id if account.group_id and account.group_id.parent_id == root_group else None
+                subgroup_name = subgroup.name if subgroup else 'بدون مجموعة فرعية'
 
                 # تخزين النتائج
-                group_dict[account.group_id]['accounts'].append({
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['accounts'].append({
                     'account': account,
-                    'partner': partner,
                     'expenses': account_expenses,
                     'revenues': account_revenues,
                     'collections': account_collections,
@@ -1074,48 +1195,81 @@ class AnalyticAccountReport(models.Model):
                 })
 
                 # تحديث إجماليات المجموعة
-                group_dict[account.group_id]['total_expenses'] += account_expenses
-                group_dict[account.group_id]['total_revenues'] += account_revenues
-                group_dict[account.group_id]['total_collections'] += account_collections
-                group_dict[account.group_id]['total_debts'] += account_debts
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_expenses'] += account_expenses
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_revenues'] += account_revenues
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_collections'] += account_collections
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['total_debts'] += account_debts
+                
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_expenses'] += account_expenses
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_revenues'] += account_revenues
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_collections'] += account_collections
+                operating_unit_dict[operating_unit_name]['groups'][root_group_name]['total_debts'] += account_debts
+                
+                operating_unit_dict[operating_unit_name]['total_expenses'] += account_expenses
+                operating_unit_dict[operating_unit_name]['total_revenues'] += account_revenues
+                operating_unit_dict[operating_unit_name]['total_collections'] += account_collections
+                operating_unit_dict[operating_unit_name]['total_debts'] += account_debts
 
-            # عرض النتائج حسب المجموعة
-            for group, data in group_dict.items():
-                # عنوان المجموعة
+            # عرض النتائج حسب التسلسل الهرمي
+            for operating_unit_name, operating_unit_data in operating_unit_dict.items():
+                # عنوان الفرع
                 report_data.append([
-                    group.name if group else 'بدون مجموعة', '', '', '', '', '', ''
+                    operating_unit_name, '', '', '', '', '', '', ''
                 ])
 
-                # تفاصيل مراكز التكلفة في هذه المجموعة
-                for account_data in data['accounts']:
-                    account = account_data['account']
-                    partner_name = account_data['partner'].name if account_data['partner'] else ''
+                for root_group_name, root_group_data in operating_unit_data['groups'].items():
+                    # عنوان المجموعة الرئيسية
                     report_data.append([
-                        '',
-                        account.name,
-                        partner_name,
-                        format(round(account_data['expenses'], 2), ',.2f'),
-                        format(round(account_data['revenues'], 2), ',.2f'),
-                        format(round(account_data['collections'], 2), ',.2f'),
-                        format(round(account_data['debts'], 2), ',.2f')
+                        '', root_group_name, '', '', '', '', '', ''
                     ])
 
-                # إجمالي المجموعة
+                    for subgroup_name, subgroup_data in root_group_data['subgroups'].items():
+                        # عنوان المجموعة الفرعية
+                        report_data.append([
+                            '', '', subgroup_name, '', '', '', '', ''
+                        ])
+
+                        # تفاصيل مراكز التكلفة في هذه المجموعة
+                        for account_data in subgroup_data['accounts']:
+                            account = account_data['account']
+                            report_data.append([
+                                '', '', '', account.name,
+                                format(round(account_data['expenses'], 2), ',.2f'),
+                                format(round(account_data['revenues'], 2), ',.2f'),
+                                format(round(account_data['collections'], 2), ',.2f'),
+                                format(round(account_data['debts'], 2), ',.2f')
+                            ])
+
+                        # إجمالي المجموعة الفرعية
+                        report_data.append([
+                            '', '', f'إجمالي {subgroup_name}', '',
+                            format(round(subgroup_data['total_expenses'], 2), ',.2f'),
+                            format(round(subgroup_data['total_revenues'], 2), ',.2f'),
+                            format(round(subgroup_data['total_collections'], 2), ',.2f'),
+                            format(round(subgroup_data['total_debts'], 2), ',.2f')
+                        ])
+
+                    # إجمالي المجموعة الرئيسية
+                    report_data.append([
+                        '', f'إجمالي {root_group_name}', '', '',
+                        format(round(root_group_data['total_expenses'], 2), ',.2f'),
+                        format(round(root_group_data['total_revenues'], 2), ',.2f'),
+                        format(round(root_group_data['total_collections'], 2), ',.2f'),
+                        format(round(root_group_data['total_debts'], 2), ',.2f')
+                    ])
+
+                # إجمالي الفرع
                 report_data.append([
-                    '',
-                    'إجمالي المجموعة',
-                    '',
-                    format(round(data['total_expenses'], 2), ',.2f'),
-                    format(round(data['total_revenues'], 2), ',.2f'),
-                    format(round(data['total_collections'], 2), ',.2f'),
-                    format(round(data['total_debts'], 2), ',.2f')
+                    f'إجمالي {operating_unit_name}', '', '', '',
+                    format(round(operating_unit_data['total_expenses'], 2), ',.2f'),
+                    format(round(operating_unit_data['total_revenues'], 2), ',.2f'),
+                    format(round(operating_unit_data['total_collections'], 2), ',.2f'),
+                    format(round(operating_unit_data['total_debts'], 2), ',.2f')
                 ])
 
-            # إجمالي عام
+            # الإجمالي العام
             report_data.append([
-                '',
-                'الإجمالي العام',
-                '',
+                'الإجمالي العام', '', '', '',
                 format(round(self.total_expenses, 2), ',.2f'),
                 format(round(self.total_revenues, 2), ',.2f'),
                 format(round(self.total_collections, 2), ',.2f'),
@@ -1123,7 +1277,7 @@ class AnalyticAccountReport(models.Model):
             ])
 
             # إنشاء جدول التقرير
-            report_table = Table(report_data, colWidths=[60, 90, 70, 50, 50, 50, 50])
+            report_table = Table(report_data, colWidths=[60, 60, 60, 90, 50, 50, 50, 50])
             report_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4472C4')),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
@@ -1137,7 +1291,11 @@ class AnalyticAccountReport(models.Model):
                 ('BACKGROUND', (0, -1), (-1, -1), colors.HexColor('#D9E1F2')),
                 ('FONTWEIGHT', (0, -1), (-1, -1), 'BOLD'),
                 ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#E6F2FF')),
-                ('FONTWEIGHT', (0, 0), (0, -1), 'BOLD')
+                ('FONTWEIGHT', (0, 0), (0, -1), 'BOLD'),
+                ('BACKGROUND', (1, 0), (1, -1), colors.HexColor('#E6F2FF')),
+                ('FONTWEIGHT', (1, 0), (1, -1), 'BOLD'),
+                ('BACKGROUND', (2, 0), (2, -1), colors.HexColor('#E6F2FF')),
+                ('FONTWEIGHT', (2, 0), (2, -1), 'BOLD')
             ]))
 
             elements.append(report_table)
@@ -1156,38 +1314,7 @@ class AnalyticAccountReport(models.Model):
             raise
 
     def action_generate_excel_report(self):
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
-        # مثال: كتابة رؤوس الأعمدة
-        worksheet.write(0, 0, 'الاسم')
-        worksheet.write(0, 1, 'الإيرادات')
-        worksheet.write(0, 2, 'المصروفات')
-        # مثال: كتابة بيانات التقرير
-        row = 1
-        for rec in self:
-            worksheet.write(row, 0, rec.name)
-            worksheet.write(row, 1, rec.total_revenues)
-            worksheet.write(row, 2, rec.total_expenses)
-            row += 1
-        workbook.close()
-        output.seek(0)
-        file_data = output.read()
-        output.close()
-        attachment = self.env['ir.attachment'].create({
-            'name': 'تقرير مراكز التكلفة.xlsx',
-            'type': 'binary',
-            'datas': base64.b64encode(file_data),
-            'res_model': self._name,
-            'res_id': self.id,
-            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        })
-        download_url = '/web/content/%s?download=true' % (attachment.id)
-        return {
-            'type': 'ir.actions.act_url',
-            'url': download_url,
-            'target': 'new',
-        }
+        return self.generate_excel_report()
 
     def action_generate_pdf_report(self):
         """إجراء لإنشاء وتنزيل تقرير PDF"""
@@ -1227,13 +1354,16 @@ class AnalyticAccountReport(models.Model):
             ('company_id', 'in', company_ids),
             ('account_id', '!=', False)
         ]
-        # Remove branch handling - no longer needed
-        if self.group_id and self.group_id.id:
+        
+        if self.operating_unit_id:
+            domain.append(('account_id.operating_unit_id', '=', self.operating_unit_id.id))
+        if self.group_id:
             domain.append(('account_id.group_id', '=', self.group_id.id))
         if self.analytic_account_ids:
             analytic_account_ids = [a.id for a in self.analytic_account_ids if a._name == 'account.analytic.account' and a.id]
             if analytic_account_ids:
                 domain.append(('account_id', 'in', analytic_account_ids))
+        
         action['domain'] = domain
         action['context'] = {
             'search_default_group_by_account': 1,
@@ -1248,6 +1378,7 @@ class AnalyticAccountReport(models.Model):
         logger.info("=== تشخيص البيانات ===")
         logger.info(f"الفترة: من {self.date_from} إلى {self.date_to}")
         logger.info(f"الشركات: {[c.name for c in self.company_ids]}")
+        logger.info(f"الفرع: {self.operating_unit_id.name if self.operating_unit_id else 'غير محدد'}")
         logger.info(f"مراكز التكلفة: {len(self.analytic_account_ids)}")
         
         # فحص وجود قيود يومية
@@ -1257,6 +1388,9 @@ class AnalyticAccountReport(models.Model):
             ('company_id', 'in', self.company_ids.ids),
             ('move_id.state', '=', 'posted')
         ]
+        
+        if self.operating_unit_id:
+            domain.append(('analytic_account_id.operating_unit_id', '=', self.operating_unit_id.id))
         
         all_lines = self.env['account.move.line'].search(domain)
         logger.info(f"إجمالي القيود في الفترة: {len(all_lines)}")
