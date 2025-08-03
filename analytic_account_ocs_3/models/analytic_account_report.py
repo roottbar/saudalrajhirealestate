@@ -55,7 +55,7 @@ class AnalyticAccountReport(models.Model):
     group_id = fields.Many2one(
         'account.analytic.group',
         string='مجموعة مراكز التكلفة',
-        domain="[('company_id', 'in', company_ids)]"
+        domain="[('company_id', 'in', company_ids), '|', ('operating_unit_id', '=', False), ('operating_unit_id', '=?', operating_unit_id)]"
     )
 
     analytic_account_id = fields.Many2one(
@@ -139,26 +139,39 @@ class AnalyticAccountReport(models.Model):
 
     @api.depends('group_id', 'analytic_account_id', 'company_ids', 'operating_unit_id')
     def _compute_analytic_accounts(self):
+        """حساب مراكز التكلفة بناءً على المعايير المحددة"""
         for record in self:
             try:
                 domain = []
                 
+                # تصفية حسب الشركات
                 if record.company_ids:
                     company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
                     if company_ids:
                         domain.append(('company_id', 'in', company_ids))
 
+                # تصفية حسب الفرع
                 if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
                     domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
                     
+                # تصفية حسب المجموعة
                 if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                    # إذا تم اختيار مجموعة، عرض مراكز التكلفة في هذه المجموعة فقط
                     domain.append(('group_id', '=', record.group_id.id))
+                elif record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
+                    # إذا تم اختيار فرع بدون مجموعة، عرض جميع مراكز التكلفة في هذا الفرع
+                    pass  # لا نضيف قيد على المجموعة
                     
+                # تصفية حسب مركز التكلفة المحدد
                 if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
                     domain.append(('id', '=', record.analytic_account_id.id))
 
                 analytic_accounts = self.env['account.analytic.account'].search(domain)
                 record.analytic_account_ids = analytic_accounts
+                
+                # تسجيل معلومات التشخيص
+                logger.info(f"Computed analytic accounts for record {record.id}: {len(analytic_accounts)} accounts found with domain: {domain}")
+                
             except Exception as e:
                 logger.error("Error computing analytic accounts: %s", str(e))
                 record.analytic_account_ids = self.env['account.analytic.account']
@@ -490,26 +503,68 @@ class AnalyticAccountReport(models.Model):
             except Exception as e:
                 logger.error("Error in _onchange_company_ids: %s", str(e))
 
-    @api.onchange('group_id')
-    def _onchange_group_id(self):
-        for record in self:
-            try:
-                if record.group_id and record.analytic_account_id:
-                    if record.analytic_account_id.group_id != record.group_id:
-                        record.analytic_account_id = False
-            except Exception as e:
-                logger.error("Error in _onchange_group_id: %s", str(e))
-                record.analytic_account_id = False
-
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
+        """عند تغيير الفرع، إعادة تعيين المجموعة ومركز التكلفة وتحديث النطاقات"""
         for record in self:
             try:
-                if record.operating_unit_id and record.analytic_account_id:
-                    if record.analytic_account_id.operating_unit_id != record.operating_unit_id:
-                        record.analytic_account_id = False
+                # إعادة تعيين المجموعة ومركز التكلفة عند تغيير الفرع
+                if record.operating_unit_id:
+                    # البحث عن المجموعات المتاحة لهذا الفرع
+                    available_groups = self.env['account.analytic.group'].search([
+                        ('company_id', 'in', [c.id for c in record.company_ids]),
+                    ])
+                    
+                    # التحقق من أن المجموعة الحالية متوافقة مع الفرع الجديد
+                    if record.group_id:
+                        # البحث عن مراكز التكلفة في هذه المجموعة والفرع
+                        compatible_accounts = self.env['account.analytic.account'].search([
+                            ('operating_unit_id', '=', record.operating_unit_id.id),
+                            ('group_id', '=', record.group_id.id)
+                        ])
+                        if not compatible_accounts:
+                            record.group_id = False
+                    
+                    # إعادة تعيين مركز التكلفة إذا لم يعد متوافقاً
+                    if record.analytic_account_id:
+                        if record.analytic_account_id.operating_unit_id != record.operating_unit_id:
+                            record.analytic_account_id = False
+                else:
+                    # إذا لم يتم اختيار فرع، إعادة تعيين المجموعة ومركز التكلفة
+                    record.group_id = False
+                    record.analytic_account_id = False
+                    
             except Exception as e:
                 logger.error("Error in _onchange_operating_unit_id: %s", str(e))
+                record.analytic_account_id = False
+                record.group_id = False
+
+    @api.onchange('group_id')
+    def _onchange_group_id(self):
+        """عند تغيير المجموعة، إعادة تعيين مركز التكلفة"""
+        for record in self:
+            try:
+                if record.group_id:
+                    # التحقق من توافق مركز التكلفة الحالي مع المجموعة والفرع الجديدين
+                    if record.analytic_account_id:
+                        compatible = True
+                        
+                        # التحقق من المجموعة
+                        if record.analytic_account_id.group_id != record.group_id:
+                            compatible = False
+                        
+                        # التحقق من الفرع إذا كان محدداً
+                        if record.operating_unit_id and record.analytic_account_id.operating_unit_id != record.operating_unit_id:
+                            compatible = False
+                            
+                        if not compatible:
+                            record.analytic_account_id = False
+                else:
+                    # إذا لم يتم اختيار مجموعة، إعادة تعيين مركز التكلفة
+                    record.analytic_account_id = False
+                    
+            except Exception as e:
+                logger.error("Error in _onchange_group_id: %s", str(e))
                 record.analytic_account_id = False
 
     @api.constrains('company_ids', 'group_id', 'analytic_account_id', 'operating_unit_id')
@@ -1370,6 +1425,35 @@ class AnalyticAccountReport(models.Model):
             'create': False
         }
         return action
+
+    @api.model
+    def get_available_groups_for_operating_unit(self, operating_unit_id, company_ids):
+        """الحصول على المجموعات المتاحة لفرع معين"""
+        if not operating_unit_id or not company_ids:
+            return self.env['account.analytic.group']
+            
+        # البحث عن المجموعات التي تحتوي على مراكز تكلفة في هذا الفرع
+        analytic_accounts = self.env['account.analytic.account'].search([
+            ('operating_unit_id', '=', operating_unit_id),
+            ('company_id', 'in', company_ids),
+            ('group_id', '!=', False)
+        ])
+        
+        group_ids = analytic_accounts.mapped('group_id.id')
+        return self.env['account.analytic.group'].browse(group_ids)
+    
+    @api.model
+    def get_available_accounts_for_group_and_unit(self, group_id, operating_unit_id, company_ids):
+        """الحصول على مراكز التكلفة المتاحة لمجموعة وفرع معينين"""
+        domain = [('company_id', 'in', company_ids)]
+        
+        if group_id:
+            domain.append(('group_id', '=', group_id))
+            
+        if operating_unit_id:
+            domain.append(('operating_unit_id', '=', operating_unit_id))
+            
+        return self.env['account.analytic.account'].search(domain)
 
     def debug_data(self):
         """دالة للتشخيص وفحص البيانات"""
