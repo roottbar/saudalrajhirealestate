@@ -17,7 +17,7 @@
     'author': 'othmancs',
     'website': 'https://www.tbarholdingocs.com',
     'category': 'Accounting',
-    'depends': ['base', 'account', 'analytic', 'operating_unit'],
+    'depends': ['base', 'account', 'analytic'],
     'data': [
         'security/ir.model.access.csv',
         'views/analytic_account_report_views.xml',
@@ -27,4 +27,5 @@
     'application': True,
     'auto_install': False,
     'license': 'LGPL-3',
+    'sequence': 1,
 }
