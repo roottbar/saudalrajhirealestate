@@ -55,7 +55,7 @@ class AnalyticAccountReport(models.Model):
     group_id = fields.Many2one(
         'account.analytic.group',
         string='مجموعة مراكز التكلفة',
-        domain="[('company_id', 'in', company_ids), '|', ('operating_unit_id', '=', False), ('operating_unit_id', '=?', operating_unit_id)]"
+        domain="[('company_id', 'in', company_ids)]"
     )
 
     analytic_account_id = fields.Many2one(
@@ -505,25 +505,28 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
-        """عند تغيير الفرع، إعادة تعيين المجموعة ومركز التكلفة وتحديث النطاقات"""
+        """عند تغيير الفرع، تصفية المجموعات ومراكز التكلفة"""
         for record in self:
             try:
-                # إعادة تعيين المجموعة ومركز التكلفة عند تغيير الفرع
                 if record.operating_unit_id:
                     # البحث عن المجموعات المتاحة لهذا الفرع
                     available_groups = self.env['account.analytic.group'].search([
                         ('company_id', 'in', [c.id for c in record.company_ids]),
                     ])
                     
-                    # التحقق من أن المجموعة الحالية متوافقة مع الفرع الجديد
-                    if record.group_id:
-                        # البحث عن مراكز التكلفة في هذه المجموعة والفرع
-                        compatible_accounts = self.env['account.analytic.account'].search([
+                    # تصفية المجموعات التي تحتوي على مراكز تكلفة في هذا الفرع
+                    valid_group_ids = []
+                    for group in available_groups:
+                        accounts_in_group = self.env['account.analytic.account'].search([
                             ('operating_unit_id', '=', record.operating_unit_id.id),
-                            ('group_id', '=', record.group_id.id)
+                            ('group_id', '=', group.id)
                         ])
-                        if not compatible_accounts:
-                            record.group_id = False
+                        if accounts_in_group:
+                            valid_group_ids.append(group.id)
+                    
+                    # إعادة تعيين المجموعة إذا لم تعد صالحة
+                    if record.group_id and record.group_id.id not in valid_group_ids:
+                        record.group_id = False
                     
                     # إعادة تعيين مركز التكلفة إذا لم يعد متوافقاً
                     if record.analytic_account_id:
