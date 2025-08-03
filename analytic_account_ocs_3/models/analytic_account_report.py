@@ -19,12 +19,6 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 logger = logging.getLogger(__name__)
 
-
-from odoo.http import request
-import base64
-import io
-import xlsxwriter
-
 class AnalyticAccountReport(models.Model):
     _name = 'analytic.account.report'
     _description = 'تقرير مراكز التكلفة'
@@ -51,6 +45,11 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_main_company',
         store=True
     )
+    print_date = fields.Date(string='تاريخ الطباعة')
+
+    # حقول التقرير
+    excel_report = fields.Binary(string='تقرير Excel', compute='_compute_excel_report')
+    pdf_report = fields.Binary(string='تقرير PDF', compute='_compute_pdf_report')
 
     # حقول العلاقات
     group_id = fields.Many2one(
@@ -106,80 +105,37 @@ class AnalyticAccountReport(models.Model):
         store=True
     )
 
-    # def action_generate_excel_report(self):
-    #     output = io.BytesIO()
-    #     workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-    #     worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
-    #     # مثال: كتابة رؤوس الأعمدة
-    #     worksheet.write(0, 0, 'الاسم')
-    #     worksheet.write(0, 1, 'الإيرادات')
-    #     worksheet.write(0, 2, 'المصروفات')
-    #     # مثال: كتابة بيانات التقرير
-    #     row = 1
-    #     for rec in self:
-    #         worksheet.write(row, 0, rec.name)
-    #         worksheet.write(row, 1, rec.total_revenues)
-    #         worksheet.write(row, 2, rec.total_expenses)
-    #         row += 1
-    #     workbook.close()
-    #     output.seek(0)
-    #     file_data = output.read()
-    #     output.close()
-    #     attachment = self.env['ir.attachment'].create({
-    #         'name': 'تقرير مراكز التكلفة.xlsx',
-    #         'type': 'binary',
-    #         'datas': base64.b64encode(file_data),
-    #         'res_model': self._name,
-    #         'res_id': self.id,
-    #         'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    #     })
-    #     download_url = '/web/content/%s?download=true' % (attachment.id)
-    #     return {
-    #         'type': 'ir.actions.act_url',
-    #         'url': download_url,
-    #         'target': 'new',
-    #     }
-
     @api.depends('company_ids')
     def _compute_main_company(self):
         for record in self:
-            # إذا كان هناك شركة واحدة فقط، استخدمها
             if record.company_ids and len(record.company_ids) == 1:
                 record.company_id = record.company_ids[0]
-            # إذا كان هناك عدة شركات، استخدم الأولى
             elif record.company_ids and len(record.company_ids) > 1:
                 record.company_id = record.company_ids[0]
             else:
-                # تجنب استعلامات قاعدة البيانات أثناء المعاملات الفاشلة
-                # ببساطة اتركه فارغاً أو استخدم قيمة افتراضية
                 record.company_id = False
 
     @api.depends('company_ids')
     def _compute_company_currency(self):
         for record in self:
             try:
-                # Initialize with default company currency
                 default_currency = self.env.company.currency_id
             except Exception:
-                # Fallback to base currency if company access fails
                 default_currency = self.env['res.currency'].search([('name', '=', 'USD')], limit=1)
                 if not default_currency:
                     default_currency = self.env['res.currency'].search([], limit=1)
             
             record.company_currency_id = default_currency
             
-            # Only proceed if we have valid company_ids
             if not record.company_ids:
                 continue
                 
             try:
-                # Safely get the first valid company
                 valid_companies = [c for c in record.company_ids if c._name == 'res.company' and c.id]
                 if valid_companies:
                     record.company_currency_id = valid_companies[0].currency_id
             except Exception as e:
                 logger.error("Error computing company currency: %s", str(e))
-                # Keep the default currency set above
 
     @api.depends('group_id', 'analytic_account_id', 'company_ids')
     def _compute_analytic_accounts(self):
@@ -187,28 +143,16 @@ class AnalyticAccountReport(models.Model):
             try:
                 domain = []
                 
-                # Add company filter if available - safely handle company_ids
                 if record.company_ids:
                     company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
                     if company_ids:
-                        # Check if analytic account has company_id field
-                        account_model = self.env['account.analytic.account']
-                        if hasattr(account_model, '_fields') and 'company_id' in account_model._fields:
-                            domain.append(('company_id', 'in', company_ids))
+                        domain.append(('company_id', 'in', company_ids))
 
-                # Remove branch filter - no longer needed
-                        
-                # Add group filter if available
                 if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                     domain.append(('group_id', '=', record.group_id.id))
                     
-                # Add specific account filter if available
                 if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
                     domain.append(('id', '=', record.analytic_account_id.id))
-
-                # If no domain, get all analytic accounts
-                if not domain:
-                    domain = []
 
                 analytic_accounts = self.env['account.analytic.account'].search(domain)
                 record.analytic_account_ids = analytic_accounts
@@ -237,40 +181,37 @@ class AnalyticAccountReport(models.Model):
                     record.total_debts = 0.0
                     continue
 
-                # استعلام واحد مجمع لجميع الإجماليات
+                # استعلام محسن لجلب جميع القيم في استعلام واحد
                 query = """
                     SELECT 
-                        SUM(CASE WHEN balance < 0 THEN ABS(balance) ELSE 0 END) as total_expenses,
-                        SUM(CASE WHEN balance > 0 THEN balance ELSE 0 END) as total_revenues,
-                        SUM(CASE WHEN aml.payment_id IS NOT NULL THEN ABS(aml.balance) ELSE 0 END) as total_collections,
-                        SUM(CASE WHEN am.move_type IN ('out_invoice', 'in_invoice') 
-                                 AND am.payment_state != 'paid' 
-                                 AND aml.balance > 0 
-                                 THEN aml.amount_residual ELSE 0 END) as total_debts
+                        COALESCE(SUM(CASE WHEN aml.balance < 0 THEN ABS(aml.balance) ELSE 0 END), 0.0) as total_expenses,
+                        COALESCE(SUM(CASE WHEN aml.balance > 0 THEN aml.balance ELSE 0 END), 0.0) as total_revenues,
+                        COALESCE(SUM(CASE WHEN aml.payment_id IS NOT NULL THEN ABS(aml.balance) ELSE 0 END), 0.0) as total_collections,
+                        COALESCE(SUM(CASE WHEN am.move_type IN ('out_invoice', 'in_invoice') 
+                                         AND am.payment_state != 'paid' 
+                                         AND aml.balance > 0 
+                                         THEN aml.amount_residual ELSE 0 END), 0.0) as total_debts
                     FROM account_move_line aml
                     JOIN account_move am ON aml.move_id = am.id
                     WHERE aml.date >= %s 
                         AND aml.date <= %s
-                        AND aml.company_id = ANY(%s)
+                        AND aml.company_id IN %s
                         AND am.state = 'posted'
-                        AND aml.analytic_account_id = ANY(%s)
+                        AND aml.analytic_account_id IN %s
                 """
                 
-                params = [record.date_from, record.date_to, company_ids, analytic_account_ids]
-                
-                self.env.cr.execute(query, params)
+                self.env.cr.execute(query, (
+                    record.date_from, 
+                    record.date_to,
+                    tuple(company_ids),
+                    tuple(analytic_account_ids)
+                )
                 result = self.env.cr.fetchone()
                 
-                if result:
-                    record.total_expenses = result[0] or 0.0
-                    record.total_revenues = result[1] or 0.0
-                    record.total_collections = result[2] or 0.0
-                    record.total_debts = result[3] or 0.0
-                else:
-                    record.total_expenses = 0.0
-                    record.total_revenues = 0.0
-                    record.total_collections = 0.0
-                    record.total_debts = 0.0
+                record.total_expenses = result[0] or 0.0
+                record.total_revenues = result[1] or 0.0
+                record.total_collections = result[2] or 0.0
+                record.total_debts = result[3] or 0.0
                     
             except Exception as e:
                 logger.error("Error computing totals: %s", str(e))
@@ -299,8 +240,6 @@ class AnalyticAccountReport(models.Model):
                         .table td { padding: 8px; border: 1px solid #ddd; }
                         .text-right { text-align: right; }
                         .text-center { text-align: center; }
-                        .document-link { color: #4472C4; text-decoration: none; }
-                        .document-link:hover { text-decoration: underline; }
                     </style>
                     <table class="table">
                         <thead>
@@ -449,81 +388,27 @@ class AnalyticAccountReport(models.Model):
                 logger.error("Error computing report lines: %s", str(e))
                 record.report_lines = "<p>حدث خطأ أثناء توليد التقرير</p>"
 
-    @api.onchange('company_ids')
-    def _onchange_company_ids(self):
+    def _compute_excel_report(self):
         for record in self:
             try:
-                if not record.company_ids:
-                    continue
-
-                company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
-                if not company_ids:
-                    continue
-
-                # Remove branch handling - no longer needed
-
-                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
-                    if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
-                        record.group_id = False
-                    elif record.group_id.company_id.id not in company_ids:
-                        record.group_id = False
-
-                if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
-                    if not hasattr(record.analytic_account_id, 'company_id') or not record.analytic_account_id.company_id:
-                        record.analytic_account_id = False
-                    elif record.analytic_account_id.company_id.id not in company_ids:
-                        record.analytic_account_id = False
-
+                report_data = record.generate_excel_report()
+                record.excel_report = base64.b64encode(report_data['file_content'])
             except Exception as e:
-                logger.error("Error in _onchange_company_ids: %s", str(e))
+                logger.error("Error generating Excel report: %s", str(e))
+                record.excel_report = False
 
-    @api.onchange('group_id')
-    def _onchange_group_id(self):
+    def _compute_pdf_report(self):
         for record in self:
             try:
-                if record.group_id and record.analytic_account_id:
-                    if record.analytic_account_id.group_id != record.group_id:
-                        record.analytic_account_id = False
+                report_data = record.generate_pdf_report()
+                record.pdf_report = base64.b64encode(report_data['file_content'])
             except Exception as e:
-                logger.error("Error in _onchange_group_id: %s", str(e))
-                record.analytic_account_id = False
+                logger.error("Error generating PDF report: %s", str(e))
+                record.pdf_report = False
 
-    @api.constrains('company_ids', 'group_id', 'analytic_account_id')
-    def _check_company_consistency(self):
-        for record in self:
-            if not record.company_ids:
-                continue
-                
-            company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
-            if not company_ids:
-                continue
-
-            # Remove branch validation - no longer needed
-
-            if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
-                if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
-                    raise ValidationError("المجموعة المحددة لا تحتوي على شركة")
-                elif record.group_id.company_id.id not in company_ids:
-                    raise ValidationError("المجموعة المحددة لا تنتمي لأي من الشركات المحددة")
-                    
-            if record.analytic_account_id and record.analytic_account_id.id:
-                if record.analytic_account_id.company_id.id not in company_ids:
-                    raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")
-
-    @api.onchange('date_from')
-    def _onchange_date_from(self):
-        if self.date_from and not self.date_to:
-            self.date_to = self.date_from
-
-    @api.constrains('date_from', 'date_to')
-    def _check_dates(self):
-        for record in self:
-            if record.date_from and record.date_to and record.date_from > record.date_to:
-                raise ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
     def generate_excel_report(self):
         """إنشاء تقرير Excel لتقرير مراكز التكلفة"""
         self.ensure_one()
-        # إنشاء كتاب Excel
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {
             'in_memory': True,
@@ -589,16 +474,16 @@ class AnalyticAccountReport(models.Model):
             'align': 'right',
             'font_size': 10
         })
-    
+
         worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
         worksheet.right_to_left()
         
         # إعداد أعمدة الورقة
-        worksheet.set_column('A:A', 25)  # عمود المجموعة/مركز التكلفة
-        worksheet.set_column('B:B', 15)  # عمود المصروفات
-        worksheet.set_column('C:C', 15)  # عمود الإيرادات
-        worksheet.set_column('D:D', 15)  # عمود التحصيل
-        worksheet.set_column('E:E', 15)  # عمود المديونية
+        worksheet.set_column('A:A', 25)
+        worksheet.set_column('B:B', 15)
+        worksheet.set_column('C:C', 15)
+        worksheet.set_column('D:D', 15)
+        worksheet.set_column('E:E', 15)
         
         # بدء كتابة البيانات
         row = 0
@@ -732,6 +617,15 @@ class AnalyticAccountReport(models.Model):
         worksheet.write(row, 3, self.total_collections, total_format)
         worksheet.write(row, 4, self.total_debts, total_format)
         
+        # إعدادات الطباعة
+        worksheet.set_landscape()
+        worksheet.fit_to_pages(1, 0)
+        worksheet.repeat_rows(0, 1)
+        worksheet.print_area(0, 0, row, 4)
+        worksheet.set_header('&Cتقرير مراكز التكلفة')
+        worksheet.set_footer('&L&Rالصفحة &P من &N')
+        worksheet.set_margins(left=0.5, right=0.5, top=0.7, bottom=0.5)
+        
         # إغلاق الكتاب
         workbook.close()
         output.seek(0)
@@ -742,69 +636,27 @@ class AnalyticAccountReport(models.Model):
             'file_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         }
 
-    def _calculate_analytic_amount(self, account, amount_type):
-        """حساب المبالغ لكل حساب تحليلي"""
-        domain = [
-            ('date', '>=', self.date_from),
-            ('date', '<=', self.date_to),
-            ('company_id', 'in', self.company_ids.ids),
-            ('move_id.state', '=', 'posted'),
-            ('analytic_account_id', '=', account.id)
-        ]
-        
-        if amount_type == 'expenses':
-            domain.append(('balance', '<', 0))
-            lines = self.env['account.move.line'].search(domain)
-            return abs(sum(lines.mapped('balance')))
-        
-        elif amount_type == 'revenues':
-            domain.append(('balance', '>', 0))
-            lines = self.env['account.move.line'].search(domain)
-            return sum(lines.mapped('balance'))
-        
-        elif amount_type == 'collections':
-            domain.append(('payment_id', '!=', False))
-            lines = self.env['account.move.line'].search(domain)
-            return abs(sum(lines.mapped('balance')))
-        
-        elif amount_type == 'debts':
-            domain += [
-                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                ('move_id.payment_state', '!=', 'paid'),
-                ('balance', '>', 0)
-            ]
-            lines = self.env['account.move.line'].search(domain)
-            return sum(lines.mapped('amount_residual'))
-        
-        return 0.0            
-    
-
-
-
-
     def generate_pdf_report(self):
         """إنشاء تقرير PDF لتقرير مراكز التكلفة"""
         self.ensure_one()
         try:
-            # إنشاء مستند PDF
             output = io.BytesIO()
-            doc = SimpleDocTemplate(output, pagesize=landscape(letter), rightMargin=20, leftMargin=20, topMargin=30,
-                                    bottomMargin=30)
+            doc = SimpleDocTemplate(output, pagesize=landscape(letter), 
+                                  rightMargin=20, leftMargin=20, 
+                                  topMargin=30, bottomMargin=30)
 
-            # تسجيل خط عربي إذا لزم الأمر
             try:
                 pdfmetrics.registerFont(TTFont('Arabic', 'arial.ttf'))
             except:
                 logger.warning("Failed to register Arabic font, using default")
 
-            # أنماط النص
             styles = getSampleStyleSheet()
             title_style = ParagraphStyle(
                 'Title',
                 parent=styles['Title'],
                 fontName='Arabic',
                 fontSize=16,
-                alignment=1,  # 1=center
+                alignment=1,
                 textColor=colors.HexColor('#4472C4')
             )
 
@@ -813,7 +665,7 @@ class AnalyticAccountReport(models.Model):
                 parent=styles['Normal'],
                 fontName='Arabic',
                 fontSize=12,
-                alignment=1,  # 1=center
+                alignment=1,
                 textColor=colors.white,
                 backColor=colors.HexColor('#4472C4')
             )
@@ -823,51 +675,19 @@ class AnalyticAccountReport(models.Model):
                 parent=styles['Normal'],
                 fontName='Arabic',
                 fontSize=10,
-                alignment=2  # 2=right
+                alignment=2
             )
 
-            currency_style = ParagraphStyle(
-                'Currency',
-                parent=styles['Normal'],
-                fontName='Arabic',
-                fontSize=10,
-                alignment=2  # 2=right
-            )
-
-            total_style = ParagraphStyle(
-                'Total',
-                parent=styles['Normal'],
-                fontName='Arabic',
-                fontSize=10,
-                alignment=2,  # 2=right
-                fontWeight='bold',
-                backColor=colors.HexColor('#D9E1F2')
-            )
-
-            section_style = ParagraphStyle(
-                'Section',
-                parent=styles['Normal'],
-                fontName='Arabic',
-                fontSize=10,
-                alignment=2,  # 2=right
-                fontWeight='bold',
-                backColor=colors.HexColor('#E6F2FF')
-            )
-
-            # عناصر التقرير
             elements = []
 
             # إضافة عنوان التقرير
             title = Paragraph("تقرير مراكز التكلفة", title_style)
             elements.append(title)
 
-            # إضافة معلومات الشركات المختارة
-            if self.company_ids:
-                companies = ", ".join(self.company_ids.mapped('name'))
-                company_info = Paragraph(f"الشركات: {companies}", normal_style)
+            # إضافة معلومات الشركة
+            if self.company_id:
+                company_info = Paragraph(f"الشركة: {self.company_id.name}", normal_style)
                 elements.append(company_info)
-
-            # Remove branch handling - no longer needed
 
             # إضافة معلومات المجموعة
             if self.group_id:
@@ -878,6 +698,9 @@ class AnalyticAccountReport(models.Model):
             date_range = Paragraph(f"من {self.date_from} إلى {self.date_to}", normal_style)
             elements.append(date_range)
 
+            # إضافة تاريخ الطباعة
+            print_date = Paragraph(f"تاريخ الطباعة: {fields.Date.today()}", normal_style)
+            elements.append(print_date)
             elements.append(Spacer(1, 20))
 
             # إضافة ملخص التقرير
@@ -916,7 +739,7 @@ class AnalyticAccountReport(models.Model):
 
             report_data = [report_header]
 
-            # البحث عن جميع مراكز التكلفة المطلوبة
+            # جلب البيانات من قاعدة البيانات
             company_ids = [c.id for c in self.company_ids if c._name == 'res.company' and c.id]
             if not company_ids:
                 return {
@@ -927,7 +750,6 @@ class AnalyticAccountReport(models.Model):
             
             analytic_domain = [('company_id', 'in', company_ids)]
             
-            # Remove branch handling - no longer needed
             if self.group_id and self.group_id.id:
                 analytic_domain.append(('group_id', '=', self.group_id.id))
             if self.analytic_account_ids:
@@ -947,87 +769,37 @@ class AnalyticAccountReport(models.Model):
             })
 
             for account in analytic_accounts:
-                # حساب المصروفات لهذا المركز
-                expenses_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('balance', '<', 0)
-                ]
-                # Remove branch handling - no longer needed
-                expense_lines = self.env['account.move.line'].search(expenses_domain)
-                account_expenses = abs(sum(line.balance for line in expense_lines))
-
-                # حساب الإيرادات لهذا المركز
-                revenues_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('balance', '>', 0)
-                ]
-                # Remove branch handling - no longer needed
-                revenue_lines = self.env['account.move.line'].search(revenues_domain)
-                account_revenues = sum(line.balance for line in revenue_lines)
-
-                # حساب التحصيل لهذا المركز
-                payments_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('payment_id', '!=', False)
-                ]
-                # Remove branch handling - no longer needed
-                payment_lines = self.env['account.move.line'].search(payments_domain)
-                account_collections = abs(sum(line.balance for line in payment_lines))
-
-                # حساب المديونية لهذا المركز
-                invoices_domain = [
-                    ('date', '>=', self.date_from),
-                    ('date', '<=', self.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', '=', account.id),
-                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', '!=', 'paid'),
-                    ('balance', '>', 0)
-                ]
-                # Remove branch handling - no longer needed
-                invoice_lines = self.env['account.move.line'].search(invoices_domain)
-                account_debts = sum(line.amount_residual for line in invoice_lines)
-
-                # الحصول على الشريك من حساب التحليلي
+                # حساب المصروفات
+                expenses = self._calculate_analytic_amount(account, 'expenses')
+                # حساب الإيرادات
+                revenues = self._calculate_analytic_amount(account, 'revenues')
+                # حساب التحصيل
+                collections = self._calculate_analytic_amount(account, 'collections')
+                # حساب المديونية
+                debts = self._calculate_analytic_amount(account, 'debts')
+                
                 partner = account.partner_id or False
 
-                # تخزين النتائج
                 group_dict[account.group_id]['accounts'].append({
                     'account': account,
                     'partner': partner,
-                    'expenses': account_expenses,
-                    'revenues': account_revenues,
-                    'collections': account_collections,
-                    'debts': account_debts
+                    'expenses': expenses,
+                    'revenues': revenues,
+                    'collections': collections,
+                    'debts': debts
                 })
 
-                # تحديث إجماليات المجموعة
-                group_dict[account.group_id]['total_expenses'] += account_expenses
-                group_dict[account.group_id]['total_revenues'] += account_revenues
-                group_dict[account.group_id]['total_collections'] += account_collections
-                group_dict[account.group_id]['total_debts'] += account_debts
+                group_dict[account.group_id]['total_expenses'] += expenses
+                group_dict[account.group_id]['total_revenues'] += revenues
+                group_dict[account.group_id]['total_collections'] += collections
+                group_dict[account.group_id]['total_debts'] += debts
 
             # عرض النتائج حسب المجموعة
             for group, data in group_dict.items():
-                # عنوان المجموعة
                 report_data.append([
                     group.name if group else 'بدون مجموعة', '', '', '', '', '', ''
                 ])
 
-                # تفاصيل مراكز التكلفة في هذه المجموعة
                 for account_data in data['accounts']:
                     account = account_data['account']
                     partner_name = account_data['partner'].name if account_data['partner'] else ''
@@ -1041,7 +813,6 @@ class AnalyticAccountReport(models.Model):
                         format(round(account_data['debts'], 2), ',.2f')
                     ])
 
-                # إجمالي المجموعة
                 report_data.append([
                     '',
                     'إجمالي المجموعة',
@@ -1052,7 +823,6 @@ class AnalyticAccountReport(models.Model):
                     format(round(data['total_debts'], 2), ',.2f')
                 ])
 
-            # إجمالي عام
             report_data.append([
                 '',
                 'الإجمالي العام',
@@ -1063,7 +833,6 @@ class AnalyticAccountReport(models.Model):
                 format(round(self.total_debts, 2), ',.2f')
             ])
 
-            # إنشاء جدول التقرير
             report_table = Table(report_data, colWidths=[60, 90, 70, 50, 50, 50, 50])
             report_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4472C4')),
@@ -1083,7 +852,6 @@ class AnalyticAccountReport(models.Model):
 
             elements.append(report_table)
 
-            # بناء مستند PDF
             doc.build(elements)
             output.seek(0)
 
@@ -1096,88 +864,126 @@ class AnalyticAccountReport(models.Model):
             logger.error("Failed to generate PDF report: %s", str(e))
             raise
 
-    def action_generate_excel_report(self):
-        output = io.BytesIO()
-        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        worksheet = workbook.add_worksheet('تقرير مراكز التكلفة')
-        # مثال: كتابة رؤوس الأعمدة
-        worksheet.write(0, 0, 'الاسم')
-        worksheet.write(0, 1, 'الإيرادات')
-        worksheet.write(0, 2, 'المصروفات')
-        # مثال: كتابة بيانات التقرير
-        row = 1
-        for rec in self:
-            worksheet.write(row, 0, rec.name)
-            worksheet.write(row, 1, rec.total_revenues)
-            worksheet.write(row, 2, rec.total_expenses)
-            row += 1
-        workbook.close()
-        output.seek(0)
-        file_data = output.read()
-        output.close()
-        attachment = self.env['ir.attachment'].create({
-            'name': 'تقرير مراكز التكلفة.xlsx',
-            'type': 'binary',
-            'datas': base64.b64encode(file_data),
-            'res_model': self._name,
-            'res_id': self.id,
-            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        })
-        download_url = '/web/content/%s?download=true' % (attachment.id)
-        return {
-            'type': 'ir.actions.act_url',
-            'url': download_url,
-            'target': 'new',
-        }
-
-    def action_generate_pdf_report(self):
-        """إجراء لإنشاء وتنزيل تقرير PDF"""
-        self.ensure_one()
-        try:
-            report_data = self.generate_pdf_report()
-
-            attachment = self.env['ir.attachment'].create({
-                'name': report_data['file_name'],
-                'datas': base64.b64encode(report_data['file_content']),
-                'res_model': 'analytic.account.report',
-                'res_id': self.id,
-                'type': 'binary'
-            })
-
-            return {
-                'type': 'ir.actions.act_url',
-                'url': '/web/content/%s?download=true' % attachment.id,
-                'target': 'self',
-            }
-        except Exception as e:
-            logger.error("Failed to generate PDF report: %s", str(e))
-            raise
-
-    def action_view_analytic_lines(self):
-        """عرض حركات مراكز التكلفة"""
-        self.ensure_one()
-        action = self.env.ref('analytic.account_analytic_line_action').read()[0]
-        company_ids = [c.id for c in self.company_ids if c._name == 'res.company' and c.id]
-        if not company_ids:
-            action['domain'] = [('id', '=', False)]
-            return action
-            
+    def _calculate_analytic_amount(self, account, amount_type):
+        """حساب المبالغ لكل حساب تحليلي"""
         domain = [
             ('date', '>=', self.date_from),
             ('date', '<=', self.date_to),
-            ('company_id', 'in', company_ids),
-            ('account_id', '!=', False)
+            ('company_id', 'in', self.company_ids.ids),
+            ('move_id.state', '=', 'posted'),
+            ('analytic_account_id', '=', account.id)
         ]
-        # Remove branch handling - no longer needed
-        if self.group_id and self.group_id.id:
-            domain.append(('account_id.group_id', '=', self.group_id.id))
-        if self.analytic_account_ids:
-            analytic_account_ids = [a.id for a in self.analytic_account_ids if a._name == 'account.analytic.account' and a.id]
-            if analytic_account_ids:
-                domain.append(('account_id', 'in', analytic_account_ids))
-        action['domain'] = domain
-        action['context'] = {
-            'search_default_group_by_account': 1,
-            'create': False
+        
+        if amount_type == 'expenses':
+            domain.append(('balance', '<', 0))
+            lines = self.env['account.move.line'].search(domain)
+            return abs(sum(lines.mapped('balance')))
+        
+        elif amount_type == 'revenues':
+            domain.append(('balance', '>', 0))
+            lines = self.env['account.move.line'].search(domain)
+            return sum(lines.mapped('balance'))
+        
+        elif amount_type == 'collections':
+            domain.append(('payment_id', '!=', False))
+            lines = self.env['account.move.line'].search(domain)
+            return abs(sum(lines.mapped('balance')))
+        
+        elif amount_type == 'debts':
+            domain += [
+                ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                ('move_id.payment_state', '!=', 'paid'),
+                ('balance', '>', 0)
+            ]
+            lines = self.env['account.move.line'].search(domain)
+            return sum(lines.mapped('amount_residual'))
+        
+        return 0.0
+
+    def action_print_excel(self):
+        """إجراء لطباعة تقرير Excel"""
+        self.ensure_one()
+        self.print_date = fields.Date.today()
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/binary/download_document?model=analytic.account.report&field=excel_report&id={self.id}&filename=تقرير_مراكز_التكلفة.xlsx',
+            'target': 'new',
         }
-        return action
+
+    def action_print_pdf(self):
+        """إجراء لطباعة تقرير PDF"""
+        self.ensure_one()
+        self.print_date = fields.Date.today()
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/binary/download_document?model=analytic.account.report&field=pdf_report&id={self.id}&filename=تقرير_مراكز_التكلفة.pdf',
+            'target': 'new',
+        }
+
+    @api.onchange('company_ids')
+    def _onchange_company_ids(self):
+        for record in self:
+            try:
+                if not record.company_ids:
+                    continue
+
+                company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
+                if not company_ids:
+                    continue
+
+                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                    if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
+                        record.group_id = False
+                    elif record.group_id.company_id.id not in company_ids:
+                        record.group_id = False
+
+                if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
+                    if not hasattr(record.analytic_account_id, 'company_id') or not record.analytic_account_id.company_id:
+                        record.analytic_account_id = False
+                    elif record.analytic_account_id.company_id.id not in company_ids:
+                        record.analytic_account_id = False
+
+            except Exception as e:
+                logger.error("Error in _onchange_company_ids: %s", str(e))
+
+    @api.onchange('group_id')
+    def _onchange_group_id(self):
+        for record in self:
+            try:
+                if record.group_id and record.analytic_account_id:
+                    if record.analytic_account_id.group_id != record.group_id:
+                        record.analytic_account_id = False
+            except Exception as e:
+                logger.error("Error in _onchange_group_id: %s", str(e))
+                record.analytic_account_id = False
+
+    @api.constrains('company_ids', 'group_id', 'analytic_account_id')
+    def _check_company_consistency(self):
+        for record in self:
+            if not record.company_ids:
+                continue
+                
+            company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
+            if not company_ids:
+                continue
+
+            if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                if not hasattr(record.group_id, 'company_id') or not record.group_id.company_id:
+                    raise ValidationError("المجموعة المحددة لا تحتوي على شركة")
+                elif record.group_id.company_id.id not in company_ids:
+                    raise ValidationError("المجموعة المحددة لا تنتمي لأي من الشركات المحددة")
+                    
+            if record.analytic_account_id and record.analytic_account_id.id:
+                if record.analytic_account_id.company_id.id not in company_ids:
+                    raise ValidationError("مركز التكلفة المحدد لا ينتمي لأي من الشركات المحددة")
+
+    @api.onchange('date_from')
+    def _onchange_date_from(self):
+        if self.date_from and not self.date_to:
+            self.date_to = self.date_from
+
+    @api.constrains('date_from', 'date_to')
+    def _check_dates(self):
+        for record in self:
+            if record.date_from and record.date_to and record.date_from > record.date_to:
+                raise ValidationError("تاريخ البداية يجب أن يكون قبل تاريخ النهاية")
