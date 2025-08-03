@@ -226,80 +226,61 @@ class AnalyticAccountReport(models.Model):
                     record.total_collections = 0.0
                     record.total_debts = 0.0
                     continue
-
-                company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
-                analytic_account_ids = [a.id for a in record.analytic_account_ids if hasattr(a, 'id') and a.id]
+    
+                company_ids = [c.id for c in record.company_ids]
+                analytic_account_ids = [a.id for a in record.analytic_account_ids]
                 
-                if not company_ids or not analytic_account_ids:
-                    record.total_expenses = 0.0
-                    record.total_revenues = 0.0
-                    record.total_collections = 0.0
-                    record.total_debts = 0.0
-                    continue
-
-                # البحث عن جميع القيود المحاسبية في الفترة المحددة
-                domain = [
+                # حساب المصروفات (الحسابات المدينة)
+                expense_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
                     ('move_id.state', '=', 'posted'),
-                    ('analytic_account_id', 'in', analytic_account_ids)
+                    ('account_id.internal_group', '=', 'expense')
                 ]
+                expense_lines = self.env['account.move.line'].search(expense_domain)
+                record.total_expenses = sum(expense_lines.mapped('balance'))
                 
-                move_lines = self.env['account.move.line'].search(domain)
+                # حساب الإيرادات (الحسابات الدائنة)
+                revenue_domain = [
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.state', '=', 'posted'),
+                    ('account_id.internal_group', '=', 'income')
+                ]
+                revenue_lines = self.env['account.move.line'].search(revenue_domain)
+                record.total_revenues = sum(revenue_lines.mapped('balance'))
                 
-                logger.info(f"عدد القيود الموجودة: {len(move_lines)}")
-                
-                # حساب المصروفات والإيرادات من الرصيد
-                total_expenses = 0.0
-                total_revenues = 0.0
-                
-                for line in move_lines:
-                    if line.balance < 0:  # مصروفات (رصيد سالب)
-                        total_expenses += abs(line.balance)
-                    elif line.balance > 0:  # إيرادات (رصيد موجب)
-                        total_revenues += line.balance
-                
-                # حساب المحصلات (المدفوعات)
+                # حساب التحصيلات (المدفوعات)
                 payment_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.move_type', 'in', ['out_payment', 'in_payment'])
+                    ('move_id.state', '=', 'posted'),
+                    ('payment_id', '!=', False)
                 ]
-                
                 payment_lines = self.env['account.move.line'].search(payment_domain)
-                total_collections = sum(abs(line.balance) for line in payment_lines)
+                record.total_collections = sum(abs(line.balance) for line in payment_lines)
                 
                 # حساب الديون (الفواتير غير المدفوعة)
                 invoice_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
-                    ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.state', '=', 'posted'),
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('move_id.payment_state', 'in', ['not_paid', 'partial'])
                 ]
+                invoice_lines = self.env['account.move.line'].search(invoice_domain)
+                record.total_debts = sum(line.amount_residual for line in invoice_lines)
                 
-                debt_lines = self.env['account.move.line'].search(invoice_domain)
-                total_debts = sum(line.amount_residual for line in debt_lines if line.amount_residual > 0)
-                
-                # تسجيل النتائج
-                logger.info(f"المصروفات: {total_expenses}")
-                logger.info(f"الإيرادات: {total_revenues}")
-                logger.info(f"المحصلات: {total_collections}")
-                logger.info(f"الديون: {total_debts}")
-                
-                record.total_expenses = total_expenses
-                record.total_revenues = total_revenues
-                record.total_collections = total_collections
-                record.total_debts = total_debts
-                    
             except Exception as e:
-                logger.error("خطأ في حساب الإجماليات: %s", str(e))
+                logger.error("Error in _compute_totals: %s", str(e))
                 record.total_expenses = 0.0
                 record.total_revenues = 0.0
                 record.total_collections = 0.0
