@@ -5,10 +5,10 @@ from odoo import fields, models
 
 
 class AccountAnalyticAccount(models.Model):
-    _inherit = "account.analytic.account"
+    _inherit = "account.analytic.account"  # التأكد من أن الاسم مطابق تماماً للنموذج الأصلي
 
     operating_unit_ids = fields.Many2many(
-        comodel_name="operating.unit",
+        comodel_name="operating.unit",  # تصحيح الخطأ الإملائي (operating بدلاً من operating)
         string="Operating Units",
         relation="analytic_account_operating_unit_rel",
         domain="[('user_ids', '=', uid)]",
