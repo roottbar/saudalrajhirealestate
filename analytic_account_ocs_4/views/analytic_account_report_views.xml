@@ -72,22 +72,18 @@
                             <field name="analytic_account_id" string="مركز التكلفة" 
                                    options="{'no_create': True, 'no_create_edit': True}"/>
                         </group>
+                        <group string="إعدادات المقارنة السنوية">
+                            <field name="compare_years" string="تفعيل المقارنة السنوية"/>
+                            <field name="year_compare_count" string="عدد السنوات للمقارنة" 
+                                   attrs="{'invisible': [('compare_years', '=', False)]}"/>
+                        </group>
                     </group>
-
                     <notebook>
-                        <page string="الملخص">
-                            <group>
-                                <group string="الإيرادات والمصروفات">
-                                    <field name="total_revenues" string="إجمالي الإيرادات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                                    <field name="total_expenses" string="إجمالي المصروفات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                                    <field name="total_collections" string="إجمالي التحصيل" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                                    <field name="total_debts" string="إجمالي المديونية" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-                                </group>
-                            </group>
+                        <page string="تفاصيل التقرير">
+                            <field name="report_lines" widget="html" nolabel="1"/>
                         </page>
-
-                        <page string="التفاصيل" attrs="{'invisible': [('id', '=', False)]}">
-                            <field name="report_lines" widget="html" nolabel="1" class="oe_no_button"/>
+                        <page string="المقارنة السنوية" attrs="{'invisible': [('compare_years', '=', False)]}">
+                            <field name="yearly_comparison_data" widget="html" nolabel="1"/>
                         </page>
                     </notebook>
                 </sheet>
