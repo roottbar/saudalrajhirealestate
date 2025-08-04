@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Search View -->
+    <record id="view_analytic_account_report_search" model="ir.ui.view">
+        <field name="name">analytic.account.report.search</field>
+        <field name="model">analytic.account.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="company_ids" string="الشركات" widget="many2many_tags"/>
+                <field name="operating_unit_id" string="الفرع"/>
+                <field name="group_id" string="مجموعة مراكز التكلفة"/>
+                <field name="analytic_account_id" string="مركز التكلفة"/>
+                <field name="date_from" string="من تاريخ"/>
+                <field name="date_to" string="إلى تاريخ"/>
+                <filter string="هذا الشهر" name="current_month"
+                        domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
+                <filter string="مسودة" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="مؤكدة" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="منتهية" name="done" domain="[('state','=','done')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_analytic_account_report_tree" model="ir.ui.view">
+        <field name="name">analytic.account.report.tree</field>
+        <field name="model">analytic.account.report</field>
+        <field name="arch" type="xml">
+            <tree string="تقارير مراكز التكلفة">
+                <field name="name" string="الاسم"/>
+                <field name="state" widget="statusbar"/>
+                <field name="company_ids" widget="many2many_tags" string="الشركات" groups="base.group_multi_company"/>
+                <field name="operating_unit_id" string="الفرع"/>
+                <field name="group_id" string="المجموعة"/>
+                <field name="date_from" string="من تاريخ"/>
+                <field name="date_to" string="إلى تاريخ"/>
+                <field name="total_expenses" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="total_revenues" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="total_debts" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_analytic_account_report_form" model="ir.ui.view">
+        <field name="name">analytic.account.report.form</field>
+        <field name="model">analytic.account.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                    <button name="generate_excel_report" type="object" string="تصدير إكسل" class="btn-primary"/>
+                    <button name="generate_pdf_report" type="object" string="تصدير PDF" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="أدخل اسم التقرير"/></h1>
+                    </div>
+                    
+                    <group>
+                        <group string="المعايير الأساسية">
+                            <field name="company_ids" widget="many2many_tags" string="الشركات"/>
+                            <field name="operating_unit_id" string="الفرع" 
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="group_id" string="المجموعة" 
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                        </group>
+                        <group string="الفترة الزمنية">
+                            <field name="date_from" string="من تاريخ"/>
+                            <field name="date_to" string="إلى تاريخ"/>
+                            <field name="analytic_account_id" string="مركز التكلفة" 
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="الملخص">
+                            <group>
+                                <group string="الإيرادات والمصروفات">
+                                    <field name="total_revenues" string="إجمالي الإيرادات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                    <field name="total_expenses" string="إجمالي المصروفات" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                    <field name="total_collections" string="إجمالي التحصيل" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                    <field name="total_debts" string="إجمالي المديونية" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="التفاصيل" attrs="{'invisible': [('id', '=', False)]}">
+                            <field name="report_lines" widget="html" nolabel="1" class="oe_no_button"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action and Menu -->
+    <record id="action_analytic_account_report" model="ir.actions.act_window">
+        <field name="name">تقارير مراكز التكلفة</field>
+        <field name="res_model">analytic.account.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_analytic_account_report_tree"/>
+        <field name="search_view_id" ref="view_analytic_account_report_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">اضغط على إنشاء لإنشاء تقرير جديد</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_accounting_analytic_reports_root" name="تقارير المحاسبة التحليلية" parent="account.menu_finance"/>
+    <menuitem id="menu_analytic_account_report" name="تقارير مراكز التكلفة" parent="menu_accounting_analytic_reports_root" action="action_analytic_account_report"/>
+</odoo>
