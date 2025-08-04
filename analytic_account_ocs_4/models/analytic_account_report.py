@@ -4,6 +4,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
 from datetime import timedelta
 from collections import defaultdict
+from odoo import fields
 import io
 import xlsxwriter
 import base64
@@ -834,6 +835,77 @@ class AnalyticAccountReport(models.Model):
         except Exception as e:
             logger.error(f"Error in _calculate_analytic_amount for {amount_type}: {str(e)}")
             return 0.0
+    
+    def _calculate_analytic_amount_for_period(self, account, amount_type, date_from, date_to):
+        """حساب المبالغ لمركز تكلفة محدد في فترة محددة"""
+        try:
+            if not account or not account.id:
+                return 0.0
+
+            company_ids = self.company_ids.ids if self.company_ids else []
+            if not company_ids:
+                return 0.0
+
+            base_domain = [
+                ('date', '>=', date_from),
+                ('date', '<=', date_to),
+                ('company_id', 'in', company_ids),
+                ('analytic_account_id', '=', account.id),
+                ('move_id.state', '=', 'posted')
+            ]
+
+            if amount_type == 'expenses':
+                domain = base_domain + [
+                    ('account_id.internal_group', '=', 'expense')
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.balance) for line in lines if line.balance != 0)
+
+            elif amount_type == 'revenues':
+                domain = base_domain + [
+                    ('account_id.internal_group', '=', 'income')
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.balance) for line in lines if line.balance != 0)
+
+            elif amount_type == 'collections':
+                domain = base_domain + [
+                    '|',
+                    ('payment_id', '!=', False),
+                    ('account_id.internal_type', 'in', ['receivable', 'payable'])
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                total = 0.0
+                for line in lines:
+                    if line.payment_id or (line.account_id.internal_type in ['receivable', 'payable'] and line.balance > 0):
+                        total += abs(line.balance)
+                return total
+
+            elif amount_type == 'debts':
+                invoice_domain = [
+                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                    ('move_id.payment_state', 'in', ['not_paid', 'partial']),
+                    ('date', '>=', date_from),
+                    ('date', '<=', date_to),
+                    ('company_id', 'in', company_ids),
+                    ('analytic_account_id', '=', account.id),
+                    ('move_id.state', '=', 'posted'),
+                    ('account_id.internal_type', 'in', ['receivable', 'payable'])
+                ]
+                lines = self.env['account.move.line'].search(invoice_domain)
+                total = 0.0
+                for line in lines:
+                    if hasattr(line, 'amount_residual') and line.amount_residual > 0:
+                        total += line.amount_residual
+                    elif line.balance != 0:
+                        total += abs(line.balance)
+                return total
+
+            return 0.0
+
+        except Exception as e:
+            logger.error(f"Error in _calculate_analytic_amount_for_period for {amount_type}: {str(e)}")
+            return 0.0
     def check_data_availability(self):
         """دالة مساعدة للتحقق من توفر البيانات"""
         for record in self:
@@ -871,37 +943,173 @@ class AnalyticAccountReport(models.Model):
                 raise UserError(f"خطأ في التحقق من البيانات: {str(e)}")        
             
     def _generate_comparison_table(self, worksheet, row, col, formats):
-        """إنشاء جدول المقارنة في تقرير Excel"""
+        """إنشاء جدول المقارنة التفصيلي في تقرير Excel"""
         if not self.compare_years or not self.previous_years_data:
             return row
 
         comparison_data = json.loads(self.previous_years_data)
+        
+        # عنوان جدول المقارنة
+        worksheet.merge_range(row, col, row, col + 7, "مقارنة بالسنوات السابقة", formats['section_format'])
+        row += 2
+        
+        # إنشاء جدول المقارنة لكل مركز تكلفة
+        analytic_domain = [('company_id', 'in', self.company_ids.ids)]
+        if self.operating_unit_id:
+            analytic_domain.append(('operating_unit_id', '=', self.operating_unit_id.id))
+        if self.group_id:
+            analytic_domain.append(('group_id', '=', self.group_id.id))
+        if self.analytic_account_ids:
+            analytic_domain.append(('id', 'in', self.analytic_account_ids.ids))
 
-        worksheet.write(row, col, "مقارنة بالسنوات السابقة", formats['section_format'])
-        worksheet.merge_range(row, col + 1, row, col + 4, "", formats['section_format'])
-        row += 1
-
-        headers = ['السنة', 'المصروفات', 'الإيرادات', 'التحصيل', 'المديونية']
+        analytic_accounts = self.env['account.analytic.account'].search(analytic_domain, order='operating_unit_id, group_id, name')
+        
+        if not analytic_accounts:
+            return row
+        
+        # رؤوس الأعمدة للمقارنة
+        headers = ['مركز التكلفة']
+        for year_data in comparison_data:
+            headers.extend([f'{year_data["year"]} - مصروفات', f'{year_data["year"]} - إيرادات', 
+                           f'{year_data["year"]} - تحصيل', f'{year_data["year"]} - مديونية'])
+        
+        current_year = fields.Date.from_string(self.date_from).year
+        headers.extend([f'{current_year} - مصروفات', f'{current_year} - إيرادات', 
+                       f'{current_year} - تحصيل', f'{current_year} - مديونية'])
+        
+        # كتابة رؤوس الأعمدة
         for i, header in enumerate(headers):
             worksheet.write(row, col + i, header, formats['header_format'])
         row += 1
-
-        for year_data in comparison_data:
-            worksheet.write(row, col, year_data['year'], formats['text_format'])
-            worksheet.write(row, col + 1, year_data['expenses'], formats['currency_format'])
-            worksheet.write(row, col + 2, year_data['revenues'], formats['currency_format'])
-            worksheet.write(row, col + 3, year_data['collections'], formats['currency_format'])
-            worksheet.write(row, col + 4, year_data['debts'], formats['currency_format'])
-            row += 1
-
-        worksheet.write(row, col, f"{fields.Date.from_string(self.date_from).year} (الحالية)", formats['total_format'])
-        worksheet.write(row, col + 1, self.total_expenses, formats['total_format'])
-        worksheet.write(row, col + 2, self.total_revenues, formats['total_format'])
-        worksheet.write(row, col + 3, self.total_collections, formats['total_format'])
-        worksheet.write(row, col + 4, self.total_debts, formats['total_format'])
-        row += 2
-
-        return row
+        
+        # تجميع البيانات حسب الهيكل الهرمي
+        operating_unit_dict = defaultdict(lambda: {
+            'groups': defaultdict(lambda: {
+                'subgroups': defaultdict(lambda: {
+                    'accounts': []
+                })
+            })
+        })
+        
+        for account in analytic_accounts:
+            operating_unit = account.operating_unit_id or 'بدون فرع'
+            operating_unit_name = operating_unit.name if operating_unit != 'بدون فرع' else 'بدون فرع'
+            
+            root_group = account.group_id
+            while root_group and root_group.parent_id:
+                root_group = root_group.parent_id
+            root_group_name = root_group.name if root_group else 'بدون مجموعة رئيسية'
+            
+            subgroup = account.group_id if account.group_id and account.group_id.parent_id == root_group else None
+            subgroup_name = subgroup.name if subgroup else 'بدون مجموعة فرعية'
+            
+            operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name]['accounts'].append(account)
+        
+        # إنشاء تنسيقات الألوان
+        main_group_format = formats['workbook'].add_format({
+            'bold': True,
+            'border': 1,
+            'align': 'right',
+            'bg_color': '#90EE90',  # أخضر فاتح
+            'font_size': 10,
+            'font_name': 'Arial'
+        })
+        
+        sub_account_format = formats['workbook'].add_format({
+            'border': 1,
+            'align': 'right',
+            'font_size': 10,
+            'font_name': 'Arial'
+        })
+        
+        # عرض البيانات
+        for operating_unit_name, operating_unit_data in operating_unit_dict.items():
+            for root_group_name, root_group_data in operating_unit_data['groups'].items():
+                # عرض المجموعة الرئيسية بلون أخضر فاتح
+                worksheet.write(row, col, f"{operating_unit_name} - {root_group_name}", main_group_format)
+                
+                # حساب إجماليات المجموعة الرئيسية
+                group_totals = {'current': {'expenses': 0, 'revenues': 0, 'collections': 0, 'debts': 0}}
+                for year_data in comparison_data:
+                    group_totals[year_data['year']] = {'expenses': 0, 'revenues': 0, 'collections': 0, 'debts': 0}
+                
+                col_index = col + 1
+                
+                # حساب وعرض بيانات السنوات السابقة للمجموعة
+                for year_data in comparison_data:
+                    prev_year = year_data['year']
+                    prev_date_from = self.date_from.replace(year=prev_year)
+                    prev_date_to = self.date_to.replace(year=prev_year)
+                    
+                    # حساب إجماليات المجموعة للسنة السابقة
+                    group_accounts = []
+                    for subgroup_data in root_group_data['subgroups'].values():
+                        group_accounts.extend(subgroup_data['accounts'])
+                    
+                    group_expenses = sum(self._calculate_analytic_amount_for_period(acc, 'expenses', prev_date_from, prev_date_to) for acc in group_accounts)
+                    group_revenues = sum(self._calculate_analytic_amount_for_period(acc, 'revenues', prev_date_from, prev_date_to) for acc in group_accounts)
+                    group_collections = sum(self._calculate_analytic_amount_for_period(acc, 'collections', prev_date_from, prev_date_to) for acc in group_accounts)
+                    group_debts = sum(self._calculate_analytic_amount_for_period(acc, 'debts', prev_date_from, prev_date_to) for acc in group_accounts)
+                    
+                    worksheet.write(row, col_index, group_expenses, main_group_format)
+                    worksheet.write(row, col_index + 1, group_revenues, main_group_format)
+                    worksheet.write(row, col_index + 2, group_collections, main_group_format)
+                    worksheet.write(row, col_index + 3, group_debts, main_group_format)
+                    col_index += 4
+                
+                # عرض بيانات السنة الحالية للمجموعة
+                group_accounts = []
+                for subgroup_data in root_group_data['subgroups'].values():
+                    group_accounts.extend(subgroup_data['accounts'])
+                
+                current_expenses = sum(self._calculate_analytic_amount(acc, 'expenses') for acc in group_accounts)
+                current_revenues = sum(self._calculate_analytic_amount(acc, 'revenues') for acc in group_accounts)
+                current_collections = sum(self._calculate_analytic_amount(acc, 'collections') for acc in group_accounts)
+                current_debts = sum(self._calculate_analytic_amount(acc, 'debts') for acc in group_accounts)
+                
+                worksheet.write(row, col_index, current_expenses, main_group_format)
+                worksheet.write(row, col_index + 1, current_revenues, main_group_format)
+                worksheet.write(row, col_index + 2, current_collections, main_group_format)
+                worksheet.write(row, col_index + 3, current_debts, main_group_format)
+                row += 1
+                
+                # عرض مراكز التكلفة الفرعية بدون لون
+                for subgroup_name, subgroup_data in root_group_data['subgroups'].items():
+                    for account in subgroup_data['accounts']:
+                        worksheet.write(row, col, f"  {account.name}", sub_account_format)
+                        
+                        col_index = col + 1
+                        
+                        # بيانات السنوات السابقة
+                        for year_data in comparison_data:
+                            prev_year = year_data['year']
+                            prev_date_from = self.date_from.replace(year=prev_year)
+                            prev_date_to = self.date_to.replace(year=prev_year)
+                            
+                            expenses = self._calculate_analytic_amount_for_period(account, 'expenses', prev_date_from, prev_date_to)
+                            revenues = self._calculate_analytic_amount_for_period(account, 'revenues', prev_date_from, prev_date_to)
+                            collections = self._calculate_analytic_amount_for_period(account, 'collections', prev_date_from, prev_date_to)
+                            debts = self._calculate_analytic_amount_for_period(account, 'debts', prev_date_from, prev_date_to)
+                            
+                            worksheet.write(row, col_index, expenses, sub_account_format)
+                            worksheet.write(row, col_index + 1, revenues, sub_account_format)
+                            worksheet.write(row, col_index + 2, collections, sub_account_format)
+                            worksheet.write(row, col_index + 3, debts, sub_account_format)
+                            col_index += 4
+                        
+                        # بيانات السنة الحالية
+                        current_expenses = self._calculate_analytic_amount(account, 'expenses')
+                        current_revenues = self._calculate_analytic_amount(account, 'revenues')
+                        current_collections = self._calculate_analytic_amount(account, 'collections')
+                        current_debts = self._calculate_analytic_amount(account, 'debts')
+                        
+                        worksheet.write(row, col_index, current_expenses, sub_account_format)
+                        worksheet.write(row, col_index + 1, current_revenues, sub_account_format)
+                        worksheet.write(row, col_index + 2, current_collections, sub_account_format)
+                        worksheet.write(row, col_index + 3, current_debts, sub_account_format)
+                        row += 1
+        
+        return row + 2
 
     def generate_excel_report(self):
         """إنشاء وتنزيل تقرير Excel لمراكز التكلفة"""
@@ -1147,14 +1355,25 @@ class AnalyticAccountReport(models.Model):
             operating_unit_dict[operating_unit_name]['total_collections'] += collections
             operating_unit_dict[operating_unit_name]['total_debts'] += debts
 
+        # إضافة تنسيق للمجموعات الرئيسية
+        main_group_format = workbook.add_format({
+            'bold': True,
+            'border': 1,
+            'align': 'right',
+            'bg_color': '#90EE90',  # أخضر فاتح
+            'font_size': 10,
+            'font_name': 'Arial'
+        })
+
         for operating_unit_name, operating_unit_data in operating_unit_dict.items():
             worksheet.write(row, 0, operating_unit_name, section_format)
             worksheet.merge_range(row, 1, row, 7, "", section_format)
             row += 1
 
             for root_group_name, root_group_data in operating_unit_data['groups'].items():
-                worksheet.write(row, 1, root_group_name, section_format)
-                worksheet.merge_range(row, 2, row, 7, "", section_format)
+                # استخدام التنسيق الأخضر للمجموعة الرئيسية
+                worksheet.write(row, 1, root_group_name, main_group_format)
+                worksheet.merge_range(row, 2, row, 7, "", main_group_format)
                 row += 1
 
                 for subgroup_name, subgroup_data in root_group_data['subgroups'].items():
@@ -1164,6 +1383,7 @@ class AnalyticAccountReport(models.Model):
 
                     for account_data in subgroup_data['accounts']:
                         account = account_data['account']
+                        # مراكز التكلفة الفرعية بدون لون خاص
                         worksheet.write(row, 3, account.name, text_format)
                         worksheet.write(row, 4, account_data['expenses'], currency_format)
                         worksheet.write(row, 5, account_data['revenues'], currency_format)
@@ -1171,6 +1391,7 @@ class AnalyticAccountReport(models.Model):
                         worksheet.write(row, 7, account_data['debts'], currency_format)
                         row += 1
 
+                    # إجمالي المجموعة الفرعية
                     worksheet.write(row, 2, f'إجمالي {subgroup_name}', total_format)
                     worksheet.write(row, 4, subgroup_data['total_expenses'], total_format)
                     worksheet.write(row, 5, subgroup_data['total_revenues'], total_format)
@@ -1178,13 +1399,15 @@ class AnalyticAccountReport(models.Model):
                     worksheet.write(row, 7, subgroup_data['total_debts'], total_format)
                     row += 1
 
-                worksheet.write(row, 1, f'إجمالي {root_group_name}', total_format)
-                worksheet.write(row, 4, root_group_data['total_expenses'], total_format)
-                worksheet.write(row, 5, root_group_data['total_revenues'], total_format)
-                worksheet.write(row, 6, root_group_data['total_collections'], total_format)
-                worksheet.write(row, 7, root_group_data['total_debts'], total_format)
+                # إجمالي المجموعة الرئيسية بالتنسيق الأخضر
+                worksheet.write(row, 1, f'إجمالي {root_group_name}', main_group_format)
+                worksheet.write(row, 4, root_group_data['total_expenses'], main_group_format)
+                worksheet.write(row, 5, root_group_data['total_revenues'], main_group_format)
+                worksheet.write(row, 6, root_group_data['total_collections'], main_group_format)
+                worksheet.write(row, 7, root_group_data['total_debts'], main_group_format)
                 row += 1
 
+            # إجمالي الفرع
             worksheet.write(row, 0, f'إجمالي {operating_unit_name}', total_format)
             worksheet.write(row, 4, operating_unit_data['total_expenses'], total_format)
             worksheet.write(row, 5, operating_unit_data['total_revenues'], total_format)
@@ -1208,7 +1431,8 @@ class AnalyticAccountReport(models.Model):
                 'header_format': header_format,
                 'text_format': text_format,
                 'currency_format': currency_format,
-                'total_format': total_format
+                'total_format': total_format,
+                'workbook': workbook  # إضافة workbook للتنسيقات
             }
         )
 
