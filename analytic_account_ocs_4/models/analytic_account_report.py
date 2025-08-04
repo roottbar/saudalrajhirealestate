@@ -54,9 +54,30 @@ class AnalyticAccountReport(models.Model):
         domain="[('company_id', 'in', company_ids)]"
     )
 
-    # حقول المقارنة بين السنوات
+    # حقول المقارنة بين السنوات - إصلاح أسماء الحقول
     compare_years = fields.Boolean(string='مقارنة بالسنوات السابقة')
     year_compare_count = fields.Integer(string='عدد السنوات للمقارنة', default=1)
+    
+    # إضافة الحقول المفقودة للتوافق مع الواجهة
+    enable_yearly_comparison = fields.Boolean(
+        string='تفعيل المقارنة السنوية',
+        related='compare_years',
+        readonly=False
+    )
+    comparison_years = fields.Integer(
+        string='عدد السنوات للمقارنة',
+        related='year_compare_count',
+        readonly=False
+    )
+    
+    # إضافة حقل بيانات المقارنة السنوية للواجهة
+    yearly_comparison_data = fields.Html(
+        string='بيانات المقارنة السنوية',
+        compute='_compute_yearly_comparison_data',
+        store=True,
+        sanitize=False
+    )
+    
     previous_years_data = fields.Text(string='بيانات السنوات السابقة', compute='_compute_previous_years_data')
 
     # حقول العلاقات
@@ -282,6 +303,71 @@ class AnalyticAccountReport(models.Model):
             except Exception as e:
                 logger.error("خطأ في حساب مراكز التكلفة: %s", str(e))
                 record.analytic_account_ids = self.env['account.analytic.account']
+
+    @api.depends('compare_years', 'previous_years_data')
+    def _compute_yearly_comparison_data(self):
+        """حساب بيانات المقارنة السنوية لعرضها في الواجهة"""
+        for record in self:
+            if not record.compare_years or not record.previous_years_data:
+                record.yearly_comparison_data = '<p>لا توجد بيانات مقارنة متاحة</p>'
+                continue
+
+            try:
+                comparison_data = json.loads(record.previous_years_data)
+                
+                html_content = """
+                    <style>
+                        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        .comparison-table th { background-color: #4472C4; color: white; padding: 10px; text-align: center; }
+                        .comparison-table td { padding: 8px; border: 1px solid #ddd; text-align: right; }
+                        .comparison-table tr:nth-child(even) { background-color: #f9f9f9; }
+                        .current-year { background-color: #d4edda; font-weight: bold; }
+                    </style>
+                    <h3 style="text-align: center; color: #4472C4;">مقارنة بالسنوات السابقة</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>المصروفات</th>
+                                <th>الإيرادات</th>
+                                <th>التحصيل</th>
+                                <th>المديونية</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                """
+                
+                # إضافة بيانات السنوات السابقة
+                for year_data in comparison_data:
+                    html_content += f"""
+                        <tr>
+                            <td>{year_data['year']}</td>
+                            <td>{format(year_data['expenses'], ',.2f')}</td>
+                            <td>{format(year_data['revenues'], ',.2f')}</td>
+                            <td>{format(year_data['collections'], ',.2f')}</td>
+                            <td>{format(year_data['debts'], ',.2f')}</td>
+                        </tr>
+                    """
+                
+                # إضافة السنة الحالية
+                current_year = fields.Date.from_string(record.date_from).year
+                html_content += f"""
+                        <tr class="current-year">
+                            <td>{current_year} (الحالية)</td>
+                            <td>{format(record.total_expenses, ',.2f')}</td>
+                            <td>{format(record.total_revenues, ',.2f')}</td>
+                            <td>{format(record.total_collections, ',.2f')}</td>
+                            <td>{format(record.total_debts, ',.2f')}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                """
+                
+                record.yearly_comparison_data = html_content
+                
+            except Exception as e:
+                logger.error(f"Error computing yearly comparison data: {str(e)}")
+                record.yearly_comparison_data = '<p>خطأ في تحميل بيانات المقارنة</p>'
 
     @api.depends('date_from', 'date_to', 'compare_years', 'year_compare_count')
     def _compute_previous_years_data(self):
