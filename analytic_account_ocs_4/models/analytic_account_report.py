@@ -373,16 +373,21 @@ class AnalyticAccountReport(models.Model):
     def _compute_previous_years_data(self):
         """حساب بيانات السنوات السابقة للمقارنة"""
         for record in self:
+            logger.info(f"Computing previous years data. compare_years: {record.compare_years}, date_from: {record.date_from}, date_to: {record.date_to}")
+            
             if not record.compare_years or not record.date_from or not record.date_to:
+                logger.warning("Previous years data computation skipped")
                 record.previous_years_data = False
                 continue
 
             try:
                 comparison_data = []
                 current_year = fields.Date.from_string(record.date_from).year
+                logger.info(f"Current year: {current_year}, comparing {record.year_compare_count} previous years")
 
                 for year_offset in range(1, record.year_compare_count + 1):
                     prev_year = current_year - year_offset
+                    logger.info(f"Processing year: {prev_year}")
 
                     prev_date_from = record.date_from.replace(year=prev_year)
                     prev_date_to = record.date_to.replace(year=prev_year)
@@ -393,14 +398,16 @@ class AnalyticAccountReport(models.Model):
                         'date_to': prev_date_to,
                         'expenses': self._calculate_period_amount(record, prev_date_from, prev_date_to, 'expenses'),
                         'revenues': self._calculate_period_amount(record, prev_date_from, prev_date_to, 'revenues'),
-                        'collections': self._calculate_period_amount(record, prev_date_from, prev_date_to,
-                                                                     'collections'),
+                        'collections': self._calculate_period_amount(record, prev_date_from, prev_date_to, 'collections'),
                         'debts': self._calculate_period_amount(record, prev_date_from, prev_date_to, 'debts')
                     }
-
+                    
+                    logger.info(f"Year {prev_year} data: expenses={prev_data['expenses']}, revenues={prev_data['revenues']}")
                     comparison_data.append(prev_data)
 
                 record.previous_years_data = json.dumps(comparison_data)
+                logger.info(f"Previous years data computed successfully: {len(comparison_data)} years")
+                
             except Exception as e:
                 logger.error("Error computing previous years data: %s", str(e))
                 record.previous_years_data = False
@@ -1030,13 +1037,26 @@ class AnalyticAccountReport(models.Model):
             
     def _generate_comparison_table(self, worksheet, row, col, formats):
         """إنشاء جدول المقارنة التفصيلي في تقرير Excel"""
-        if not self.compare_years or not self.previous_years_data:
+        logger.info(f"Starting comparison table generation. compare_years: {self.compare_years}, previous_years_data exists: {bool(self.previous_years_data)}")
+        
+        if not self.compare_years:
+            logger.warning("Comparison table skipped: compare_years is False")
+            return row
+            
+        if not self.previous_years_data:
+            logger.warning("Comparison table skipped: previous_years_data is empty")
             return row
 
-        comparison_data = json.loads(self.previous_years_data)
+        try:
+            comparison_data = json.loads(self.previous_years_data)
+            logger.info(f"Comparison data loaded successfully. Years: {[d['year'] for d in comparison_data]}")
+        except Exception as e:
+            logger.error(f"Error parsing previous_years_data: {str(e)}")
+            return row
         
         # عنوان جدول المقارنة
         worksheet.merge_range(row, col, row, col + 7, "مقارنة بالسنوات السابقة", formats['section_format'])
+        logger.info(f"Added comparison table title at row {row}")
         row += 2
         
         # إنشاء جدول المقارنة لكل مركز تكلفة
@@ -1049,8 +1069,10 @@ class AnalyticAccountReport(models.Model):
             analytic_domain.append(('id', 'in', self.analytic_account_ids.ids))
 
         analytic_accounts = self.env['account.analytic.account'].search(analytic_domain, order='operating_unit_id, group_id, name')
+        logger.info(f"Found {len(analytic_accounts)} analytic accounts for comparison")
         
         if not analytic_accounts:
+            logger.warning("No analytic accounts found for comparison table")
             return row
         
         # رؤوس الأعمدة للمقارنة
@@ -1067,6 +1089,7 @@ class AnalyticAccountReport(models.Model):
         for i, header in enumerate(headers):
             worksheet.write(row, col + i, header, formats['header_format'])
         row += 1
+        logger.info(f"Added comparison table headers at row {row-1}")
         
         # تجميع البيانات حسب الهيكل الهرمي
         operating_unit_dict = defaultdict(lambda: {
@@ -1195,6 +1218,7 @@ class AnalyticAccountReport(models.Model):
                         worksheet.write(row, col_index + 3, current_debts, sub_account_format)
                         row += 1
         
+        logger.info(f"Comparison table generation completed. Final row: {row}")
         return row + 2
 
     def generate_excel_report(self):
