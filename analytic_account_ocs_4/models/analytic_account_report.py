@@ -363,96 +363,95 @@ class AnalyticAccountReport(models.Model):
             logger.error("Error calculating period amount: %s", str(e))
             return 0.0
 
-    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id', 'group_id',
-                 'analytic_account_id')
+    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id', 'group_id', 'analytic_account_id')
     def _compute_totals(self):
-        """حساب الإجماليات مع تحسين الدقة"""
+        """حساب الإجماليات بدقة مع ضمان ظهور القيم الصحيحة"""
         for record in self:
             try:
-                if not record.company_ids:
-                    record.total_expenses = 0.0
-                    record.total_revenues = 0.0
-                    record.total_collections = 0.0
-                    record.total_debts = 0.0
-                    continue
-    
-                company_ids = [c.id for c in record.company_ids]
-    
-                if record.analytic_account_ids:
-                    analytic_account_ids = [a.id for a in record.analytic_account_ids]
-                else:
-                    all_accounts = self.env['account.analytic.account'].search([
-                        ('company_id', 'in', company_ids),
-                        ('active', '=', True)
-                    ])
-                    analytic_account_ids = all_accounts.ids
-    
-                if not analytic_account_ids:
-                    record.total_expenses = 0.0
-                    record.total_revenues = 0.0
-                    record.total_collections = 0.0
-                    record.total_debts = 0.0
-                    continue
-    
-                # حساب المصروفات بدقة
-                expense_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('account_id.internal_group', '=', 'expense')
-                ]
-                expense_lines = self._optimize_query_performance(expense_domain)
-                record.total_expenses = abs(sum(expense_lines.mapped('balance')))
-    
-                # حساب الإيرادات بدقة
-                revenue_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('account_id.internal_group', '=', 'income')
-                ]
-                revenue_lines = self._optimize_query_performance(revenue_domain)
-                record.total_revenues = abs(sum(revenue_lines.mapped('balance')))
-    
-                # حساب التحصيلات (المدفوعات) بدقة
-                payment_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('payment_id', '!=', False)
-                ]
-                payment_lines = self._optimize_query_performance(payment_domain)
-                record.total_collections = abs(sum(
-                    line.amount_currency if line.amount_currency else line.balance 
-                    for line in payment_lines
-                ))
-    
-                # حساب المديونية (الفواتير غير المدفوعة) بدقة
-                invoice_domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', company_ids),
-                    ('analytic_account_id', 'in', analytic_account_ids),
-                    ('move_id.state', '=', 'posted'),
-                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', 'in', ['not_paid', 'partial']),
-                    ('amount_residual', '>', 0)
-                ]
-                invoice_lines = self._optimize_query_performance(invoice_domain)
-                record.total_debts = sum(abs(line.amount_residual) for line in invoice_lines)
-    
-            except Exception as e:
-                logger.error("Error in _compute_totals: %s", str(e))
+                # إعادة تعيين القيم
                 record.total_expenses = 0.0
                 record.total_revenues = 0.0
                 record.total_collections = 0.0
                 record.total_debts = 0.0
+    
+                if not record.company_ids:
+                    continue
+    
+                company_ids = record.company_ids.ids
+    
+                # الحصول على مراكز التكلفة المحددة أو جميعها إن لم يتم التحديد
+                analytic_account_ids = record.analytic_account_ids.ids if record.analytic_account_ids else \
+                    self.env['account.analytic.account'].search([
+                        ('company_id', 'in', company_ids),
+                        ('active', '=', True)
+                    ]).ids
+    
+                if not analytic_account_ids:
+                    continue
+    
+                # نطاق البحث الأساسي
+                base_domain = [
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('move_id.state', '=', 'posted'),
+                    ('analytic_account_id', 'in', analytic_account_ids)
+                ]
+    
+                # 1. حساب المصروفات
+                expense_domain = base_domain + [
+                    ('account_id.internal_group', '=', 'expense'),
+                    ('balance', '<', 0)  # المصروفات تكون قيمتها سالبة
+                ]
+                expense_lines = self.env['account.move.line'].search(expense_domain)
+                record.total_expenses = abs(sum(expense_lines.mapped('balance')))
+    
+                # 2. حساب الإيرادات
+                revenue_domain = base_domain + [
+                    ('account_id.internal_group', '=', 'income'),
+                    ('balance', '>', 0)  # الإيرادات تكون قيمتها موجبة
+                ]
+                revenue_lines = self.env['account.move.line'].search(revenue_domain)
+                record.total_revenues = sum(revenue_lines.mapped('balance'))
+    
+                # 3. حساب التحصيل (المدفوعات)
+                payment_domain = [
+                    ('payment_id', '!=', False),
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.state', '=', 'posted')
+                ]
+                payment_lines = self.env['account.move.line'].search(payment_domain)
+                record.total_collections = sum(abs(line.balance) for line in payment_lines)
+    
+                # 4. حساب المديونية (المتبقي)
+                invoice_domain = [
+                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                    ('move_id.payment_state', 'in', ['not_paid', 'partial']),
+                    ('amount_residual', '!=', 0),
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.state', '=', 'posted')
+                ]
+                invoice_lines = self.env['account.move.line'].search(invoice_domain)
+                record.total_debts = sum(abs(line.amount_residual) for line in invoice_lines)
+    
+                # تسجيل للتحقق
+                logger.info(f"""
+                    === نتائج الحساب ===
+                    المصروفات: {record.total_expenses}
+                    الإيرادات: {record.total_revenues}
+                    التحصيل: {record.total_collections}
+                    المديونية: {record.total_debts}
+                    عدد مراكز التكلفة: {len(analytic_account_ids)}
+                """)
+    
+            except Exception as e:
+                logger.error(f"Error in _compute_totals: {str(e)}")
 
     def _calculate_debts(self, date_from, date_to, company_ids, analytic_account_ids):
         """حساب المديونية بدقة أكبر"""
@@ -754,12 +753,12 @@ class AnalyticAccountReport(models.Model):
                 record.report_lines = "<p>حدث خطأ أثناء توليد التقرير</p>"
 
     def _calculate_analytic_amount(self, account, amount_type):
-        """حساب المبلغ لحساب تحليلي محدد"""
+        """حساب المبالغ لكل حساب تحليلي بشكل منفصل"""
         try:
             if not account or not account.id:
                 return 0.0
     
-            company_ids = [c.id for c in self.company_ids if hasattr(c, 'id') and c.id]
+            company_ids = self.company_ids.ids if self.company_ids else []
             if not company_ids:
                 return 0.0
     
@@ -773,52 +772,87 @@ class AnalyticAccountReport(models.Model):
     
             if amount_type == 'expenses':
                 domain = base_domain + [
-                    ('account_id.internal_group', '=', 'expense')
+                    ('account_id.internal_group', '=', 'expense'),
+                    ('balance', '<', 0)
                 ]
-                lines = self._optimize_query_performance(domain)
-                return abs(sum(line.balance for line in lines))
+                lines = self.env['account.move.line'].search(domain)
+                return abs(sum(lines.mapped('balance')))
     
             elif amount_type == 'revenues':
                 domain = base_domain + [
-                    ('account_id.internal_group', '=', 'income')
+                    ('account_id.internal_group', '=', 'income'),
+                    ('balance', '>', 0)
                 ]
-                lines = self._optimize_query_performance(domain)
-                return abs(sum(line.balance for line in lines))
+                lines = self.env['account.move.line'].search(domain)
+                return sum(lines.mapped('balance'))
     
             elif amount_type == 'collections':
-                # حساب جميع المدفوعات المرتبطة بمركز التكلفة
-                payment_domain = [
+                domain = [
                     ('payment_id', '!=', False),
-                    ('analytic_account_id', '=', account.id),
                     ('date', '>=', self.date_from),
                     ('date', '<=', self.date_to),
                     ('company_id', 'in', company_ids),
+                    ('analytic_account_id', '=', account.id),
                     ('move_id.state', '=', 'posted')
                 ]
-                payment_lines = self.env['account.move.line'].search(payment_domain)
-                return abs(sum(payment_lines.mapped('amount_currency') or payment_lines.mapped('balance')))
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.balance) for line in lines)
     
             elif amount_type == 'debts':
-                # حساب المديونية (الفواتير غير المدفوعة بالكامل)
-                invoice_domain = [
+                domain = [
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('analytic_account_id', '=', account.id),
                     ('move_id.payment_state', 'in', ['not_paid', 'partial']),
-                    ('amount_residual', '>', 0),
+                    ('amount_residual', '!=', 0),
                     ('date', '>=', self.date_from),
                     ('date', '<=', self.date_to),
                     ('company_id', 'in', company_ids),
+                    ('analytic_account_id', '=', account.id),
                     ('move_id.state', '=', 'posted')
                 ]
-                invoice_lines = self.env['account.move.line'].search(invoice_domain)
-                return sum(abs(line.amount_residual) for line in invoice_lines)
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.amount_residual) for line in lines)
     
             return 0.0
     
         except Exception as e:
-            logger.error(f"Error calculating {amount_type} for account {account.name}: {str(e)}")
+            logger.error(f"Error in _calculate_analytic_amount for {amount_type}: {str(e)}")
             return 0.0
-
+    def check_data_availability(self):
+        """دالة مساعدة للتحقق من توفر البيانات"""
+        for record in self:
+            try:
+                company_ids = record.company_ids.ids if record.company_ids else []
+                
+                if not company_ids:
+                    raise UserError("لم يتم تحديد أي شركات")
+                
+                analytic_account_ids = record.analytic_account_ids.ids if record.analytic_account_ids else \
+                    self.env['account.analytic.account'].search([
+                        ('company_id', 'in', company_ids),
+                        ('active', '=', True)
+                    ]).ids
+                
+                if not analytic_account_ids:
+                    raise UserError("لا توجد مراكز تكلفة متاحة للشركات المحددة")
+                
+                # التحقق من وجود حركات
+                move_lines = self.env['account.move.line'].search([
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.state', '=', 'posted')
+                ], limit=1)
+                
+                if not move_lines:
+                    raise UserError("لا توجد حركات مسجلة في الفترة المحددة لمراكز التكلفة المختارة")
+                
+                return True
+                
+            except Exception as e:
+                logger.error(f"Data check failed: {str(e)}")
+                raise UserError(f"خطأ في التحقق من البيانات: {str(e)}")        
+            
     def _generate_comparison_table(self, worksheet, row, col, formats):
         """إنشاء جدول المقارنة في تقرير Excel"""
         if not self.compare_years or not self.previous_years_data:
