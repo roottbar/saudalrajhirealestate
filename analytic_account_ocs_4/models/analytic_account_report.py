@@ -375,9 +375,9 @@ class AnalyticAccountReport(models.Model):
                     record.total_collections = 0.0
                     record.total_debts = 0.0
                     continue
-
+    
                 company_ids = [c.id for c in record.company_ids]
-
+    
                 if record.analytic_account_ids:
                     analytic_account_ids = [a.id for a in record.analytic_account_ids]
                 else:
@@ -386,14 +386,14 @@ class AnalyticAccountReport(models.Model):
                         ('active', '=', True)
                     ])
                     analytic_account_ids = all_accounts.ids
-
+    
                 if not analytic_account_ids:
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
                     record.total_collections = 0.0
                     record.total_debts = 0.0
                     continue
-
+    
                 # حساب المصروفات بدقة
                 expense_domain = [
                     ('date', '>=', record.date_from),
@@ -405,7 +405,7 @@ class AnalyticAccountReport(models.Model):
                 ]
                 expense_lines = self._optimize_query_performance(expense_domain)
                 record.total_expenses = abs(sum(expense_lines.mapped('balance')))
-
+    
                 # حساب الإيرادات بدقة
                 revenue_domain = [
                     ('date', '>=', record.date_from),
@@ -417,8 +417,8 @@ class AnalyticAccountReport(models.Model):
                 ]
                 revenue_lines = self._optimize_query_performance(revenue_domain)
                 record.total_revenues = abs(sum(revenue_lines.mapped('balance')))
-
-                # حساب التحصيلات بدقة
+    
+                # حساب التحصيلات (المدفوعات) بدقة
                 payment_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
@@ -428,16 +428,25 @@ class AnalyticAccountReport(models.Model):
                     ('payment_id', '!=', False)
                 ]
                 payment_lines = self._optimize_query_performance(payment_domain)
-                record.total_collections = abs(sum(payment_lines.mapped('balance')))
-
-                # حساب المديونية بدقة
-                record.total_debts = self._calculate_debts(
-                    record.date_from,
-                    record.date_to,
-                    company_ids,
-                    analytic_account_ids
-                )
-
+                record.total_collections = abs(sum(
+                    line.amount_currency if line.amount_currency else line.balance 
+                    for line in payment_lines
+                ))
+    
+                # حساب المديونية (الفواتير غير المدفوعة) بدقة
+                invoice_domain = [
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('analytic_account_id', 'in', analytic_account_ids),
+                    ('move_id.state', '=', 'posted'),
+                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                    ('move_id.payment_state', 'in', ['not_paid', 'partial']),
+                    ('amount_residual', '>', 0)
+                ]
+                invoice_lines = self._optimize_query_performance(invoice_domain)
+                record.total_debts = sum(abs(line.amount_residual) for line in invoice_lines)
+    
             except Exception as e:
                 logger.error("Error in _compute_totals: %s", str(e))
                 record.total_expenses = 0.0
@@ -749,11 +758,11 @@ class AnalyticAccountReport(models.Model):
         try:
             if not account or not account.id:
                 return 0.0
-
+    
             company_ids = [c.id for c in self.company_ids if hasattr(c, 'id') and c.id]
             if not company_ids:
                 return 0.0
-
+    
             base_domain = [
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
@@ -761,39 +770,51 @@ class AnalyticAccountReport(models.Model):
                 ('analytic_account_id', '=', account.id),
                 ('move_id.state', '=', 'posted')
             ]
-
+    
             if amount_type == 'expenses':
                 domain = base_domain + [
                     ('account_id.internal_group', '=', 'expense')
                 ]
                 lines = self._optimize_query_performance(domain)
                 return abs(sum(line.balance for line in lines))
-
+    
             elif amount_type == 'revenues':
                 domain = base_domain + [
                     ('account_id.internal_group', '=', 'income')
                 ]
                 lines = self._optimize_query_performance(domain)
                 return abs(sum(line.balance for line in lines))
-
+    
             elif amount_type == 'collections':
-                domain = base_domain + [
-                    ('payment_id', '!=', False)
+                # حساب جميع المدفوعات المرتبطة بمركز التكلفة
+                payment_domain = [
+                    ('payment_id', '!=', False),
+                    ('analytic_account_id', '=', account.id),
+                    ('date', '>=', self.date_from),
+                    ('date', '<=', self.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('move_id.state', '=', 'posted')
                 ]
-                lines = self._optimize_query_performance(domain)
-                return abs(sum(line.balance for line in lines))
-
+                payment_lines = self.env['account.move.line'].search(payment_domain)
+                return abs(sum(payment_lines.mapped('amount_currency') or payment_lines.mapped('balance')))
+    
             elif amount_type == 'debts':
-                domain = base_domain + [
+                # حساب المديونية (الفواتير غير المدفوعة بالكامل)
+                invoice_domain = [
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                    ('analytic_account_id', '=', account.id),
                     ('move_id.payment_state', 'in', ['not_paid', 'partial']),
-                    ('amount_residual', '>', 0)
+                    ('amount_residual', '>', 0),
+                    ('date', '>=', self.date_from),
+                    ('date', '<=', self.date_to),
+                    ('company_id', 'in', company_ids),
+                    ('move_id.state', '=', 'posted')
                 ]
-                lines = self._optimize_query_performance(domain)
-                return sum(line.amount_residual for line in lines)
-
+                invoice_lines = self.env['account.move.line'].search(invoice_domain)
+                return sum(abs(line.amount_residual) for line in invoice_lines)
+    
             return 0.0
-
+    
         except Exception as e:
             logger.error(f"Error calculating {amount_type} for account {account.name}: {str(e)}")
             return 0.0
