@@ -95,7 +95,7 @@ class AnalyticAccountReport(models.Model):
         domain="[('id', 'in', available_analytic_ids)]"
     )
     
-    # الحقول الجديدة للفلترة - Fixed domains
+    # الحقول الجديدة للفلترة - With correct field references
     property_address_area = fields.Many2one(
         'property.address.area',
         string='الفرع'
@@ -104,19 +104,19 @@ class AnalyticAccountReport(models.Model):
     property_address_build2 = fields.Many2one(
         'property.address.build',
         string='المجمع',
-        domain="[('area_id', '=', property_address_area)]"
+        domain="[('property_address_area_id', '=', property_address_area)]"  # Use correct field name
     )
     
     property_number = fields.Many2one(
         'property.number',
         string='العقار',
-        domain="[('build_id', '=', property_address_build2)]"
+        domain="[('property_address_build_id', '=', property_address_build2)]"  # Use correct field name
     )
     
     product_id = fields.Many2one(
         'product.product',
         string='الوحدة',
-        domain="[('property_id', '=', property_number)]"
+        domain="[('property_number_id', '=', property_number)]"  # Use correct field name
     )
     
 
