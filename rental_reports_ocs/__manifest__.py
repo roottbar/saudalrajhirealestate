@@ -11,7 +11,7 @@
     'category': 'Real Estate/Rental',
     'depends': ['product', 'operating_unit'],
     'data': [
-        'security/ir.model.access.csv',
+        'views/property_views.xml',
         'views/rental_report_views.xml',
         'reports/rental_report.xml',
         'reports/rental_report_template.xml',
