@@ -92,6 +92,31 @@ class AnalyticAccountReport(models.Model):
         string='مركز التكلفة',
         domain="[('id', 'in', available_analytic_ids)]"
     )
+    
+    # الحقول الجديدة للفلترة
+    property_address_area = fields.Many2one(
+        'property.address.area',
+        string='المنطقة',
+        domain="[('company_id', 'in', company_ids)]"
+    )
+    
+    property_address_build2 = fields.Many2one(
+        'property.address.build',
+        string='المجمع',
+        domain="[('area_id', '=', property_address_area)]"
+    )
+    
+    property_number = fields.Many2one(
+        'property.number',
+        string='العقار',
+        domain="[('build_id', '=', property_address_build2)]"
+    )
+    
+    product_id = fields.Many2one(
+        'product.product',
+        string='الوحدة',
+        domain="[('property_id', '=', property_number)]"
+    )
 
     company_currency_id = fields.Many2one(
         'res.currency',
@@ -118,6 +143,17 @@ class AnalyticAccountReport(models.Model):
     )
     total_debts = fields.Monetary(
         string='إجمالي المديونية (المتبقي)',
+        currency_field='company_currency_id',
+        compute='_compute_totals'
+    )
+    total_amount_paid = fields.Monetary(
+        string='إجمالي المبالغ المدفوعة',
+        currency_field='company_currency_id',
+        compute='_compute_totals'
+    )
+    
+    total_amount_due = fields.Monetary(
+        string='إجمالي المبالغ المستحقة',
         currency_field='company_currency_id',
         compute='_compute_totals'
     )
@@ -187,13 +223,18 @@ class AnalyticAccountReport(models.Model):
             self.operating_unit_id = False
             self.group_id = False
             self.analytic_account_id = False
+            self.property_address_area = False
+            self.property_address_build2 = False
+            self.property_number = False
+            self.product_id = False
             
             # تحديث domain للفروع
             return {
                 'domain': {
                     'operating_unit_id': [('company_id', 'in', self.company_ids.ids)],
                     'group_id': [('company_id', 'in', self.company_ids.ids)],
-                    'analytic_account_id': [('company_id', 'in', self.company_ids.ids), ('active', '=', True)]
+                    'analytic_account_id': [('company_id', 'in', self.company_ids.ids), ('active', '=', True)],
+                    'property_address_area': [('company_id', 'in', self.company_ids.ids)]
                 }
             }
         else:
@@ -201,12 +242,17 @@ class AnalyticAccountReport(models.Model):
             self.operating_unit_id = False
             self.group_id = False
             self.analytic_account_id = False
+            self.property_address_area = False
+            self.property_address_build2 = False
+            self.property_number = False
+            self.product_id = False
             
             return {
                 'domain': {
                     'operating_unit_id': [],
                     'group_id': [],
-                    'analytic_account_id': [('active', '=', True)]
+                    'analytic_account_id': [('active', '=', True)],
+                    'property_address_area': []
                 }
             }
 
@@ -262,6 +308,63 @@ class AnalyticAccountReport(models.Model):
                 'domain': {
                     'group_id': domain_group,
                     'analytic_account_id': domain_analytic
+                }
+            }
+
+    @api.onchange('property_address_area')
+    def _onchange_property_address_area(self):
+        """تحديث المجمعات المتاحة عند تغيير المنطقة"""
+        self.property_address_build2 = False
+        self.property_number = False
+        self.product_id = False
+        
+        if self.property_address_area:
+            return {
+                'domain': {
+                    'property_address_build2': [('area_id', '=', self.property_address_area.id)]
+                }
+            }
+        else:
+            return {
+                'domain': {
+                    'property_address_build2': []
+                }
+            }
+
+    @api.onchange('property_address_build2')
+    def _onchange_property_address_build2(self):
+        """تحديث العقارات المتاحة عند تغيير المجمع"""
+        self.property_number = False
+        self.product_id = False
+        
+        if self.property_address_build2:
+            return {
+                'domain': {
+                    'property_number': [('build_id', '=', self.property_address_build2.id)]
+                }
+            }
+        else:
+            return {
+                'domain': {
+                    'property_number': []
+                }
+            }
+
+    @api.onchange('property_number')
+    def _onchange_property_number(self):
+        """تحديث الوحدات المتاحة عند تغيير العقار"""
+        self.product_id = False
+        
+        if self.property_number:
+            return {
+                'domain': {
+                    'product_id': [('property_id', '=', self.property_number.id)]
+                }
+            }
+        else:
+            return {
+                'domain': {
+                    'product_id': []
                 }
             }
 
@@ -325,7 +428,7 @@ class AnalyticAccountReport(models.Model):
             
             record.available_analytic_ids = self.env['account.analytic.account'].search(domain)
     
-    @api.depends('company_ids', 'operating_unit_id', 'group_id', 'analytic_account_id')
+    @api.depends('company_ids', 'operating_unit_id', 'group_id', 'analytic_account_id', 'property_address_area', 'property_address_build2', 'property_number', 'product_id')
     def _compute_analytic_accounts(self):
         """حساب مراكز التكلفة المتاحة بناءً على الاختيارات"""
         for record in self:
@@ -455,7 +558,7 @@ class AnalyticAccountReport(models.Model):
                     }
                     
                     logger.info(f"Year {prev_year} data: expenses={prev_data['expenses']}, revenues={prev_data['revenues']}")
-                    comparison_data.append(prev_data)
+                    comparison_data.append(prev_data)                                                                                                                                                                                             
 
                 record.previous_years_data = json.dumps(comparison_data)
                 logger.info(f"Previous years data computed successfully: {len(comparison_data)} years")
@@ -475,14 +578,14 @@ class AnalyticAccountReport(models.Model):
                 ('date', '<=', date_to),
                 ('company_id', 'in', company_ids),
                 ('move_id.state', '=', 'posted')
-            ]
+            ]                         
 
             if analytic_account_ids:
                 base_domain.append(('analytic_account_id', 'in', analytic_account_ids))
 
             if amount_type == 'expenses':
                 domain = base_domain + [('account_id.internal_group', '=', 'expense')]
-                lines = self._optimize_query_performance(domain)
+                lines = self._optimize_query_performance(domain)                                               
                 return abs(sum(lines.mapped('balance')))
 
             elif amount_type == 'revenues':
@@ -540,30 +643,80 @@ class AnalyticAccountReport(models.Model):
             logger.error("Error calculating period amount: %s", str(e))
             return 0.0
 
-    @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id', 'group_id', 'analytic_account_id')
+    @api.depends('date_from', 'date_to', 'company_ids', 'property_address_area', 
+                 'property_address_build2', 'property_number', 'product_id')
     def _compute_totals(self):
-        """حساب الإجماليات بدقة مع تشخيص مفصل"""
+        """حساب المجاميع بناءً على amount_paid و amount_due"""
         for record in self:
             try:
-                # إعادة تعيين القيم
-                record.total_expenses = 0.0
-                record.total_revenues = 0.0
-                record.total_collections = 0.0
-                record.total_debts = 0.0
-
-                if not record.company_ids:
-                    logger.warning("لا توجد شركات محددة")
+                if not record.date_from or not record.date_to or not record.company_ids:
+                    record.total_amount_paid = 0.0
+                    record.total_amount_due = 0.0
+                    record.total_expenses = 0.0
+                    record.total_revenues = 0.0
+                    record.total_collections = 0.0
+                    record.total_debts = 0.0
                     continue
 
-                company_ids = record.company_ids.ids
-                logger.info(f"الشركات المحددة: {company_ids}")
+                # بناء domain للبحث
+                domain = [
+                    ('date', '>=', record.date_from),
+                    ('date', '<=', record.date_to),
+                    ('company_id', 'in', record.company_ids.ids),
+                    ('state', '=', 'posted')
+                ]
+                
+                # إضافة فلاتر العقارات
+                if record.property_address_area:
+                    domain.append(('property_address_area', '=', record.property_address_area.id))
+                
+                if record.property_address_build2:
+                    domain.append(('property_address_build2', '=', record.property_address_build2.id))
+                
+                if record.property_number:
+                    domain.append(('property_number', '=', record.property_number.id))
+                
+                if record.product_id:
+                    domain.append(('product_id', '=', record.product_id.id))
 
-                # الحصول على مراكز التكلفة المحددة
+                # البحث في النموذج المناسب (يجب تحديد النموذج الذي يحتوي على amount_paid و amount_due)
+                # مثال: إذا كانت في نموذج الفواتير
+                invoice_lines = self.env['account.move.line'].search(domain)
+                
+                total_paid = 0.0
+                total_due = 0.0
+                
+                for line in invoice_lines:
+                    # يجب تعديل هذا حسب بنية البيانات الفعلية
+                    if hasattr(line, 'amount_paid'):
+                        total_paid += line.amount_paid
+                    if hasattr(line, 'amount_due'):
+                        total_due += line.amount_due
+                
+                record.total_amount_paid = total_paid
+                record.total_amount_due = total_due
+                
+                # حساب باقي القيم بنفس الطريقة السابقة
+                company_ids = record.company_ids.ids
+                
+                # الحصول على مراكز التكلفة المحددة مع تطبيق فلاتر العقارات
+                analytic_domain = [
+                    ('company_id', 'in', company_ids),
+                    ('active', '=', True)
+                ]
+                
+                # تطبيق فلاتر العقارات إذا تم تحديدها
+                if record.property_address_area:
+                    analytic_domain.append(('property_area_id', '=', record.property_address_area.id))
+                if record.property_address_build2:
+                    analytic_domain.append(('property_build_id', '=', record.property_address_build2.id))
+                if record.property_number:
+                    analytic_domain.append(('property_id', '=', record.property_number.id))
+                if record.product_id:
+                    analytic_domain.append(('product_id', '=', record.product_id.id))
+                
                 analytic_account_ids = record.analytic_account_ids.ids if record.analytic_account_ids else \
-                    self.env['account.analytic.account'].search([
-                        ('company_id', 'in', company_ids),
-                        ('active', '=', True)
-                    ]).ids
+                    self.env['account.analytic.account'].search(analytic_domain).ids
 
                 if not analytic_account_ids:
                     logger.warning("لا توجد مراكز تكلفة محددة")
@@ -645,6 +798,9 @@ class AnalyticAccountReport(models.Model):
                 
                 logger.info(f"التحصيل: {collections_total} (فواتير مدفوعة: {paid_count}, جزئية: {partial_count})")
                 logger.info(f"المديونية: {debts_total} (فواتير غير مدفوعة: {not_paid_count}, جزئية: {partial_count})")
+                
+                logger.info(f"المبالغ المدفوعة: {record.total_amount_paid}")
+                logger.info(f"المبالغ المستحقة: {record.total_amount_due}")
 
             except Exception as e:
                 logger.error(f"خطأ في حساب الإجماليات: {str(e)}")
@@ -728,6 +884,8 @@ class AnalyticAccountReport(models.Model):
                                 <th>الإيرادات</th>
                                 <th>التحصيل (المدفوعات)</th>
                                 <th>المديونية (المتبقي)</th>
+                                <th>المبالغ المدفوعة</th>
+                                <th>المبالغ المستحقة</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -768,6 +926,8 @@ class AnalyticAccountReport(models.Model):
                     revenues = self._calculate_analytic_amount(account, 'revenues')
                     collections = self._calculate_analytic_amount(account, 'collections')
                     debts = self._calculate_analytic_amount(account, 'debts')
+                    amount_paid = self._calculate_analytic_amount(account, 'amount_paid')
+                    amount_due = self._calculate_analytic_amount(account, 'amount_due')
 
                     operating_unit = account.operating_unit_id or 'بدون فرع'
                     operating_unit_name = operating_unit.name if operating_unit != 'بدون فرع' else 'بدون فرع'
@@ -786,7 +946,9 @@ class AnalyticAccountReport(models.Model):
                         'expenses': expenses,
                         'revenues': revenues,
                         'collections': collections,
-                        'debts': debts
+                        'debts': debts,
+                        'amount_paid': amount_paid,
+                        'amount_due': amount_due
                     })
 
                     operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name][
@@ -845,6 +1007,8 @@ class AnalyticAccountReport(models.Model):
                                         <td class="text-right">{format(account_data['revenues'], '.2f')}</td>
                                         <td class="text-right">{format(account_data['collections'], '.2f')}</td>
                                         <td class="text-right">{format(account_data['debts'], '.2f')}</td>
+                                        <td class="text-right">{format(account_data.get('amount_paid', 0), '.2f')}</td>
+                                        <td class="text-right">{format(account_data.get('amount_due', 0), '.2f')}</td>
                                     </tr>
                                 """)
 
@@ -1021,7 +1185,17 @@ class AnalyticAccountReport(models.Model):
                     elif line.balance != 0:
                         total += abs(line.balance)
                 return total
-    
+            
+            elif amount_type == 'amount_paid':
+                domain = base_domain + [('amount_paid', '>', 0)]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(line.amount_paid for line in lines)
+            
+            elif amount_type == 'amount_due':
+                domain = base_domain + [('amount_due', '>', 0)]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(line.amount_due for line in lines)
+
             return 0.0
     
         except Exception as e:
@@ -1092,6 +1266,16 @@ class AnalyticAccountReport(models.Model):
                     elif line.balance != 0:
                         total += abs(line.balance)
                 return total
+            
+            elif amount_type == 'amount_paid':
+                domain = base_domain + [('amount_paid', '>', 0)]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(line.amount_paid for line in lines)
+            
+            elif amount_type == 'amount_due':
+                domain = base_domain + [('amount_due', '>', 0)]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(line.amount_due for line in lines)
 
             return 0.0
 
@@ -1408,6 +1592,8 @@ class AnalyticAccountReport(models.Model):
         worksheet.set_column('F:F', 15)
         worksheet.set_column('G:G', 20)
         worksheet.set_column('H:H', 20)
+        worksheet.set_column('I:I', 20)
+        worksheet.set_column('J:J', 20)
 
         row = 0
 
@@ -1481,7 +1667,9 @@ class AnalyticAccountReport(models.Model):
             'المصروفات',
             'الإيرادات',
             'التحصيل (المدفوعات)',
-            'المديونية (المتبقي)'
+            'المديونية (المتبقي)',
+            'المبالغ المدفوعة',
+            'المبالغ المستحقة'
         ]
 
         for col_num, header in enumerate(headers):
@@ -1524,6 +1712,8 @@ class AnalyticAccountReport(models.Model):
             revenues = self._calculate_analytic_amount(account, 'revenues')
             collections = self._calculate_analytic_amount(account, 'collections')
             debts = self._calculate_analytic_amount(account, 'debts')
+            amount_paid = self._calculate_analytic_amount(account, 'amount_paid')
+            amount_due = self._calculate_analytic_amount(account, 'amount_due')
 
             operating_unit = account.operating_unit_id or 'بدون فرع'
             operating_unit_name = operating_unit.name if operating_unit != 'بدون فرع' else 'بدون فرع'
@@ -1542,7 +1732,9 @@ class AnalyticAccountReport(models.Model):
                 'expenses': expenses,
                 'revenues': revenues,
                 'collections': collections,
-                'debts': debts
+                'debts': debts,
+                'amount_paid': amount_paid,
+                'amount_due': amount_due
             })
 
             operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name][
@@ -1598,6 +1790,8 @@ class AnalyticAccountReport(models.Model):
                         worksheet.write(row, 5, account_data['revenues'], currency_format)
                         worksheet.write(row, 6, account_data['collections'], currency_format)
                         worksheet.write(row, 7, account_data['debts'], currency_format)
+                        worksheet.write(row, 8, account_data['amount_paid'], currency_format)
+                        worksheet.write(row, 9, account_data['amount_due'], currency_format)
                         row += 1
 
                     # إجمالي المجموعة الفرعية
@@ -1629,6 +1823,8 @@ class AnalyticAccountReport(models.Model):
         worksheet.write(row, 5, self.total_revenues, total_format)
         worksheet.write(row, 6, self.total_collections, total_format)
         worksheet.write(row, 7, self.total_debts, total_format)
+        worksheet.write(row, 8, self.total_amount_paid, total_format)
+        worksheet.write(row, 9, self.total_amount_due, total_format)
 
         # إضافة جدول المقارنة
         row = self._generate_comparison_table(
@@ -1785,7 +1981,9 @@ class AnalyticAccountReport(models.Model):
                 'المصروفات',
                 'الإيرادات',
                 'التحصيل (المدفوعات)',
-                'المديونية (المتبقي)'
+                'المديونية (المتبقي)',
+                'المبالغ المدفوعة',
+                'المبالغ المستحقة'
             ]
 
             report_data = [report_header]
@@ -1837,6 +2035,8 @@ class AnalyticAccountReport(models.Model):
                 revenues = self._calculate_analytic_amount(account, 'revenues')
                 collections = self._calculate_analytic_amount(account, 'collections')
                 debts = self._calculate_analytic_amount(account, 'debts')
+                amount_paid = self._calculate_analytic_amount(account, 'amount_paid')
+                amount_due = self._calculate_analytic_amount(account, 'amount_due')
 
                 operating_unit = account.operating_unit_id or 'بدون فرع'
                 operating_unit_name = operating_unit.name if operating_unit != 'بدون فرع' else 'بدون فرع'
@@ -1855,7 +2055,9 @@ class AnalyticAccountReport(models.Model):
                     'expenses': expenses,
                     'revenues': revenues,
                     'collections': collections,
-                    'debts': debts
+                    'debts': debts,
+                    'amount_paid': amount_paid,
+                    'amount_due': amount_due
                 })
 
                 operating_unit_dict[operating_unit_name]['groups'][root_group_name]['subgroups'][subgroup_name][
@@ -1899,7 +2101,9 @@ class AnalyticAccountReport(models.Model):
                                 format(round(account_data['expenses'], 2), ',.2f'),
                                 format(round(account_data['revenues'], 2), ',.2f'),
                                 format(round(account_data['collections'], 2), ',.2f'),
-                                format(round(account_data['debts'], 2), ',.2f')
+                                format(round(account_data['debts'], 2), ',.2f'),
+                                format(round(account_data['amount_paid'], 2), ',.2f'),
+                                format(round(account_data['amount_due'], 2), ',.2f')
                             ])
 
                         report_data.append([
@@ -1931,10 +2135,12 @@ class AnalyticAccountReport(models.Model):
                 format(round(self.total_expenses, 2), ',.2f'),
                 format(round(self.total_revenues, 2), ',.2f'),
                 format(round(self.total_collections, 2), ',.2f'),
-                format(round(self.total_debts, 2), ',.2f')
+                format(round(self.total_debts, 2), ',.2f'),
+                format(round(self.total_amount_paid, 2), ',.2f'),
+                format(round(self.total_amount_due, 2), ',.2f')
             ])
 
-            report_table = Table(report_data, colWidths=[60, 60, 60, 90, 50, 50, 50, 50])
+            report_table = Table(report_data, colWidths=[50, 50, 50, 70, 40, 40, 40, 40, 40, 40])
             report_table.setStyle(TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4472C4')),
                 ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
