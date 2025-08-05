@@ -66,14 +66,11 @@
                             <field name="property_address_area" string="الفرع" 
                                    options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="property_address_build2" string="المجمع" 
-                                   options="{'no_create': True, 'no_create_edit': True}"
-                                   domain="[('area_id', '=', property_address_area)]"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="property_number" string="العقار" 
-                                   options="{'no_create': True, 'no_create_edit': True}"
-                                   domain="[('build_id', '=', property_address_build2)]"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="product_id" string="الوحدة" 
-                                   options="{'no_create': True, 'no_create_edit': True}"
-                                   domain="[('property_id', '=', property_number)]"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                         </group>
                         <group string="الفترة الزمنية">
                             <field name="date_from" string="من تاريخ"/>
