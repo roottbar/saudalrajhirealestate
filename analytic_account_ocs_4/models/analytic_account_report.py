@@ -317,13 +317,20 @@ class AnalyticAccountReport(models.Model):
         self.property_number = False
         self.product_id = False
         
-        if self.property_address_area:
-            return {
-                'domain': {
-                    'property_address_build2': [('area_id', '=', self.property_address_area.id)]
+        try:
+            if self.property_address_area and hasattr(self.property_address_area, 'id') and self.property_address_area.id:
+                return {
+                    'domain': {
+                        'property_address_build2': [('area_id', '=', self.property_address_area.id)]
+                    }
                 }
-            }
-        else:
+            else:
+                return {
+                    'domain': {
+                        'property_address_build2': []
+                    }
+                }
+        except Exception:
             return {
                 'domain': {
                     'property_address_build2': []
@@ -336,13 +343,20 @@ class AnalyticAccountReport(models.Model):
         self.property_number = False
         self.product_id = False
         
-        if self.property_address_build2:
-            return {
-                'domain': {
-                    'property_number': [('build_id', '=', self.property_address_build2.id)]
+        try:
+            if self.property_address_build2 and hasattr(self.property_address_build2, 'id') and self.property_address_build2.id:
+                return {
+                    'domain': {
+                        'property_number': [('build_id', '=', self.property_address_build2.id)]
+                    }
                 }
-            }
-        else:
+            else:
+                return {
+                    'domain': {
+                        'property_number': []
+                    }
+                }
+        except Exception:
             return {
                 'domain': {
                     'property_number': []
@@ -354,13 +368,20 @@ class AnalyticAccountReport(models.Model):
         """تحديث الوحدات المتاحة عند تغيير العقار"""
         self.product_id = False
         
-        if self.property_number:
-            return {
-                'domain': {
-                    'product_id': [('property_id', '=', self.property_number.id)]
+        try:
+            if self.property_number and hasattr(self.property_number, 'id') and self.property_number.id:
+                return {
+                    'domain': {
+                        'product_id': [('property_id', '=', self.property_number.id)]
+                    }
                 }
-            }
-        else:
+            else:
+                return {
+                    'domain': {
+                        'product_id': []
+                    }
+                }
+        except Exception:
             return {
                 'domain': {
                     'product_id': []
