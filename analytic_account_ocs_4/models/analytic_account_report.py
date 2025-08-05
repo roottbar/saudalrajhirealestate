@@ -103,20 +103,17 @@ class AnalyticAccountReport(models.Model):
     
     property_address_build2 = fields.Many2one(
         'property.address.build',
-        string='المجمع',
-        domain="[('property_address_area_id', '=', property_address_area)]"  # Use correct field name
+        string='المجمع'
     )
     
     property_number = fields.Many2one(
         'property.number',
-        string='العقار',
-        domain="[('property_address_build_id', '=', property_address_build2)]"  # Use correct field name
+        string='العقار'
     )
     
     product_id = fields.Many2one(
         'product.product',
-        string='الوحدة',
-        domain="[('property_number_id', '=', property_number)]"  # Use correct field name
+        string='الوحدة'
     )
     
 
