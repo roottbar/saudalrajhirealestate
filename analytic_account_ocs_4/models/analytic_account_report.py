@@ -458,19 +458,23 @@ class AnalyticAccountReport(models.Model):
         for record in self:
             try:
                 domain = [('active', '=', True)]
-                
-                if record.company_ids:
-                    domain.append(('company_id', 'in', record.company_ids.ids))
-                
-                if (record.operating_unit_id and 
-                    hasattr(record.operating_unit_id, 'id') and 
-                    record.operating_unit_id.id):
-                    domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
-                
-                if (record.group_id and 
-                    hasattr(record.group_id, 'id') and 
-                    record.group_id.id):
-                    domain.append(('group_id', '=', record.group_id.id))
+            
+            if record.company_ids:
+                # VALIDATE COMPANY IDS BEFORE USE
+                valid_company_ids = [c.id for c in record.company_ids if hasattr(c, 'id') and c.id]
+                if valid_company_ids:
+                    domain.append(('company_id', 'in', valid_company_ids))
+            
+            # Add validation for ALL relational fields
+            operating_unit_id = record.operating_unit_id.id if hasattr(record.operating_unit_id, 'id') else False
+            group_id = record.group_id.id if hasattr(record.group_id, 'id') else False
+            analytic_account_id = record.analytic_account_id.id if hasattr(record.analytic_account_id, 'id') else False
+            
+            if operating_unit_id:
+                domain.append(('operating_unit_id', '=', operating_unit_id))
+            
+            if group_id:
+                domain.append(('group_id', '=', group_id))
                 
                 # إذا تم تحديد مركز تكلفة واحد، استخدمه
                 if (record.analytic_account_id and 
