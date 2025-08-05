@@ -38,7 +38,7 @@ class AnalyticAccountReport(models.Model):
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
     
-    # Fix: Add company_ids field and fix company_id
+    # Company fields - Fixed
     company_ids = fields.Many2many(
         'res.company',
         string='الشركات',
@@ -50,10 +50,10 @@ class AnalyticAccountReport(models.Model):
         compute='_compute_main_company',
         store=True
     )
+    
     operating_unit_id = fields.Many2one(
         'operating.unit',
-        string='الفرع',
-        domain="[('company_id', 'in', company_ids)]"
+        string='الفرع'
     )
 
     # حقول المقارنة بين السنوات - إصلاح أسماء الحقول
@@ -95,13 +95,11 @@ class AnalyticAccountReport(models.Model):
         domain="[('id', 'in', available_analytic_ids)]"
     )
     
-    # الحقول الجديدة للفلترة
+    # الحقول الجديدة للفلترة - Fixed domains
     property_address_area = fields.Many2one(
         'property.address.area',
-        string='الفرع',
-        domain="[('company_id', 'in', company_ids)]"
+        string='الفرع'
     )
-
     
     property_address_build2 = fields.Many2one(
         'property.address.build',
@@ -235,10 +233,10 @@ class AnalyticAccountReport(models.Model):
             # تحديث domain للفروع
             return {
                 'domain': {
-                    'operating_unit_id': [('company_id', 'in', self.company_ids.ids)],
+                    'operating_unit_id': [],
                     'group_id': [('company_id', 'in', self.company_ids.ids)],
                     'analytic_account_id': [('company_id', 'in', self.company_ids.ids), ('active', '=', True)],
-                    'property_address_area': [('company_id', 'in', self.company_ids.ids)]
+                    'property_address_area': []
                 }
             }
         else:
