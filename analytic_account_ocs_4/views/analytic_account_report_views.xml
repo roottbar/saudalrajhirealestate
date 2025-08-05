@@ -62,15 +62,20 @@
                         <group string="المعايير الأساسية">
                             <field name="company_ids" widget="many2many_tags" string="الشركات"/>
                             <field name="operating_unit_id" string="الفرع" 
-                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   domain="[('company_id', 'in', company_ids)]"/>
                             <field name="group_id" string="المجموعة" 
-                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   domain="[('id', 'in', available_group_ids)]"/>
+                            <field name="available_group_ids" invisible="1"/>
+                            <field name="available_analytic_ids" invisible="1"/>
                         </group>
                         <group string="الفترة الزمنية">
                             <field name="date_from" string="من تاريخ"/>
                             <field name="date_to" string="إلى تاريخ"/>
                             <field name="analytic_account_id" string="مركز التكلفة" 
-                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"
+                                   domain="[('id', 'in', available_analytic_ids)]"/>
                         </group>
                         <group string="إعدادات المقارنة السنوية">
                             <field name="compare_years" string="تفعيل المقارنة السنوية"/>
