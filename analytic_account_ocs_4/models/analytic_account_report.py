@@ -262,51 +262,62 @@ class AnalyticAccountReport(models.Model):
         self.group_id = False
         self.analytic_account_id = False
         
-        if self.operating_unit_id:
-            # البحث عن المجموعات المرتبطة بالفرع
-            analytic_accounts_in_unit = self.env['account.analytic.account'].search([
-                ('operating_unit_id', '=', self.operating_unit_id.id),
-                ('company_id', 'in', self.company_ids.ids if self.company_ids else []),
-                ('active', '=', True)
-            ])
-            
-            group_ids = analytic_accounts_in_unit.mapped('group_id').ids
-            
-            # تحديد domain للمجموعات
-            domain_group = []
-            if self.company_ids:
-                domain_group.append(('company_id', 'in', self.company_ids.ids))
-            
-            if group_ids:
-                domain_group.append(('id', 'in', group_ids))
-            else:
-                domain_group.append(('id', '=', False))  # لا توجد مجموعات
-            
-            # تحديد domain للحسابات التحليلية
-            domain_analytic = [('active', '=', True)]
-            if self.company_ids:
-                domain_analytic.append(('company_id', 'in', self.company_ids.ids))
-            domain_analytic.append(('operating_unit_id', '=', self.operating_unit_id.id))
-            
-            return {
-                'domain': {
-                    'group_id': domain_group,
-                    'analytic_account_id': domain_analytic
+        try:
+            if (self.operating_unit_id and 
+                hasattr(self.operating_unit_id, 'id') and 
+                self.operating_unit_id.id):
+                # البحث عن المجموعات المرتبطة بالفرع
+                analytic_accounts_in_unit = self.env['account.analytic.account'].search([
+                    ('operating_unit_id', '=', self.operating_unit_id.id),
+                    ('company_id', 'in', self.company_ids.ids if self.company_ids else []),
+                    ('active', '=', True)
+                ])
+                
+                group_ids = analytic_accounts_in_unit.mapped('group_id').ids
+                
+                # تحديد domain للمجموعات
+                domain_group = []
+                if self.company_ids:
+                    domain_group.append(('company_id', 'in', self.company_ids.ids))
+                
+                if group_ids:
+                    domain_group.append(('id', 'in', group_ids))
+                else:
+                    domain_group.append(('id', '=', False))  # لا توجد مجموعات
+                
+                # تحديد domain للحسابات التحليلية
+                domain_analytic = [('active', '=', True)]
+                if self.company_ids:
+                    domain_analytic.append(('company_id', 'in', self.company_ids.ids))
+                domain_analytic.append(('operating_unit_id', '=', self.operating_unit_id.id))
+                
+                return {
+                    'domain': {
+                        'group_id': domain_group,
+                        'analytic_account_id': domain_analytic
+                    }
                 }
-            }
-        else:
-            # إذا لم يتم اختيار فرع، إظهار جميع المجموعات والحسابات
-            domain_group = []
-            domain_analytic = [('active', '=', True)]
-            
-            if self.company_ids:
-                domain_group.append(('company_id', 'in', self.company_ids.ids))
-                domain_analytic.append(('company_id', 'in', self.company_ids.ids))
-            
+            else:
+                # إذا لم يتم اختيار فرع، إظهار جميع المجموعات والحسابات
+                domain_group = []
+                domain_analytic = [('active', '=', True)]
+                
+                if self.company_ids:
+                    domain_group.append(('company_id', 'in', self.company_ids.ids))
+                    domain_analytic.append(('company_id', 'in', self.company_ids.ids))
+                
+                return {
+                    'domain': {
+                        'group_id': domain_group,
+                        'analytic_account_id': domain_analytic
+                    }
+                }
+        except Exception:
+            # في حالة حدوث خطأ، إرجاع domains فارغة
             return {
                 'domain': {
-                    'group_id': domain_group,
-                    'analytic_account_id': domain_analytic
+                    'group_id': [],
+                    'analytic_account_id': [('active', '=', True)]
                 }
             }
 
@@ -370,14 +381,17 @@ class AnalyticAccountReport(models.Model):
         
         domain_analytic = [('active', '=', True)]
         
-        if self.company_ids:
-            domain_analytic.append(('company_id', 'in', self.company_ids.ids))
-        
-        if self.operating_unit_id and hasattr(self.operating_unit_id, 'id') and self.operating_unit_id.id:
-            domain_analytic.append(('operating_unit_id', '=', self.operating_unit_id.id))
-        
-        if self.group_id and hasattr(self.group_id, 'id') and self.group_id.id:
-            domain_analytic.append(('group_id', '=', self.group_id.id))
+        try:
+            if self.company_ids:
+                domain_analytic.append(('company_id', 'in', self.company_ids.ids))
+            
+            if self.operating_unit_id and hasattr(self.operating_unit_id, 'id') and self.operating_unit_id.id:
+                domain_analytic.append(('operating_unit_id', '=', self.operating_unit_id.id))
+            
+            if self.group_id and hasattr(self.group_id, 'id') and self.group_id.id:
+                domain_analytic.append(('group_id', '=', self.group_id.id))
+        except Exception:
+            pass
         
         return {
             'domain': {
@@ -390,7 +404,9 @@ class AnalyticAccountReport(models.Model):
         """حساب المجموعات المتاحة بناءً على الفرع المختار"""
         for record in self:
             try:
-                if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
+                if (record.operating_unit_id and 
+                    hasattr(record.operating_unit_id, 'id') and 
+                    record.operating_unit_id.id):
                     # البحث عن الحسابات التحليلية المرتبطة بالفرع
                     analytic_accounts = self.env['account.analytic.account'].search([
                         ('operating_unit_id', '=', record.operating_unit_id.id),
@@ -419,10 +435,14 @@ class AnalyticAccountReport(models.Model):
                 if record.company_ids:
                     domain.append(('company_id', 'in', record.company_ids.ids))
                 
-                if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
+                if (record.operating_unit_id and 
+                    hasattr(record.operating_unit_id, 'id') and 
+                    record.operating_unit_id.id):
                     domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
                 
-                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                if (record.group_id and 
+                    hasattr(record.group_id, 'id') and 
+                    record.group_id.id):
                     domain.append(('group_id', '=', record.group_id.id))
                 
                 record.available_analytic_ids = self.env['account.analytic.account'].search(domain)
@@ -440,14 +460,20 @@ class AnalyticAccountReport(models.Model):
                 if record.company_ids:
                     domain.append(('company_id', 'in', record.company_ids.ids))
                 
-                if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
+                if (record.operating_unit_id and 
+                    hasattr(record.operating_unit_id, 'id') and 
+                    record.operating_unit_id.id):
                     domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
                 
-                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                if (record.group_id and 
+                    hasattr(record.group_id, 'id') and 
+                    record.group_id.id):
                     domain.append(('group_id', '=', record.group_id.id))
                 
                 # إذا تم تحديد مركز تكلفة واحد، استخدمه
-                if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
+                if (record.analytic_account_id and 
+                    hasattr(record.analytic_account_id, 'id') and 
+                    record.analytic_account_id.id):
                     search_results = self.env['account.analytic.account'].search(domain)
                     if record.analytic_account_id.id in search_results.ids:
                         record.analytic_account_ids = record.analytic_account_id
