@@ -52,7 +52,7 @@ class AnalyticAccountReport(models.Model):
     operating_unit_id = fields.Many2one(
         'operating.unit',
         string='الفرع',
-        domain="[('company_id', 'in', company_ids)]"
+        domain="[('company_id', 'in', company_id)]"
     )
 
     # حقول المقارنة بين السنوات - إصلاح أسماء الحقول
