@@ -313,11 +313,17 @@ class AnalyticAccountReport(models.Model):
     @api.onchange('property_address_area')
     def _onchange_property_address_area(self):
         """تحديث المجمعات المتاحة عند تغيير المنطقة"""
-        self.property_address_build2 = False
-        self.property_number = False
-        self.product_id = False
+        try:
+            # Safely reset dependent fields
+            if hasattr(self, 'property_address_build2'):
+                self.property_address_build2 = False
+            if hasattr(self, 'property_number'):
+                self.property_number = False
+            if hasattr(self, 'product_id'):
+                self.product_id = False
+        except Exception:
+            pass
         
-        # Remove domain filtering completely to prevent '_unknown' object errors
         return {
             'domain': {
                 'property_address_build2': []
@@ -327,10 +333,14 @@ class AnalyticAccountReport(models.Model):
     @api.onchange('property_address_build2')
     def _onchange_property_address_build2(self):
         """تحديث العقارات المتاحة عند تغيير المجمع"""
-        self.property_number = False
-        self.product_id = False
+        try:
+            if hasattr(self, 'property_number'):
+                self.property_number = False
+            if hasattr(self, 'product_id'):
+                self.product_id = False
+        except Exception:
+            pass
         
-        # Remove domain filtering completely to prevent '_unknown' object errors
         return {
             'domain': {
                 'property_number': []
@@ -340,9 +350,12 @@ class AnalyticAccountReport(models.Model):
     @api.onchange('property_number')
     def _onchange_property_number(self):
         """تحديث الوحدات المتاحة عند تغيير العقار"""
-        self.product_id = False
+        try:
+            if hasattr(self, 'product_id'):
+                self.product_id = False
+        except Exception:
+            pass
         
-        # Remove domain filtering completely to prevent '_unknown' object errors
         return {
             'domain': {
                 'product_id': []
