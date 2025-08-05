@@ -84,13 +84,13 @@ class AnalyticAccountReport(models.Model):
     group_id = fields.Many2one(
         'account.analytic.group',
         string='مجموعة مراكز التكلفة',
-        domain="[('company_id', 'in', company_ids)]"
+        domain="[('id', 'in', available_group_ids)]"
     )
 
     analytic_account_id = fields.Many2one(
         'account.analytic.account',
         string='مركز التكلفة',
-        domain="[('company_id', 'in', company_ids), ('active', '=', True), ('group_id', '=?', group_id), ('operating_unit_id', '=?', operating_unit_id)]"
+        domain="[('id', 'in', available_analytic_ids)]"
     )
 
     company_currency_id = fields.Many2one(
@@ -132,6 +132,19 @@ class AnalyticAccountReport(models.Model):
         string='مراكز التكلفة',
         compute='_compute_analytic_accounts',
         store=True
+    )
+    
+    # إضافة حقول مساعدة للترابط
+    available_group_ids = fields.Many2many(
+        'account.analytic.group',
+        compute='_compute_available_groups',
+        string='المجموعات المتاحة'
+    )
+    
+    available_analytic_ids = fields.Many2many(
+        'account.analytic.account',
+        compute='_compute_available_analytics',
+        string='الحسابات التحليلية المتاحة'
     )
 
     @api.depends('company_ids')
@@ -199,32 +212,35 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
-        """تحديث المجموعات المتاحة عند تغيير الفرع"""
+        """تحديث المجموعات والحسابات المتاحة عند تغيير الفرع"""
         # إعادة تعيين الحقول التابعة
         self.group_id = False
         self.analytic_account_id = False
         
         if self.operating_unit_id:
-            # إظهار المجموعات المرتبطة بالفرع المحدد
-            domain_group = []
-            domain_analytic = [('active', '=', True)]
-            
-            if self.company_ids:
-                domain_group.append(('company_id', 'in', self.company_ids.ids))
-                domain_analytic.append(('company_id', 'in', self.company_ids.ids))
-            
             # البحث عن المجموعات المرتبطة بالفرع
             analytic_accounts_in_unit = self.env['account.analytic.account'].search([
                 ('operating_unit_id', '=', self.operating_unit_id.id),
+                ('company_id', 'in', self.company_ids.ids if self.company_ids else []),
                 ('active', '=', True)
             ])
             
             group_ids = analytic_accounts_in_unit.mapped('group_id').ids
+            
+            # تحديد domain للمجموعات
+            domain_group = []
+            if self.company_ids:
+                domain_group.append(('company_id', 'in', self.company_ids.ids))
+            
             if group_ids:
                 domain_group.append(('id', 'in', group_ids))
             else:
                 domain_group.append(('id', '=', False))  # لا توجد مجموعات
             
+            # تحديد domain للحسابات التحليلية
+            domain_analytic = [('active', '=', True)]
+            if self.company_ids:
+                domain_analytic.append(('company_id', 'in', self.company_ids.ids))
             domain_analytic.append(('operating_unit_id', '=', self.operating_unit_id.id))
             
             return {
@@ -234,7 +250,7 @@ class AnalyticAccountReport(models.Model):
                 }
             }
         else:
-            # إذا لم يتم اختيار فرع، إظهار جميع المجموعات للشركات المحددة
+            # إذا لم يتم اختيار فرع، إظهار جميع المجموعات والحسابات
             domain_group = []
             domain_analytic = [('active', '=', True)]
             
@@ -251,8 +267,8 @@ class AnalyticAccountReport(models.Model):
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
-        """تحديث مراكز التكلفة المتاحة عند تغيير المجموعة"""
-        # إعادة تعيين مركز التكلفة
+        """تحديث الحسابات التحليلية المتاحة عند تغيير المجموعة"""
+        # إعادة تعيين الحساب التحليلي
         self.analytic_account_id = False
         
         domain_analytic = [('active', '=', True)]
@@ -264,7 +280,6 @@ class AnalyticAccountReport(models.Model):
             domain_analytic.append(('operating_unit_id', '=', self.operating_unit_id.id))
         
         if self.group_id:
-            # إظهار مراكز التكلفة المرتبطة بالمجموعة المحددة
             domain_analytic.append(('group_id', '=', self.group_id.id))
         
         return {
@@ -273,6 +288,43 @@ class AnalyticAccountReport(models.Model):
             }
         }
 
+    @api.depends('operating_unit_id', 'company_ids')
+    def _compute_available_groups(self):
+        """حساب المجموعات المتاحة بناءً على الفرع المختار"""
+        for record in self:
+            if record.operating_unit_id:
+                # البحث عن الحسابات التحليلية المرتبطة بالفرع
+                analytic_accounts = self.env['account.analytic.account'].search([
+                    ('operating_unit_id', '=', record.operating_unit_id.id),
+                    ('company_id', 'in', record.company_ids.ids if record.company_ids else []),
+                    ('active', '=', True)
+                ])
+                # استخراج المجموعات من هذه الحسابات
+                record.available_group_ids = analytic_accounts.mapped('group_id')
+            else:
+                # إذا لم يتم اختيار فرع، إظهار جميع المجموعات
+                domain = []
+                if record.company_ids:
+                    domain.append(('company_id', 'in', record.company_ids.ids))
+                record.available_group_ids = self.env['account.analytic.group'].search(domain)
+    
+    @api.depends('operating_unit_id', 'group_id', 'company_ids')
+    def _compute_available_analytics(self):
+        """حساب الحسابات التحليلية المتاحة بناءً على الفرع والمجموعة"""
+        for record in self:
+            domain = [('active', '=', True)]
+            
+            if record.company_ids:
+                domain.append(('company_id', 'in', record.company_ids.ids))
+            
+            if record.operating_unit_id:
+                domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
+            
+            if record.group_id:
+                domain.append(('group_id', '=', record.group_id.id))
+            
+            record.available_analytic_ids = self.env['account.analytic.account'].search(domain)
+    
     @api.depends('company_ids', 'operating_unit_id', 'group_id', 'analytic_account_id')
     def _compute_analytic_accounts(self):
         """حساب مراكز التكلفة المتاحة بناءً على الاختيارات"""
@@ -1033,7 +1085,7 @@ class AnalyticAccountReport(models.Model):
                 
             except Exception as e:
                 logger.error(f"Data check failed: {str(e)}")
-                raise UserError(f"خطأ في التحقق من البيانات: {str(e)}")        
+                raise UserError(f"خطأ في التحقق من البيانات: {str(e)}")
             
     def _generate_comparison_table(self, worksheet, row, col, formats):
         """إنشاء جدول المقارنة التفصيلي في تقرير Excel"""
