@@ -37,22 +37,23 @@ class AnalyticAccountReport(models.Model):
     ], string='الحالة', default='draft')
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
-    company_id = fields.Many2one(
+    
+    # Fix: Add company_ids field and fix company_id
+    company_ids = fields.Many2many(
         'res.company',
-        string='الشركة',
-        required=True,
+        string='الشركات',
         default=lambda self: self.env.company
     )
     company_id = fields.Many2one(
         'res.company',
-        string='Company',
+        string='الشركة الرئيسية',
         compute='_compute_main_company',
         store=True
     )
     operating_unit_id = fields.Many2one(
         'operating.unit',
         string='الفرع',
-        domain="[('company_id', 'in', company_id)]"
+        domain="[('company_id', 'in', company_ids)]"
     )
 
     # حقول المقارنة بين السنوات - إصلاح أسماء الحقول
@@ -98,7 +99,7 @@ class AnalyticAccountReport(models.Model):
     property_address_area = fields.Many2one(
         'property.address.area',
         string='الفرع',
-        domain="[('company_id', '=', company_id)]"
+        domain="[('company_id', 'in', company_ids)]"
     )
 
     
