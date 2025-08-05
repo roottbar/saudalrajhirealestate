@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<t t-name="rental_reports.rental_report_template_xml">
+<t t-name="rental_reports_ocs.rental_report_template_xml">
     <t t-call="web.basic_layout">
         <t t-foreach="docs" t-as="doc">
             <rentalReport>
                 <company t-esc="doc.company_id.name"/>
                 <operatingUnit t-esc="doc.operating_unit_id.name"/>
-                <buildingAddress t-esc="doc.property_address_build"/>
                 <property t-esc="doc.property_id.name"/>
                 <units>
                     <t t-foreach="doc.search([])" t-as="unit">
@@ -19,11 +18,6 @@
                             <totalContract t-esc="unit.contract_total"/>
                             <startDate t-esc="unit.fromdate"/>
                             <endDate t-esc="unit.todate"/>
-                            <adminFees t-esc="unit.contract_admin_fees"/>
-                            <adminSubFees t-esc="unit.contract_admin_sub_fees"/>
-                            <serviceFees t-esc="unit.contract_service_fees"/>
-                            <serviceSubFees t-esc="unit.contract_service_sub_fees"/>
-                            <insuranceValue t-esc="unit.insurance_value"/>
                         </unit>
                     </t>
                 </units>
