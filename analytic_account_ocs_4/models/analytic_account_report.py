@@ -702,11 +702,11 @@ class AnalyticAccountReport(models.Model):
                 
                 # تطبيق فلاتر العقارات إذا تم تحديدها
                 if record.property_address_area and hasattr(record.property_address_area, 'id') and record.property_address_area.id:
-                    analytic_domain.append(('property_area_id', '=', record.property_address_area.id))
+                    analytic_domain.append(('property_address_area_id', '=', record.property_address_area.id))
                 if record.property_address_build2 and hasattr(record.property_address_build2, 'id') and record.property_address_build2.id:
-                    analytic_domain.append(('property_build_id', '=', record.property_address_build2.id))
+                    analytic_domain.append(('property_address_build_id', '=', record.property_address_build2.id))
                 if record.property_number and hasattr(record.property_number, 'id') and record.property_number.id:
-                    analytic_domain.append(('property_id', '=', record.property_number.id))
+                    analytic_domain.append(('property_number_id', '=', record.property_number.id))
                 if record.product_id and hasattr(record.product_id, 'id') and record.product_id.id:
                     analytic_domain.append(('product_id', '=', record.product_id.id))
                 
