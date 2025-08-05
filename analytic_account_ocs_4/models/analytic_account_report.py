@@ -317,25 +317,12 @@ class AnalyticAccountReport(models.Model):
         self.property_number = False
         self.product_id = False
         
-        try:
-            if self.property_address_area and hasattr(self.property_address_area, 'id') and self.property_address_area.id:
-                return {
-                    'domain': {
-                        'property_address_build2': [('area_id', '=', self.property_address_area.id)]
-                    }
-                }
-            else:
-                return {
-                    'domain': {
-                        'property_address_build2': []
-                    }
-                }
-        except Exception:
-            return {
-                'domain': {
-                    'property_address_build2': []
-                }
+        # Remove domain filtering completely to prevent '_unknown' object errors
+        return {
+            'domain': {
+                'property_address_build2': []
             }
+        }
 
     @api.onchange('property_address_build2')
     def _onchange_property_address_build2(self):
@@ -343,50 +330,24 @@ class AnalyticAccountReport(models.Model):
         self.property_number = False
         self.product_id = False
         
-        try:
-            if self.property_address_build2 and hasattr(self.property_address_build2, 'id') and self.property_address_build2.id:
-                return {
-                    'domain': {
-                        'property_number': [('build_id', '=', self.property_address_build2.id)]
-                    }
-                }
-            else:
-                return {
-                    'domain': {
-                        'property_number': []
-                    }
-                }
-        except Exception:
-            return {
-                'domain': {
-                    'property_number': []
-                }
+        # Remove domain filtering completely to prevent '_unknown' object errors
+        return {
+            'domain': {
+                'property_number': []
             }
+        }
 
     @api.onchange('property_number')
     def _onchange_property_number(self):
         """تحديث الوحدات المتاحة عند تغيير العقار"""
         self.product_id = False
         
-        try:
-            if self.property_number and hasattr(self.property_number, 'id') and self.property_number.id:
-                return {
-                    'domain': {
-                        'product_id': [('property_id', '=', self.property_number.id)]
-                    }
-                }
-            else:
-                return {
-                    'domain': {
-                        'product_id': []
-                    }
-                }
-        except Exception:
-            return {
-                'domain': {
-                    'product_id': []
-                }
+        # Remove domain filtering completely to prevent '_unknown' object errors
+        return {
+            'domain': {
+                'product_id': []
             }
+        }
 
     @api.onchange('group_id')
     def _onchange_group_id(self):
