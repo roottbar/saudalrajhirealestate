@@ -77,6 +77,18 @@
                                    options="{'no_create': True, 'no_create_edit': True}"
                                    domain="[('id', 'in', available_analytic_ids)]"/>
                         </group>
+                                    <group string="فلاتر العقارات">
+                <field name="property_address_area" string="المنطقة"/>
+                <field name="property_address_build2" string="المجمع"/>
+                <field name="property_number" string="العقار"/>
+                <field name="product_id" string="الوحدة"/>
+            </group>
+            
+            <group string="المجاميع">
+                <field name="total_amount_paid" widget="monetary"/>
+                <field name="total_amount_due" widget="monetary"/>
+            </group>
+
                         <group string="إعدادات المقارنة السنوية">
                             <field name="compare_years" string="تفعيل المقارنة السنوية"/>
                             <field name="year_compare_count" string="عدد السنوات للمقارنة" 
