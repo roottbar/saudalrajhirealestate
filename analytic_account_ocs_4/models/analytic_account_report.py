@@ -37,10 +37,11 @@ class AnalyticAccountReport(models.Model):
     ], string='الحالة', default='draft')
     date_from = fields.Date(string='من تاريخ', default=fields.Date.today(), required=True)
     date_to = fields.Date(string='إلى تاريخ', default=fields.Date.today(), required=True)
-    company_ids = fields.Many2many(
+    company_id = fields.Many2one(
         'res.company',
-        string='الشركات',
-        default=lambda self: [self.env.company.id]
+        string='الشركة',
+        required=True,
+        default=lambda self: self.env.company
     )
     company_id = fields.Many2one(
         'res.company',
@@ -96,9 +97,10 @@ class AnalyticAccountReport(models.Model):
     # الحقول الجديدة للفلترة
     property_address_area = fields.Many2one(
         'property.address.area',
-        string='المنطقة',
-        domain="[('company_id', 'in', company_ids)]"
+        string='الفرع',
+        domain="[('company_id', '=', company_id)]"
     )
+
     
     property_address_build2 = fields.Many2one(
         'property.address.build',
@@ -117,6 +119,7 @@ class AnalyticAccountReport(models.Model):
         string='الوحدة',
         domain="[('property_id', '=', property_number)]"
     )
+    
 
     company_currency_id = fields.Many2one(
         'res.currency',
