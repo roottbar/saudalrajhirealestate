@@ -373,10 +373,10 @@ class AnalyticAccountReport(models.Model):
         if self.company_ids:
             domain_analytic.append(('company_id', 'in', self.company_ids.ids))
         
-        if self.operating_unit_id:
+        if self.operating_unit_id and hasattr(self.operating_unit_id, 'id') and self.operating_unit_id.id:
             domain_analytic.append(('operating_unit_id', '=', self.operating_unit_id.id))
         
-        if self.group_id:
+        if self.group_id and hasattr(self.group_id, 'id') and self.group_id.id:
             domain_analytic.append(('group_id', '=', self.group_id.id))
         
         return {
@@ -389,38 +389,46 @@ class AnalyticAccountReport(models.Model):
     def _compute_available_groups(self):
         """حساب المجموعات المتاحة بناءً على الفرع المختار"""
         for record in self:
-            if record.operating_unit_id:
-                # البحث عن الحسابات التحليلية المرتبطة بالفرع
-                analytic_accounts = self.env['account.analytic.account'].search([
-                    ('operating_unit_id', '=', record.operating_unit_id.id),
-                    ('company_id', 'in', record.company_ids.ids if record.company_ids else []),
-                    ('active', '=', True)
-                ])
-                # استخراج المجموعات من هذه الحسابات
-                record.available_group_ids = analytic_accounts.mapped('group_id')
-            else:
-                # إذا لم يتم اختيار فرع، إظهار جميع المجموعات
-                domain = []
-                if record.company_ids:
-                    domain.append(('company_id', 'in', record.company_ids.ids))
-                record.available_group_ids = self.env['account.analytic.group'].search(domain)
+            try:
+                if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
+                    # البحث عن الحسابات التحليلية المرتبطة بالفرع
+                    analytic_accounts = self.env['account.analytic.account'].search([
+                        ('operating_unit_id', '=', record.operating_unit_id.id),
+                        ('company_id', 'in', record.company_ids.ids if record.company_ids else []),
+                        ('active', '=', True)
+                    ])
+                    # استخراج المجموعات من هذه الحسابات
+                    record.available_group_ids = analytic_accounts.mapped('group_id')
+                else:
+                    # إذا لم يتم اختيار فرع، إظهار جميع المجموعات
+                    domain = []
+                    if record.company_ids:
+                        domain.append(('company_id', 'in', record.company_ids.ids))
+                    record.available_group_ids = self.env['account.analytic.group'].search(domain)
+            except Exception as e:
+                logger.error("خطأ في حساب المجموعات المتاحة: %s", str(e))
+                record.available_group_ids = self.env['account.analytic.group']
     
     @api.depends('operating_unit_id', 'group_id', 'company_ids')
     def _compute_available_analytics(self):
         """حساب الحسابات التحليلية المتاحة بناءً على الفرع والمجموعة"""
         for record in self:
-            domain = [('active', '=', True)]
-            
-            if record.company_ids:
-                domain.append(('company_id', 'in', record.company_ids.ids))
-            
-            if record.operating_unit_id:
-                domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
-            
-            if record.group_id:
-                domain.append(('group_id', '=', record.group_id.id))
-            
-            record.available_analytic_ids = self.env['account.analytic.account'].search(domain)
+            try:
+                domain = [('active', '=', True)]
+                
+                if record.company_ids:
+                    domain.append(('company_id', 'in', record.company_ids.ids))
+                
+                if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
+                    domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
+                
+                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
+                    domain.append(('group_id', '=', record.group_id.id))
+                
+                record.available_analytic_ids = self.env['account.analytic.account'].search(domain)
+            except Exception as e:
+                logger.error("خطأ في حساب الحسابات التحليلية المتاحة: %s", str(e))
+                record.available_analytic_ids = self.env['account.analytic.account']
     
     @api.depends('company_ids', 'operating_unit_id', 'group_id', 'analytic_account_id', 'property_address_area', 'property_address_build2', 'property_number', 'product_id')
     def _compute_analytic_accounts(self):
@@ -432,15 +440,16 @@ class AnalyticAccountReport(models.Model):
                 if record.company_ids:
                     domain.append(('company_id', 'in', record.company_ids.ids))
                 
-                if record.operating_unit_id:
+                if record.operating_unit_id and hasattr(record.operating_unit_id, 'id') and record.operating_unit_id.id:
                     domain.append(('operating_unit_id', '=', record.operating_unit_id.id))
                 
-                if record.group_id:
+                if record.group_id and hasattr(record.group_id, 'id') and record.group_id.id:
                     domain.append(('group_id', '=', record.group_id.id))
                 
                 # إذا تم تحديد مركز تكلفة واحد، استخدمه
-                if record.analytic_account_id:
-                    if record.analytic_account_id.id in self.env['account.analytic.account'].search(domain).ids:
+                if record.analytic_account_id and hasattr(record.analytic_account_id, 'id') and record.analytic_account_id.id:
+                    search_results = self.env['account.analytic.account'].search(domain)
+                    if record.analytic_account_id.id in search_results.ids:
                         record.analytic_account_ids = record.analytic_account_id
                     else:
                         record.analytic_account_ids = self.env['account.analytic.account']
