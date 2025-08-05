@@ -64,8 +64,7 @@
                         <group string="المعايير الأساسية">
                             <field name="company_ids" widget="many2many_tags" string="الشركات"/>
                             <field name="property_address_area" string="الفرع" 
-                                   options="{'no_create': True, 'no_create_edit': True}"
-                                   domain="[('company_id', 'in', company_ids)]"/>
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="property_address_build2" string="المجمع" 
                                    options="{'no_create': True, 'no_create_edit': True}"
                                    domain="[('area_id', '=', property_address_area)]"/>
