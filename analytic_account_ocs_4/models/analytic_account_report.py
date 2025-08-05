@@ -542,7 +542,7 @@ class AnalyticAccountReport(models.Model):
 
     @api.depends('date_from', 'date_to', 'company_ids', 'analytic_account_ids', 'operating_unit_id', 'group_id', 'analytic_account_id')
     def _compute_totals(self):
-        """حساب الإجماليات بدقة مع ضمان ظهور القيم الصحيحة"""
+        """حساب الإجماليات بدقة مع تشخيص مفصل"""
         for record in self:
             try:
                 # إعادة تعيين القيم
@@ -552,11 +552,13 @@ class AnalyticAccountReport(models.Model):
                 record.total_debts = 0.0
 
                 if not record.company_ids:
+                    logger.warning("لا توجد شركات محددة")
                     continue
 
                 company_ids = record.company_ids.ids
+                logger.info(f"الشركات المحددة: {company_ids}")
 
-                # الحصول على مراكز التكلفة المحددة أو جميعها إن لم يتم التحديد
+                # الحصول على مراكز التكلفة المحددة
                 analytic_account_ids = record.analytic_account_ids.ids if record.analytic_account_ids else \
                     self.env['account.analytic.account'].search([
                         ('company_id', 'in', company_ids),
@@ -564,7 +566,10 @@ class AnalyticAccountReport(models.Model):
                     ]).ids
 
                 if not analytic_account_ids:
+                    logger.warning("لا توجد مراكز تكلفة محددة")
                     continue
+                
+                logger.info(f"مراكز التكلفة: {len(analytic_account_ids)} مركز")
 
                 # نطاق البحث الأساسي
                 base_domain = [
@@ -574,6 +579,14 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.state', '=', 'posted'),
                     ('analytic_account_id', 'in', analytic_account_ids)
                 ]
+                
+                # فحص وجود قيود أساساً
+                all_lines = self.env['account.move.line'].search(base_domain)
+                logger.info(f"إجمالي القيود المحاسبية الموجودة: {len(all_lines)}")
+                
+                if not all_lines:
+                    logger.warning("لا توجد قيود محاسبية في الفترة المحددة")
+                    continue
 
                 # 1. حساب المصروفات
                 expense_domain = base_domain + [
@@ -581,6 +594,7 @@ class AnalyticAccountReport(models.Model):
                 ]
                 expense_lines = self.env['account.move.line'].search(expense_domain)
                 record.total_expenses = sum(abs(line.balance) for line in expense_lines if line.balance != 0)
+                logger.info(f"المصروفات: {len(expense_lines)} قيد، المجموع: {record.total_expenses}")
 
                 # 2. حساب الإيرادات
                 revenue_domain = base_domain + [
@@ -588,11 +602,9 @@ class AnalyticAccountReport(models.Model):
                 ]
                 revenue_lines = self.env['account.move.line'].search(revenue_domain)
                 record.total_revenues = sum(abs(line.balance) for line in revenue_lines if line.balance != 0)
+                logger.info(f"الإيرادات: {len(revenue_lines)} قيد، المجموع: {record.total_revenues}")
 
-                # 3. حساب التحصيل بناءً على حالة الفواتير
-                collections_total = 0.0
-                
-                # البحث عن الفواتير المرتبطة بالحسابات التحليلية
+                # 3. حساب التحصيل والمديونية بناءً على حالة الفواتير
                 invoice_domain = [
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
                     ('date', '>=', record.date_from),
@@ -604,50 +616,41 @@ class AnalyticAccountReport(models.Model):
                 ]
                 
                 invoice_lines = self.env['account.move.line'].search(invoice_domain)
+                logger.info(f"قيود الفواتير: {len(invoice_lines)} قيد")
+                
+                collections_total = 0.0
+                debts_total = 0.0
+                
+                paid_count = 0
+                not_paid_count = 0
+                partial_count = 0
                 
                 for line in invoice_lines:
                     invoice = line.move_id
                     
-                    # الفواتير المدفوعة بالكامل (paid)
                     if invoice.payment_state == 'paid':
                         collections_total += abs(line.balance)
-                    
-                    # الفواتير المدفوعة جزئياً (partial) - المبلغ المدفوع
+                        paid_count += 1
                     elif invoice.payment_state == 'partial':
                         paid_amount = abs(line.balance) - line.amount_residual
                         collections_total += paid_amount
+                        debts_total += line.amount_residual
+                        partial_count += 1
+                    elif invoice.payment_state == 'not_paid':
+                        debts_total += abs(line.balance)
+                        not_paid_count += 1
                 
                 record.total_collections = collections_total
-
-                # 4. حساب المديونية بناءً على حالة الفواتير
-                debts_total = 0.0
-                
-                for line in invoice_lines:
-                    invoice = line.move_id
-                    
-                    # الفواتير غير المدفوعة (not_paid)
-                    if invoice.payment_state == 'not_paid':
-                        debts_total += abs(line.balance)
-                    
-                    # الفواتير المدفوعة جزئياً (partial) - المتبقي غير المسدد
-                    elif invoice.payment_state == 'partial':
-                        debts_total += line.amount_residual
-                
                 record.total_debts = debts_total
-
-                # تسجيل للتحقق
-                logger.info(f"""
-                    === نتائج الحساب المحدثة بناءً على حالة الفواتير ===
-                    المصروفات: {record.total_expenses}
-                    الإيرادات: {record.total_revenues}
-                    التحصيل (paid + partial المدفوع): {record.total_collections}
-                    المديونية (not_paid + partial المتبقي): {record.total_debts}
-                    عدد مراكز التكلفة: {len(analytic_account_ids)}
-                """)
+                
+                logger.info(f"التحصيل: {collections_total} (فواتير مدفوعة: {paid_count}, جزئية: {partial_count})")
+                logger.info(f"المديونية: {debts_total} (فواتير غير مدفوعة: {not_paid_count}, جزئية: {partial_count})")
 
             except Exception as e:
-                logger.error(f"Error in _compute_totals: {str(e)}")
-
+                logger.error(f"خطأ في حساب الإجماليات: {str(e)}")
+                import traceback
+                logger.error(traceback.format_exc())
+                
     def _calculate_debts(self, date_from, date_to, company_ids, analytic_account_ids):
         """حساب المديونية بدقة أكبر"""
         self.ensure_one()
@@ -2220,3 +2223,125 @@ class AnalyticAccountReport(models.Model):
             logger.info(f"الحركات مع مراكز التكلفة: {analytic_lines}")
             
             return True
+
+    def debug_analytic_account_data(self):
+        """دالة تشخيص شاملة لفحص بيانات مركز التكلفة"""
+        self.ensure_one()
+        
+        logger.info("=== بدء تشخيص بيانات مركز التكلفة ===")
+        
+        # 1. فحص الحقول الأساسية
+        logger.info(f"مركز التكلفة المختار: {self.analytic_account_id.name if self.analytic_account_id else 'غير محدد'}")
+        logger.info(f"الشركات: {[c.name for c in self.company_ids]}")
+        logger.info(f"الفترة: من {self.date_from} إلى {self.date_to}")
+        
+        if not self.analytic_account_id:
+            logger.warning("لم يتم اختيار مركز تكلفة")
+            return False
+            
+        account = self.analytic_account_id
+        company_ids = self.company_ids.ids
+        
+        # 2. فحص وجود قيود محاسبية
+        base_domain = [
+            ('date', '>=', self.date_from),
+            ('date', '<=', self.date_to),
+            ('company_id', 'in', company_ids),
+            ('analytic_account_id', '=', account.id),
+            ('move_id.state', '=', 'posted')
+        ]
+        
+        all_lines = self.env['account.move.line'].search(base_domain)
+        logger.info(f"إجمالي القيود المحاسبية: {len(all_lines)}")
+        
+        if not all_lines:
+            logger.warning("لا توجد قيود محاسبية لمركز التكلفة في الفترة المحددة")
+            
+            # فحص بدون تحديد الفترة
+            no_date_domain = [
+                ('company_id', 'in', company_ids),
+                ('analytic_account_id', '=', account.id),
+                ('move_id.state', '=', 'posted')
+            ]
+            no_date_lines = self.env['account.move.line'].search(no_date_domain)
+            logger.info(f"القيود بدون تحديد فترة: {len(no_date_lines)}")
+            
+            if no_date_lines:
+                dates = [line.date for line in no_date_lines if line.date]
+                if dates:
+                    min_date = min(dates)
+                    max_date = max(dates)
+                    logger.info(f"نطاق التواريخ الفعلي: من {min_date} إلى {max_date}")
+            
+            return False
+        
+        # 3. فحص أنواع الحسابات
+        expense_lines = all_lines.filtered(lambda l: l.account_id.internal_group == 'expense')
+        revenue_lines = all_lines.filtered(lambda l: l.account_id.internal_group == 'income')
+        receivable_lines = all_lines.filtered(lambda l: l.account_id.internal_type == 'receivable')
+        payable_lines = all_lines.filtered(lambda l: l.account_id.internal_type == 'payable')
+        
+        logger.info(f"قيود المصروفات: {len(expense_lines)}")
+        logger.info(f"قيود الإيرادات: {len(revenue_lines)}")
+        logger.info(f"قيود المدينين: {len(receivable_lines)}")
+        logger.info(f"قيود الدائنين: {len(payable_lines)}")
+        
+        # 4. فحص الفواتير
+        invoice_lines = all_lines.filtered(lambda l: l.move_id.move_type in ['out_invoice', 'in_invoice'])
+        logger.info(f"قيود الفواتير: {len(invoice_lines)}")
+        
+        if invoice_lines:
+            paid_invoices = invoice_lines.filtered(lambda l: l.move_id.payment_state == 'paid')
+            not_paid_invoices = invoice_lines.filtered(lambda l: l.move_id.payment_state == 'not_paid')
+            partial_invoices = invoice_lines.filtered(lambda l: l.move_id.payment_state == 'partial')
+            
+            logger.info(f"فواتير مدفوعة: {len(paid_invoices)}")
+            logger.info(f"فواتير غير مدفوعة: {len(not_paid_invoices)}")
+            logger.info(f"فواتير مدفوعة جزئياً: {len(partial_invoices)}")
+        
+        # 5. حساب المبالغ الفعلية
+        total_expenses = sum(abs(line.balance) for line in expense_lines if line.balance != 0)
+        total_revenues = sum(abs(line.balance) for line in revenue_lines if line.balance != 0)
+        
+        logger.info(f"إجمالي المصروفات المحسوبة: {total_expenses}")
+        logger.info(f"إجمالي الإيرادات المحسوبة: {total_revenues}")
+        
+        # 6. فحص التحصيل والمديونية
+        collections_total = 0.0
+        debts_total = 0.0
+        
+        for line in invoice_lines:
+            if line.account_id.internal_type in ['receivable', 'payable']:
+                invoice = line.move_id
+                
+                if invoice.payment_state == 'paid':
+                    collections_total += abs(line.balance)
+                elif invoice.payment_state == 'not_paid':
+                    debts_total += abs(line.balance)
+                elif invoice.payment_state == 'partial':
+                    paid_amount = abs(line.balance) - line.amount_residual
+                    collections_total += paid_amount
+                    debts_total += line.amount_residual
+        
+        logger.info(f"إجمالي التحصيل المحسوب: {collections_total}")
+        logger.info(f"إجمالي المديونية المحسوبة: {debts_total}")
+        
+        # 7. مقارنة مع القيم المحسوبة في النموذج
+        logger.info(f"القيم في النموذج:")
+        logger.info(f"  المصروفات: {self.total_expenses}")
+        logger.info(f"  الإيرادات: {self.total_revenues}")
+        logger.info(f"  التحصيل: {self.total_collections}")
+        logger.info(f"  المديونية: {self.total_debts}")
+        
+        logger.info("=== انتهاء التشخيص ===")
+        
+        return {
+            'total_lines': len(all_lines),
+            'expense_lines': len(expense_lines),
+            'revenue_lines': len(revenue_lines),
+            'invoice_lines': len(invoice_lines),
+            'calculated_expenses': total_expenses,
+            'calculated_revenues': total_revenues,
+            'calculated_collections': collections_total,
+            'calculated_debts': debts_total
+        }
