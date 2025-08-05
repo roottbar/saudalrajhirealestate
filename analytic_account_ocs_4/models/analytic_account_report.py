@@ -465,7 +465,7 @@ class AnalyticAccountReport(models.Model):
                 record.previous_years_data = False
 
     def _calculate_period_amount(self, record, date_from, date_to, amount_type):
-        """حساب المبالغ لفترة محددة"""
+        """حساب المبالغ لفترة محددة بناءً على حالة الفواتير"""
         try:
             company_ids = [c.id for c in record.company_ids]
             analytic_account_ids = [a.id for a in record.analytic_account_ids] if record.analytic_account_ids else []
@@ -491,18 +491,49 @@ class AnalyticAccountReport(models.Model):
                 return abs(sum(lines.mapped('balance')))
 
             elif amount_type == 'collections':
-                domain = base_domain + [('payment_id', '!=', False)]
-                lines = self._optimize_query_performance(domain)
-                return abs(sum(lines.mapped('balance')))
-
-            elif amount_type == 'debts':
+                # حساب التحصيل بناءً على حالة الفواتير
                 domain = base_domain + [
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', 'in', ['not_paid', 'partial']),
-                    ('amount_residual', '>', 0)
+                    ('account_id.internal_type', 'in', ['receivable', 'payable'])
                 ]
                 lines = self._optimize_query_performance(domain)
-                return sum(line.amount_residual for line in lines)
+                
+                collections_total = 0.0
+                for line in lines:
+                    invoice = line.move_id
+                    
+                    # الفواتير المدفوعة بالكامل
+                    if invoice.payment_state == 'paid':
+                        collections_total += abs(line.balance)
+                    
+                    # الفواتير المدفوعة جزئياً - المبلغ المدفوع
+                    elif invoice.payment_state == 'partial':
+                        paid_amount = abs(line.balance) - line.amount_residual
+                        collections_total += paid_amount
+                
+                return collections_total
+
+            elif amount_type == 'debts':
+                # حساب المديونية بناءً على حالة الفواتير
+                domain = base_domain + [
+                    ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
+                    ('account_id.internal_type', 'in', ['receivable', 'payable'])
+                ]
+                lines = self._optimize_query_performance(domain)
+                
+                debts_total = 0.0
+                for line in lines:
+                    invoice = line.move_id
+                    
+                    # الفواتير غير المدفوعة
+                    if invoice.payment_state == 'not_paid':
+                        debts_total += abs(line.balance)
+                    
+                    # الفواتير المدفوعة جزئياً - المتبقي غير المسدد
+                    elif invoice.payment_state == 'partial':
+                        debts_total += line.amount_residual
+                
+                return debts_total
 
             return 0.0
         except Exception as e:
@@ -535,7 +566,7 @@ class AnalyticAccountReport(models.Model):
                 if not analytic_account_ids:
                     continue
 
-                # نطاق البحث الأساسي - إزالة الشروط المقيدة
+                # نطاق البحث الأساسي
                 base_domain = [
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
@@ -544,37 +575,26 @@ class AnalyticAccountReport(models.Model):
                     ('analytic_account_id', 'in', analytic_account_ids)
                 ]
 
-                # 1. حساب المصروفات - تحسين الشروط
+                # 1. حساب المصروفات
                 expense_domain = base_domain + [
                     ('account_id.internal_group', '=', 'expense')
                 ]
                 expense_lines = self.env['account.move.line'].search(expense_domain)
                 record.total_expenses = sum(abs(line.balance) for line in expense_lines if line.balance != 0)
 
-                # 2. حساب الإيرادات - تحسين الشروط
+                # 2. حساب الإيرادات
                 revenue_domain = base_domain + [
                     ('account_id.internal_group', '=', 'income')
                 ]
                 revenue_lines = self.env['account.move.line'].search(revenue_domain)
                 record.total_revenues = sum(abs(line.balance) for line in revenue_lines if line.balance != 0)
 
-                # 3. حساب التحصيل - تحسين البحث
-                payment_domain = base_domain + [
-                    '|',
-                    ('payment_id', '!=', False),
-                    ('account_id.internal_type', 'in', ['receivable', 'payable'])
-                ]
-                payment_lines = self.env['account.move.line'].search(payment_domain)
+                # 3. حساب التحصيل بناءً على حالة الفواتير
                 collections_total = 0.0
-                for line in payment_lines:
-                    if line.payment_id or (line.account_id.internal_type in ['receivable', 'payable'] and line.balance > 0):
-                        collections_total += abs(line.balance)
-                record.total_collections = collections_total
-
-                # 4. حساب المديونية - تحسين الحساب
+                
+                # البحث عن الفواتير المرتبطة بالحسابات التحليلية
                 invoice_domain = [
                     ('move_id.move_type', 'in', ['out_invoice', 'in_invoice']),
-                    ('move_id.payment_state', 'in', ['not_paid', 'partial']),
                     ('date', '>=', record.date_from),
                     ('date', '<=', record.date_to),
                     ('company_id', 'in', company_ids),
@@ -582,22 +602,46 @@ class AnalyticAccountReport(models.Model):
                     ('move_id.state', '=', 'posted'),
                     ('account_id.internal_type', 'in', ['receivable', 'payable'])
                 ]
+                
                 invoice_lines = self.env['account.move.line'].search(invoice_domain)
-                debts_total = 0.0
+                
                 for line in invoice_lines:
-                    if hasattr(line, 'amount_residual') and line.amount_residual > 0:
-                        debts_total += line.amount_residual
-                    elif line.balance != 0:
+                    invoice = line.move_id
+                    
+                    # الفواتير المدفوعة بالكامل (paid)
+                    if invoice.payment_state == 'paid':
+                        collections_total += abs(line.balance)
+                    
+                    # الفواتير المدفوعة جزئياً (partial) - المبلغ المدفوع
+                    elif invoice.payment_state == 'partial':
+                        paid_amount = abs(line.balance) - line.amount_residual
+                        collections_total += paid_amount
+                
+                record.total_collections = collections_total
+
+                # 4. حساب المديونية بناءً على حالة الفواتير
+                debts_total = 0.0
+                
+                for line in invoice_lines:
+                    invoice = line.move_id
+                    
+                    # الفواتير غير المدفوعة (not_paid)
+                    if invoice.payment_state == 'not_paid':
                         debts_total += abs(line.balance)
+                    
+                    # الفواتير المدفوعة جزئياً (partial) - المتبقي غير المسدد
+                    elif invoice.payment_state == 'partial':
+                        debts_total += line.amount_residual
+                
                 record.total_debts = debts_total
 
                 # تسجيل للتحقق
                 logger.info(f"""
-                    === نتائج الحساب المحدثة ===
+                    === نتائج الحساب المحدثة بناءً على حالة الفواتير ===
                     المصروفات: {record.total_expenses}
                     الإيرادات: {record.total_revenues}
-                    التحصيل: {record.total_collections}
-                    المديونية: {record.total_debts}
+                    التحصيل (paid + partial المدفوع): {record.total_collections}
+                    المديونية (not_paid + partial المتبقي): {record.total_debts}
                     عدد مراكز التكلفة: {len(analytic_account_ids)}
                 """)
 
