@@ -657,43 +657,9 @@ class AnalyticAccountReport(models.Model):
                     record.total_debts = 0.0
                     continue
 
-                # بناء domain للبحث
-                domain = [
-                    ('date', '>=', record.date_from),
-                    ('date', '<=', record.date_to),
-                    ('company_id', 'in', record.company_ids.ids),
-                    ('state', '=', 'posted')
-                ]
-                
-                # إضافة فلاتر العقارات
-                if record.property_address_area:
-                    domain.append(('property_address_area', '=', record.property_address_area.id))
-                
-                if record.property_address_build2:
-                    domain.append(('property_address_build2', '=', record.property_address_build2.id))
-                
-                if record.property_number:
-                    domain.append(('property_number', '=', record.property_number.id))
-                
-                if record.product_id:
-                    domain.append(('product_id', '=', record.product_id.id))
-
-                # البحث في النموذج المناسب (يجب تحديد النموذج الذي يحتوي على amount_paid و amount_due)
-                # مثال: إذا كانت في نموذج الفواتير
-                invoice_lines = self.env['account.move.line'].search(domain)
-                
-                total_paid = 0.0
-                total_due = 0.0
-                
-                for line in invoice_lines:
-                    # يجب تعديل هذا حسب بنية البيانات الفعلية
-                    if hasattr(line, 'amount_paid'):
-                        total_paid += line.amount_paid
-                    if hasattr(line, 'amount_due'):
-                        total_due += line.amount_due
-                
-                record.total_amount_paid = total_paid
-                record.total_amount_due = total_due
+                # Initialize totals
+                record.total_amount_paid = 0.0
+                record.total_amount_due = 0.0
                 
                 # حساب باقي القيم بنفس الطريقة السابقة
                 company_ids = record.company_ids.ids
@@ -795,6 +761,10 @@ class AnalyticAccountReport(models.Model):
                 record.total_collections = collections_total
                 record.total_debts = debts_total
                 
+                # Set amount_paid and amount_due based on collections and debts
+                record.total_amount_paid = collections_total
+                record.total_amount_due = debts_total
+                
                 logger.info(f"التحصيل: {collections_total} (فواتير مدفوعة: {paid_count}, جزئية: {partial_count})")
                 logger.info(f"المديونية: {debts_total} (فواتير غير مدفوعة: {not_paid_count}, جزئية: {partial_count})")
                 
@@ -805,6 +775,14 @@ class AnalyticAccountReport(models.Model):
                 logger.error(f"خطأ في حساب الإجماليات: {str(e)}")
                 import traceback
                 logger.error(traceback.format_exc())
+                
+                # Set default values to prevent compute method failure
+                record.total_amount_paid = 0.0
+                record.total_amount_due = 0.0
+                record.total_expenses = 0.0
+                record.total_revenues = 0.0
+                record.total_collections = 0.0
+                record.total_debts = 0.0
                 
     def _calculate_debts(self, date_from, date_to, company_ids, analytic_account_ids):
         """حساب المديونية بدقة أكبر"""
