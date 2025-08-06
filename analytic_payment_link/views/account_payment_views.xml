@@ -8,39 +8,20 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="analytic_account_id" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
                 <field name="analytic_tag_ids" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
+                
+                <!-- أمر المبيعات مفلتر حسب العميل -->
                 <field name="sale_order_id" 
                        domain="[('partner_id', '=', partner_id), ('state', 'in', ['sale', 'done'])]"
                        attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
+                
+                <!-- الفاتورة المحددة مفلترة حسب أمر المبيعات أو العميل -->
+                <field name="selected_invoice_id" 
+                       domain="[('id', 'in', available_invoice_ids)]"
+                       attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
+                
+                <!-- حقل مخفي للفواتير المتاحة -->
+                <field name="available_invoice_ids" invisible="1"/>
             </xpath>
-            
-            <xpath expr="//field[@name='amount']" position="after">
-                <field name="payment_invoice_line_ids" 
-                       attrs="{'invisible': [('payment_type', '=', 'transfer')]}">
-                    <tree editable="bottom">
-                        <field name="invoice_id" 
-                               domain="[('partner_id', '=', parent.partner_id), ('move_type', 'in', ['out_invoice', 'out_refund']), ('state', '=', 'posted'), ('sale_order_id', '=', parent.sale_order_id)]"/>
-                        <field name="amount"/>
-                        <field name="analytic_account_id"/>
-                        <field name="analytic_tag_ids" widget="many2many_tags"/>
-                    </tree>
-                </field>
-            </xpath>
-        </field>
-    </record>
-    
-    <!-- عرض منفصل لخطوط فواتير الدفع -->
-    <record id="view_payment_invoice_line_form" model="ir.ui.view">
-        <field name="name">payment.invoice.line.form</field>
-        <field name="model">payment.invoice.line</field>
-        <field name="arch" type="xml">
-            <form>
-                <group>
-                    <field name="invoice_id"/>
-                    <field name="amount"/>
-                    <field name="analytic_account_id"/>
-                    <field name="analytic_tag_ids" widget="many2many_tags"/>
-                </group>
-            </form>
         </field>
     </record>
 </odoo>
