@@ -48,28 +48,16 @@ class AccountPayment(models.Model):
     
     @api.depends('partner_id', 'sale_order_id')
     def _compute_available_invoices(self):
-        for record in self:
-            if record.sale_order_id:
-                # الفواتير المرتبطة بأمر المبيعات فقط
-                invoices = self.env['account.move'].search([
-                    ('invoice_origin', '=', record.sale_order_id.name),
-                    ('partner_id', '=', record.partner_id.id),
-                    ('move_type', 'in', ['out_invoice', 'out_refund']),
-                    ('state', '=', 'posted'),
-                    ('payment_state', '!=', 'paid')
-                ])
-                record.available_invoice_ids = invoices
-            elif record.partner_id:
-                # جميع فواتير العميل غير المدفوعة
-                invoices = self.env['account.move'].search([
-                    ('partner_id', '=', record.partner_id.id),
-                    ('move_type', 'in', ['out_invoice', 'out_refund']),
-                    ('state', '=', 'posted'),
-                    ('payment_state', '!=', 'paid')
-                ])
-                record.available_invoice_ids = invoices
-            else:
-                record.available_invoice_ids = False
+        for payment in self:
+            domain = [
+                ('partner_id', '=', payment.partner_id.id),
+                ('state', '=', 'posted'),
+                ('payment_state', '!=', 'paid')
+            ]
+            if payment.sale_order_id:
+                domain.append(('invoice_origin', '=', payment.sale_order_id.name))
+            
+            payment.available_invoice_ids = self.env['account.move'].search(domain)
     
     available_invoice_ids = fields.Many2many(
         'account.move',
@@ -100,13 +88,14 @@ class PaymentInvoiceLine(models.Model):
     _description = 'خط فاتورة الدفع'
     
     payment_id = fields.Many2one('account.payment', string='الدفع', required=True, ondelete='cascade')
+    parent = fields.Many2one('account.payment', related='payment_id', store=True)
+    
     invoice_id = fields.Many2one(
         'account.move', 
-        string='الفاتورة', 
+        string='الفاتورة',
         required=True,
-        domain="[('id', 'in', available_invoice_ids)]"
-    )
-    available_invoice_ids = fields.Many2many(
+        domain="[('id', 'in', parent.available_invoice_ids)]"
+    )    available_invoice_ids = fields.Many2many(
         related='payment_id.available_invoice_ids',
         string='الفواتير المتاحة'
     )
