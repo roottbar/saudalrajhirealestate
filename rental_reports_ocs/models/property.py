@@ -103,7 +103,7 @@ class RentPropertyCity(models.Model):
     property_address_build = fields.Many2one(
         comodel_name='rent.property.build',
         string='المجمع العقاري',
-        related='product_rental_id.property_address_build'
+        related='property_rental_id.property_address_build'  # Changed from product_rental_id
     )
     property_analytic_account = fields.Many2one(
         comodel_name='account.analytic.account',
