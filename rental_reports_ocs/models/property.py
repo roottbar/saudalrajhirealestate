@@ -19,3 +19,12 @@ class RentPropertyElevator(models.Model):
     elevator_number_name = fields.Char(string='Elevator Number/Name')
     elevator_maintenance_date = fields.Date(string='Maintenance Date')
     elevator_maintenance_value = fields.Float(string='Maintenance Value')
+
+
+class ProductTemplateInherit(models.Model):
+    _inherit = 'product.template'
+
+    property_address_build = fields.Many2one(
+        'rent.property',
+        string='Building Address'
+    )
