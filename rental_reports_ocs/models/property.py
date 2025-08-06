@@ -29,6 +29,16 @@ class RentProperty(models.Model):
         string='Parent Analytic Account',
         domain="[('parent_id', '=', False)]"
     )
+    property_address_area = fields.Many2one(
+        'rent.property.area', 
+        string='Area'
+    )
+
+class RentPropertyArea(models.Model):
+    _name = 'rent.property.area'
+    _description = 'Property Area'
+    
+    name = fields.Char(string='Area Name')
 
 class RentPropertyElevator(models.Model):
     _name = 'rent.property.elevator'
@@ -76,6 +86,11 @@ class ProductTemplate(models.Model):
         comodel_name='res.country',
         string='الدولة',
         related='product_rental_id.country',
+        store=True
+    )
+    property_address_area = fields.Many2one(
+        related='product_rental_id.property_address_area',
+        string='Property Area',
         store=True
     )
 
