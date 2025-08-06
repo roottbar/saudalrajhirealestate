@@ -13,8 +13,8 @@ class RentSaleOrder(models.Model):
     _inherit = 'sale.order'
 
     contract_number = fields.Char(string='رقم عقد منصة ايجار')
-    fromdate = fields.Date(string='From Date', default=datetime.today(), copy=False, required=True)
-    todate = fields.Date(string='To Date', default=datetime.today(), copy=False, required=True)
+    fromdate = fields.Datetime(string='From Date', default=fields.Datetime.now, copy=False, required=True)
+    todate = fields.Datetime(string='To Date', default=fields.Datetime.now, copy=False, required=True)
     # Fields in Contract Info Tab
     order_contract = fields.Binary(string='العقد')
     invoice_terms = fields.Selection(
@@ -123,8 +123,8 @@ class RentSaleOrder(models.Model):
                 raise UserError(_('من فضلك اكتب عدد الفواتير'))
             rec.order_contract_invoice = False
             fromdate = rec.fromdate
-            d1 = fields.Datetime.from_string(rec.fromdate)
-            d2 = fields.Datetime.from_string(rec.todate)
+            d1 = rec.fromdate
+            d2 = rec.todate
             total_contract_period = d2 - d1
 
             if total_contract_period.days <= 0:
@@ -187,14 +187,6 @@ class RentSaleOrder(models.Model):
         if diff.days > 0:
             month +=1
         self.invoice_number = month + m
-
-        # date1 = datetime.strptime(str(self.fromdateself.todate)[:10], '%Y-%m-%d')
-        # date2 = datetime.strptime(str(self.todate)[:10], '%Y-%m-%d')
-        # difference = relativedelta(date2, date1)
-        # months = difference.months + 12 * difference.years
-        # if difference.days > 0:
-        #     months += 1
-        # print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx ", months)
         self.invoice_number = month
 
     def action_confirm(self):
@@ -360,15 +352,15 @@ class RentSaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     property_number = fields.Many2one('rent.property', string='العقار')
-    pickup_date = fields.Date(string="Pickup", related='order_id.fromdate', store=True)
-    return_date = fields.Date(string="Return", related='order_id.todate', store=True)
+    pickup_date = fields.Datetime(string="Pickup", related='order_id.fromdate', store=True)
+    return_date = fields.Datetime(string="Return", related='order_id.todate', store=True)
     insurance_value = fields.Float(string='قيمة التأمين')
     contract_admin_fees = fields.Float(string='رسوم ادارية')
     contract_service_fees = fields.Float(string='رسوم الخدمات')
     contract_admin_sub_fees = fields.Float(string='رسوم ادارية خاضعة')
     contract_service_sub_fees = fields.Float(string='رسوم الخدمات خاضعة')
-    fromdate = fields.Date(related="order_id.fromdate", store=1)
-    todate = fields.Date(related="order_id.todate", store=1)
+    fromdate = fields.Datetime(related="order_id.fromdate", store=1)
+    todate = fields.Datetime(related="order_id.todate", store=1)
 
     def search_property_address_area(self, operator, value):
         return [('property_address_area', 'ilike', value)]
@@ -490,8 +482,7 @@ class RentSaleOrderLine(models.Model):
         return ""
     @api.depends('return_date')
     def _compute_is_late(self):
-        now_date = fields.Date.today()  # تاريخ فقط (بدون وقت)
-        now_datetime = fields.Datetime.now()  # تاريخ ووقت
+        now = fields.Datetime.now()
         
         for line in self:
             if not line.return_date:
@@ -499,11 +490,8 @@ class RentSaleOrderLine(models.Model):
                 continue
                 
             try:
-                # تحويل جميع القيم إلى datetime.date للمقارنة الصحيحة
-                return_date = fields.Date.to_date(line.return_date)
-                line.is_late = return_date < now_date
+                line.is_late = line.return_date < now
             except (TypeError, ValueError):
-                # معالجة أي استثناءات في تحويل التاريخ
                 line.is_late = False
     # @api.depends('return_date')
     # def _compute_is_late(self):
