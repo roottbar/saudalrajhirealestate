@@ -124,33 +124,152 @@ class RentUnitsReportWizard(models.TransientModel):
         return self.env.ref('renting.rent_units_report').report_action(self, data={'docs': data})
 
     def generate_excel_report(self):
-        """إنشاء تقرير Excel"""
+        """إنشاء تقرير Excel محسن مع اللوجو والتنسيق ونظام الشجرة"""
         if not xlsxwriter:
             raise UserError('مكتبة xlsxwriter غير مثبتة. يرجى تثبيتها أولاً.')
         
         data = self._get_report_data()
+        
+        # ترتيب البيانات حسب التسلسل الهرمي
+        sorted_data = sorted(data, key=lambda x: (
+            x['company_name'], 
+            x['operating_unit'], 
+            x['property_build'], 
+            x['property_name']
+        ))
         
         # إنشاء ملف Excel
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('تقرير الوحدات المؤجرة')
         
-        # تنسيق الخلايا
+        # تنسيقات الخلايا المحسنة
+        title_format = workbook.add_format({
+            'bold': True,
+            'font_size': 18,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': '#1F4E79',
+            'font_color': 'white',
+            'border': 2
+        })
+        
+        date_format = workbook.add_format({
+            'bold': True,
+            'font_size': 12,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': '#D9E2F3',
+            'border': 1
+        })
+        
         header_format = workbook.add_format({
             'bold': True,
-            'bg_color': '#D7E4BC',
+            'bg_color': '#4472C4',
+            'font_color': 'white',
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'text_wrap': True
+        })
+        
+        # تنسيقات نظام الشجرة
+        company_format = workbook.add_format({
+            'bold': True,
+            'bg_color': '#E2EFDA',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 0
+        })
+        
+        operating_unit_format = workbook.add_format({
+            'bold': True,
+            'bg_color': '#F2F2F2',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 1
+        })
+        
+        property_build_format = workbook.add_format({
+            'bg_color': '#FFF2CC',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 2
+        })
+        
+        property_format = workbook.add_format({
+            'bg_color': '#FCE4D6',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 3
+        })
+        
+        unit_format = workbook.add_format({
+            'bg_color': '#FFFFFF',
             'border': 1,
             'align': 'center',
             'valign': 'vcenter'
         })
         
-        cell_format = workbook.add_format({
+        number_format = workbook.add_format({
             'border': 1,
             'align': 'center',
-            'valign': 'vcenter'
+            'valign': 'vcenter',
+            'num_format': '#,##0.00'
         })
         
-        # كتابة العناوين
+        current_row = 0
+        
+        # إضافة اللوجو (إذا كان متوفراً)
+        try:
+            if self.company_id.logo:
+                logo_data = base64.b64decode(self.company_id.logo)
+                logo_io = io.BytesIO(logo_data)
+                worksheet.insert_image(current_row, 0, 'logo.png', {
+                    'image_data': logo_io,
+                    'x_scale': 0.5,
+                    'y_scale': 0.5,
+                    'x_offset': 10,
+                    'y_offset': 10
+                })
+                current_row += 4
+        except:
+            pass
+        
+        # عنوان التقرير
+        worksheet.merge_range(current_row, 0, current_row, 14, 'تقرير الوحدات المؤجرة', title_format)
+        current_row += 2
+        
+        # معلومات التاريخ والفلاتر
+        filter_info = []
+        if self.date_from:
+            filter_info.append(f"من تاريخ: {self.date_from}")
+        if self.date_to:
+            filter_info.append(f"إلى تاريخ: {self.date_to}")
+        if self.company_id:
+            filter_info.append(f"الشركة: {self.company_id.name}")
+        if self.operating_unit_id:
+            filter_info.append(f"الفرع: {self.operating_unit_id.name}")
+        if self.property_build_id:
+            filter_info.append(f"المجمع: {self.property_build_id.name}")
+        if self.property_id:
+            filter_info.append(f"العقار: {self.property_id.property_name}")
+        
+        if filter_info:
+            filter_text = " | ".join(filter_info)
+            worksheet.merge_range(current_row, 0, current_row, 14, filter_text, date_format)
+            current_row += 2
+        
+        # تاريخ إنشاء التقرير
+        report_date = f"تاريخ إنشاء التقرير: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        worksheet.merge_range(current_row, 0, current_row, 14, report_date, date_format)
+        current_row += 2
+        
+        # العناوين
         headers = [
             'الشركة', 'الفرع', 'المجمع', 'العقار', 'الحساب التحليلي', 'الوحدة',
             'اسم العميل', 'رقم العقد', 'حالة الوحدة', 'المبلغ المدفوع',
@@ -158,28 +277,87 @@ class RentUnitsReportWizard(models.TransientModel):
         ]
         
         for col, header in enumerate(headers):
-            worksheet.write(0, col, header, header_format)
+            worksheet.write(current_row, col, header, header_format)
         
-        # كتابة البيانات
-        for row, line_data in enumerate(data, 1):
-            worksheet.write(row, 0, line_data['company_name'], cell_format)
-            worksheet.write(row, 1, line_data['operating_unit'], cell_format)
-            worksheet.write(row, 2, line_data['property_build'], cell_format)
-            worksheet.write(row, 3, line_data['property_name'], cell_format)
-            worksheet.write(row, 4, line_data['analytic_account'], cell_format)
-            worksheet.write(row, 5, line_data['unit_name'], cell_format)
-            worksheet.write(row, 6, line_data['customer_name'], cell_format)
-            worksheet.write(row, 7, line_data['contract_number'], cell_format)
-            worksheet.write(row, 8, line_data['unit_state'], cell_format)
-            worksheet.write(row, 9, line_data['amount_paid'], cell_format)
-            worksheet.write(row, 10, line_data['amount_due'], cell_format)
-            worksheet.write(row, 11, line_data['unit_expenses'], cell_format)
-            worksheet.write(row, 12, line_data['unit_revenues'], cell_format)
-            worksheet.write(row, 13, str(line_data['from_date']) if line_data['from_date'] else '', cell_format)
-            worksheet.write(row, 14, str(line_data['to_date']) if line_data['to_date'] else '', cell_format)
+        current_row += 1
+        
+        # متغيرات لتتبع القيم السابقة لنظام الشجرة
+        prev_company = None
+        prev_operating_unit = None
+        prev_property_build = None
+        prev_property = None
+        
+        # كتابة البيانات مع نظام الشجرة
+        for line_data in sorted_data:
+            company_name = line_data['company_name']
+            operating_unit = line_data['operating_unit']
+            property_build = line_data['property_build']
+            property_name = line_data['property_name']
+            
+            # كتابة الشركة (فقط إذا تغيرت)
+            if company_name != prev_company:
+                worksheet.write(current_row, 0, company_name, company_format)
+                prev_company = company_name
+                prev_operating_unit = None
+                prev_property_build = None
+                prev_property = None
+            else:
+                worksheet.write(current_row, 0, '', unit_format)
+            
+            # كتابة الفرع (فقط إذا تغير)
+            if operating_unit != prev_operating_unit:
+                worksheet.write(current_row, 1, operating_unit, operating_unit_format)
+                prev_operating_unit = operating_unit
+                prev_property_build = None
+                prev_property = None
+            else:
+                worksheet.write(current_row, 1, '', unit_format)
+            
+            # كتابة المجمع (فقط إذا تغير)
+            if property_build != prev_property_build:
+                worksheet.write(current_row, 2, property_build, property_build_format)
+                prev_property_build = property_build
+                prev_property = None
+            else:
+                worksheet.write(current_row, 2, '', unit_format)
+            
+            # كتابة العقار (فقط إذا تغير)
+            if property_name != prev_property:
+                worksheet.write(current_row, 3, property_name, property_format)
+                prev_property = property_name
+            else:
+                worksheet.write(current_row, 3, '', unit_format)
+            
+            # باقي البيانات
+            worksheet.write(current_row, 4, line_data['analytic_account'], unit_format)
+            worksheet.write(current_row, 5, line_data['unit_name'], unit_format)
+            worksheet.write(current_row, 6, line_data['customer_name'], unit_format)
+            worksheet.write(current_row, 7, line_data['contract_number'], unit_format)
+            worksheet.write(current_row, 8, line_data['unit_state'], unit_format)
+            worksheet.write(current_row, 9, line_data['amount_paid'], number_format)
+            worksheet.write(current_row, 10, line_data['amount_due'], number_format)
+            worksheet.write(current_row, 11, line_data['unit_expenses'], number_format)
+            worksheet.write(current_row, 12, line_data['unit_revenues'], number_format)
+            worksheet.write(current_row, 13, str(line_data['from_date']) if line_data['from_date'] else '', unit_format)
+            worksheet.write(current_row, 14, str(line_data['to_date']) if line_data['to_date'] else '', unit_format)
+            
+            current_row += 1
         
         # ضبط عرض الأعمدة
-        worksheet.set_column('A:O', 15)
+        worksheet.set_column('A:A', 20)  # الشركة
+        worksheet.set_column('B:B', 18)  # الفرع
+        worksheet.set_column('C:C', 18)  # المجمع
+        worksheet.set_column('D:D', 20)  # العقار
+        worksheet.set_column('E:E', 18)  # الحساب التحليلي
+        worksheet.set_column('F:F', 15)  # الوحدة
+        worksheet.set_column('G:G', 20)  # اسم العميل
+        worksheet.set_column('H:H', 15)  # رقم العقد
+        worksheet.set_column('I:I', 12)  # حالة الوحدة
+        worksheet.set_column('J:M', 15)  # المبالغ
+        worksheet.set_column('N:O', 12)  # التواريخ
+        
+        # تجميد الصفوف العلوية والعمود الأول
+        worksheet.freeze_panes(current_row - len(sorted_data), 1)
         
         workbook.close()
         output.seek(0)
