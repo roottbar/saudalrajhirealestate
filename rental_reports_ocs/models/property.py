@@ -30,8 +30,9 @@ class RentProperty(models.Model):
         domain="[('parent_id', '=', False)]"
     )
     property_address_area = fields.Many2one(
-        'rent.property.area', 
-        string='Area'
+        'rent.property.area',
+        string='Area',
+        ondelete='set null'  # إضافة هذه المعلمة
     )
     active = fields.Boolean(string='نشط', default=True)
 
@@ -122,5 +123,4 @@ class RentPropertyCity(models.Model):
         'rent.property',
         string='Related Rental Property'
     )
-    active = fields.Boolean(string='نشط', default=True)
     
