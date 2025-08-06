@@ -21,10 +21,11 @@ class RentPropertyElevator(models.Model):
     elevator_maintenance_value = fields.Float(string='Maintenance Value')
 
 
-class ProductTemplateInherit(models.Model):
+class ProductTemplate(models.Model):
     _inherit = 'product.template'
-
+    
     property_address_build = fields.Many2one(
         'rent.property',
-        string='Building Address'
+        string='مبنى العنوان',
+        help='يرتبط بعنوان المبنى الرئيسي'
     )
