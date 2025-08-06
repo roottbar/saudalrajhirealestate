@@ -11,10 +11,12 @@
                     <field name="property_address_build2" string="المجمع"/>
                     <field name="property_number" string="العقار"/>
                     <field name="product_id" string="الوحدة"/>
+                    <field name="analytic_account_id" string="الحساب التحليلي"/>
                     <filter string="الفرع" name="property_address_area" domain="[]" context="{'group_by':'property_address_area'}"/>
                     <filter string="المجمع" name="property_address_build2" domain="[]" context="{'group_by':'property_address_build2'}"/>
                     <filter string="العقار" name="property_number" domain="[]" context="{'group_by':'property_number'}"/>
                     <filter string="مكتب" name="product_id" domain="[]" context="{'group_by':'product_id'}"/>
+                    <filter string="الحساب التحليلي" name="analytic_account_id" domain="[]" context="{'group_by':'analytic_account_id'}"/>
 
                 </search>
             </field>
@@ -27,6 +29,7 @@
                     <field name="property_address_area" string="الفرع"/>
                     <field name="property_address_build2" string="المجمع"/>
                     <field name="property_number" string="العقار"/>
+                    <field name="analytic_account_id" string="الحساب التحليلي"/>
                     <field name="product_id"  string="الوحدة"/>
                     <field name="order_partner_id"  string="إسم العميل"/>
                     <field name="order_id"  string="رقم العقد"/>
