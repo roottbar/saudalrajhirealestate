@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
@@ -21,7 +22,6 @@ class AccountPayment(models.Model):
     
     def _is_rental_order(self, order):
         """تحقق مما إذا كان الأمر هو أمر تأجير"""
-        # الطريقة الأكثر أماناً للتحقق من وجود منتجات تأجير
         return any(line.product_id.rental for line in order.order_line)
     
     @api.depends('partner_id', 'renting_order_id')
@@ -44,12 +44,18 @@ class AccountPayment(models.Model):
         'account.move',
         compute='_compute_available_invoices',
         string='فواتير التأجير المتاحة'
-    )    
+    )
+    
     payment_invoice_line_ids = fields.One2many(
         'payment.invoice.line',
         'payment_id',
         string='فواتير الدفع'
     )
+    
+    def write(self, vals):
+        if 'invoice_id' in vals and not vals['invoice_id']:
+            del vals['invoice_id']
+        return super(AccountPayment, self).write(vals)
     
     def _prepare_move_line_default_vals(self, write_off_line_vals=None):
         res = super(AccountPayment, self)._prepare_move_line_default_vals(write_off_line_vals)
@@ -108,15 +114,25 @@ class PaymentInvoiceLine(models.Model):
         readonly=True
     )
     
+    @api.model
+    def create(self, vals):
+        if 'invoice_id' not in vals or not vals['invoice_id']:
+            raise UserError(_('يجب تحديد فاتورة صالحة'))
+        return super(PaymentInvoiceLine, self).create(vals)
+    
+    def write(self, vals):
+        if 'invoice_id' in vals and not vals['invoice_id']:
+            raise UserError(_('لا يمكن إزالة الفاتورة المحددة'))
+        return super(PaymentInvoiceLine, self).write(vals)
+    
     @api.onchange('invoice_id')
     def _onchange_invoice_id(self):
         if self.invoice_id:
             self.amount = min(self.invoice_id.amount_residual, self.payment_id.amount)
-            # التحقق من وجود الحقول التحليلية في الفاتورة
-            invoice_lines = self.invoice_id.invoice_line_ids.filtered(lambda l: l.display_type not in ('line_section', 'line_note'))
+            invoice_lines = self.invoice_id.invoice_line_ids.filtered(
+                lambda l: l.display_type not in ('line_section', 'line_note')
+            )
             if invoice_lines:
-                # أخذ الحساب التحليلي من أول بند في الفاتورة
                 self.analytic_account_id = invoice_lines[0].analytic_account_id
-                # جمع جميع الوسوم التحليلية من بنود الفاتورة
                 all_tags = invoice_lines.mapped('analytic_tag_ids')
-                self.analytic_tag_ids = [(6, 0, all_tags.ids)]
+                self.analytic_tag_ids = [(6, 0, all_tags.ids)] if all_tags else False
