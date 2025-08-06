@@ -36,3 +36,11 @@ class Base(models.AbstractModel):
                 ] for partner_id in online_partner]
                 self.env['bus.bus']._sendmany(updates)
         return recs
+
+
+class KSOdooBase(models.Model):
+    _name = 'ks_odoo_base'
+    
+    @api.depends('dependent_field', recursive=True)  # Add recursive parameter
+    def _compute_some_field(self):
+        # Your computation logic
