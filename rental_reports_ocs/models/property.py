@@ -16,6 +16,10 @@ class RentProperty(models.Model):
         comodel_name='rent.property.city',
         string='مدينة العقار'
     )
+    country = fields.Many2one(
+        comodel_name='res.country',
+        string='الدولة'
+    )
 
 class RentPropertyElevator(models.Model):
     _name = 'rent.property.elevator'
@@ -46,6 +50,12 @@ class ProductTemplate(models.Model):
         comodel_name='rent.property.city',
         string='مدينة العقار',
         related='product_rental_id.property_address_city',
+        store=True
+    )
+    country = fields.Many2one(
+        comodel_name='res.country',
+        string='الدولة',
+        related='product_rental_id.country',
         store=True
     )
 
