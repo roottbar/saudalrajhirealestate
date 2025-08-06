@@ -9,7 +9,7 @@
     'author': 'Othmancs',
     'website': 'https://www.tbarholding.com',
     'category': 'Real Estate/Rental',
-    'depends': ['product', 'operating_unit'],
+    'depends': ['product', 'operating_unit', 'renting', 'rent_customize'],
     'data': [
         'views/property_views.xml',
         'views/rental_report_views.xml',
