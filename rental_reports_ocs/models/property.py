@@ -45,6 +45,11 @@ class RentPropertyBuild(models.Model):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
+    property_analytic_account = fields.Many2one(
+        comodel_name='account.analytic.account',
+        related='product_rental_id.property_analytic_account',
+        store=True
+    )
     product_rental_id = fields.Many2one(
         comodel_name='rent.property',
         string='الوحدة الإيجارية'
