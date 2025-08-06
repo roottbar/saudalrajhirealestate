@@ -6,7 +6,7 @@ class AccountPayment(models.Model):
     renting_order_id = fields.Many2one(
         'sale.order', 
         string='أمر التأجير',
-        domain="[('partner_id', '=', partner_id), ('is_rental_order', '=', True), ('state', 'in', ['sale', 'done'])]"
+        domain="[('partner_id', '=', partner_id), ('rental_status', '!=', False), ('state', 'in', ['sale', 'done'])]"
     )
     
     @api.depends('partner_id', 'renting_order_id')
@@ -20,7 +20,7 @@ class AccountPayment(models.Model):
             ]
             if payment.renting_order_id:
                 domain.append(('invoice_origin', '=', payment.renting_order_id.name))
-                domain.append(('is_rental', '=', True))
+                domain.append(('line_ids.sale_line_ids.is_rental', '=', True))
             
             payment.available_invoice_ids = self.env['account.move'].search(domain)
     
@@ -28,8 +28,7 @@ class AccountPayment(models.Model):
         'account.move',
         compute='_compute_available_invoices',
         string='فواتير التأجير المتاحة'
-    )
-    
+    )    
     payment_invoice_line_ids = fields.One2many(
         'payment.invoice.line',
         'payment_id',
