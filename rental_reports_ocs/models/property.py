@@ -25,7 +25,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
     property_address_build = fields.Many2one(
-        'rent.property',
-        string='مبنى العنوان',
-        help='يرتبط بعنوان المبنى الرئيسي'
+        comodel_name='rent.property',
+        string='Building Address',
+        help='Related property building address'
     )
