@@ -35,9 +35,14 @@ class ProductTemplate(models.Model):
     
     property_address_city = fields.Many2one(
         comodel_name='rent.property.city',
-        string='المدينة',
-        related='product_rental_id.property_address_city'
+        string='مدينة العقار'
     )
+
+class RentPropertyCity(models.Model):
+    _name = 'rent.property.city'
+    _description = 'Property City'
+
+    name = fields.Char(string='اسم المدينة')
     
     product_rental_id = fields.Many2one(
         comodel_name='rent.property',
