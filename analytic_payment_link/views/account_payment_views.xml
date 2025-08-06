@@ -5,36 +5,30 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
-            <!-- إضافة الحقول التحليلية بعد حقل الشريك -->
+            <!-- إضافة حقلي أمر المبيعات والحساب التحليلي -->
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="analytic_account_id" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
                 <field name="analytic_tag_ids" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
-                
-                <field name="sale_order_id" 
-                       domain="[('partner_id', '=', partner_id), ('state', 'in', ['sale', 'done'])]"
-                       attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
-                
-                <field name="selected_invoice_id" 
-                       domain="[('id', 'in', available_invoice_ids)]"
-                       attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
-                
+                <field name="sale_order_id" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
                 <field name="available_invoice_ids" invisible="1"/>
             </xpath>
 
-            <!-- إضافة حقل فواتير الدفع في نهاية النموذج -->
-            <xpath expr="//sheet" position="inside">
+            <!-- إضافة قسم فواتير الدفع -->
+            <xpath expr="//sheet" position="before">
                 <group string="فواتير الدفع" attrs="{'invisible': [('payment_type', '=', 'transfer')]}">
                     <field name="payment_invoice_line_ids">
                         <tree editable="bottom">
-                            <field name="invoice_id"/>
-                            <field name="amount"/>
+                            <field name="invoice_id" domain="[('id', 'in', available_invoice_ids)]"/>
+                            <field name="invoice_amount_residual" readonly="1"/>
+                            <field name="amount" readonly="1"/>
                             <field name="analytic_account_id"/>
                             <field name="analytic_tag_ids" widget="many2many_tags"/>
                         </tree>
                         <form>
                             <group>
-                                <field name="invoice_id"/>
-                                <field name="amount"/>
+                                <field name="invoice_id" domain="[('id', 'in', available_invoice_ids)]"/>
+                                <field name="invoice_amount_residual" readonly="1"/>
+                                <field name="amount" readonly="1"/>
                                 <field name="analytic_account_id"/>
                                 <field name="analytic_tag_ids" widget="many2many_tags"/>
                             </group>
@@ -51,8 +45,9 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="invoice_id"/>
-                    <field name="amount"/>
+                    <field name="invoice_id" domain="[('id', 'in', available_invoice_ids)]"/>
+                    <field name="invoice_amount_residual" readonly="1"/>
+                    <field name="amount" readonly="1"/>
                     <field name="analytic_account_id"/>
                     <field name="analytic_tag_ids" widget="many2many_tags"/>
                 </group>
