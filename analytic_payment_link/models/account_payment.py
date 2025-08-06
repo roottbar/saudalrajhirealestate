@@ -3,27 +3,13 @@ from odoo import models, fields, api
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
-    analytic_account_id = fields.Many2one(
-        'account.analytic.account',
-        string='الحساب التحليلي',
-        readonly=True,
-        states={'draft': [('readonly', False)]}
-    )
-    
-    analytic_tag_ids = fields.Many2many(
-        'account.analytic.tag',
-        string='الوسوم التحليلية',
-        readonly=True,
-        states={'draft': [('readonly', False)]}
-    )
-    
-    sale_order_id = fields.Many2one(
+    renting_order_id = fields.Many2one(
         'sale.order', 
-        string='أمر المبيعات',
-        domain="[('partner_id', '=', partner_id), ('state', 'in', ['sale', 'done'])]"
+        string='أمر التأجير',
+        domain="[('partner_id', '=', partner_id), ('is_rental_order', '=', True), ('state', 'in', ['sale', 'done'])]"
     )
     
-    @api.depends('partner_id', 'sale_order_id')
+    @api.depends('partner_id', 'renting_order_id')
     def _compute_available_invoices(self):
         for payment in self:
             domain = [
@@ -32,15 +18,16 @@ class AccountPayment(models.Model):
                 ('payment_state', '!=', 'paid'),
                 ('move_type', 'in', ['out_invoice', 'out_refund'])
             ]
-            if payment.sale_order_id:
-                domain.append(('invoice_origin', '=', payment.sale_order_id.name))
+            if payment.renting_order_id:
+                domain.append(('invoice_origin', '=', payment.renting_order_id.name))
+                domain.append(('is_rental', '=', True))
             
             payment.available_invoice_ids = self.env['account.move'].search(domain)
     
     available_invoice_ids = fields.Many2many(
         'account.move',
         compute='_compute_available_invoices',
-        string='الفواتير المتاحة'
+        string='فواتير التأجير المتاحة'
     )
     
     payment_invoice_line_ids = fields.One2many(
@@ -51,12 +38,6 @@ class AccountPayment(models.Model):
     
     def _prepare_move_line_default_vals(self, write_off_line_vals=None):
         res = super(AccountPayment, self)._prepare_move_line_default_vals(write_off_line_vals)
-        
-        for line in res:
-            if self.analytic_account_id:
-                line['analytic_account_id'] = self.analytic_account_id.id
-            if self.analytic_tag_ids:
-                line['analytic_tag_ids'] = [(6, 0, self.analytic_tag_ids.ids)]
         
         if self.payment_invoice_line_ids:
             for inv_line in self.payment_invoice_line_ids:
@@ -79,7 +60,7 @@ class PaymentInvoiceLine(models.Model):
     
     invoice_id = fields.Many2one(
         'account.move', 
-        string='الفاتورة',
+        string='فاتورة التأجير',
         required=True,
         domain="[('id', 'in', parent.available_invoice_ids)]"
     )
