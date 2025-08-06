@@ -33,6 +33,12 @@ class RentPropertyBuild(models.Model):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
+    property_address_city = fields.Many2one(
+        comodel_name='rent.property.city',
+        string='المدينة',
+        related='product_rental_id.property_address_city'
+    )
+    
     product_rental_id = fields.Many2one(
         comodel_name='rent.property',
         string='الوحدة الإيجارية'
