@@ -52,3 +52,12 @@ class KSOdooBase(models.Model):
     @api.depends('dependent_field', recursive=True)  # Add recursive parameter
     def _compute_some_field(self):
         # Your computation logic
+    
+    @api.depends('analytic_account_id.balance', recursive=True)
+    def _compute_financial_metrics(self):
+        for record in self:
+            record.financial_level = record.analytic_account_id.balance
+    
+    @api.depends('report_line_ids.value', recursive=True)
+    def _compute_report_totals(self):
+        self.total_value = sum(line.value for line in self.report_line_ids)
