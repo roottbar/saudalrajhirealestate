@@ -28,7 +28,6 @@ class AccountPayment(models.Model):
         
         return res
     
-    partner_id = fields.Many2one('res.partner', string='العميل')
     sale_order_id = fields.Many2one(
         'sale.order', 
         string='أمر المبيعات',
