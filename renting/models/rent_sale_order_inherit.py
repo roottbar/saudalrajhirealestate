@@ -396,7 +396,7 @@ class RentSaleOrderLine(models.Model):
     amount_due = fields.Float(compute="get_amount_paid")
     unit_expenses = fields.Float(string="المصروفات", compute="get_unit_expenses")
     unit_revenues = fields.Float(string="الإيرادات", compute="get_unit_revenues")
-
+    analytic_account_id = fields.Many2one('account.analytic.account', string='الحساب التحليلي', related='product_id.analytic_account', store=True)
     # apartment_insurance = fields.Float(related='order_id.apartment_insurance')
     @api.depends('order_id', 'product_id')
     def get_amount_paid(self):
