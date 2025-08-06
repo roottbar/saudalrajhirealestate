@@ -20,12 +20,18 @@ class RentPropertyElevator(models.Model):
     elevator_maintenance_date = fields.Date(string='Maintenance Date')
     elevator_maintenance_value = fields.Float(string='Maintenance Value')
 
+class RentPropertyBuild(models.Model):
+    _name = 'rent.property.build'
+    _description = 'Property Building Complex'
+
+    name = fields.Char(string='اسم المجمع')
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     
     property_address_build = fields.Many2one(
-        comodel_name='rent.property',
-        string='Building Address',
-        help='Related property building address'
+        comodel_name='rent.property.build',
+        string='المجمع العقاري',
+        related='product_rental_id.property_address_build'
     )
+    
