@@ -112,7 +112,11 @@ class PaymentInvoiceLine(models.Model):
     def _onchange_invoice_id(self):
         if self.invoice_id:
             self.amount = min(self.invoice_id.amount_residual, self.payment_id.amount)
-            if self.invoice_id.analytic_account_id:
-                self.analytic_account_id = self.invoice_id.analytic_account_id
-            if self.invoice_id.analytic_tag_ids:
-                self.analytic_tag_ids = [(6, 0, self.invoice_id.analytic_tag_ids.ids)]
+            # التحقق من وجود الحقول التحليلية في الفاتورة
+            invoice_lines = self.invoice_id.invoice_line_ids.filtered(lambda l: l.display_type not in ('line_section', 'line_note'))
+            if invoice_lines:
+                # أخذ الحساب التحليلي من أول بند في الفاتورة
+                self.analytic_account_id = invoice_lines[0].analytic_account_id
+                # جمع جميع الوسوم التحليلية من بنود الفاتورة
+                all_tags = invoice_lines.mapped('analytic_tag_ids')
+                self.analytic_tag_ids = [(6, 0, all_tags.ids)]
