@@ -8,6 +8,10 @@ class RentProperty(models.Model):
     address = fields.Text(string='Address')
     operating_unit_id = fields.Many2one('operating.unit', string='Operating Unit')
     elevators = fields.One2many('rent.property.elevator', 'property_id', string='Elevators')
+    property_address_build = fields.Many2one(
+        comodel_name='rent.property.build',
+        string='المجمع العقاري'
+    )
 
 class RentPropertyElevator(models.Model):
     _name = 'rent.property.elevator'
