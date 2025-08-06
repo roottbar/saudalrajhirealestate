@@ -42,8 +42,12 @@ class KSOdooBase(models.Model):
     _name = 'ks_odoo_base'
     
     @api.depends('related_model.field_name', recursive=True)
-    def _compute_field(self):
-        # Computation logic
+    def _compute_analytics(self):
+        self.some_field = self.related_model.field_name
+    
+    @api.depends('cross_model.relation_field', recursive=True)
+    def _compute_metrics(self):
+        # Calculation logic
     
     @api.depends('dependent_field', recursive=True)  # Add recursive parameter
     def _compute_some_field(self):
