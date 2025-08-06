@@ -10,7 +10,7 @@ class RentalReport(models.Model):
     property_id = fields.Many2one('rent.property', string='عقارات', readonly=True)
     state_id = fields.Char(string='حالة العقار')
     property_address_build = fields.Many2one('rent.property.build', string='المجمع')
-    property_address_city = fields.Many2one('rent.property.city', string='المدينة')
+    property_address_city = fields.Many2one('rent.property.city',string='المدينة')
     country = fields.Many2one('res.country', string='الدولة')
     fromdate = fields.Datetime()
     todate = fields.Datetime()
@@ -24,9 +24,4 @@ class RentalReport(models.Model):
             pt.country,
             sol.fromdate,
             sol.todate
-        """
-
-    def _price(self):
-        return """
-            sol.price_subtotal / (EXTRACT(day FROM (sol.return_date - sol.pickup_date)) + 1)
         """
