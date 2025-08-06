@@ -33,6 +33,7 @@ class RentProperty(models.Model):
         'rent.property.area', 
         string='Area'
     )
+    active = fields.Boolean(string='نشط', default=True)
 
 class RentPropertyArea(models.Model):
     _name = 'rent.property.area'
@@ -121,3 +122,4 @@ class RentPropertyCity(models.Model):
         'rent.property',
         string='Related Rental Property'
     )
+    
