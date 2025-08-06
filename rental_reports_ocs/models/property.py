@@ -20,6 +20,10 @@ class RentProperty(models.Model):
         comodel_name='res.country',
         string='الدولة'
     )
+    property_analytic_account = fields.Many2one(
+        comodel_name='account.analytic.account',
+        string='الحساب التحليلي'
+    )
 
 class RentPropertyElevator(models.Model):
     _name = 'rent.property.elevator'
@@ -69,5 +73,11 @@ class RentPropertyCity(models.Model):
         comodel_name='rent.property.build',
         string='المجمع العقاري',
         related='product_rental_id.property_address_build'
+    )
+    property_analytic_account = fields.Many2one(
+        comodel_name='account.analytic.account',
+        string='الحساب التحليلي',
+        related='product_rental_id.property_analytic_account',
+        store=True
     )
     
