@@ -10,7 +10,6 @@
                     <field name="name"/>
                     <field name="operating_unit_id"/>
                     <field name="address"/>
-                    <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
                 </tree>
             </field>
         </record>
