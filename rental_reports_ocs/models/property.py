@@ -24,6 +24,11 @@ class RentProperty(models.Model):
         comodel_name='account.analytic.account',
         string='الحساب التحليلي'
     )
+    property_analytic_account_parent = fields.Many2one(
+        'account.analytic.account',
+        string='Parent Analytic Account',
+        domain="[('parent_id', '=', False)]"
+    )
 
 class RentPropertyElevator(models.Model):
     _name = 'rent.property.elevator'
@@ -83,6 +88,11 @@ class RentPropertyCity(models.Model):
         comodel_name='account.analytic.account',
         string='الحساب التحليلي',
         related='product_rental_id.property_analytic_account',
+        store=True
+    )
+    property_analytic_account_parent = fields.Many2one(
+        related='product_rental_id.property_analytic_account_parent',
+        string='Parent Analytic Account',
         store=True
     )
     
