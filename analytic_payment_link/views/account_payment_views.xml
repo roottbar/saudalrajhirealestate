@@ -24,4 +24,19 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_payment_invoice_line_form" model="ir.ui.view">
+        <field name="name">payment.invoice.line.form</field>
+        <field name="model">payment.invoice.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="invoice_id"/>
+                    <field name="amount"/>
+                    <field name="analytic_account_id"/>
+                    <field name="analytic_tag_ids" widget="many2many_tags"/>
+                </group>
+            </form>
+        </field>
+    </record>
 </odoo>
