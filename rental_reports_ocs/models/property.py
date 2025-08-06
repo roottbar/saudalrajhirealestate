@@ -108,7 +108,7 @@ class RentPropertyCity(models.Model):
     property_analytic_account = fields.Many2one(
         comodel_name='account.analytic.account',
         string='الحساب التحليلي',
-        related='product_rental_id.property_analytic_account',
+        related='property_rental_id.property_analytic_account',  # Changed from product_rental_id
         store=True
     )
     property_analytic_account_parent = fields.Many2one(
@@ -121,4 +121,3 @@ class RentPropertyCity(models.Model):
         'rent.property',
         string='Related Rental Property'
     )
-    
