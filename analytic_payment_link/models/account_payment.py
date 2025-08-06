@@ -33,18 +33,15 @@ class AccountPayment(models.Model):
         string='أمر المبيعات'
     )
     
-    # استخدام Many2one بدلاً من Many2many لتجنب التضارب
     selected_invoice_id = fields.Many2one(
         'account.move',
         string='الفاتورة المحددة'
     )
     
-    # حقل محسوب لعرض الفواتير المتاحة
     @api.depends('partner_id', 'sale_order_id')
     def _compute_available_invoices(self):
         for record in self:
             if record.sale_order_id:
-                # الفواتير المرتبطة بأمر المبيعات
                 invoices = self.env['account.move'].search([
                     ('invoice_origin', '=', record.sale_order_id.name),
                     ('move_type', 'in', ['out_invoice', 'out_refund']),
@@ -52,7 +49,6 @@ class AccountPayment(models.Model):
                 ])
                 record.available_invoice_ids = invoices
             elif record.partner_id:
-                # جميع فواتير العميل
                 invoices = self.env['account.move'].search([
                     ('partner_id', '=', record.partner_id.id),
                     ('move_type', 'in', ['out_invoice', 'out_refund']),
@@ -68,7 +64,6 @@ class AccountPayment(models.Model):
         string='الفواتير المتاحة'
     )
     
-    # تغيير إلى One2many لإضافة فواتير متعددة مع حساب تحليلي منفصل
     payment_invoice_line_ids = fields.One2many(
         'payment.invoice.line',
         'payment_id',
@@ -114,7 +109,11 @@ class AccountMove(models.Model):
         
         return res
     
+    # تم تعديل العلاقة لتحديد اسم الجدول الوسيط بشكل صريح
     invoice_ids = fields.Many2many(
         'account.move', 
+        relation='account_move_invoice_rel',
+        column1='move_id1',
+        column2='move_id2',
         string='الفواتير'
     )
