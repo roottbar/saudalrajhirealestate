@@ -122,4 +122,5 @@ class RentPropertyCity(models.Model):
         'rent.property',
         string='Related Rental Property'
     )
+    active = fields.Boolean(string='نشط', default=True)
     
