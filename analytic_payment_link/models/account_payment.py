@@ -32,7 +32,7 @@ class AccountPayment(models.Model):
     sale_order_id = fields.Many2one(
         'sale.order', 
         string='أمر المبيعات',
-        domain="[('partner_id', '=', parent.partner_id)]"  # تم تعديل المرجع هنا
+        domain="[('partner_id', '=', partner_id)]"  # إزالة parent.
     )
     invoice_ids = fields.Many2many('account.move', string='الفواتير',
         domain="[('sale_order_id', '=', sale_order_id)]")
