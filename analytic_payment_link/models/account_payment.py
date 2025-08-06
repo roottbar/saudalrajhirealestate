@@ -6,7 +6,7 @@ class AccountPayment(models.Model):
     renting_order_id = fields.Many2one(
         'sale.order', 
         string='أمر التأجير',
-        domain="[('partner_id', '=', partner_id), ('rental_status', '!=', False), ('state', 'in', ['sale', 'done'])]"
+        domain="[('partner_id', '=', partner_id), ('is_rental_order', '=', True), ('state', 'in', ['sale', 'done'])]"
     )
     
     @api.depends('partner_id', 'renting_order_id')
@@ -28,7 +28,8 @@ class AccountPayment(models.Model):
         'account.move',
         compute='_compute_available_invoices',
         string='فواتير التأجير المتاحة'
-    )    
+    )
+    
     payment_invoice_line_ids = fields.One2many(
         'payment.invoice.line',
         'payment_id',
