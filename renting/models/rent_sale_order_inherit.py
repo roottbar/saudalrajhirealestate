@@ -399,11 +399,39 @@ class RentSaleOrderLine(models.Model):
     @api.depends('order_id', 'product_id')
     def get_amount_paid(self):
         for rec in self:
-            rec.amount_paid = sum(
-                ll.amount_total for ll in rec.order_id.invoice_ids.filtered(lambda line: line.payment_state == 'paid'))
-            rec.amount_due = sum(rec.order_id.order_line[0].price_unit / ll.sale_order_id.invoice_number for ll in
-                                 rec.order_id.order_contract_invoice.filtered(lambda line: line.status == 'uninvoiced')
-                                 ) if rec.order_id.order_line else 0.0
+            # حساب المبلغ المدفوع
+            # مجموع المبالغ للفواتير في حالة مدفوع لنفس امر المبيعات
+            paid_invoices_amount = sum(
+                invoice.amount_total for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'paid'
+                )
+            )
+            
+            # زائد المدفوع جزئيا المبلغ المسدد (المبلغ الكلي - المبلغ المتبقي)
+            partially_paid_amount = sum(
+                (invoice.amount_total - invoice.amount_residual) for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'partial'
+                )
+            )
+            
+            rec.amount_paid = paid_invoices_amount + partially_paid_amount
+            
+            # حساب المبلغ المستحق
+            # مجموع المبالغ المتبقية للفواتير في حالة غير مدفوع لنفس امر المبيعات
+            unpaid_invoices_amount = sum(
+                invoice.amount_total for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'not_paid'
+                )
+            )
+            
+            # زائد المتبقي من الفواتير المدفوعة جزئيا المتبقي منها غير مدفوع
+            partially_unpaid_amount = sum(
+                invoice.amount_residual for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'partial'
+                )
+            )
+            
+            rec.amount_due = unpaid_invoices_amount + partially_unpaid_amount
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
