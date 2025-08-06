@@ -9,7 +9,7 @@
     'author': 'Your Name',
     'website': 'https://www.yourwebsite.com',
     'category': 'Accounting',
-    'depends': ['account', 'analytic'],
+    'depends': ['account', 'analytic', 'sale'],
     'data': [
         'views/account_payment_views.xml',
         'views/account_move_views.xml',
