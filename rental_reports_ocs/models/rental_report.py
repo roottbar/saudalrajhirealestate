@@ -6,8 +6,8 @@ class RentalReportWizard(models.TransientModel):
 
     company_id = fields.Many2one('res.company', string='Company', required=True)
     operating_unit_id = fields.Many2one('operating.unit', string='Operating Unit')
-    property_address_build = fields.Many2one('rent.property', string='Building Address')
-    
+    property_address_build = fields.Many2one('rent.property',string='Building Address') 
+       
     def generate_report(self):
         data = {
             'company_id': self.company_id.id,
