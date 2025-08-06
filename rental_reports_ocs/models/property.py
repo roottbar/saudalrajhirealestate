@@ -55,6 +55,12 @@ class ProductTemplate(models.Model):
         related='product_rental_id.property_analytic_account',
         store=True
     )
+    property_analytic_account_parent = fields.Many2one(
+        comodel_name='account.analytic.account',
+        string='Parent Analytic Account',
+        related='product_rental_id.property_analytic_account_parent',
+        store=True
+    )
     product_rental_id = fields.Many2one(
         comodel_name='rent.property',
         string='الوحدة الإيجارية'
