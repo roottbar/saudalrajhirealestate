@@ -8,8 +8,13 @@
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="analytic_account_id" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
                 <field name="analytic_tag_ids" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
-                <field name="sale_order_id" domain="[('partner_id','=',parent.partner_id)]"/>
-                <field name="invoice_ids" widget="many2many_tags"/>
+                <field name="sale_order_id" 
+                       domain="[('partner_id', '=', partner_id), ('state', 'in', ['sale', 'done'])]"
+                       attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
+                <field name="invoice_ids" 
+                       widget="many2many_tags"
+                       domain="[('partner_id', '=', partner_id), ('move_type', 'in', ['out_invoice', 'out_refund']), ('state', '=', 'posted')]"
+                       attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
             </xpath>
         </field>
     </record>
