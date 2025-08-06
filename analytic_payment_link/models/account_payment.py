@@ -27,3 +27,9 @@ class AccountPayment(models.Model):
                 line['analytic_tag_ids'] = [(6, 0, self.analytic_tag_ids.ids)]
         
         return res
+    
+    partner_id = fields.Many2one('res.partner', string='العميل')
+    sale_order_id = fields.Many2one('sale.order', string='أمر المبيعات',
+        domain="[('partner_id', '=', partner_id)]")
+    invoice_ids = fields.Many2many('account.move', string='الفواتير',
+        domain="[('sale_order_id', '=', sale_order_id)]")
