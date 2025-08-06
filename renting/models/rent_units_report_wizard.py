@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import base64
 import io
 from datetime import datetime
@@ -18,8 +19,7 @@ class RentUnitsReportWizard(models.TransientModel):
                                 default=lambda self: self.env.company)
     operating_unit_id = fields.Many2one('operating.unit', string='الفرع', 
                                        domain="[('company_id', '=', company_id)]")
-    property_build_id = fields.Many2one('rent.property.build', string='المجمع',
-                                       domain="[('operating_unit_id', '=', operating_unit_id)]")
+    property_build_id = fields.Many2one('rent.property.build', string='المجمع')
     property_id = fields.Many2one('rent.property', string='العقار',
                                  domain="[('property_address_build', '=', property_build_id), ('property_address_area', '=', operating_unit_id)]")
     product_id = fields.Many2one('product.product', string='الوحدة',
