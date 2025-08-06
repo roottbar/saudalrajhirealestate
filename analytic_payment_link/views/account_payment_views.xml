@@ -5,16 +5,16 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form"/>
         <field name="arch" type="xml">
-            <!-- إضافة حقول أمر المبيعات -->
+            <!-- إضافة حقل أمر التأجير -->
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="sale_order_id" 
+                <field name="renting_order_id" 
                        attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
                 <field name="available_invoice_ids" invisible="1"/>
             </xpath>
 
             <!-- إضافة قسم فواتير الدفع -->
             <xpath expr="//sheet" position="before">
-                <group string="فواتير الدفع" attrs="{'invisible': [('payment_type', '=', 'transfer')]}">
+                <group string="فواتير التأجير" attrs="{'invisible': [('payment_type', '=', 'transfer')]}">
                     <field name="payment_invoice_line_ids" context="{'form_view_ref': 'analytic_payment_link.view_payment_invoice_line_form'}">
                         <tree editable="bottom" create="1">
                             <field name="invoice_id"/>
