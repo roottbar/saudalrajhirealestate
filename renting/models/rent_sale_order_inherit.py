@@ -394,6 +394,8 @@ class RentSaleOrderLine(models.Model):
     unit_state = fields.Char(related='product_id.unit_state', store=1)
     amount_paid = fields.Float(compute="get_amount_paid")
     amount_due = fields.Float(compute="get_amount_paid")
+    unit_expenses = fields.Float(string="المصروفات", compute="get_unit_expenses")
+    unit_revenues = fields.Float(string="الإيرادات", compute="get_unit_revenues")
 
     # apartment_insurance = fields.Float(related='order_id.apartment_insurance')
     @api.depends('order_id', 'product_id')
@@ -432,6 +434,31 @@ class RentSaleOrderLine(models.Model):
             )
             
             rec.amount_due = unpaid_invoices_amount + partially_unpaid_amount
+
+    @api.depends('product_id')
+    def get_unit_expenses(self):
+        """حساب المصروفات لنفس الوحدة"""
+        for rec in self:
+            # البحث عن جميع الفواتير المتعلقة بنفس الوحدة (المنتج) كمصروفات
+            expenses = self.env['account.move'].search([
+                ('move_type', '=', 'in_invoice'),  # فواتير الموردين (مصروفات)
+                ('unit_number', '=', rec.product_id.id),  # نفس الوحدة
+                ('state', '=', 'posted')  # فواتير مرحلة
+            ])
+            rec.unit_expenses = sum(expenses.mapped('amount_total'))
+
+    @api.depends('product_id')
+    def get_unit_revenues(self):
+        """حساب الإيرادات لنفس الوحدة"""
+        for rec in self:
+            # البحث عن جميع الفواتير المتعلقة بنفس الوحدة (المنتج) كإيرادات
+            revenues = self.env['account.move'].search([
+                ('move_type', '=', 'out_invoice'),  # فواتير العملاء (إيرادات)
+                ('unit_number', '=', rec.product_id.id),  # نفس الوحدة
+                ('state', '=', 'posted'),  # فواتير مرحلة
+                ('payment_state', 'in', ['paid', 'in_payment'])  # مدفوعة أو قيد الدفع
+            ])
+            rec.unit_revenues = sum(revenues.mapped('amount_total'))
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
