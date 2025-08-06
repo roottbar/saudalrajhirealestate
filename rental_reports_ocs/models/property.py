@@ -91,8 +91,13 @@ class RentPropertyCity(models.Model):
         store=True
     )
     property_analytic_account_parent = fields.Many2one(
-        related='product_rental_id.property_analytic_account_parent',
+        'account.analytic.account',
         string='Parent Analytic Account',
+        related='property_rental_id.property_analytic_account_parent',  # Changed from product_rental_id
         store=True
+    )
+    property_rental_id = fields.Many2one(
+        'rent.property',
+        string='Related Rental Property'
     )
     
