@@ -32,6 +32,53 @@ class AccountPayment(models.Model):
         'sale.order', 
         string='أمر المبيعات'
     )
+    
+    # تغيير إلى One2many لإضافة فواتير متعددة مع حساب تحليلي منفصل
+    payment_invoice_line_ids = fields.One2many(
+        'payment.invoice.line',
+        'payment_id',
+        string='فواتير الدفع'
+    )
+
+class PaymentInvoiceLine(models.Model):
+    _name = 'payment.invoice.line'
+    _description = 'خط فاتورة الدفع'
+    
+    payment_id = fields.Many2one('account.payment', string='الدفع', required=True, ondelete='cascade')
+    invoice_id = fields.Many2one('account.move', string='الفاتورة', required=True)
+    analytic_account_id = fields.Many2one('account.analytic.account', string='الحساب التحليلي')
+    analytic_tag_ids = fields.Many2many('account.analytic.tag', string='الوسوم التحليلية')
+    amount = fields.Monetary(string='المبلغ', currency_field='currency_id')
+    currency_id = fields.Many2one(related='payment_id.currency_id', store=True, readonly=True)
+
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+    
+    analytic_account_id = fields.Many2one(
+        'account.analytic.account',
+        string='الحساب التحليلي',
+        readonly=True,
+        states={'draft': [('readonly', False)]}
+    )
+    analytic_tag_ids = fields.Many2many(
+        'account.analytic.tag',
+        string='الوسوم التحليلية',
+        readonly=True,
+        states={'draft': [('readonly', False)]}
+    )
+    
+    def _prepare_move_line_default_vals(self, write_off_line_vals=None):
+        """Override to include analytic account and tags in move lines"""
+        res = super(AccountMove, self)._prepare_move_line_default_vals(write_off_line_vals)
+        
+        for line in res:
+            if self.analytic_account_id:
+                line['analytic_account_id'] = self.analytic_account_id.id
+            if self.analytic_tag_ids:
+                line['analytic_tag_ids'] = [(6, 0, self.analytic_tag_ids.ids)]
+        
+        return res
+    
     invoice_ids = fields.Many2many(
         'account.move', 
         string='الفواتير'
