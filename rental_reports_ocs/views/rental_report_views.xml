@@ -11,7 +11,7 @@
                         <group>
                             <field name="company_id" required="1"/>
                             <field name="operating_unit_id"/>
-                            <field name="property_address_build"/>
+                            <field name="property_address_build" string="Building Address"/>
                             <field name="property_id"/>
                         </group>
                     </sheet>
