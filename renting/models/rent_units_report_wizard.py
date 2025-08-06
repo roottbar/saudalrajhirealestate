@@ -121,7 +121,7 @@ class RentUnitsReportWizard(models.TransientModel):
     def generate_html_report(self):
         """إنشاء تقرير HTML"""
         data = self._get_report_data()
-        return self.env.ref('renting.rent_units_report_template').report_action(self, data={'lines': data})
+        return self.env.ref('renting.rent_units_report').report_action(self, data={'docs': data})
 
     def generate_excel_report(self):
         """إنشاء تقرير Excel"""
