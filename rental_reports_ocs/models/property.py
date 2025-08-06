@@ -29,11 +29,11 @@ class RentProperty(models.Model):
         string='Parent Analytic Account',
         domain="[('parent_id', '=', False)]"
     )
-    property_address_area = fields.Many2one(
-        'rent.property.area',
-        string='Area',
-        ondelete='set null'  # إضافة هذه المعلمة
-    )
+    # تم تعليق الحقل المسبب للمشكلة
+    # property_address_area = fields.Many2one(
+    #    'rent.property.area', 
+    #    string='Area'
+    # )
     active = fields.Boolean(string='نشط', default=True)
 
 class RentPropertyArea(models.Model):
@@ -90,11 +90,12 @@ class ProductTemplate(models.Model):
         related='product_rental_id.country',
         store=True
     )
-    property_address_area = fields.Many2one(
-        related='product_rental_id.property_address_area',
-        string='Property Area',
-        store=True
-    )
+    # تم تعليق الحقل المرتبط
+    # property_address_area = fields.Many2one(
+    #    related='product_rental_id.property_address_area',
+    #    string='Property Area',
+    #    store=True
+    # )
 
 class RentPropertyCity(models.Model):
     _name = 'rent.property.city'
