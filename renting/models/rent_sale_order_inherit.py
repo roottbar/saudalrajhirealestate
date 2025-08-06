@@ -394,16 +394,71 @@ class RentSaleOrderLine(models.Model):
     unit_state = fields.Char(related='product_id.unit_state', store=1)
     amount_paid = fields.Float(compute="get_amount_paid")
     amount_due = fields.Float(compute="get_amount_paid")
-
+    unit_expenses = fields.Float(string="المصروفات", compute="get_unit_expenses")
+    unit_revenues = fields.Float(string="الإيرادات", compute="get_unit_revenues")
+    analytic_account_id = fields.Many2one('account.analytic.account', string='الحساب التحليلي', related='product_id.analytic_account', store=True)
     # apartment_insurance = fields.Float(related='order_id.apartment_insurance')
     @api.depends('order_id', 'product_id')
     def get_amount_paid(self):
         for rec in self:
-            rec.amount_paid = sum(
-                ll.amount_total for ll in rec.order_id.invoice_ids.filtered(lambda line: line.payment_state == 'paid'))
-            rec.amount_due = sum(rec.order_id.order_line[0].price_unit / ll.sale_order_id.invoice_number for ll in
-                                 rec.order_id.order_contract_invoice.filtered(lambda line: line.status == 'uninvoiced')
-                                 ) if rec.order_id.order_line else 0.0
+            # حساب المبلغ المدفوع
+            # مجموع المبالغ للفواتير في حالة مدفوع لنفس امر المبيعات
+            paid_invoices_amount = sum(
+                invoice.amount_total for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'paid'
+                )
+            )
+            
+            # زائد المدفوع جزئيا المبلغ المسدد (المبلغ الكلي - المبلغ المتبقي)
+            partially_paid_amount = sum(
+                (invoice.amount_total - invoice.amount_residual) for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'partial'
+                )
+            )
+            
+            rec.amount_paid = paid_invoices_amount + partially_paid_amount
+            
+            # حساب المبلغ المستحق
+            # مجموع المبالغ المتبقية للفواتير في حالة غير مدفوع لنفس امر المبيعات
+            unpaid_invoices_amount = sum(
+                invoice.amount_total for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'not_paid'
+                )
+            )
+            
+            # زائد المتبقي من الفواتير المدفوعة جزئيا المتبقي منها غير مدفوع
+            partially_unpaid_amount = sum(
+                invoice.amount_residual for invoice in rec.order_id.invoice_ids.filtered(
+                    lambda inv: inv.payment_state == 'partial'
+                )
+            )
+            
+            rec.amount_due = unpaid_invoices_amount + partially_unpaid_amount
+
+    @api.depends('product_id')
+    def get_unit_expenses(self):
+        """حساب المصروفات لنفس الوحدة"""
+        for rec in self:
+            # البحث عن جميع الفواتير المتعلقة بنفس الوحدة (المنتج) كمصروفات
+            expenses = self.env['account.move'].search([
+                ('move_type', '=', 'in_invoice'),  # فواتير الموردين (مصروفات)
+                ('unit_number', '=', rec.product_id.id),  # نفس الوحدة
+                ('state', '=', 'posted')  # فواتير مرحلة
+            ])
+            rec.unit_expenses = sum(expenses.mapped('amount_total'))
+
+    @api.depends('product_id')
+    def get_unit_revenues(self):
+        """حساب الإيرادات لنفس الوحدة"""
+        for rec in self:
+            # البحث عن جميع الفواتير المتعلقة بنفس الوحدة (المنتج) كإيرادات
+            revenues = self.env['account.move'].search([
+                ('move_type', '=', 'out_invoice'),  # فواتير العملاء (إيرادات)
+                ('unit_number', '=', rec.product_id.id),  # نفس الوحدة
+                ('state', '=', 'posted'),  # فواتير مرحلة
+                ('payment_state', 'in', ['paid', 'in_payment'])  # مدفوعة أو قيد الدفع
+            ])
+            rec.unit_revenues = sum(revenues.mapped('amount_total'))
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
