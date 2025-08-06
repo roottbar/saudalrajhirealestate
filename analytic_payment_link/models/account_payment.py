@@ -6,8 +6,23 @@ class AccountPayment(models.Model):
     renting_order_id = fields.Many2one(
         'sale.order', 
         string='أمر التأجير',
-        domain="[('partner_id', '=', partner_id), ('is_rental_order', '=', True), ('state', 'in', ['sale', 'done'])]"
+        domain="[('partner_id', '=', partner_id), ('state', 'in', ['sale', 'done'])]"
     )
+    
+    @api.onchange('renting_order_id')
+    def _onchange_renting_order_id(self):
+        if self.renting_order_id and not self._is_rental_order(self.renting_order_id):
+            return {
+                'warning': {
+                    'title': 'تحذير',
+                    'message': 'يجب اختيار أمر تأجير صالح'
+                }
+            }
+    
+    def _is_rental_order(self, order):
+        """تحقق مما إذا كان الأمر هو أمر تأجير"""
+        # الطريقة الأكثر أماناً للتحقق من وجود منتجات تأجير
+        return any(line.product_id.rental for line in order.order_line)
     
     @api.depends('partner_id', 'renting_order_id')
     def _compute_available_invoices(self):
@@ -18,9 +33,10 @@ class AccountPayment(models.Model):
                 ('payment_state', '!=', 'paid'),
                 ('move_type', 'in', ['out_invoice', 'out_refund'])
             ]
+            
             if payment.renting_order_id:
                 domain.append(('invoice_origin', '=', payment.renting_order_id.name))
-                domain.append(('line_ids.sale_line_ids.is_rental', '=', True))
+                domain.append(('line_ids.sale_line_ids.order_id', '=', payment.renting_order_id.id))
             
             payment.available_invoice_ids = self.env['account.move'].search(domain)
     
@@ -28,8 +44,7 @@ class AccountPayment(models.Model):
         'account.move',
         compute='_compute_available_invoices',
         string='فواتير التأجير المتاحة'
-    )
-    
+    )    
     payment_invoice_line_ids = fields.One2many(
         'payment.invoice.line',
         'payment_id',
