@@ -489,3 +489,5 @@ class RentUnitsReportWizard(models.TransientModel):
                 
         except Exception as e:
             return 0.0
+            
+
