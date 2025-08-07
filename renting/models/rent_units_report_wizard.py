@@ -32,6 +32,19 @@ class RentUnitsReportWizard(models.TransientModel):
         ('html', 'HTML'),
         ('excel', 'Excel')
     ], string='نوع التقرير', default='html', required=True)
+    
+    # إضافة الحقول المحسوبة الجديدة
+    company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+    total_expenses = fields.Monetary(
+        string='إجمالي المصروفات',
+        currency_field='company_currency_id',
+        compute='_compute_totals'
+    )
+    total_revenues = fields.Monetary(
+        string='إجمالي الإيرادات',
+        currency_field='company_currency_id',
+        compute='_compute_totals'
+    )
 
     @api.onchange('company_id')
     def _onchange_company_id(self):
