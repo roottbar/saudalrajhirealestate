@@ -29,9 +29,9 @@ class RentUnitsReportWizard(models.TransientModel):
     date_to = fields.Date(string='إلى تاريخ')
     
     report_type = fields.Selection([
-        ('html', 'HTML'),
+        # ('html', 'HTML'),
         ('excel', 'Excel')
-    ], string='نوع التقرير', default='html', required=True)
+    ], string='نوع التقرير', default='excel', required=True)
     
     # إضافة الحقول المحسوبة الجديدة
     company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
@@ -532,3 +532,4 @@ class RentUnitsReportWizard(models.TransientModel):
             return self.generate_html_report()
         else:
             return self.generate_excel_report()
+
