@@ -475,6 +475,7 @@ class RentSaleOrderLine(models.Model):
     def _onchange_operating_unit_id(self):
         return {'domain': {'property_number': [('property_address_area.id', '=', self.operating_unit_id.id)]}}
 
+
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
     def _compute_amount(self):
         """
@@ -512,9 +513,3 @@ class RentSaleOrderLine(models.Model):
                 line.is_late = line.return_date < now
             except (TypeError, ValueError):
                 line.is_late = False
-    # @api.depends('return_date')
-    # def _compute_is_late(self):
-    #     now = fields.Date.today()
-    #     for line in self:
-    #         # By default, an order line is considered late only if it has one hour of delay
-    #         line.is_late = line.return_date and line.return_date < now
