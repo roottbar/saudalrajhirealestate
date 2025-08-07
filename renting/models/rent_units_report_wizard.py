@@ -408,23 +408,25 @@ class RentUnitsReportWizard(models.TransientModel):
     def _compute_totals(self):
         for record in self:
             try:
-                if not record.company_ids:
+                # التحقق من وجود البيانات الأساسية
+                if not record.company_ids or not record.date_from or not record.date_to:
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
                     continue
-
+                
                 company_ids = [c.id for c in record.company_ids]
                 
-                # استخدام مراكز التكلفة المحسوبة أو جميع مراكز التكلفة للشركة
+                # تحديد مراكز التكلفة
                 if record.analytic_account_ids:
                     analytic_account_ids = [a.id for a in record.analytic_account_ids]
+                elif record.analytic_account_id:
+                    analytic_account_ids = [record.analytic_account_id.id]
                 else:
-                    # إذا لم توجد مراكز تكلفة محسوبة، استخدم جميع مراكز التكلفة للشركة
-                    all_accounts = self.env['account.move.line'].search([
-                        ('company_id', 'in', company_ids),
-                        ('active', '=', True)
+                    # إذا لم توجد مراكز تكلفة محددة، استخدم جميع مراكز التكلفة للشركة
+                    analytic_accounts = self.env['account.analytic.account'].search([
+                        ('company_id', 'in', company_ids)
                     ])
-                    analytic_account_ids = all_accounts.ids
+                    analytic_account_ids = analytic_accounts.ids
                 
                 if not analytic_account_ids:
                     record.total_expenses = 0.0
@@ -441,23 +443,30 @@ class RentUnitsReportWizard(models.TransientModel):
                 ]
                 
                 # حساب المصروفات
-                expense_domain = base_domain + [('account_id.internal_group', '=', 'expense')]
+                expense_domain = base_domain + [
+                    ('account_id.user_type_id.name', 'in', ['Expenses', 'Cost of Revenue'])
+                ]
                 expense_lines = self.env['account.move.line'].search(expense_domain)
-                record.total_expenses = sum(expense_lines.mapped('balance'))
+                # حساب المصروفات من الجانب المدين
+                record.total_expenses = sum(line.debit for line in expense_lines)
                 
                 # حساب الإيرادات
-                revenue_domain = base_domain + [('account_id.internal_group', '=', 'income')]
+                revenue_domain = base_domain + [
+                    ('account_id.user_type_id.name', 'in', ['Income', 'Other Income'])
+                ]
                 revenue_lines = self.env['account.move.line'].search(revenue_domain)
-                record.total_revenues = sum(revenue_lines.mapped('balance'))
+                # حساب الإيرادات من الجانب الدائن
+                record.total_revenues = sum(line.credit for line in revenue_lines)
                 
             except Exception as e:
+                # في حالة حدوث خطأ، اجعل القيم صفر
                 record.total_expenses = 0.0
                 record.total_revenues = 0.0
 
     def _calculate_analytic_amount(self, account, amount_type):
         """حساب المبلغ لحساب تحليلي محدد"""
         try:
-            if not account or not account.id:
+            if not account or not account.id or not self.date_from or not self.date_to:
                 return 0.0
                 
             company_ids = [c.id for c in self.company_ids if hasattr(c, 'id') and c.id]
@@ -478,16 +487,15 @@ class RentUnitsReportWizard(models.TransientModel):
                     ('account_id.user_type_id.name', 'in', ['Expenses', 'Cost of Revenue'])
                 ]
                 lines = self.env['account.move.line'].search(domain)
-                return sum(abs(line.debit - line.credit) for line in lines if line.debit > line.credit)
+                return sum(line.debit for line in lines)
                 
             elif amount_type == 'revenues':
+                # الإيرادات - البحث في حسابات الإيرادات
                 domain = base_domain + [
                     ('account_id.user_type_id.name', 'in', ['Income', 'Other Income'])
                 ]
                 lines = self.env['account.move.line'].search(domain)
-                return sum(abs(line.credit - line.debit) for line in lines if line.credit > line.debit)
+                return sum(line.credit for line in lines)
                 
         except Exception as e:
             return 0.0
-            
-
