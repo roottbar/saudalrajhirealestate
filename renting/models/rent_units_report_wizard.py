@@ -29,9 +29,9 @@ class RentUnitsReportWizard(models.TransientModel):
     date_to = fields.Date(string='إلى تاريخ')
     
     report_type = fields.Selection([
-        # ('html', 'HTML'),
+        ('html', 'HTML'),
         ('excel', 'Excel')
-    ], string='نوع التقرير', default='excel', required=True)
+    ], string='نوع التقرير', default='html', required=True)
     
     # إضافة الحقول المحسوبة الجديدة
     company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
@@ -124,7 +124,7 @@ class RentUnitsReportWizard(models.TransientModel):
                 'operating_unit': line.property_address_area.name if line.property_address_area else '',
                 'property_build': line.property_address_build2.name if line.property_address_build2 else '',
                 'property_name': line.property_number.property_name if line.property_number else '',
-                'analytic_account': line.analytic_account_id.name if line.analytic_account_id else '',
+                'analytic_account': line.analytic_account_id.code if line.analytic_account_id else '',
                 'unit_name': line.product_id.name,
                 'customer_name': line.order_partner_id.name if line.order_partner_id else '',
                 'contract_number': line.order_id.name,
@@ -407,9 +407,9 @@ class RentUnitsReportWizard(models.TransientModel):
         
         # العناوين
         headers = [
-            'الشركة', 'الفرع', 'المجمع', 'العقار', 'رقم الوحدة', 'الوحدة',
-            'اسم العميل', 'رقم العقد', 'حالة الوحدة', 'التحصيل (المدفوعات)',
-            'المديونية (المتبقي)', 'المصروفات', 'الإيرادات', 'تاريخ الاستلام', 'تاريخ التسليم'
+            'الشركة', 'الفرع', 'المجمع', 'العقار', 'الحساب التحليلي', 'الوحدة',
+            'اسم العميل', 'رقم العقد', 'حالة الوحدة', 'المبلغ المدفوع',
+            'المبلغ المستحق', 'المصروفات', 'الإيرادات', 'تاريخ الاستلام', 'تاريخ التسليم'
         ]
         
         # حساب عرض الأعمدة ديناميكاً
@@ -510,7 +510,7 @@ class RentUnitsReportWizard(models.TransientModel):
             'url': f'/web/content/{attachment.id}?download=true',
             'target': 'new',
         }
-
+    
     def generate_html_report(self):
         """إنشاء تقرير HTML"""
         data = self._get_report_data()
@@ -532,4 +532,3 @@ class RentUnitsReportWizard(models.TransientModel):
             return self.generate_html_report()
         else:
             return self.generate_excel_report()
-
