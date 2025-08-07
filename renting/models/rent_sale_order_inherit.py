@@ -435,16 +435,18 @@ class RentSaleOrderLine(models.Model):
                 rec.unit_expenses = 0.0
                 continue
                 
-                # البحث عن فواتير الموردين المرتبطة بنفس الحساب التحليلي للعقار
-                expense_lines = self.env['account.move.line'].search([
-                    ('move_id.move_type', '=', 'in_invoice'),  # فواتير الموردين
-                    ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
-                    ('move_id.state', '=', 'posted'),  # فواتير مرحلة
-                    ('account_id.user_type_id.name', 'in', ['Expenses', 'Cost of Revenue'])  # حسابات المصروفات
-                ])
-                
-                # حساب إجمالي المصروفات من الجانب المدين
-                rec.unit_expenses = sum(expense_lines.mapped('debit'))
+            # البحث عن فواتير الموردين المرتبطة بنفس الحساب التحليلي للعقار
+            expense_lines = self.env['account.move.line'].search([
+                ('move_id.move_type', '=', 'in_invoice'),  # فواتير الموردين
+                ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
+                ('move_id.state', '=', 'posted'),  # فواتير مرحلة
+                ('account_id.user_type_id.name', 'in', ['Expenses', 'Cost of Revenue'])  # حسابات المصروفات
+            ])
+            
+            # حساب إجمالي المصروفات من الجانب المدين
+            rec.unit_expenses = sum(expense_lines.mapped('debit')) or 0.0
+        except Exception as e:
+            rec.unit_expenses = 0.0
 
     @api.depends('product_id', 'analytic_account_id')
     def get_unit_revenues(self):
@@ -454,18 +456,19 @@ class RentSaleOrderLine(models.Model):
                 rec.unit_revenues = 0.0
                 continue
                 
-                # البحث عن فواتير العملاء المرتبطة بنفس الحساب التحليلي للعقار
-                revenue_lines = self.env['account.move.line'].search([
-                    ('move_id.move_type', '=', 'out_invoice'),  # فواتير العملاء
-                    ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
-                    ('move_id.state', '=', 'posted'),  # فواتير مرحلة
-                    ('move_id.payment_state', 'in', ['paid', 'in_payment']),  # مدفوعة أو قيد الدفع
-                    ('account_id.user_type_id.name', 'in', ['Income', 'Other Income'])  # حسابات الإيرادات
-                ])
-                
-                # حساب إجمالي الإيرادات من الجانب الدائن
-                rec.unit_revenues = sum(revenue_lines.mapped('credit'))
-
+            # البحث عن فواتير العملاء المرتبطة بنفس الحساب التحليلي للعقار
+            revenue_lines = self.env['account.move.line'].search([
+                ('move_id.move_type', '=', 'out_invoice'),  # فواتير العملاء
+                ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
+                ('move_id.state', '=', 'posted'),  # فواتير مرحلة
+                ('move_id.payment_state', 'in', ['paid', 'in_payment']),  # مدفوعة أو قيد الدفع
+                ('account_id.user_type_id.name', 'in', ['Income', 'Other Income'])  # حسابات الإيرادات
+            ])
+            
+            # حساب إجمالي الإيرادات من الجانب الدائن
+            rec.unit_revenues = sum(revenue_lines.mapped('credit')) or 0.0
+        except Exception as e:
+            rec.unit_revenues = 0.0
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
         return {'domain': {'property_number': [('property_address_area.id', '=', self.operating_unit_id.id)]}}
