@@ -427,30 +427,44 @@ class RentSaleOrderLine(models.Model):
             
             rec.amount_due = unpaid_invoices_amount + partially_unpaid_amount
 
-    @api.depends('product_id')
+    @api.depends('product_id', 'analytic_account_id')
     def get_unit_expenses(self):
-        """حساب المصروفات لنفس الوحدة"""
+        """حساب المصروفات للحساب التحليلي للعقار من فواتير الموردين"""
         for rec in self:
-            # البحث عن جميع الفواتير المتعلقة بنفس الوحدة (المنتج) كمصروفات
-            expenses = self.env['account.move'].search([
-                ('move_type', '=', 'in_invoice'),  # فواتير الموردين (مصروفات)
-                ('unit_number', '=', rec.product_id.id),  # نفس الوحدة
-                ('state', '=', 'posted')  # فواتير مرحلة
-            ])
-            rec.unit_expenses = sum(expenses.mapped('amount_total'))
+            if not rec.analytic_account_id:
+                rec.unit_expenses = 0.0
+                continue
+                
+                # البحث عن فواتير الموردين المرتبطة بنفس الحساب التحليلي للعقار
+                expense_lines = self.env['account.move.line'].search([
+                    ('move_id.move_type', '=', 'in_invoice'),  # فواتير الموردين
+                    ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
+                    ('move_id.state', '=', 'posted'),  # فواتير مرحلة
+                    ('account_id.user_type_id.name', 'in', ['Expenses', 'Cost of Revenue'])  # حسابات المصروفات
+                ])
+                
+                # حساب إجمالي المصروفات من الجانب المدين
+                rec.unit_expenses = sum(expense_lines.mapped('debit'))
 
-    @api.depends('product_id')
+    @api.depends('product_id', 'analytic_account_id')
     def get_unit_revenues(self):
-        """حساب الإيرادات لنفس الوحدة"""
+        """حساب الإيرادات للحساب التحليلي للعقار من فواتير العملاء"""
         for rec in self:
-            # البحث عن جميع الفواتير المتعلقة بنفس الوحدة (المنتج) كإيرادات
-            revenues = self.env['account.move'].search([
-                ('move_type', '=', 'out_invoice'),  # فواتير العملاء (إيرادات)
-                ('unit_number', '=', rec.product_id.id),  # نفس الوحدة
-                ('state', '=', 'posted'),  # فواتير مرحلة
-                ('payment_state', 'in', ['paid', 'in_payment'])  # مدفوعة أو قيد الدفع
-            ])
-            rec.unit_revenues = sum(revenues.mapped('amount_total'))
+            if not rec.analytic_account_id:
+                rec.unit_revenues = 0.0
+                continue
+                
+                # البحث عن فواتير العملاء المرتبطة بنفس الحساب التحليلي للعقار
+                revenue_lines = self.env['account.move.line'].search([
+                    ('move_id.move_type', '=', 'out_invoice'),  # فواتير العملاء
+                    ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
+                    ('move_id.state', '=', 'posted'),  # فواتير مرحلة
+                    ('move_id.payment_state', 'in', ['paid', 'in_payment']),  # مدفوعة أو قيد الدفع
+                    ('account_id.user_type_id.name', 'in', ['Income', 'Other Income'])  # حسابات الإيرادات
+                ])
+                
+                # حساب إجمالي الإيرادات من الجانب الدائن
+                rec.unit_revenues = sum(revenue_lines.mapped('credit'))
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
