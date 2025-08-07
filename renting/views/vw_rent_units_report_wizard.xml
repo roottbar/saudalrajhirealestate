@@ -14,19 +14,11 @@
                             <field name="property_build_id" options="{'no_create': True}"/>
                             <field name="property_id" options="{'no_create': True}"/>
                             <field name="product_id" options="{'no_create': True}"/>
-                            <field name="company_ids" widget="many2many_tags" options="{'no_create': True}"/>
-                            <field name="analytic_account_ids" widget="many2many_tags" options="{'no_create': True}"/>
-                            <field name="group_id" options="{'no_create': True}"/>
-                            <field name="analytic_account_id" options="{'no_create': True}"/>
                         </group>
                         <group string="التواريخ">
                             <field name="date_from"/>
                             <field name="date_to"/>
                             <field name="report_type"/>
-                        </group>
-                        <group string="الإجماليات" col="2">
-                            <field name="total_expenses" readonly="1"/>
-                            <field name="total_revenues" readonly="1"/>
                         </group>
                     </group>
                     <footer>
