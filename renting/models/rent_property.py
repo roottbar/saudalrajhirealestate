@@ -294,7 +294,11 @@ class RentPropertymain(models.Model):
 
     def _export_invoice(self, invoice):
         def sanitize(value):
-            return (value or '').encode('ascii', 'ignore').decode('ascii').strip()
+            allowed_whitespace = {'\t', '\n', '\r'}
+            return ''.join(
+                c for c in (value or '') 
+                if ord(c) >= 0x20 or c in allowed_whitespace
+            ).strip()
         
         xml_content = etree.Element("Invoice")
         etree.SubElement(xml_content, "CustomerName").text = sanitize(invoice.partner_id.name)
