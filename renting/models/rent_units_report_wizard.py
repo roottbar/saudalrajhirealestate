@@ -118,10 +118,103 @@ class RentUnitsReportWizard(models.TransientModel):
         
         return data
 
-    def generate_html_report(self):
-        """إنشاء تقرير HTML"""
-        data = self._get_report_data()
-        return self.env.ref('renting.rent_units_report').report_action(self, data={'docs': data})
+    @api.depends('date_from', 'date_to', 'company_id', 'operating_unit_id', 'property_build_id', 'property_id', 'product_id')
+    def _compute_totals(self):
+        for record in self:
+            try:
+                if not record.company_id:
+                    record.total_expenses = 0.0
+                    record.total_revenues = 0.0
+                    continue
+
+                # جلب بيانات خطوط أوامر البيع حسب الفلاتر
+                domain = [('order_id.company_id', '=', record.company_id.id)]
+                
+                if record.operating_unit_id:
+                    domain.append(('property_address_area', '=', record.operating_unit_id.id))
+                if record.property_build_id:
+                    domain.append(('property_address_build2', '=', record.property_build_id.id))
+                if record.property_id:
+                    domain.append(('property_number', '=', record.property_id.id))
+                if record.product_id:
+                    domain.append(('product_id', '=', record.product_id.id))
+                if record.date_from:
+                    domain.append(('fromdate', '>=', record.date_from))
+                if record.date_to:
+                    domain.append(('todate', '<=', record.date_to))
+
+                sale_order_lines = self.env['sale.order.line'].search(domain)
+                
+                # حساب إجمالي المصروفات والإيرادات
+                total_expenses = 0.0
+                total_revenues = 0.0
+                
+                for line in sale_order_lines:
+                    if line.analytic_account_id:
+                        expenses = record._calculate_analytic_amount(line.analytic_account_id, 'expenses')
+                        revenues = record._calculate_analytic_amount(line.analytic_account_id, 'revenues')
+                        total_expenses += expenses
+                        total_revenues += revenues
+                
+                record.total_expenses = total_expenses
+                record.total_revenues = total_revenues
+                
+            except Exception as e:
+                record.total_expenses = 0.0
+                record.total_revenues = 0.0
+
+    def _calculate_analytic_amount(self, account, amount_type):
+        """حساب المبلغ لحساب تحليلي محدد"""
+        try:
+            if not account or not account.id:
+                return 0.0
+                
+            base_domain = [
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('company_id', '=', self.company_id.id),
+                ('analytic_account_id', '=', account.id),
+                ('move_id.state', '=', 'posted')
+            ]
+            
+            if amount_type == 'expenses':
+                # المصروفات - البحث في حسابات المصروفات
+                domain = base_domain + [
+                    ('account_id.internal_group', '=', 'expense')
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.balance) for line in lines if line.balance > 0)
+                
+            elif amount_type == 'revenues':
+                # الإيرادات - البحث في حسابات الإيرادات
+                domain = base_domain + [
+                    ('account_id.internal_group', '=', 'income')
+                ]
+                lines = self.env['account.move.line'].search(domain)
+                return sum(abs(line.balance) for line in lines if line.balance < 0)
+                
+            return 0.0
+            
+        except Exception:
+            return 0.0
+
+    def _get_column_width(self, data, column_index, header_text):
+        """حساب عرض العمود بناءً على أطول نص"""
+        max_length = len(header_text)
+        
+        for row in data:
+            if isinstance(row, dict):
+                values = list(row.values())
+                if column_index < len(values):
+                    cell_value = str(values[column_index]) if values[column_index] else ''
+                    max_length = max(max_length, len(cell_value))
+            elif isinstance(row, (list, tuple)):
+                if column_index < len(row):
+                    cell_value = str(row[column_index]) if row[column_index] else ''
+                    max_length = max(max_length, len(cell_value))
+        
+        # إضافة هامش إضافي وحد أقصى/أدنى للعرض
+        return min(max(max_length + 2, 8), 50)
 
     def generate_excel_report(self):
         """إنشاء تقرير Excel محسن مع اللوجو والتنسيق ونظام الشجرة"""
@@ -146,7 +239,7 @@ class RentUnitsReportWizard(models.TransientModel):
         # تنسيقات الخلايا المحسنة
         title_format = workbook.add_format({
             'bold': True,
-            'font_size': 18,
+            'font_size': 16,
             'align': 'center',
             'valign': 'vcenter',
             'bg_color': '#1F4E79',
@@ -156,7 +249,7 @@ class RentUnitsReportWizard(models.TransientModel):
         
         date_format = workbook.add_format({
             'bold': True,
-            'font_size': 12,
+            'font_size': 11,
             'align': 'center',
             'valign': 'vcenter',
             'bg_color': '#D9E2F3',
@@ -224,23 +317,29 @@ class RentUnitsReportWizard(models.TransientModel):
         
         current_row = 0
         
-        # إضافة اللوجو (إذا كان متوفراً)
+        # إضافة اللوجو المحسن (في المنتصف، صفين وعامودين)
         try:
             if self.company_id.logo:
                 logo_data = base64.b64decode(self.company_id.logo)
                 logo_io = io.BytesIO(logo_data)
-                worksheet.insert_image(current_row, 0, 'logo.png', {
+                
+                # حساب موضع المنتصف (عمود 6-7 من أصل 15 عمود)
+                logo_col = 6
+                worksheet.merge_range(current_row, logo_col, current_row + 1, logo_col + 1, '', workbook.add_format({'border': 0}))
+                
+                worksheet.insert_image(current_row, logo_col, 'logo.png', {
                     'image_data': logo_io,
-                    'x_scale': 0.5,
-                    'y_scale': 0.5,
-                    'x_offset': 10,
-                    'y_offset': 10
+                    'x_scale': 0.3,  # حجم أصغر
+                    'y_scale': 0.3,
+                    'x_offset': 15,
+                    'y_offset': 5,
+                    'positioning': 1
                 })
-                current_row += 4
+                current_row += 3  # فراغ تحت اللوجو
         except:
             pass
         
-        # عنوان التقرير
+        # عنوان التقرير (حجم أصغر)
         worksheet.merge_range(current_row, 0, current_row, 14, 'تقرير الوحدات المؤجرة', title_format)
         current_row += 2
         
@@ -269,6 +368,22 @@ class RentUnitsReportWizard(models.TransientModel):
         worksheet.merge_range(current_row, 0, current_row, 14, report_date, date_format)
         current_row += 2
         
+        # إضافة إجماليات المصروفات والإيرادات
+        totals_format = workbook.add_format({
+            'bold': True,
+            'bg_color': '#FFE699',
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': '#,##0.00'
+        })
+        
+        worksheet.write(current_row, 0, 'إجمالي المصروفات:', totals_format)
+        worksheet.write(current_row, 1, self.total_expenses, totals_format)
+        worksheet.write(current_row, 3, 'إجمالي الإيرادات:', totals_format)
+        worksheet.write(current_row, 4, self.total_revenues, totals_format)
+        current_row += 2
+        
         # العناوين
         headers = [
             'الشركة', 'الفرع', 'المجمع', 'العقار', 'الحساب التحليلي', 'الوحدة',
@@ -276,7 +391,11 @@ class RentUnitsReportWizard(models.TransientModel):
             'المبلغ المستحق', 'المصروفات', 'الإيرادات', 'تاريخ الاستلام', 'تاريخ التسليم'
         ]
         
+        # حساب عرض الأعمدة ديناميكاً
+        column_widths = []
         for col, header in enumerate(headers):
+            width = self._get_column_width(sorted_data, col, header)
+            column_widths.append(width)
             worksheet.write(current_row, col, header, header_format)
         
         current_row += 1
@@ -343,18 +462,10 @@ class RentUnitsReportWizard(models.TransientModel):
             
             current_row += 1
         
-        # ضبط عرض الأعمدة
-        worksheet.set_column('A:A', 20)  # الشركة
-        worksheet.set_column('B:B', 18)  # الفرع
-        worksheet.set_column('C:C', 18)  # المجمع
-        worksheet.set_column('D:D', 20)  # العقار
-        worksheet.set_column('E:E', 18)  # الحساب التحليلي
-        worksheet.set_column('F:F', 15)  # الوحدة
-        worksheet.set_column('G:G', 20)  # اسم العميل
-        worksheet.set_column('H:H', 15)  # رقم العقد
-        worksheet.set_column('I:I', 12)  # حالة الوحدة
-        worksheet.set_column('J:M', 15)  # المبالغ
-        worksheet.set_column('N:O', 12)  # التواريخ
+        # ضبط عرض الأعمدة ديناميكياً
+        for col, width in enumerate(column_widths):
+            col_letter = chr(65 + col)  # A, B, C, etc.
+            worksheet.set_column(f'{col_letter}:{col_letter}', width)
         
         # تجميد الصفوف العلوية والعمود الأول
         worksheet.freeze_panes(current_row - len(sorted_data), 1)
