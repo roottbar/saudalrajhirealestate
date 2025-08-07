@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- نموذج المعالج -->
+        <record id="rent_units_report_wizard_form" model="ir.ui.view">
+            <field name="name">rent.units.report.wizard.form</field>
+            <field name="model">rent.units.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="تقرير الوحدات المؤجرة">
+                    <group>
+                        <group string="الفلاتر">
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="operating_unit_id" options="{'no_create': True}"/>
+                            <field name="property_build_id" options="{'no_create': True}"/>
+                            <field name="property_id" options="{'no_create': True}"/>
+                            <field name="product_id" options="{'no_create': True}"/>
+                            <field name="company_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="analytic_account_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="group_id" options="{'no_create': True}"/>
+                            <field name="analytic_account_id" options="{'no_create': True}"/>
+                        </group>
+                        <group string="التواريخ">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="report_type"/>
+                        </group>
+                        <group string="الإجماليات" col="2">
+                            <field name="total_expenses" readonly="1"/>
+                            <field name="total_revenues" readonly="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="generate_report" string="إنشاء التقرير" type="object" class="btn-primary"/>
+                        <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- إجراء فتح المعالج -->
+        <record id="rent_units_report_wizard_action" model="ir.actions.act_window">
+            <field name="name">تقرير الوحدات المؤجرة</field>
+            <field name="res_model">rent.units.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="rent_units_report_wizard_form"/>
+        </record>
+
+        <!-- عنصر القائمة -->
+        <menuitem id="rent_units_report_wizard_menu"
+                  name="تقرير الوحدات المؤجرة المتقدم"
+                  parent="sale_renting.menu_rental_reporting"
+                  action="rent_units_report_wizard_action"
+                  sequence="10"/>
+
+    </data>
+</odoo>

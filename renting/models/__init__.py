@@ -26,3 +26,4 @@ from . import rent_sale_order_inherit
 from . import rent_unit_maintenance
 from . import rent_account_asset_inherit
 from . import rent_sale_invoices
+from . import rent_units_report_wizard
