@@ -292,3 +292,12 @@ class RentPropertymain(models.Model):
                         'default_property_name': self.property.id, 'default_unit_number': self.apartment.id, },
         }
 
+    def _export_invoice(self, invoice):
+        def sanitize(value):
+            return (value or '').encode('ascii', 'ignore').decode('ascii').strip()
+        
+        xml_content = etree.Element("Invoice")
+        etree.SubElement(xml_content, "CustomerName").text = sanitize(invoice.partner_id.name)
+        etree.SubElement(xml_content, "InvoiceNumber").text = sanitize(invoice.name)
+        # ... existing code ...
+
