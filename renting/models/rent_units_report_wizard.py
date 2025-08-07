@@ -1,514 +1,387 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta, date, datetime
 
-from dateutil.relativedelta import relativedelta
-
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 from odoo.exceptions import UserError
-from odoo.tools import float_compare, format_datetime, format_time
+import base64
+import io
+from datetime import datetime
+try:
+    import xlsxwriter
+except ImportError:
+    xlsxwriter = None
 
 
+class RentUnitsReportWizard(models.TransientModel):
+    _name = 'rent.units.report.wizard'
+    _description = 'معالج تقرير الوحدات المؤجرة'
 
-class RentSaleOrder(models.Model):
-    _inherit = 'sale.order'
-
-    contract_number = fields.Char(string='رقم عقد منصة ايجار')
-    fromdate = fields.Datetime(string='From Date', default=fields.Datetime.now, copy=False, required=True)
-    todate = fields.Datetime(string='To Date', default=fields.Datetime.now, copy=False, required=True)
-    # Fields in Contract Info Tab
-    order_contract = fields.Binary(string='العقد')
-    invoice_terms = fields.Selection(
-        [('monthly', 'شهري'), ('qua-year', '3 شهور'), ('half-year', '6 أشهر'), ('year', 'سنوي')],
-        string='Invoice Terms',
-        default='monthly')
-    order_contract_invoice = fields.One2many('rent.sale.invoices', 'sale_order_id', string='العقد')
-    contract_total_payment = fields.Float(string='Total Contract')
-    contract_total_fees = fields.Float(string='Total Fees')
-    brand_nameplate_allowed = fields.Boolean(string='Nameplate Allowed')
-    contract_hegira_date = fields.Char(string='التاريخ الهجري')
-    contract_penalties = fields.Float(string='الجزائات')
-    contract_extra_maintenance_cost = fields.Float(string='تكلفة الصيانة الاضافية')
-    contractor_pen = fields.Char(string='رسوم متأخرات')
-    amount_remain = fields.Float(string='اجمالي المتبقي', compute='_get_remain')
-    invoice_number = fields.Integer(string='Number Of Invoices')
-    order_line = fields.One2many('sale.order.line', 'order_id', string='Order Lines',
-                                 states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True,
-                                 auto_join=True)
-
-    order_property_state = fields.One2many('rent.sale.state', 'sale_order_id', string='الحالة')
-
-    # بنود الاستلام
-    door_good = fields.Boolean('جيد')
-    door_bad = fields.Boolean('سئ')
-    door_comment = fields.Char('حدد')
-    wall_good = fields.Boolean('جيد')
-    wall_bad = fields.Boolean('سئ')
-    wall_comment = fields.Char('حدد')
-    window_good = fields.Boolean('جيد')
-    window_bad = fields.Boolean('سئ')
-    window_comment = fields.Char('حدد')
-    water_good = fields.Boolean('جيد')
-    water_bad = fields.Boolean('سئ')
-    water_comment = fields.Char('حدد')
-    elec_good = fields.Boolean('جيد')
-    elec_bad = fields.Boolean('سئ')
-    elec_comment = fields.Char('حدد')
-    rdoor_good = fields.Boolean('جيد')
-    rdoor_bad = fields.Boolean('سئ')
-    rdoor_comment = fields.Char('حدد')
-    rwall_good = fields.Boolean('جيد')
-    rwall_bad = fields.Boolean('سئ')
-    rwall_comment = fields.Char('حدد')
-    rwindow_good = fields.Boolean('جيد')
-    rwindow_bad = fields.Boolean('سئ')
-    rwindow_comment = fields.Char('حدد')
-    rwater_good = fields.Boolean('جيد')
-    rwater_bad = fields.Boolean('سئ')
-    rwater_comment = fields.Char('حدد')
-    relec_good = fields.Boolean('جيد')
-    relec_bad = fields.Boolean('سئ')
-    relec_comment = fields.Char('حدد')
-    customer_accept = fields.Boolean('نعم')
-    customer_refused = fields.Boolean('لا')
-    notes = fields.Text('الملاحظات')
-    rnotes = fields.Text('الملاحظات')
-    mangement_accept = fields.Boolean('نعم')
-    mangement_refused = fields.Boolean('لا')
-    manage_note = fields.Text('ملاحظة')
-    rmanage_note = fields.Text('ملاحظة')
-    is_cost = fields.Boolean('نعم')
-    is_no_cost = fields.Boolean('لا')
-    is_amount_rem = fields.Boolean('نعم')
-    is_no_amount_rem = fields.Boolean('لا')
-    amount_rem = fields.Float('المبلغ المتبقي')
-    iselec_remain = fields.Boolean('نعم')
-    isnotelec_remain = fields.Boolean('لا')
-
-    def open_return(self):
-        status = "return"
-        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
-        lines_to_return = self.order_line.filtered(
-            lambda r: r.state in ['sale', 'done', 'occupied'] and r.is_rental and float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0)
-        return self._open_rental_wizard(status, lines_to_return.ids)
-    def _get_remain(self):
-        for record in self:
-            amount = 0
-            invoices_paid = self.env['account.move'].sudo().search(
-                [('invoice_origin', '=', record.name), ('payment_state', 'in', ['paid', 'in_payment'])])
-            for line in invoices_paid:
-                amount += line.amount_total
-            record.amount_remain = record.amount_total - amount
-
-    @api.depends('order_line.price_total')
-    def _amount_all(self):
-        """
-        Compute the total amounts of the SO.
-        """
-        for order in self:
-            amount_untaxed = amount_tax = 0.0
-            for line in order.order_line:
-                # fees_price = 0.0 fees_price = line.price_subtotal + line.insurance_value + line.contract_admin_fees
-                # + line.contract_service_fees + line.contract_admin_sub_fees + line.contract_service_sub_fees
-                amount_untaxed += line.price_subtotal
-                amount_tax += line.price_tax
-            order.update({
-                'amount_untaxed': amount_untaxed,
-                'amount_tax': amount_tax,
-                'amount_total': amount_untaxed + amount_tax,
-            })
-
-    def create_order_invoices(self):
-        for rec in self:
-            if rec.invoice_number <= 0:
-                raise UserError(_('من فضلك اكتب عدد الفواتير'))
-            rec.order_contract_invoice = False
-            fromdate = rec.fromdate
-            d1 = rec.fromdate
-            d2 = rec.todate
-            total_contract_period = d2 - d1
-
-            if total_contract_period.days <= 0:
-                raise UserError(_('يجب اختيار مدة العقد بصورة صحيحة'))
-
-            diff = 0
-            diff = total_contract_period.days / rec.invoice_number
-            diff = round(diff, 0)
-            # if abs(total_contract_period.days) % abs(rec.invoice_number) >0:
-            #     raise UserError(_('يجب كتابة عدد فواتير مناسب لمدة العقد'))
-            #
-
-            for i in range(1, rec.invoice_number + 1):
-
-                total_other_amount = sum((
-                                                 i.insurance_value + i.contract_admin_fees + i.contract_service_fees + i.contract_admin_sub_fees + i.contract_service_sub_fees)
-                                         for i in rec.order_line)
-                taxed_total_other_amount = sum(
-                    (i.contract_admin_sub_fees + i.contract_service_sub_fees) for i in rec.order_line)
-
-                total_property_amount_without_tax = sum((i.product_uom_qty * i.price_unit) for i in rec.order_line)
-
-                property_amount_per_inv = total_property_amount_without_tax / rec.invoice_number
-
-                total_tax_first_inv = sum(
-                    (property_amount_per_inv + taxed_total_other_amount) * (tax.amount / 100) for tax in
-                    rec.order_line.tax_id)
-                total_tax = sum((property_amount_per_inv) * (tax.amount / 100) for tax in rec.order_line.tax_id)
-
-                todate = fromdate + relativedelta(days=diff)
-
-                if i == 1:
-                    amount = property_amount_per_inv + total_other_amount + total_tax_first_inv
-                if i == rec.invoice_number:
-                    amount = total_property_amount_without_tax - sum(rec.order_contract_invoice.mapped('amount'))
-                else:
-                    amount = property_amount_per_inv + total_tax
-                if amount > 0:
-                    sale_invoices = self.env['rent.sale.invoices'].create({
-                        'name': "فاتورة رقم " + str(i),
-                        'sequence': i,
-                        'fromdate': fromdate,
-                        'todate': rec.todate if rec.invoice_number == i else todate,
-                        'amount': amount,
-                        'sale_order_id': rec.id,
-                    })
-                fromdate = todate + relativedelta(days=1)
-
-    @api.onchange("fromdate", "todate")
-    def onchang_contract_dates(self):
-        self.get_invoice_number()
-
-    def get_invoice_number(self):
-        diff = relativedelta(self.todate, self.fromdate)
-        m = month = 0
-        if diff.years != 0:
-            m = diff.years * 12
-        if diff.months != 0:
-            month = diff.months
-        if diff.days > 0:
-            month +=1
-        self.invoice_number = month + m
-        self.invoice_number = month
-
-    def action_confirm(self):
-        if self.invoice_number == 0:
-            # self.get_invoice_number()
-            raise UserError(_('من فضلك اكتب عدد الفواتير'))
-        result = super(RentSaleOrder, self).action_confirm()
-        if self.is_rental_order:
-            self.create_order_invoices()
-        return result
-
-    full_invoiced = fields.Boolean(string="Fully Invoiced", compute="_compute_full_invoiced", store=True)
-    no_of_invoiced = fields.Integer(string=" الفواتير المفوترة", compute="compute_no_invoiced")
-    no_of_not_invoiced = fields.Integer(string=" الفواتير الغير مفوترة", compute="compute_no_invoiced")
-    no_of_invoiced_amount = fields.Float(string="المبالغ المفوترة", compute="compute_no_invoiced")
-    no_of_not_invoiced_amount = fields.Float(string="المبالغ الغير مفوترة", compute="compute_no_invoiced")
-    no_of_posted_invoiced = fields.Float(string="الفواتير المرحلة", compute="compute_no_invoiced")
-    no_of_posted_invoiced_amount = fields.Float(string="مبالغ الفواتير المرحلة", compute="compute_no_invoiced")
-
-    no_of_paid_invoiced = fields.Float(string="الفواتر المدفوعة ", compute="compute_no_invoiced")
-    no_of_paid_invoiced_amount = fields.Float(string="مبالغ  الفواتير المدفوعة", compute="compute_no_invoiced")
-
+    company_id = fields.Many2one('res.company', string='الشركة', required=True, 
+                                default=lambda self: self.env.company)
+    operating_unit_id = fields.Many2one('operating.unit', string='الفرع', 
+                                       domain="[('company_id', '=', company_id)]")
+    property_build_id = fields.Many2one('rent.property.build', string='المجمع')
+    property_id = fields.Many2one('rent.property', string='العقار',
+                                 domain="[('property_address_build', '=', property_build_id), ('property_address_area', '=', operating_unit_id)]")
+    product_id = fields.Many2one('product.product', string='الوحدة',
+                                domain="[('property_id', '=', property_id)]")
     
+    date_from = fields.Date(string='من تاريخ')
+    date_to = fields.Date(string='إلى تاريخ')
     
-    
-    # ('payment_state', '!=', 'paid')
-    
-    @api.depends('order_contract_invoice.status', 'order_contract_invoice.amount')
-    def compute_no_invoiced(self):
-        for order in self:
-            order.no_of_invoiced = 0
-            order.no_of_not_invoiced = 0
-            order.no_of_invoiced_amount = 0
-            order.no_of_not_invoiced_amount = 0
-            order.no_of_posted_invoiced = 0
-            order.no_of_paid_invoiced = 0
-            order.no_of_paid_invoiced_amount = 0
+    report_type = fields.Selection([
+        ('html', 'HTML'),
+        ('excel', 'Excel')
+    ], string='نوع التقرير', default='html', required=True)
 
-            order.no_of_invoiced = len(order.order_contract_invoice.filtered(lambda s: s.status == 'invoiced'))
-            order.no_of_invoiced_amount = sum(order.order_contract_invoice.filtered(lambda s: s.status == 'invoiced').mapped('amount'))
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        """تصفية الفروع حسب الشركة المختارة"""
+        self.operating_unit_id = False
+        self.property_build_id = False
+        self.property_id = False
+        self.product_id = False
+        return {'domain': {'operating_unit_id': [('company_id', '=', self.company_id.id)]}}
 
-            order.no_of_not_invoiced = len(order.order_contract_invoice.filtered(lambda s: s.status == 'uninvoiced'))
-            order.no_of_not_invoiced_amount = sum(order.order_contract_invoice.filtered(lambda s: s.status == 'uninvoiced').mapped('amount'))
-
-            order.no_of_posted_invoiced = len(order.invoice_ids.filtered(lambda s: s.state == 'posted'))
-            order.no_of_posted_invoiced_amount = sum(order.invoice_ids.filtered(lambda s: s.state == 'posted').mapped('amount_total'))
-
-    
-            order.no_of_paid_invoiced = len(order.invoice_ids.filtered(lambda s: s.payment_state == 'paid'))
-            order.no_of_paid_invoiced_amount = sum(order.invoice_ids.filtered(lambda s: s.payment_state == 'paid').mapped('amount_total'))
-
-    @api.depends('order_contract_invoice.status')
-    def _compute_full_invoiced(self):
-        for order in self:
-            order.full_invoiced = False
-            not_invoiced = order.order_contract_invoice.filtered(lambda s: s.status == 'uninvoiced')
-            if not not_invoiced and len(order.order_contract_invoice) > 0:
-                order.full_invoiced = True
-
-    @api.model
-    def create(self, vals):
-        result = super(RentSaleOrder, self).create(vals)
-        if result.invoice_number <= 0 and result.is_rental_order:
-            raise UserError(_('من فضلك اكتب عدد الفواتير'))
-        return result
-
-    # @api.model_create_multi
-    # def create(self, vals_list):
-    #     order_lines_list = []
-    #     res = super(RentSaleOrder, self).create(vals_list)
-    #
-    #     # if res.invoice_terms == 'monthly':
-    #     #
-    #     # elif res.invoice_terms == 'half-year':
-    #     # elif res.invoice_terms == 'qua-year':
-    #     # elif res.invoice_terms == 'year':
-    #     product_admin = self.env['product.template'].sudo().search([('name', '=', 'رسوم ادارية')])
-    #     product_admin.list_price = res.contract_admin_fees
-    #     product_admin.standard_price = res.contract_admin_fees
-    #     product_product_admin = self.env['product.product'].sudo().search([('product_tmpl_id', '=', product_admin.id)])
-    #     if res.contract_admin_fees > 0:
-    #         order_lines_list.append((0, 0, {
-    #             'name': 'رسوم ادارية',
-    #             'product_id': product_product_admin.id,
-    #             'price_unit': res.contract_admin_fees,
-    #             'is_rental': True,
-    #             'pickup_date': res.order_line[0].pickup_date,
-    #             'return_date': res.order_line[0].return_date,
-    #             'price_subtotal': res.contract_admin_fees
-    #         }))
-    #     product_service = self.env['product.template'].sudo().search([('name', '=', 'رسوم خدمات')])
-    #     product_service.list_price = res.contract_service_fees
-    #     product_service.standard_price = res.contract_service_fees
-    #     product_product_service = self.env['product.product'].sudo().search(
-    #         [('product_tmpl_id', '=', product_service.id)])
-    #     if res.contract_service_fees > 0:
-    #         order_lines_list.append((0, 0, {
-    #             'name': 'رسوم خدمات',
-    #             'product_id': product_product_service.id,
-    #             'price_unit': res.contract_service_fees,
-    #             'is_rental': True,
-    #             'pickup_date': res.order_line[0].pickup_date,
-    #             'return_date': res.order_line[0].return_date,
-    #             'price_subtotal': res.contract_service_fees
-    #         }))
-    #     product_sub_admin = self.env['product.template'].sudo().search([('name', '=', 'رسوم ادارية خاضعة')])
-    #     product_sub_admin.list_price = res.contract_admin_sub_fees
-    #     product_sub_admin.standard_price = res.contract_admin_sub_fees
-    #     product_product_sub_admin = self.env['product.product'].sudo().search(
-    #         [('product_tmpl_id', '=', product_sub_admin.id)])
-    #     if res.contract_admin_sub_fees > 0:
-    #         order_lines_list.append((0, 0, {
-    #             'name': 'رسوم ادارية خاضعة',
-    #             'product_id': product_product_sub_admin.id,
-    #             'price_unit': res.contract_admin_sub_fees,
-    #             'is_rental': True,
-    #             'pickup_date': res.order_line[0].pickup_date,
-    #             'return_date': res.order_line[0].return_date,
-    #             'price_subtotal': res.contract_admin_sub_fees
-    #         }))
-    #     product_sub_service = self.env['product.template'].sudo().search([('name', '=', 'رسوم خدمات خاضعة')])
-    #     product_sub_service.list_price = res.contract_service_sub_fees
-    #     product_sub_service.standard_price = res.contract_service_sub_fees
-    #     product_product_sub_service = self.env['product.product'].sudo().search(
-    #         [('product_tmpl_id', '=', product_sub_service.id)])
-    #     if res.contract_service_sub_fees > 0:
-    #         order_lines_list.append((0, 0, {
-    #             'name': 'رسوم خدمات خاضعة',
-    #             'product_id': product_product_sub_service.id,
-    #             'price_unit': res.contract_service_sub_fees,
-    #             'is_rental': True,
-    #             'pickup_date': res.order_line[0].pickup_date,
-    #             'return_date': res.order_line[0].return_date,
-    #             'price_subtotal': res.contract_service_sub_fees
-    #         }))
-    #     product_service = self.env['product.template'].sudo().search([('name', '=', 'تـأمين')])
-    #     product_service.list_price = res.insurance_value
-    #     product_service.standard_price = res.insurance_value
-    #     product_product_service = self.env['product.product'].sudo().search(
-    #         [('product_tmpl_id', '=', product_service.id)])
-    #
-    #     if res.insurance_value > 0:
-    #         order_lines_list.append((0, 0, {
-    #             'name': 'تـأمين',
-    #             'product_id': product_product_service.id,
-    #             'price_unit': res.insurance_value,
-    #             'is_rental': True,
-    #             'pickup_date': res.order_line[0].pickup_date,
-    #             'return_date': res.order_line[0].return_date,
-    #             'price_subtotal': res.insurance_value
-    #         }))
-    #     print(order_lines_list)
-    #     res.update({
-    #
-    #         'order_line': order_lines_list
-    #
-    #     })
-    #
-    #     return res
-
-
-class RentSaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
-
-    property_number = fields.Many2one('rent.property', string='العقار')
-    pickup_date = fields.Datetime(string="Pickup", related='order_id.fromdate', store=True)
-    return_date = fields.Datetime(string="Return", related='order_id.todate', store=True)
-    insurance_value = fields.Float(string='قيمة التأمين')
-    contract_admin_fees = fields.Float(string='رسوم ادارية')
-    contract_service_fees = fields.Float(string='رسوم الخدمات')
-    contract_admin_sub_fees = fields.Float(string='رسوم ادارية خاضعة')
-    contract_service_sub_fees = fields.Float(string='رسوم الخدمات خاضعة')
-    fromdate = fields.Datetime(related="order_id.fromdate", store=1)
-    todate = fields.Datetime(related="order_id.todate", store=1)
-
-    def search_property_address_area(self, operator, value):
-        return [('property_address_area', 'ilike', value)]
-
-    property_address_area = fields.Many2one(comodel_name='operating.unit', string='الفرع',
-                                            compute="get_property_number_fields", store=1)
-    property_address_build2 = fields.Many2one(comodel_name='rent.property.build', string='المجمع',
-                                              related="property_number.property_address_build", store=1)
-    # property_address_build = fields.Many2one(comodel_name='rent.property.build', string='المجمع',compute="get_property_number_fields2", store=1)
-    # property_number = fields.Many2one(comodel_name='rent.property', string='العقار')
-    partner_id = fields.Many2one(related='order_id.partner_id')
-
-    @api.depends('property_number')
-    def get_property_number_fields(self):
-        for rec in self:
-            rec.property_address_area = rec.property_number.property_address_area.id if rec.property_number else False
-
-    # @api.depends('property_number')
-    # def get_property_number_fields2(self):
-    #     for rec in self:
-    #         rec.property_address_build = rec.property_number.property_address_build.id if rec.property_number else False
-
-    unit_state = fields.Char(related='product_id.unit_state', store=1)
-    amount_paid = fields.Float(compute="get_amount_paid")
-    amount_due = fields.Float(compute="get_amount_paid")
-    unit_expenses = fields.Float(string="المصروفات", compute="get_unit_expenses")
-    unit_revenues = fields.Float(string="الإيرادات", compute="get_unit_revenues")
-    analytic_account_id = fields.Many2one('account.analytic.account', string='الحساب التحليلي', related='product_id.analytic_account', store=True)
-    # apartment_insurance = fields.Float(related='order_id.apartment_insurance')
-    @api.depends('order_id', 'product_id')
-    def get_amount_paid(self):
-        for rec in self:
-            # حساب المبلغ المدفوع
-            # مجموع المبالغ للفواتير في حالة مدفوع لنفس امر المبيعات
-            paid_invoices_amount = sum(
-                invoice.amount_total for invoice in rec.order_id.invoice_ids.filtered(
-                    lambda inv: inv.payment_state == 'paid'
-                )
-            )
-            
-            # زائد المدفوع جزئيا المبلغ المسدد (المبلغ الكلي - المبلغ المتبقي)
-            partially_paid_amount = sum(
-                (invoice.amount_total - invoice.amount_residual) for invoice in rec.order_id.invoice_ids.filtered(
-                    lambda inv: inv.payment_state == 'partial'
-                )
-            )
-            
-            rec.amount_paid = paid_invoices_amount + partially_paid_amount
-            
-            # حساب المبلغ المستحق
-            # مجموع المبالغ المتبقية للفواتير في حالة غير مدفوع لنفس امر المبيعات
-            unpaid_invoices_amount = sum(
-                invoice.amount_total for invoice in rec.order_id.invoice_ids.filtered(
-                    lambda inv: inv.payment_state == 'not_paid'
-                )
-            )
-            
-            # زائد المتبقي من الفواتير المدفوعة جزئيا المتبقي منها غير مدفوع
-            partially_unpaid_amount = sum(
-                invoice.amount_residual for invoice in rec.order_id.invoice_ids.filtered(
-                    lambda inv: inv.payment_state == 'partial'
-                )
-            )
-            
-            rec.amount_due = unpaid_invoices_amount + partially_unpaid_amount
-
-    @api.depends('product_id', 'analytic_account_id')
-    def get_unit_expenses(self):
-        """حساب المصروفات للحساب التحليلي للعقار من فواتير الموردين"""
-        for rec in self:
-            if not rec.analytic_account_id:
-                rec.unit_expenses = 0.0
-                continue
-                
-            # البحث عن فواتير الموردين المرتبطة بنفس الحساب التحليلي للعقار
-            expense_lines = self.env['account.move.line'].search([
-                ('move_id.move_type', '=', 'in_invoice'),  # فواتير الموردين
-                ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
-                ('move_id.state', '=', 'posted'),  # فواتير مرحلة
-                ('account_id.user_type_id.name', 'in', ['Expenses', 'Cost of Revenue'])  # حسابات المصروفات
-            ])
-            
-            # حساب إجمالي المصروفات من الجانب المدين
-            rec.unit_expenses = sum(expense_lines.mapped('debit'))
-
-    @api.depends('product_id', 'analytic_account_id')
-    def get_unit_revenues(self):
-        """حساب الإيرادات للحساب التحليلي للعقار من فواتير العملاء"""
-        for rec in self:
-            if not rec.analytic_account_id:
-                rec.unit_revenues = 0.0
-                continue
-                
-            # البحث عن فواتير العملاء المرتبطة بنفس الحساب التحليلي للعقار
-            revenue_lines = self.env['account.move.line'].search([
-                ('move_id.move_type', '=', 'out_invoice'),  # فواتير العملاء
-                ('analytic_account_id', '=', rec.analytic_account_id.id),  # نفس الحساب التحليلي للعقار
-                ('move_id.state', '=', 'posted'),  # فواتير مرحلة
-                ('move_id.payment_state', 'in', ['paid', 'in_payment']),  # مدفوعة أو قيد الدفع
-                ('account_id.user_type_id.name', 'in', ['Income', 'Other Income'])  # حسابات الإيرادات
-            ])
-            
-            # حساب إجمالي الإيرادات من الجانب الدائن
-            rec.unit_revenues = sum(revenue_lines.mapped('credit'))
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
-        return {'domain': {'property_number': [('property_address_area.id', '=', self.operating_unit_id.id)]}}
+        """تصفية المجمعات حسب الفرع المختار"""
+        self.property_build_id = False
+        self.property_id = False
+        self.product_id = False
+        if self.operating_unit_id:
+            # البحث عن المجمعات المرتبطة بالفرع
+            properties = self.env['rent.property'].search([('property_address_area', '=', self.operating_unit_id.id)])
+            build_ids = properties.mapped('property_address_build').ids
+            return {'domain': {'property_build_id': [('id', 'in', build_ids)]}}
+        return {'domain': {'property_build_id': []}}
 
-    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
-    def _compute_amount(self):
-        """
-        Compute the amounts of the SO line.
-        """
-        for line in self:
-            price = line.price_unit + line.insurance_value + line.contract_admin_fees + line.contract_service_fees + line.contract_admin_sub_fees + line.contract_service_sub_fees * (
-                    1 - (line.discount or 0.0) / 100.0)
-            price_tax = line.price_unit + line.contract_admin_sub_fees + line.contract_service_sub_fees * (
-                    1 - (line.discount or 0.0) / 100.0)
-            taxes = line.tax_id.compute_all(price_tax, line.order_id.currency_id, line.product_uom_qty,
-                                            product=line.product_id, partner=line.order_id.partner_shipping_id)
-            line.update({
-                'price_tax': taxes['total_included'] - taxes['total_excluded'],
-                'price_total': taxes['total_included'],
-                'price_subtotal': price,
-                # 'price_subtotal': taxes['total_excluded'],
-            })
-            if self.env.context.get('import_file', False) and not self.env.user.user_has_groups(
-                    'account.group_account_manager'):
-                line.tax_id.invalidate_cache(['invoice_repartition_line_ids'], [line.tax_id.id])
+    @api.onchange('property_build_id')
+    def _onchange_property_build_id(self):
+        """تصفية العقارات حسب المجمع المختار"""
+        self.property_id = False
+        self.product_id = False
+        if self.property_build_id and self.operating_unit_id:
+            return {'domain': {'property_id': [
+                ('property_address_build', '=', self.property_build_id.id),
+                ('property_address_area', '=', self.operating_unit_id.id)
+            ]}}
+        return {'domain': {'property_id': []}}
 
-    def get_rental_order_line_description(self):
-        return ""
-    @api.depends('return_date')
-    def _compute_is_late(self):
-        now = fields.Datetime.now()
+    @api.onchange('property_id')
+    def _onchange_property_id(self):
+        """تصفية الوحدات حسب العقار المختار"""
+        self.product_id = False
+        if self.property_id:
+            return {'domain': {'product_id': [('property_id', '=', self.property_id.id)]}}
+        return {'domain': {'product_id': []}}
+
+    def _get_report_data(self):
+        """جلب بيانات التقرير"""
+        domain = []
         
-        for line in self:
-            if not line.return_date:
-                line.is_late = False
-                continue
-                
-            try:
-                line.is_late = line.return_date < now
-            except (TypeError, ValueError):
-                line.is_late = False
-    # @api.depends('return_date')
-    # def _compute_is_late(self):
-    #     now = fields.Date.today()
-    #     for line in self:
-    #         # By default, an order line is considered late only if it has one hour of delay
-    #         line.is_late = line.return_date and line.return_date < now
+        # تطبيق الفلاتر
+        if self.operating_unit_id:
+            domain.append(('property_address_area', '=', self.operating_unit_id.id))
+        if self.property_build_id:
+            domain.append(('property_address_build2', '=', self.property_build_id.id))
+        if self.property_id:
+            domain.append(('property_number', '=', self.property_id.id))
+        if self.product_id:
+            domain.append(('product_id', '=', self.product_id.id))
+        if self.date_from:
+            domain.append(('fromdate', '>=', self.date_from))
+        if self.date_to:
+            domain.append(('todate', '<=', self.date_to))
+
+        # جلب بيانات خطوط أوامر البيع
+        sale_order_lines = self.env['sale.order.line'].search(domain)
+        
+        data = []
+        for line in sale_order_lines:
+            data.append({
+                'company_name': line.order_id.company_id.name,
+                'operating_unit': line.property_address_area.name if line.property_address_area else '',
+                'property_build': line.property_address_build2.name if line.property_address_build2 else '',
+                'property_name': line.property_number.property_name if line.property_number else '',
+                'analytic_account': line.analytic_account_id.name if line.analytic_account_id else '',
+                'unit_name': line.product_id.name,
+                'customer_name': line.order_partner_id.name if line.order_partner_id else '',
+                'contract_number': line.order_id.name,
+                'unit_state': line.unit_state or '',
+                'amount_paid': line.amount_paid,
+                'amount_due': line.amount_due,
+                'unit_expenses': line.unit_expenses,
+                'unit_revenues': line.unit_revenues,
+                'from_date': line.fromdate,
+                'to_date': line.todate,
+            })
+        
+        return data
+
+    def generate_html_report(self):
+        """إنشاء تقرير HTML"""
+        data = self._get_report_data()
+        return self.env.ref('renting.rent_units_report').report_action(self, data={'docs': data})
+
+    def generate_excel_report(self):
+        """إنشاء تقرير Excel محسن مع اللوجو والتنسيق ونظام الشجرة"""
+        if not xlsxwriter:
+            raise UserError('مكتبة xlsxwriter غير مثبتة. يرجى تثبيتها أولاً.')
+        
+        data = self._get_report_data()
+        
+        # ترتيب البيانات حسب التسلسل الهرمي
+        sorted_data = sorted(data, key=lambda x: (
+            x['company_name'], 
+            x['operating_unit'], 
+            x['property_build'], 
+            x['property_name']
+        ))
+        
+        # إنشاء ملف Excel
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet('تقرير الوحدات المؤجرة')
+        
+        # تنسيقات الخلايا المحسنة
+        title_format = workbook.add_format({
+            'bold': True,
+            'font_size': 18,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': '#1F4E79',
+            'font_color': 'white',
+            'border': 2
+        })
+        
+        date_format = workbook.add_format({
+            'bold': True,
+            'font_size': 12,
+            'align': 'center',
+            'valign': 'vcenter',
+            'bg_color': '#D9E2F3',
+            'border': 1
+        })
+        
+        header_format = workbook.add_format({
+            'bold': True,
+            'bg_color': '#4472C4',
+            'font_color': 'white',
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'text_wrap': True
+        })
+        
+        # تنسيقات نظام الشجرة
+        company_format = workbook.add_format({
+            'bold': True,
+            'bg_color': '#E2EFDA',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 0
+        })
+        
+        operating_unit_format = workbook.add_format({
+            'bold': True,
+            'bg_color': '#F2F2F2',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 1
+        })
+        
+        property_build_format = workbook.add_format({
+            'bg_color': '#FFF2CC',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 2
+        })
+        
+        property_format = workbook.add_format({
+            'bg_color': '#FCE4D6',
+            'border': 1,
+            'align': 'right',
+            'valign': 'vcenter',
+            'indent': 3
+        })
+        
+        unit_format = workbook.add_format({
+            'bg_color': '#FFFFFF',
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter'
+        })
+        
+        number_format = workbook.add_format({
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': '#,##0.00'
+        })
+        
+        current_row = 0
+        
+        # إضافة اللوجو (إذا كان متوفراً)
+        try:
+            if self.company_id.logo:
+                logo_data = base64.b64decode(self.company_id.logo)
+                logo_io = io.BytesIO(logo_data)
+                worksheet.insert_image(current_row, 0, 'logo.png', {
+                    'image_data': logo_io,
+                    'x_scale': 0.5,
+                    'y_scale': 0.5,
+                    'x_offset': 10,
+                    'y_offset': 10
+                })
+                current_row += 4
+        except:
+            pass
+        
+        # عنوان التقرير
+        worksheet.merge_range(current_row, 0, current_row, 14, 'تقرير الوحدات المؤجرة', title_format)
+        current_row += 2
+        
+        # معلومات التاريخ والفلاتر
+        filter_info = []
+        if self.date_from:
+            filter_info.append(f"من تاريخ: {self.date_from}")
+        if self.date_to:
+            filter_info.append(f"إلى تاريخ: {self.date_to}")
+        if self.company_id:
+            filter_info.append(f"الشركة: {self.company_id.name}")
+        if self.operating_unit_id:
+            filter_info.append(f"الفرع: {self.operating_unit_id.name}")
+        if self.property_build_id:
+            filter_info.append(f"المجمع: {self.property_build_id.name}")
+        if self.property_id:
+            filter_info.append(f"العقار: {self.property_id.property_name}")
+        
+        if filter_info:
+            filter_text = " | ".join(filter_info)
+            worksheet.merge_range(current_row, 0, current_row, 14, filter_text, date_format)
+            current_row += 2
+        
+        # تاريخ إنشاء التقرير
+        report_date = f"تاريخ إنشاء التقرير: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        worksheet.merge_range(current_row, 0, current_row, 14, report_date, date_format)
+        current_row += 2
+        
+        # العناوين
+        headers = [
+            'الشركة', 'الفرع', 'المجمع', 'العقار', 'الحساب التحليلي', 'الوحدة',
+            'اسم العميل', 'رقم العقد', 'حالة الوحدة', 'المبلغ المدفوع',
+            'المبلغ المستحق', 'المصروفات', 'الإيرادات', 'تاريخ الاستلام', 'تاريخ التسليم'
+        ]
+        
+        for col, header in enumerate(headers):
+            worksheet.write(current_row, col, header, header_format)
+        
+        current_row += 1
+        
+        # متغيرات لتتبع القيم السابقة لنظام الشجرة
+        prev_company = None
+        prev_operating_unit = None
+        prev_property_build = None
+        prev_property = None
+        
+        # كتابة البيانات مع نظام الشجرة
+        for line_data in sorted_data:
+            company_name = line_data['company_name']
+            operating_unit = line_data['operating_unit']
+            property_build = line_data['property_build']
+            property_name = line_data['property_name']
+            
+            # كتابة الشركة (فقط إذا تغيرت)
+            if company_name != prev_company:
+                worksheet.write(current_row, 0, company_name, company_format)
+                prev_company = company_name
+                prev_operating_unit = None
+                prev_property_build = None
+                prev_property = None
+            else:
+                worksheet.write(current_row, 0, '', unit_format)
+            
+            # كتابة الفرع (فقط إذا تغير)
+            if operating_unit != prev_operating_unit:
+                worksheet.write(current_row, 1, operating_unit, operating_unit_format)
+                prev_operating_unit = operating_unit
+                prev_property_build = None
+                prev_property = None
+            else:
+                worksheet.write(current_row, 1, '', unit_format)
+            
+            # كتابة المجمع (فقط إذا تغير)
+            if property_build != prev_property_build:
+                worksheet.write(current_row, 2, property_build, property_build_format)
+                prev_property_build = property_build
+                prev_property = None
+            else:
+                worksheet.write(current_row, 2, '', unit_format)
+            
+            # كتابة العقار (فقط إذا تغير)
+            if property_name != prev_property:
+                worksheet.write(current_row, 3, property_name, property_format)
+                prev_property = property_name
+            else:
+                worksheet.write(current_row, 3, '', unit_format)
+            
+            # باقي البيانات
+            worksheet.write(current_row, 4, line_data['analytic_account'], unit_format)
+            worksheet.write(current_row, 5, line_data['unit_name'], unit_format)
+            worksheet.write(current_row, 6, line_data['customer_name'], unit_format)
+            worksheet.write(current_row, 7, line_data['contract_number'], unit_format)
+            worksheet.write(current_row, 8, line_data['unit_state'], unit_format)
+            worksheet.write(current_row, 9, line_data['amount_paid'], number_format)
+            worksheet.write(current_row, 10, line_data['amount_due'], number_format)
+            worksheet.write(current_row, 11, line_data['unit_expenses'], number_format)
+            worksheet.write(current_row, 12, line_data['unit_revenues'], number_format)
+            worksheet.write(current_row, 13, str(line_data['from_date']) if line_data['from_date'] else '', unit_format)
+            worksheet.write(current_row, 14, str(line_data['to_date']) if line_data['to_date'] else '', unit_format)
+            
+            current_row += 1
+        
+        # ضبط عرض الأعمدة
+        worksheet.set_column('A:A', 20)  # الشركة
+        worksheet.set_column('B:B', 18)  # الفرع
+        worksheet.set_column('C:C', 18)  # المجمع
+        worksheet.set_column('D:D', 20)  # العقار
+        worksheet.set_column('E:E', 18)  # الحساب التحليلي
+        worksheet.set_column('F:F', 15)  # الوحدة
+        worksheet.set_column('G:G', 20)  # اسم العميل
+        worksheet.set_column('H:H', 15)  # رقم العقد
+        worksheet.set_column('I:I', 12)  # حالة الوحدة
+        worksheet.set_column('J:M', 15)  # المبالغ
+        worksheet.set_column('N:O', 12)  # التواريخ
+        
+        # تجميد الصفوف العلوية والعمود الأول
+        worksheet.freeze_panes(current_row - len(sorted_data), 1)
+        
+        workbook.close()
+        output.seek(0)
+        
+        # إنشاء المرفق
+        filename = f'تقرير_الوحدات_المؤجرة_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx'
+        attachment = self.env['ir.attachment'].create({
+            'name': filename,
+            'type': 'binary',
+            'datas': base64.b64encode(output.read()),
+            'res_model': self._name,
+            'res_id': self.id,
+            'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        })
+        
+        return {
+            'type': 'ir.actions.act_url',
+            'url': f'/web/content/{attachment.id}?download=true',
+            'target': 'new',
+        }
+
+    def generate_report(self):
+        """إنشاء التقرير حسب النوع المختار"""
+        if self.report_type == 'html':
+            return self.generate_html_report()
+        else:
+            return self.generate_excel_report()
