@@ -294,15 +294,21 @@ class RentPropertymain(models.Model):
 
     def _export_invoice(self, invoice):
         def sanitize(value):
-            allowed_whitespace = {'\t', '\n', '\r'}
+            allowed = {'\t','\n','\r'}
             return ''.join(
-                c for c in (value or '') 
-                if (ord(c) >= 0x20 or c in allowed_whitespace)
+                c for c in (value or '')
+                if ord(c) >= 0x20 or c in allowed
             ).strip()
-        
+
         xml_content = etree.Element("Invoice")
+        # Apply sanitization to ALL text nodes:
         etree.SubElement(xml_content, "CustomerName").text = sanitize(invoice.partner_id.name)
         etree.SubElement(xml_content, "InvoiceNumber").text = sanitize(invoice.name)
-        # Add sanitization to ALL text fields:
-        etree.SubElement(xml_content, "Address").text = sanitize(invoice.partner_id.street)
+        etree.SubElement(xml_content, "Street").text = sanitize(invoice.partner_id.street)
+        etree.SubElement(xml_content, "City").text = sanitize(invoice.partner_id.city)
+        # Add sanitization for line item descriptions:
+        for line in invoice.invoice_line_ids:
+            line_elem = etree.SubElement(xml_content, "LineItem")
+            line_elem.text = sanitize(line.name)
         etree.SubElement(xml_content, "Description").text = sanitize(invoice.invoice_line_ids.name)
+
