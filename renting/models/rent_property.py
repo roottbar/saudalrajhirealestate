@@ -297,11 +297,12 @@ class RentPropertymain(models.Model):
             allowed_whitespace = {'\t', '\n', '\r'}
             return ''.join(
                 c for c in (value or '') 
-                if ord(c) >= 0x20 or c in allowed_whitespace
+                if (ord(c) >= 0x20 or c in allowed_whitespace)
             ).strip()
         
         xml_content = etree.Element("Invoice")
         etree.SubElement(xml_content, "CustomerName").text = sanitize(invoice.partner_id.name)
         etree.SubElement(xml_content, "InvoiceNumber").text = sanitize(invoice.name)
-        # ... existing code ...
-
+        # Add sanitization to ALL text fields:
+        etree.SubElement(xml_content, "Address").text = sanitize(invoice.partner_id.street)
+        etree.SubElement(xml_content, "Description").text = sanitize(invoice.invoice_line_ids.name)
