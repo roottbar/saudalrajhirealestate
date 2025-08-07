@@ -511,6 +511,21 @@ class RentUnitsReportWizard(models.TransientModel):
             'target': 'new',
         }
 
+    def generate_html_report(self):
+        """إنشاء تقرير HTML"""
+        data = self._get_report_data()
+        
+        return {
+            'type': 'ir.actions.report',
+            'report_name': 'renting.rent_units_report_template',
+            'report_type': 'qweb-html',
+            'data': {'docs': data},
+            'context': {
+                'docs': data,
+                'o': self,
+            }
+        }
+
     def generate_report(self):
         """إنشاء التقرير حسب النوع المختار"""
         if self.report_type == 'html':
