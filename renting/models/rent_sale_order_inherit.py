@@ -470,6 +470,7 @@ class RentSaleOrderLine(models.Model):
                 rec.unit_revenues = sum(revenue_lines.mapped('credit')) or 0.0
             except Exception as e:
                 rec.unit_revenues = 0.0
+
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
         return {'domain': {'property_number': [('property_address_area.id', '=', self.operating_unit_id.id)]}}
