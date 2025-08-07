@@ -105,12 +105,20 @@ class RentUnitsReportWizard(models.TransientModel):
             domain.append(('fromdate', '>=', self.date_from))
         if self.date_to:
             domain.append(('todate', '<=', self.date_to))
-
+    
         # جلب بيانات خطوط أوامر البيع
         sale_order_lines = self.env['sale.order.line'].search(domain)
         
         data = []
         for line in sale_order_lines:
+            # حساب الإيرادات والمصروفات لكل حساب تحليلي منفصل
+            unit_expenses = 0.0
+            unit_revenues = 0.0
+            
+            if line.analytic_account_id:
+                unit_expenses = self._calculate_analytic_amount(line.analytic_account_id, 'expenses')
+                unit_revenues = self._calculate_analytic_amount(line.analytic_account_id, 'revenues')
+            
             data.append({
                 'company_name': line.order_id.company_id.name,
                 'operating_unit': line.property_address_area.name if line.property_address_area else '',
@@ -123,8 +131,8 @@ class RentUnitsReportWizard(models.TransientModel):
                 'unit_state': line.unit_state or '',
                 'amount_paid': line.amount_paid,
                 'amount_due': line.amount_due,
-                'unit_expenses': line.unit_expenses,
-                'unit_revenues': line.unit_revenues,
+                'unit_expenses': unit_expenses,  # المصروفات المحسوبة للحساب التحليلي
+                'unit_revenues': unit_revenues,  # الإيرادات المحسوبة للحساب التحليلي
                 'from_date': line.fromdate,
                 'to_date': line.todate,
             })
