@@ -24,6 +24,24 @@ class AccountPayment(models.Model):
             self.partner_id = self.rental_order_id.partner_id
             # Clear existing lines
             self.rental_invoice_line_ids = [(5, 0, 0)]
+            
+            # Auto-populate with available invoices
+            invoices = self.env['account.move'].search([
+                ('invoice_origin', '=', self.rental_order_id.name),
+                ('move_type', 'in', ['out_invoice', 'out_refund']),
+                ('state', '=', 'posted'),
+                ('payment_state', 'in', ['not_paid', 'partial'])
+            ])
+            
+            lines_to_create = []
+            for invoice in invoices:
+                lines_to_create.append((0, 0, {
+                    'invoice_id': invoice.id,
+                    'selected': False,
+                    'payment_amount': 0,
+                }))
+            
+            self.rental_invoice_line_ids = lines_to_create
         else:
             self.rental_invoice_line_ids = [(5, 0, 0)]
     
@@ -87,7 +105,12 @@ class PaymentRentalInvoiceLine(models.Model):
     _description = 'Payment Rental Invoice Line'
     
     payment_id = fields.Many2one('account.payment', string='Payment', ondelete='cascade')
-    invoice_id = fields.Many2one('account.move', string='Invoice', required=True)
+    invoice_id = fields.Many2one(
+        'account.move', 
+        string='Invoice', 
+        required=True,
+        domain="[('move_type', 'in', ['out_invoice', 'out_refund']), ('state', '=', 'posted'), ('payment_state', 'in', ['not_paid', 'partial'])]"
+    )
     selected = fields.Boolean(string='Selected', default=False)
     analytic_account_id = fields.Many2one(
         'account.analytic.account',
