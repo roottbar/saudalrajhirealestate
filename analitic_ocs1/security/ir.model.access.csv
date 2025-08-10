@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_payment_rental_invoice_line,payment.rental.invoice.line,analitic_ocs.model_payment_rental_invoice_line,account.group_account_user,1,1,1,1
-access_payment_rental_invoice_wizard,payment.rental.invoice.wizard,analitic_ocs.model_payment_rental_invoice_wizard,account.group_account_user,1,1,1,1
+access_payment_rental_invoice_line,payment.rental.invoice.line,model_payment_rental_invoice_line,account.group_account_user,1,1,1,1
