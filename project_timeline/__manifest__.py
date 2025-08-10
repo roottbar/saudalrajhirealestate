@@ -19,10 +19,3 @@
     "demo": ["demo/project_project_demo.xml", "demo/project_task_demo.xml"],
     "qweb": [],
 }
-{
-    "assets": {
-        "web.assets_backend": [
-            "/project_timeline/static/src/scss/project_timeline.scss"
-        ]
-    },
-}
