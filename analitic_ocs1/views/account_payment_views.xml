@@ -41,7 +41,7 @@
                     <group string="Payment Summary" 
                            attrs="{'invisible': [('rental_order_id', '=', False)]}">
                         <field name="amount" readonly="1"/>
-                        <label string="This amount will be distributed across selected invoices"/>
+                        <div class="o_form_label">This amount will be distributed across selected invoices</div>
                     </group>
                 </field>
             </field>
