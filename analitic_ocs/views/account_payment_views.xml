@@ -30,22 +30,6 @@
                             </tree>
                         </field>
                     </group>
-                    
-                    <group string="Analytical Accounts from Invoices" 
-                           attrs="{'invisible': [('rental_order_id', '=', False)]}">
-                        <field name="rental_invoice_ids" nolabel="1" mode="tree" readonly="1">
-                            <tree>
-                                <field name="name"/>
-                                <field name="invoice_line_ids">
-                                    <tree>
-                                        <field name="product_id"/>
-                                        <field name="analytic_account_id"/>
-                                        <field name="price_subtotal"/>
-                                    </tree>
-                                </field>
-                            </tree>
-                        </field>
-                    </group>
                 </field>
             </field>
         </record>
@@ -59,6 +43,20 @@
                 <field name="partner_id" position="after">
                     <field name="rental_order_id" optional="hide"/>
                 </field>
+            </field>
+        </record>
+        
+        <!-- إضافة واجهة منفصلة لعرض تفاصيل الحسابات التحليلية -->
+        <record id="view_rental_invoice_lines_tree" model="ir.ui.view">
+            <field name="name">rental.invoice.lines.tree</field>
+            <field name="model">account.move.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="move_id"/>
+                    <field name="product_id"/>
+                    <field name="analytic_account_id"/>
+                    <field name="price_subtotal"/>
+                </tree>
             </field>
         </record>
     </data>
