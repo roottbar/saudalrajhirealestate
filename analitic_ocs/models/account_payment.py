@@ -17,6 +17,13 @@ class AccountPayment(models.Model):
         help="Invoices related to the selected rental order"
     )
     
+    rental_analytic_line_ids = fields.One2many(
+        'account.move.line',
+        compute='_compute_rental_analytic_lines',
+        string='Rental Invoice Lines with Analytics',
+        help="Invoice lines with analytical accounts from rental order"
+    )
+    
     @api.depends('rental_order_id')
     def _compute_rental_invoices(self):
         """Compute invoices related to selected rental order"""
@@ -31,9 +38,21 @@ class AccountPayment(models.Model):
             else:
                 payment.rental_invoice_ids = False
     
+    @api.depends('rental_invoice_ids')
+    def _compute_rental_analytic_lines(self):
+        """Compute invoice lines with analytical accounts"""
+        for payment in self:
+            if payment.rental_invoice_ids:
+                lines = payment.rental_invoice_ids.mapped('invoice_line_ids').filtered(
+                    lambda l: l.analytic_account_id
+                )
+                payment.rental_analytic_line_ids = lines
+            else:
+                payment.rental_analytic_line_ids = False
+    
     @api.onchange('rental_order_id')
     def _onchange_rental_order_id(self):
-        """Update partner and invoices when rental order changes"""
+        """Update partner when rental order changes"""
         if self.rental_order_id:
             self.partner_id = self.rental_order_id.partner_id
             # Auto-populate reconciled invoices
