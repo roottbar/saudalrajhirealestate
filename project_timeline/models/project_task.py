@@ -11,11 +11,13 @@ class ProjectTask(models.Model):
     _inherit = "project.task"
 
     planned_date_start = fields.Datetime(
+        string="Planned Start Date",
         compute="_compute_planned_date_start",
         store=True,
         readonly=False,
     )
     planned_date_end = fields.Datetime(
+        string="Planned End Date",
         compute="_compute_planned_date_end",
         store=True,
         readonly=False,
