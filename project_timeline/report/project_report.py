@@ -11,12 +11,18 @@ class ReportProjectTaskUser(models.Model):
     planned_date_end = fields.Datetime(readonly=True)
 
     def _select(self):
-        return (
-            super()._select()
-            + """,
+        select_str = super()._select()
+        select_str += """,
             t.planned_date_start,
             t.planned_date_end"""
-        )
+        return select_str
+
+    def _group_by(self):
+        group_by_str = super()._group_by()
+        group_by_str += """,
+            t.planned_date_start,
+            t.planned_date_end"""
+        return group_by_str
 
     def _group_by(self):
         return (
