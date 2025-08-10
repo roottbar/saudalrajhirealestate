@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Payment Form View -->
+        <record id="view_account_payment_form_rental" model="ir.ui.view">
+            <field name="name">account.payment.form.rental</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="rental_order_id" 
+                           attrs="{'invisible': [('payment_type', '!=', 'inbound')]}"
+                           options="{'no_create': True, 'no_edit': True}"/>
+                </field>
+                
+                <field name="amount" position="after">
+                    <separator string="Invoice Selection and Analytical Accounts" 
+                              attrs="{'invisible': [('rental_order_id', '=', False)]}"/>
+                    
+                    <field name="rental_invoice_line_ids" 
+                           attrs="{'invisible': [('rental_order_id', '=', False)]}" 
+                           nolabel="1">
+                        <tree editable="bottom">
+                            <field name="selected"/>
+                            <field name="invoice_id" 
+                                   domain="[('invoice_origin', '=', parent.rental_order_id.name), ('move_type', 'in', ['out_invoice', 'out_refund']), ('state', '=', 'posted'), ('payment_state', 'in', ['not_paid', 'partial'])]"
+                                   options="{'no_create': True, 'no_edit': True}"/>
+                            <field name="invoice_date" readonly="1"/>
+                            <field name="amount_total" readonly="1"/>
+                            <field name="amount_residual" readonly="1"/>
+                            <field name="state" readonly="1"/>
+                            <field name="analytic_account_id" 
+                                   attrs="{'required': [('selected', '=', True)]}"
+                                   options="{'no_create': True}"/>
+                            <field name="payment_amount" 
+                                   attrs="{'readonly': [('selected', '=', False)]}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </tree>
+                    </field>
+                    
+                    <group string="Payment Summary" 
+                           attrs="{'invisible': [('rental_order_id', '=', False)]}">
+                        <field name="amount" readonly="1"/>
+                        <label string="This amount will be distributed across selected invoices"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+        
+        <!-- Payment Tree View -->
+        <record id="view_account_payment_tree_rental" model="ir.ui.view">
+            <field name="name">account.payment.tree.rental</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="rental_order_id" optional="hide"/>
+                </field>
+            </field>
+        </record>
+        
+        <!-- Action to add invoices -->
+        <record id="action_add_rental_invoices" model="ir.actions.act_window">
+            <field name="name">Add Rental Invoices</field>
+            <field name="res_model">payment.rental.invoice.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
