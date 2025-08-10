@@ -138,3 +138,58 @@ class PaymentRentalInvoiceLine(models.Model):
         """Trigger amount redistribution when selection changes"""
         if self.payment_id:
             self.payment_id._onchange_amount_distribution()
+
+    def action_add_rental_invoices(self):
+        """فتح نافذة لإضافة فواتير أمر التأجير"""
+        if not self.rental_order_id:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'تحذير',
+                    'message': 'يرجى اختيار أمر التأجير أولاً',
+                    'type': 'warning',
+                }
+            }
+        
+        # البحث عن الفواتير المتاحة
+        available_invoices = self.env['account.move'].search([
+            ('invoice_origin', '=', self.rental_order_id.name),
+            ('move_type', 'in', ['out_invoice', 'out_refund']),
+            ('state', '=', 'posted'),
+            ('payment_state', 'in', ['not_paid', 'partial'])
+        ])
+        
+        # إضافة الفواتير المتاحة إلى القائمة
+        existing_invoice_ids = self.rental_invoice_line_ids.mapped('invoice_id.id')
+        new_invoices = available_invoices.filtered(lambda inv: inv.id not in existing_invoice_ids)
+        
+        lines_to_create = []
+        for invoice in new_invoices:
+            lines_to_create.append((0, 0, {
+                'invoice_id': invoice.id,
+                'selected': False,
+                'payment_amount': 0,
+            }))
+        
+        if lines_to_create:
+            self.rental_invoice_line_ids = [(5, 0, 0)] + lines_to_create
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'نجح',
+                    'message': f'تم إضافة {len(lines_to_create)} فاتورة',
+                    'type': 'success',
+                }
+            }
+        else:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'معلومات',
+                    'message': 'لا توجد فواتير جديدة لإضافتها',
+                    'type': 'info',
+                }
+            }
