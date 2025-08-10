@@ -23,7 +23,6 @@
                         <tree editable="bottom">
                             <field name="selected"/>
                             <field name="invoice_id" 
-                                   domain="[('invoice_origin', '=', parent.rental_order_id.name), ('move_type', 'in', ['out_invoice', 'out_refund']), ('state', '=', 'posted'), ('payment_state', 'in', ['not_paid', 'partial'])]"
                                    options="{'no_create': True, 'no_edit': True}"/>
                             <field name="invoice_date" readonly="1"/>
                             <field name="amount_total" readonly="1"/>
@@ -57,14 +56,6 @@
                     <field name="rental_order_id" optional="hide"/>
                 </field>
             </field>
-        </record>
-        
-        <!-- Action to add invoices -->
-        <record id="action_add_rental_invoices" model="ir.actions.act_window">
-            <field name="name">Add Rental Invoices</field>
-            <field name="res_model">payment.rental.invoice.wizard</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
         </record>
     </data>
 </odoo>
