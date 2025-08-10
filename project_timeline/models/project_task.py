@@ -36,7 +36,7 @@ class ProjectTask(models.Model):
                 or record.planned_date_end >= record.date_assign
             ):
                 record.planned_date_start = record.date_assign
-
+                
     @api.depends("date_end")
     def _compute_planned_date_end(self):
         """Put the done date as the planned end if not other value is previously set,
