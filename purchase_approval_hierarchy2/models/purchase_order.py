@@ -18,7 +18,7 @@ class PurchaseOrder(models.Model):
 
     def action_approve_1(self):
         self.ensure_one()
-        if not self.env.user.has_group('purchase_approval_hierarchy.group_purchase_approval_1'):
+        if not self.env.user.has_group('purchase_approval_hierarchy2.group_purchase_approval_1'):
             raise UserError(_("You don't have approval level 1 access rights."))
         if self.state != 'draft':
             raise UserError(_("Order must be in draft state."))
@@ -27,7 +27,7 @@ class PurchaseOrder(models.Model):
 
     def action_approve_2(self):
         self.ensure_one()
-        if not self.env.user.has_group('purchase_approval_hierarchy.group_purchase_approval_2'):
+        if not self.env.user.has_group('purchase_approval_hierarchy2.group_purchase_approval_2'):
             raise UserError(_("You don't have approval level 2 access rights."))
         if self.state != 'approval_1':
             raise UserError(_("Order must be in approval stage 1."))
@@ -36,7 +36,7 @@ class PurchaseOrder(models.Model):
 
     def action_approve_3(self):
         self.ensure_one()
-        if not self.env.user.has_group('purchase_approval_hierarchy.group_purchase_approval_3'):
+        if not self.env.user.has_group('purchase_approval_hierarchy2.group_purchase_approval_3'):
             raise UserError(_("You don't have approval level 3 access rights."))
         if self.state != 'approval_2':
             raise UserError(_("Order must be in approval stage 2."))
