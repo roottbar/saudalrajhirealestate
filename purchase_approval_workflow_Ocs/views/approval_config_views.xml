@@ -1,0 +1,49 @@
+<odoo>
+    <record id="view_purchase_approval_config_tree" model="ir.ui.view">
+        <field name="name">purchase.approval.config.tree</field>
+        <field name="model">purchase.approval.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="min_amount"/>
+                <field name="max_amount"/>
+                <field name="level_1_required"/>
+                <field name="level_2_required"/>
+                <field name="level_3_required"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_purchase_approval_config_form" model="ir.ui.view">
+        <field name="name">purchase.approval.config.form</field>
+        <field name="model">purchase.approval.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="min_amount"/>
+                        <field name="max_amount"/>
+                    </group>
+                    <group>
+                        <field name="level_1_required"/>
+                        <field name="level_2_required"/>
+                        <field name="level_3_required"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_purchase_approval_config" name="إعدادات الموافقات"
+              parent="purchase.menu_purchase_config" sequence="10"/>
+
+    <menuitem id="menu_purchase_approval_config_main" name="قواعد الموافقة"
+              parent="menu_purchase_approval_config" action="action_purchase_approval_config"/>
+
+    <record id="action_purchase_approval_config" model="ir.actions.act_window">
+        <field name="name">قواعد الموافقة على المشتريات</field>
+        <field name="res_model">purchase.approval.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

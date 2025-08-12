@@ -1,0 +1,16 @@
+<odoo>
+    <record id="group_purchase_approval_level1" model="res.groups">
+        <field name="name">موافقة أولى - المشتريات</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+    </record>
+
+    <record id="group_purchase_approval_level2" model="res.groups">
+        <field name="name">موافقة ثانية - المشتريات</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+    </record>
+
+    <record id="group_purchase_approval_level3" model="res.groups">
+        <field name="name">موافقة ثالثة - المشتريات</field>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
+    </record>
+</odoo>

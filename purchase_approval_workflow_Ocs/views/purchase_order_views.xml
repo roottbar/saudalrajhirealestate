@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_purchase_order_form_inherit_approval" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.approval</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="approval_level" widget="statusbar"
+                       statusbar_visible="draft,level1,level2,level3,approved,rejected"/>
+
+                <button name="action_request_approval" string="إرسال للموافقة" type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('approval_level', '!=', 'draft')]}"/>
+
+                <button name="action_approve_level1" string="موافقة أولى" type="object"
+                        class="btn-success"
+                        groups="group_purchase_approval_level1"
+                        attrs="{'invisible': [('approval_level', '!=', 'level1')]}"/>
+
+                <button name="action_approve_level2" string="موافقة ثانية" type="object"
+                        class="btn-success"
+                        groups="group_purchase_approval_level2"
+                        attrs="{'invisible': [('approval_level', '!=', 'level2')]}"/>
+
+                <button name="action_approve_level3" string="موافقة ثالثة" type="object"
+                        class="btn-success"
+                        groups="group_purchase_approval_level3"
+                        attrs="{'invisible': [('approval_level', '!=', 'level3')]}"/>
+
+                <button name="action_reject" string="رفض" type="object"
+                        class="btn-danger"
+                        groups="group_purchase_approval_level1,group_purchase_approval_level2,group_purchase_approval_level3"
+                        attrs="{'invisible': [('approval_level', 'not in', ['level1','level2','level3'])}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

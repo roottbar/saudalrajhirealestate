@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_approval_config,purchase.approval.config,model_purchase_approval_config,,1,1,1,1
