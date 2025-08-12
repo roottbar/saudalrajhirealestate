@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_purchase_order_form_inherit_approval" model="ir.ui.view">
+        <field name="name">purchase.order.form.approval.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_approve_1"
+                        type="object"
+                        string="موافقة أولى"
+                        groups="purchase_approval_hierarchy.group_purchase_approval_1"
+                        attrs="{'invisible': [('state', '!=', 'draft')]}"
+                        class="oe_highlight"/>
+
+                <button name="action_approve_2"
+                        type="object"
+                        string="موافقة ثانية"
+                        groups="purchase_approval_hierarchy.group_purchase_approval_2"
+                        attrs="{'invisible': [('state', '!=', 'approval_1')]}"
+                        class="oe_highlight"/>
+
+                <button name="action_approve_3"
+                        type="object"
+                        string="موافقة ثالثة"
+                        groups="purchase_approval_hierarchy.group_purchase_approval_3"
+                        attrs="{'invisible': [('state', '!=', 'approval_2')]}"
+                        class="oe_highlight"/>
+
+                <button name="action_final_approve"
+                        type="object"
+                        string="اعتماد نهائي"
+                        attrs="{'invisible': [('state', '!=', 'approval_3')]}"
+                        class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
