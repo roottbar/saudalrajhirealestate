@@ -1,14 +1,14 @@
 <odoo>
     <record id="group_purchase_approval_1" model="res.groups">
         <field name="name">Purchase Approval 1</field>
-        <field name="category_id" ref="purchase.group_purchase_user"/>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
     </record>
     <record id="group_purchase_approval_2" model="res.groups">
         <field name="name">Purchase Approval 2</field>
-        <field name="category_id" ref="purchase.group_purchase_user"/>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
     </record>
     <record id="group_purchase_approval_3" model="res.groups">
         <field name="name">Purchase Approval 3</field>
-        <field name="category_id" ref="purchase.group_purchase_user"/>
+        <field name="category_id" ref="base.module_category_purchase_management"/>
     </record>
 </odoo>
