@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_order_approval_1,purchase.order.approval.1,purchase.model_purchase_order,purchase_approval_hierarchy.group_purchase_approval_1,1,1,0,0
+access_purchase_order_approval_2,purchase.order.approval.2,purchase.model_purchase_order,purchase_approval_hierarchy.group_purchase_approval_2,1,1,0,0
+access_purchase_order_approval_3,purchase.order.approval.3,purchase.model_purchase_order,purchase_approval_hierarchy.group_purchase_approval_3,1,1,0,0
