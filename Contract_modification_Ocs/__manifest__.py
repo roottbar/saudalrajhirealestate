@@ -11,7 +11,7 @@
         - Manager approval permissions
     """,
     'author': 'Custom Development',
-    'depends': ['base', 'sale', 'mail'],    
+    'depends': ['base'],    
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
