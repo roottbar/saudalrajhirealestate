@@ -5,7 +5,7 @@
     'summary': 'Adds hierarchical approvals with permissions to Purchase Orders',
     'depends': ['purchase'],
     'data': [  # لملفات البيانات فقط (XML, CSV)
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'security/purchase_approval_security.xml',
         'views/purchase_order_views.xml',
     ],
