@@ -8,21 +8,21 @@
                 <button name="action_approve_1"
                         type="object"
                         string="موافقة أولى"
-                        groups="purchase_approval_hierarchy.group_purchase_approval_1"
+                        groups="purchase_approval_hierarchy2.group_purchase_approval_1"
                         attrs="{'invisible': [('state', '!=', 'draft')]}"
                         class="oe_highlight"/>
 
                 <button name="action_approve_2"
                         type="object"
                         string="موافقة ثانية"
-                        groups="purchase_approval_hierarchy.group_purchase_approval_2"
+                        groups="purchase_approval_hierarchy2.group_purchase_approval_2"
                         attrs="{'invisible': [('state', '!=', 'approval_1')]}"
                         class="oe_highlight"/>
 
                 <button name="action_approve_3"
                         type="object"
                         string="موافقة ثالثة"
-                        groups="purchase_approval_hierarchy.group_purchase_approval_3"
+                        groups="purchase_approval_hierarchy2.group_purchase_approval_3"
                         attrs="{'invisible': [('state', '!=', 'approval_2')]}"
                         class="oe_highlight"/>
 
