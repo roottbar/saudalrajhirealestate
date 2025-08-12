@@ -36,16 +36,17 @@
         </field>
     </record>
 
-    <record id="purchase_approval_workflow.action_purchase_approval_config" model="ir.actions.act_window">
+    <record id="purchase_approval_workflow_Ocs.action_purchase_approval_config" model="ir.actions.act_window">
         <field name="name">قواعد الموافقة على المشتريات</field>
         <field name="res_model">purchase.approval.config</field>
         <field name="view_mode">tree,form</field>
     </record>
     
-    <menuitem id="purchase_approval_workflow.menu_purchase_approval_config" name="إعدادات الموافقات" 
+    <menuitem id="purchase_approval_workflow_Ocs.menu_purchase_approval_config" name="إعدادات الموافقات" 
               parent="purchase.menu_purchase_config" sequence="10"/>
     
-    <menuitem id="purchase_approval_workflow.menu_purchase_approval_config_main" name="قواعد الموافقة" 
-              parent="purchase_approval_workflow.menu_purchase_approval_config" 
-              action="purchase_approval_workflow.action_purchase_approval_config"/>
+    <menuitem id="purchase_approval_workflow_Ocs.menu_purchase_approval_config_main" name="قواعد الموافقة" 
+              parent="purchase_approval_workflow_Ocs.menu_purchase_approval_config" 
+              action="purchase_approval_workflow_Ocs.action_purchase_approval_config"/>
 </odoo>
+
