@@ -4,12 +4,13 @@
     'category': 'Purchases',
     'summary': 'Adds hierarchical approvals with permissions to Purchase Orders',
     'depends': ['purchase'],
-    'data': [
-        # 'security/ir.model.access.csv',  # يجب أن يكون أولاً
-        'security/purchase_approval_security.xml',  # ثم أمان المجموعات
-        'models/purchase_order.py',  # ملف النموذج قبل الواجهات
-        'views/purchase_order_views.xml',  # أخيراً الواجهات
+    'data': [  # لملفات البيانات فقط (XML, CSV)
+        'security/ir.model.access.csv',
+        'security/purchase_approval_security.xml',
+        'views/purchase_order_views.xml',
     ],
+    'demo': [],  # ملفات البيانات للوضع التجريبي
     'installable': True,
     'application': False,
+    'auto_install': False,
 }
