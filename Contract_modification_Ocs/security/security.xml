@@ -11,35 +11,13 @@
         <record model="res.groups" id="group_rental_user">
             <field name="name">مستخدم التأجير</field>
             <field name="category_id" ref="module_category_rental_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         </record>
 
         <record model="res.groups" id="group_rental_manager">
             <field name="name">مدير التأجير</field>
             <field name="category_id" ref="module_category_rental_management"/>
             <field name="implied_ids" eval="[(4, ref('group_rental_user'))]"/>
-        </record>
-
-        <!-- قواعد الأمان لطلبات الموافقة -->
-        <record model="ir.rule" id="approval_request_rule_user">
-            <field name="name">طلبات الموافقة - المستخدمين</field>
-            <field name="model_id" ref="model_approval_request"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_rental_user'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="False"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="False"/>
-        </record>
-
-        <record model="ir.rule" id="approval_request_rule_manager">
-            <field name="name">طلبات الموافقة - المديرين</field>
-            <field name="model_id" ref="model_approval_request"/>
-            <field name="domain_force">[(1, '=', 1)]</field>
-            <field name="groups" eval="[(4, ref('group_rental_manager'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="True"/>
         </record>
 
     </data>
