@@ -1,4 +1,5 @@
 <odoo>
+    <!-- يجب تغيير اسم النموذج إلى purchase.approval.config إذا كان هذا هو الاسم المحدد في النموذج -->
     <record id="view_purchase_approval_config_tree" model="ir.ui.view">
         <field name="name">purchase.approval.config.tree</field>
         <field name="model">purchase.approval.config</field>
@@ -35,16 +36,16 @@
         </field>
     </record>
 
-    <record id="action_purchase_approval_config" model="ir.actions.act_window">
+    <record id="purchase_approval_workflow.action_purchase_approval_config" model="ir.actions.act_window">
         <field name="name">قواعد الموافقة على المشتريات</field>
         <field name="res_model">purchase.approval.config</field>
         <field name="view_mode">tree,form</field>
     </record>
     
-    <menuitem id="menu_purchase_approval_config" name="إعدادات الموافقات" 
+    <menuitem id="purchase_approval_workflow.menu_purchase_approval_config" name="إعدادات الموافقات" 
               parent="purchase.menu_purchase_config" sequence="10"/>
     
-    <menuitem id="menu_purchase_approval_config_main" name="قواعد الموافقة" 
-              parent="menu_purchase_approval_config" 
-              action="action_purchase_approval_config"/>
+    <menuitem id="purchase_approval_workflow.menu_purchase_approval_config_main" name="قواعد الموافقة" 
+              parent="purchase_approval_workflow.menu_purchase_approval_config" 
+              action="purchase_approval_workflow.action_purchase_approval_config"/>
 </odoo>
