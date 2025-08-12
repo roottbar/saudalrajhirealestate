@@ -2,43 +2,41 @@
 <odoo>
     <data>
         
-        <!-- إضافة حقل رقم الهوية/الإقامة إلى نموذج العميل -->
+        <!-- 1. عرض النموذج (يعمل بشكل صحيح) -->
         <record id="view_partner_form_identity" model="ir.ui.view">
             <field name="name">res.partner.form.identity</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <field name="category_id" position="after">
+                <xpath expr="//field[@name='category_id']" position="after">
                     <field name="identity_number" 
                            placeholder="أدخل رقم الهوية/الإقامة (10 أرقام)"
                            attrs="{'required': [('is_company', '=', False)]}"/>
-                </field>
+                </xpath>
             </field>
         </record>
 
-        <!-- إضافة الحقل إلى عرض القائمة (معدل) -->
+        <!-- 2. عرض القائمة (معدل باستخدام xpath) -->
         <record id="view_partner_tree_identity" model="ir.ui.view">
             <field name="name">res.partner.tree.identity</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_tree"/>
             <field name="arch" type="xml">
-                <!-- استبدل phone بحقل موجود مثل name أو email -->
-                <field name="name" position="after">
+                <xpath expr="//tree//field[1]" position="after">
                     <field name="identity_number"/>
-                </field>
+                </xpath>
             </field>
         </record>
 
-        <!-- إضافة الحقل إلى البحث (معدل) -->
+        <!-- 3. عرض البحث (معدل باستخدام xpath آمن) -->
         <record id="view_res_partner_filter_identity" model="ir.ui.view">
             <field name="name">res.partner.select.identity</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_res_partner_filter"/>
             <field name="arch" type="xml">
-                <!-- استبدل phone بحقل موجود مثل name -->
-                <field name="name" position="after">
-                    <field name="identity_number" filter_domain="[('identity_number','ilike',self)]"/>
-                </field>
+                <xpath expr="//filter[1]" position="before">
+                    <field name="identity_number" string="رقم الهوية" filter_domain="[('identity_number','ilike',self)]"/>
+                </xpath>
             </field>
         </record>
 
