@@ -156,7 +156,8 @@
                   parent="menu_approval_requests_root"
                   action="action_approval_requests"
                   sequence="10"
-                  groups="partner_identity_number.group_rental_user"/>
+                  groups="group_rental_user"/>
 
     </data>
+
 </odoo>
