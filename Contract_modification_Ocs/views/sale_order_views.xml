@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- إضافة حقول الموافقة إلى أمر البيع/التأجير -->
+        <record id="view_order_form_rental_identity" model="ir.ui.view">
+            <field name="name">sale.order.form.rental.identity</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- إضافة رقم الهوية تحت معلومات العميل -->
+                <field name="partner_id" position="after">
+                    <field name="partner_identity_number" readonly="1"/>
+                </field>
+                
+                <!-- إضافة أزرار الموافقة في الرأس -->
+                <header position="inside">
+                    <button name="action_approve_price_reduction" 
+                            type="object" 
+                            string="موافقة" 
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|', ('approval_required', '=', False), ('approval_status', '!=', 'pending')]}"
+                            groups="partner_identity_number.group_rental_manager"/>
+                    <button name="action_reject_price_reduction" 
+                            type="object" 
+                            string="رفض" 
+                            attrs="{'invisible': ['|', ('approval_required', '=', False), ('approval_status', '!=', 'pending')]}"
+                            groups="partner_identity_number.group_rental_manager"/>
+                </header>
+                
+                <!-- إضافة حقول الموافقة -->
+                <field name="payment_term_id" position="after">
+                    <field name="approval_required" attrs="{'invisible': [('approval_required', '=', False)]}"/>
+                    <field name="approval_status" attrs="{'invisible': [('approval_status', '=', False)]}"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- عرض طلبات الموافقة -->
+        <record id="view_approval_request_tree" model="ir.ui.view">
+            <field name="name">approval.request.tree</field>
+            <field name="model">approval.request</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state=='pending'" 
+                      decoration-success="state=='approved'" 
+                      decoration-danger="state=='rejected'">
+                    <field name="name"/>
+                    <field name="sale_order_id"/>
+                    <field name="product_id"/>
+                    <field name="partner_identity"/>
+                    <field name="previous_price" widget="monetary"/>
+                    <field name="current_price" widget="monetary"/>
+                    <field name="price_difference" widget="monetary"/>
+                    <field name="state"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_approval_request_form" model="ir.ui.view">
+            <field name="name">approval.request.form</field>
+            <field name="model">approval.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_approve" 
+                                type="object" 
+                                string="موافقة" 
+                                class="oe_highlight"
+                                attrs="{'invisible': [('state', '!=', 'pending')]}"
+                                groups="partner_identity_number.group_rental_manager"/>
+                        <button name="action_reject" 
+                                type="object" 
+                                string="رفض" 
+                                attrs="{'invisible': [('state', '!=', 'pending')]}"
+                                groups="partner_identity_number.group_rental_manager"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="sale_order_id"/>
+                                <field name="product_id"/>
+                                <field name="partner_identity"/>
+                            </group>
+                            <group>
+                                <field name="previous_price" widget="monetary"/>
+                                <field name="current_price" widget="monetary"/>
+                                <field name="price_difference" widget="monetary"/>
+                                <field name="create_date"/>
+                            </group>
+                        </group>
+                        <group string="تفاصيل الموافقة" attrs="{'invisible': [('state', '=', 'pending')]}">
+                            <group>
+                                <field name="approved_by" attrs="{'invisible': [('state', '!=', 'approved')]}"/>
+                                <field name="approval_date" attrs="{'invisible': [('state', '!=', 'approved')]}"/>
+                            </group>
+                            <group>
+                                <field name="rejected_by" attrs="{'invisible': [('state', '!=', 'rejected')]}"/>
+                                <field name="rejection_date" attrs="{'invisible': [('state', '!=', 'rejected')]}"/>
+                            </group>
+                        </group>
+                        <field name="reason" placeholder="سبب الطلب..."/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_approval_request_search" model="ir.ui.view">
+            <field name="name">approval.request.search</field>
+            <field name="model">approval.request</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="sale_order_id"/>
+                    <field name="partner_identity"/>
+                    <field name="product_id"/>
+                    <separator/>
+                    <filter name="pending" string="في الانتظار" domain="[('state', '=', 'pending')]"/>
+                    <filter name="approved" string="تمت الموافقة" domain="[('state', '=', 'approved')]"/>
+                    <filter name="rejected" string="مرفوض" domain="[('state', '=', 'rejected')]"/>
+                    <separator/>
+                    <group expand="0" string="تجميع حسب">
+                        <filter string="الحالة" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="المنتج" name="group_product" context="{'group_by': 'product_id'}"/>
+                        <filter string="التاريخ" name="group_date" context="{'group_by': 'create_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- قائمة طلبات الموافقة -->
+        <record id="action_approval_requests" model="ir.actions.act_window">
+            <field name="name">طلبات الموافقة</field>
+            <field name="res_model">approval.request</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_approval_request_tree"/>
+            <field name="search_view_id" ref="view_approval_request_search"/>
+            <field name="context">{'search_default_pending': 1}</field>
+        </record>
+
+        <!-- عنصر قائمة للوصول إلى طلبات الموافقة -->
+        <menuitem id="menu_approval_requests_root"
+                  name="طلبات الموافقة"
+                  parent="sale.sale_menu_root"
+                  sequence="50"/>
+
+        <menuitem id="menu_approval_requests"
+                  name="طلبات موافقة التأجير"
+                  parent="menu_approval_requests_root"
+                  action="action_approval_requests"
+                  sequence="10"
+                  groups="partner_identity_number.group_rental_user"/>
+
+    </data>
+</odoo>

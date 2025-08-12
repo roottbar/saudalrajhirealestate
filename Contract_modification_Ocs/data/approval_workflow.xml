@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- قالب إشعار للموافقة -->
+        <record id="email_template_approval_request" model="mail.template">
+            <field name="name">طلب موافقة تقليل السعر</field>
+            <field name="model_id" ref="model_approval_request"/>
+            <field name="subject">طلب موافقة: ${object.name}</field>
+            <field name="email_to">${object.sale_order_id.user_id.email}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>السلام عليكم ورحمة الله وبركاته،</p>
+                    
+                    <p>يوجد طلب موافقة جديد يتطلب مراجعتكم:</p>
+                    
+                    <ul>
+                        <li><strong>رقم الطلب:</strong> ${object.name}</li>
+                        <li><strong>أمر البيع:</strong> ${object.sale_order_id.name}</li>
+                        <li><strong>العميل:</strong> ${object.sale_order_id.partner_id.name}</li>
+                        <li><strong>رقم الهوية:</strong> ${object.partner_identity}</li>
+                        <li><strong>المنتج:</strong> ${object.product_id.name}</li>
+                        <li><strong>السعر السابق:</strong> ${object.previous_price} ريال</li>
+                        <li><strong>السعر الحالي:</strong> ${object.current_price} ريال</li>
+                        <li><strong>فرق السعر:</strong> ${object.price_difference} ريال</li>
+                    </ul>
+                    
+                    <p>السبب: ${object.reason or 'غير محدد'}</p>
+                    
+                    <p>يرجى المراجعة واتخاذ الإجراء المناسب.</p>
+                    
+                    <p>مع أطيب التحيات،<br/>
+                    نظام إدارة التأجير</p>
+                </div>
+            </field>
+        </record>
+
+        <!-- إعداد تلقائي لإرسال الإشعارات -->
+        <record id="mail_activity_type_approval" model="mail.activity.type">
+            <field name="name">موافقة تقليل السعر</field>
+            <field name="summary">مطلوب موافقة على تقليل السعر</field>
+            <field name="delay_count">1</field>
+            <field name="delay_unit">days</field>
+            <field name="res_model">approval.request</field>
+        </record>
+
+    </data>
+</odoo>
