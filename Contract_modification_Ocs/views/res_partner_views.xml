@@ -16,26 +16,28 @@
             </field>
         </record>
 
-        <!-- إضافة الحقل إلى عرض القائمة -->
+        <!-- إضافة الحقل إلى عرض القائمة (معدل) -->
         <record id="view_partner_tree_identity" model="ir.ui.view">
             <field name="name">res.partner.tree.identity</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_tree"/>
             <field name="arch" type="xml">
-                <field name="phone" position="after">
+                <!-- استبدل phone بحقل موجود مثل name أو email -->
+                <field name="name" position="after">
                     <field name="identity_number"/>
                 </field>
             </field>
         </record>
 
-        <!-- إضافة الحقل إلى البحث -->
+        <!-- إضافة الحقل إلى البحث (معدل) -->
         <record id="view_res_partner_filter_identity" model="ir.ui.view">
             <field name="name">res.partner.select.identity</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_res_partner_filter"/>
             <field name="arch" type="xml">
-                <field name="phone" position="after">
-                    <field name="identity_number"/>
+                <!-- استبدل phone بحقل موجود مثل name -->
+                <field name="name" position="after">
+                    <field name="identity_number" filter_domain="[('identity_number','ilike',self)]"/>
                 </field>
             </field>
         </record>
