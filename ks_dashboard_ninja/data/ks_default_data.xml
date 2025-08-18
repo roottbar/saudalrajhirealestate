@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <data>
+    <data noupdate="1">
         <!--        Default Templates -->
   <record id="ks_blank" model="ks_dashboard_ninja.board_template">
             <field name="name">Blank</field>
