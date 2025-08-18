@@ -5,7 +5,7 @@ import json
 import operator
 
 # Updated imports for Odoo 17
-from odoo.http import content_disposition, request, serialize_exception as serialize_exception
+from odoo.http import content_disposition, request
 from odoo.addons.web.controllers.export import ExportXlsxWriter
 from odoo.tools.translate import _
 from odoo import http
@@ -41,9 +41,24 @@ class KsChartExcelExport(KsChartExport, http.Controller):
     raw_data = True
 
     @http.route('/ks_dashboard_ninja/export/chart_xls', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
-        return self.base(data)
+        try:
+            return self.base(data)
+        except Exception as e:
+            return request.make_response(
+                json.dumps({
+                    'code': 200,
+                    'message': "Odoo Server Error",
+                    'data': {
+                        'name': str(e),
+                        'debug': '',
+                        'message': str(e),
+                        'arguments': [],
+                        'context': {}
+                    }
+                }),
+                headers=[('Content-Type', 'application/json')]
+            )
 
     @property
     def content_type(self):
@@ -63,9 +78,24 @@ class KsChartExcelExport(KsChartExport, http.Controller):
 
 class KsChartCsvExport(KsChartExport, http.Controller):
     @http.route('/ks_dashboard_ninja/export/chart_csv', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
-        return self.base(data)
+        try:
+            return self.base(data)
+        except Exception as e:
+            return request.make_response(
+                json.dumps({
+                    'code': 200,
+                    'message': "Odoo Server Error",
+                    'data': {
+                        'name': str(e),
+                        'debug': '',
+                        'message': str(e),
+                        'arguments': [],
+                        'context': {}
+                    }
+                }),
+                headers=[('Content-Type', 'application/json')]
+            )
 
     @property
     def content_type(self):
