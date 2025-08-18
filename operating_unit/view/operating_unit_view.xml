@@ -20,12 +20,12 @@
         <field name="name">operating.unit.tree</field>
         <field name="model">operating.unit</field>
         <field name="arch" type="xml">
-            <tree string="Operating Unit">
+            <list string="Operating Unit">
                 <field name="code"/>
                 <field name="name"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="ref_analytic_account"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="view_operating_unit_search" model="ir.ui.view">
