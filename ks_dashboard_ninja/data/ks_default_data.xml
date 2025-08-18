@@ -3,60 +3,42 @@
 
     <data>
         <!--        Default Templates -->
-        <record id="ks_blank" model="ks_dashboard_ninja.board_template">
+  <record id="ks_blank" model="ks_dashboard_ninja.board_template">
             <field name="name">Blank</field>
             <field name="ks_item_count">0</field>
         </record>
 
         <record id="ks_template_1" model="ks_dashboard_ninja.board_template">
             <field name="name">Template 1</field>
-            <field name="ks_gridstack_config">[
-                {"item_id":"ks_dashboard_ninja.ks_default_item_1", "data": {"x": 0, "y": 10, "w": 3, "h": 2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_2", "data": {"x": 0, "y": 8, "w": 3, "h": 2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_3", "data": {"x": 3, "y": 0, "w": 3, "h": 2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_4", "data": {"x": 0, "y": 2, "w": 3, "h": 2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_5", "data": {"x": 6, "y": 12, "w": 6, "h": 6}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_6", "data": {"x": 0, "y": 28, "w": 12, "h":
-                4}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_7", "data": {"x": 0, "y": 43, "w": 5, "h":
-                4}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_8", "data": {"x": 6, "y": 6, "w": 6, "h": 6}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_9", "data": {"x": 5, "y": 36, "w": 7, "h": 7}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_10", "data": {"x": 4, "y": 23, "w": 4, "h":
-                5}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_11", "data": {"x": 6, "y": 18, "w": 6, "h":
-                5}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_12", "data": {"x": 0, "y": 6, "w": 3, "h":
-                2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_13", "data": {"x": 3, "y": 8, "w": 3, "h":
-                2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_15", "data": {"x": 0, "y": 18, "w": 6, "h":
-                5}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_16", "data": {"x": 0, "y": 0, "w": 3, "h":
-                2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_17", "data": {"x": 3, "y": 6, "w": 3, "h": 2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_18", "data": {"x": 3, "y": 4, "w": 3, "h": 2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_19", "data": {"x": 3, "y": 10, "w": 3, "h": 2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_20", "data": {"x": 5, "y": 43, "w": 7, "h":
-                4}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_21", "data": {"x": 0, "y": 12, "w": 6, "h":
-                6}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_22", "data": {"x": 0, "y": 36, "w": 5, "h":
-                7}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_23", "data": {"x": 0, "y": 32, "w": 12, "h":
-                4}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_24", "data": {"x": 8, "y": 23, "w": 4, "h":
-                5}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_25", "data": {"x": 0, "y": 23, "w": 4, "h":
-                5}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_26", "data": {"x": 0, "y": 4, "w": 3, "h":
-                2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_27", "data": {"x": 3, "y": 3, "w": 3, "h":
-                2}},
-                {"item_id":"ks_dashboard_ninja.ks_default_item_28", "data": {"x": 6, "y": 0, "w": 6, "h":
-                6}}
-                ]
-            </field>
+            <field name="ks_gridstack_config"><![CDATA[
+                [{"item_id":"ks_dashboard_ninja.ks_default_item_1","data":{"x":0,"y":10,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_2","data":{"x":0,"y":8,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_3","data":{"x":3,"y":0,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_4","data":{"x":0,"y":2,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_5","data":{"x":6,"y":12,"w":6,"h":6}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_6","data":{"x":0,"y":28,"w":12,"h":4}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_7","data":{"x":0,"y":43,"w":5,"h":4}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_8","data":{"x":6,"y":6,"w":6,"h":6}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_9","data":{"x":5,"y":36,"w":7,"h":7}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_10","data":{"x":4,"y":23,"w":4,"h":5}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_11","data":{"x":6,"y":18,"w":6,"h":5}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_12","data":{"x":0,"y":6,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_13","data":{"x":3,"y":8,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_15","data":{"x":0,"y":18,"w":6,"h":5}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_16","data":{"x":0,"y":0,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_17","data":{"x":3,"y":6,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_18","data":{"x":3,"y":4,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_19","data":{"x":3,"y":10,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_20","data":{"x":5,"y":43,"w":7,"h":4}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_21","data":{"x":0,"y":12,"w":6,"h":6}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_22","data":{"x":0,"y":36,"w":5,"h":7}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_23","data":{"x":0,"y":32,"w":12,"h":4}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_24","data":{"x":8,"y":23,"w":4,"h":5}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_25","data":{"x":0,"y":23,"w":4,"h":5}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_26","data":{"x":0,"y":4,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_27","data":{"x":3,"y":3,"w":3,"h":2}},
+                {"item_id":"ks_dashboard_ninja.ks_default_item_28","data":{"x":6,"y":0,"w":6,"h":6}}]
+            ]]></field>
             <field name="ks_item_count">7</field>
         </record>
 
