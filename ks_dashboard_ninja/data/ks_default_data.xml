@@ -369,7 +369,7 @@
         <field name="ks_model_id" eval="ref('base.model_res_country')"/>
         <field name="ks_model_id_2" eval="ref('base.model_res_country')"/>
         <field name="ks_data_comparison">Ratio</field>
-        <field name="ks_domain">[["id","&lt;",100]]</field>
+        <field name="ks_domain"><![CDATA[[["id","<",100]]]></field>
         <field name="ks_default_icon">user</field>
         <field name="ks_dashboard_item_theme">blue</field>
         <field name="ks_background_color">#03104E,0.99</field>
