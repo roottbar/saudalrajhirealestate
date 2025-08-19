@@ -42,7 +42,12 @@ DATE_DICT = {
 class InsFinancialReport(models.TransientModel):
     _name = "ins.financial.report"
     _description = "Financial Reports"
-
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        required=True,
+        default=lambda self: self.env.company
+    )
     @api.onchange('company_id')
     def _onchange_company_id(self):
         if self.company_id:
