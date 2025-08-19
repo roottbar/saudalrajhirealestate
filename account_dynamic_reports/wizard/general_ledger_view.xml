@@ -16,7 +16,7 @@
                         <field name="date_from"/>
                         <field name="date_to"/>
                         <field name="include_details" help="It will show detailed lines in reports"/>
-                        <field name="financial_year" invisible="1"/>
+                        <field name="financial_year" modifiers="{'invisible': True}"/>
                     </group>
                     <group col="2">
                         <field name="account_ids" widget="many2many_tags"
