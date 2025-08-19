@@ -4,13 +4,13 @@
 #    ODOO, Open Source Management Solution
 #    Copyright (C) 2016 - 2020 Steigend IT Solutions (Omal Bastin)
 #    Copyright (C) 2020 - Today O4ODOO (Omal Bastin)
-#    For more details, check COPYRIGHT and LICENSE files
+#    License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 #
 ##############################################################################
+
 from odoo import http, _
 from odoo.http import request, serialize_exception
 from odoo.tools import html_escape, pycompat
-from odoo.addons.web.controllers.main import ExcelExport
 from odoo.exceptions import UserError
 
 import json
@@ -38,7 +38,6 @@ class CoAReportController(http.Controller):
                         ('Content-Disposition', 'attachment; filename=coa_report.pdf;')
                     ]
                 )
-                # response.set_cookie('fileToken', token)
                 return response
         except Exception as e:
             se = serialize_exception(e)
@@ -51,25 +50,25 @@ class CoAReportController(http.Controller):
 
     @http.route('/account_parent/export/xls', type='http', auth='user')
     def coa_xls_report(self, data, **kw):
-        print(kw,"kwkwkw")
         coa_data = json.loads(data)
         report_id = coa_data.get('wiz_id', [])
         report_obj = request.env['account.open.chart'].browse(report_id)
         user_context = report_obj._build_contexts()
 
-        lines = request.env['account.open.chart'].with_context(print_mode=True,
-                                                               output_format='xls'
-                                                               ).get_pdf_lines(report_id)
+        lines = request.env['account.open.chart'].with_context(
+            print_mode=True,
+            output_format='xls'
+        ).get_pdf_lines(report_id)
+
         user_context.update(report_obj.generate_report_context(user_context))
         show_initial_balance = user_context.get('show_initial_balance')
         row_data = report_obj.get_xls_title(user_context)
 
-
         if show_initial_balance:
-            row_data.append(
-                ['Code', 'Name', 'Type', 'Initial Balance', 'Debit', 'Credit', 'Ending Balance', 'Unfoldable'])
+            row_data.append(['Code', 'Name', 'Type', 'Initial Balance', 'Debit', 'Credit', 'Ending Balance', 'Unfoldable'])
         else:
             row_data.append(['Code', 'Name', 'Type', 'Debit', 'Credit', 'Balance', 'Unfoldable'])
+
         for line in lines:
             level = line.get('level')
             unfoldable = line.get('unfoldable')
@@ -82,11 +81,10 @@ class CoAReportController(http.Controller):
             balance = line.get('balance')
             if show_initial_balance:
                 balance = line.get('ending_balance')
-                row_data.append([code, name, ac_type, initial_balance, debit, credit,
-                                 balance, unfoldable])
+                row_data.append([code, name, ac_type, initial_balance, debit, credit, balance, unfoldable])
             else:
-                row_data.append([code, name, ac_type, debit, credit,
-                                 balance, unfoldable])
+                row_data.append([code, name, ac_type, debit, credit, balance, unfoldable])
+
         columns_headers = ['', '', 'Chart Of Accounts', '', '']
         rows = row_data
         return request.make_response(
@@ -94,8 +92,7 @@ class CoAReportController(http.Controller):
             headers=[
                 ('Content-Type', 'application/vnd.ms-excel'),
                 ('Content-Disposition', 'attachment; filename=coa_report.xls;')
-            ],
-            # cookies={'fileToken': token}
+            ]
         )
 
     def coa_format_data(self, fields, rows):
@@ -126,29 +123,22 @@ class CoAReportController(http.Controller):
                 cell_style = base_style
 
                 if isinstance(cell_value, bytes) and not isinstance(cell_value, pycompat.string_types):
-                    # because xls uses raw export, we can get a bytes object
-                    # here. xlwt does not support bytes values in Python 3 ->
-                    # assume this is base64 and decode to a string, if this
-                    # fails note that you can't export
                     try:
                         cell_value = pycompat.to_text(cell_value)
                     except UnicodeDecodeError:
-                        raise UserError(_("Binary fields can not be exported to Excel unless their content is base64-encoded. That does not seem to be the case for %s.") % fields[cell_index])
+                        raise UserError(_("Binary fields cannot be exported to Excel unless base64-encoded."))
+
                 if isinstance(cell_value, str):
                     cell_value = re.sub("\r", " ", pycompat.to_text(cell_value))
-                    # Excel supports a maximum of 32767 characters in each cell:
-                    cell_value = cell_value[:32767]
+                    cell_value = cell_value[:32767]  # Excel limit
                 elif isinstance(cell_value, datetime.datetime):
                     cell_style = datetime_style
                 elif isinstance(cell_value, datetime.date):
                     cell_style = date_style
+
                 font = xlwt.Font()
                 font.bold = False
                 cell_style.font = font
-                if row_index + 1 in [2, 5]:
-                    font = xlwt.Font()
-                    font.bold = True
-                    cell_style.font = font
                 if unfoldable:
                     font.bold = True
 
