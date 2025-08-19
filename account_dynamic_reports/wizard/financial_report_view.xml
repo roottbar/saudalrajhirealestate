@@ -37,13 +37,13 @@
                     </group>
                     <group>
                         <field name="journal_ids" widget="many2many_tags"
-                               domain="['|',('company_id','=',context.get('company_id')),('company_id','=',False)]"
+                               domain="['|',('company_id','=',company_id),('company_id','=',False)]"
                                options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="analytic_ids" widget="many2many_tags"
-                               domain="[('company_id','=',context.get('company_id'))]"
+                               domain="[('company_id','=',company_id)]"
                                options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="analytic_tag_ids" widget="many2many_tags"
-                               domain="['|',('company_id','=',context.get('company_id')),('company_id','=',False)]"
+                               domain="['|',('company_id','=',company_id),('company_id','=',False)]"
                                options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                     </group>
 
@@ -128,6 +128,5 @@
                   name="Balance Sheet" parent="account_reports_ins_wiz" groups="account.group_account_user"/>
         <menuitem id="account_report_cf_wiz" sequence="80" action="action_dynamic_allinone_cf_report"
                   name="Cash Flow" parent="account_reports_ins_wiz" groups="account.group_account_user"/>
-
     </data>
 </odoo>
