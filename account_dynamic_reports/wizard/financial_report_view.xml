@@ -44,9 +44,8 @@
                         <field name="analytic_ids" widget="many2many_tags"
                                domain="[('company_id','=',company_id)]"
                                options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
-                        <field name="analytic_tag_ids"
-                               widget="many2many_tags"
-                               domain="['|',('company_id','=',company_id),('company_id','=',False)]"
+                        <field name="analytic_tag_ids" widget="many2many_tags"
+                               domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"
                                options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                     </group>
 
