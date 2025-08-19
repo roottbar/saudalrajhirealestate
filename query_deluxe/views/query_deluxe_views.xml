@@ -18,12 +18,12 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <!-- استخدم attrs بدل t-if -->
+                    <!-- استخدم computed fields للتحكم بالظهور -->
                     <button name="print_result" string="Print PDF" type="object"
-                            attrs="{'invisible':[('raw_output','in',['',[],False])]}"
+                            attrs="{'invisible':[('can_print','=',False)]}"
                             style="color: blue !important"/>
                     <button name="copy_query" type="object" style="color:green" string="Copy"
-                            attrs="{'invisible':[('tips','=',False)]}"/>
+                            attrs="{'invisible':[('can_copy','=',False)]}"/>
                 </header>
 
                 <sheet>
