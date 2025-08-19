@@ -157,4 +157,6 @@ class IrUiView(models.Model):
 
             field_info = name_manager.field_info.get(node.get('name'))
             if field_info:
-                transfer_field_to_modifiers(field_info, node_info['modifiers'])
+                for attr in ['readonly', 'invisible', 'required']:
+                    if attr in field_info:
+                        node_info['modifiers'][attr] = field_info[attr]
