@@ -14,8 +14,9 @@ from odoo.osv import expression
 class AccountAccountTemplate(models.Model):
 	_inherit = "account.account.template"
 	
-	parent_id = fields.Many2one('account.account.template','Parent Account', ondelete="set null")
-	
+	# parent_id = fields.Many2one('account.account.template','Parent Account', ondelete="set null")
+	parent_id = fields.Many2one('account.account','Parent Account', ondelete="set null")
+
 	@api.model
 	def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
 		context = self._context or {}
