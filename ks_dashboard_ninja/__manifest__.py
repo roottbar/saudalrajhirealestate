@@ -87,7 +87,9 @@ Dashboard Ninja v14.0,
 
 	'depends': ['base', 'web', 'base_setup', 'bus'],
 
-	'data': ['security/ir.model.access.csv', 'security/ks_security_groups.xml', 'data/ks_default_data.xml', 'views/ks_dashboard_ninja_view.xml', 'views/ks_dashboard_ninja_item_view.xml', 'views/ks_dashboard_action.xml', 'views/ks_import_dashboard_view.xml'],
+	'data': ['security/ir.model.access.csv', 'security/ks_security_groups.xml',
+			 # 'data/ks_default_data.xml',
+			 'views/ks_dashboard_ninja_view.xml', 'views/ks_dashboard_ninja_item_view.xml', 'views/ks_dashboard_action.xml', 'views/ks_import_dashboard_view.xml'],
 
 	'demo': ['demo/ks_dashboard_ninja_demo.xml'],
 
