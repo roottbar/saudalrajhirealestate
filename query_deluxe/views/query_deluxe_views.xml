@@ -5,9 +5,9 @@
 		<field name="name">Type a query tree</field>
 		<field name="model">querydeluxe</field>
 		<field name="arch" type="xml">
-			<tree>
+			<list>
 				<field name="name" string="Query"/>
-			</tree>
+			</list>
 		</field>
 	</record>
 
@@ -87,10 +87,10 @@
 		<field name="name">Memorize a query tree</field>
 		<field name="model">tipsqueries</field>
 		<field name="arch" type="xml">
-			<tree editable="top">
+			<list editable="top">
 				<field name="name" string="Query"/>
 				<field name="description" string="Description"/>
-			</tree>
+			</list>
 		</field>
 	</record>
 
