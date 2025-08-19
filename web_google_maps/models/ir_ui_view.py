@@ -2,10 +2,8 @@
 # License AGPL-3
 from lxml import etree
 from odoo import fields, models, _
-from odoo.addons.base.models.ir_ui_view import (
-    quick_eval,
-    transfer_field_to_modifiers,
-)
+from odoo.tools.safe_eval import safe_eval
+from odoo.addons.base.models.ir_ui_view import transfer_field_to_modifiers
 
 
 class IrUiView(models.Model):
@@ -95,7 +93,7 @@ class IrUiView(models.Model):
             for attribute in ('invisible', 'readonly', 'required'):
                 val = node.get(attribute)
                 if val:
-                    res = quick_eval(val, {'context': self._context})
+                    res = safe_eval(val, {'context': self._context})
                     if res not in (1, 0, True, False, None):
                         msg = _(
                             'Attribute %(attribute)s evaluation expects a boolean, got %(value)s',
