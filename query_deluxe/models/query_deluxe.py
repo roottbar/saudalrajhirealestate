@@ -1,7 +1,6 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
-
 class QueryDeluxe(models.Model):
     _name = "querydeluxe"
     _description = "Postgres queries from Odoo interface"
@@ -18,6 +17,20 @@ class QueryDeluxe(models.Model):
 
     show_raw_output = fields.Boolean(string='Show the raw output of the query')
     raw_output = fields.Text(string='Raw output')
+
+    # Computed fields to control button visibility
+    can_print = fields.Boolean(string="Can Print", compute="_compute_can_print")
+    can_copy = fields.Boolean(string="Can Copy", compute="_compute_can_copy")
+
+    @api.depends('raw_output')
+    def _compute_can_print(self):
+        for rec in self:
+            rec.can_print = bool(rec.raw_output)
+
+    @api.depends('tips')
+    def _compute_can_copy(self):
+        for rec in self:
+            rec.can_copy = bool(rec.tips)
 
     def print_result(self):
         return {
@@ -38,10 +51,8 @@ class QueryDeluxe(models.Model):
     def execute(self):
         self.show_raw_output = False
         self.raw_output = ''
-
         self.rowcount = ''
         self.html = '<br></br>'
-
         self.valid_query_name = ''
 
         if self.name:
@@ -59,8 +70,8 @@ class QueryDeluxe(models.Model):
             try:
                 no_fetching = ['update', 'delete', 'create', 'insert', 'alter', 'drop']
                 max_n = len(max(no_fetching))
-
                 is_insides = [(o in self.name.lower().strip()[:max_n]) for o in no_fetching]
+
                 if True not in is_insides:
                     headers = [d[0] for d in self.env.cr.description]
                     datas = self.env.cr.fetchall()
@@ -78,13 +89,10 @@ class QueryDeluxe(models.Model):
                 header_html = "<tr>"+"<th style='background-color:white !important'/>"+header_html+"</tr>"
 
                 body_html = ""
-                i = 0
-                for data in datas:
-                    i += 1
+                for i, data in enumerate(datas, start=1):
                     body_line = "<tr>"+"<td style='border-right: 3px double; border-bottom: 1px solid; background-color: yellow'>{0}</td>".format(i)
                     for value in data:
                         body_line += "<td style='border: 1px solid; background-color: {0}'>{1}</td>".format('cyan' if i%2 == 0 else 'white', str(value) if (value is not None) else '')
-
                     body_line += "</tr>"
                     body_html += body_line
 
@@ -93,7 +101,6 @@ class QueryDeluxe(models.Model):
   <thead style="background-color: lightgrey">
     {0}
   </thead>
-
   <tbody>
     {1}
   </tbody>
