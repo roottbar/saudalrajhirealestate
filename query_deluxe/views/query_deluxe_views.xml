@@ -17,14 +17,11 @@
         <field name="model">querydeluxe</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <!-- استخدم computed fields للتحكم بالظهور -->
-                    <button name="print_result" string="Print PDF" type="object"
-                            attrs="{'invisible':[('can_print','=',False)]}"
+                  <header>
+                    <button name="print_result" string="Print PDF" type="object" 
+                            invisible="[(not can_print)]"
                             style="color: blue !important"/>
-                    <button name="copy_query" type="object" style="color:green" string="Copy"
-                            attrs="{'invisible':[('can_copy','=',False)]}"/>
-                </header>
+                  </header> 
 
                 <sheet>
                     <group string="Examples">
