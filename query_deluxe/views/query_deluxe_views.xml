@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- Tree view (List view الآن في Odoo 18) -->
+    <!-- List view -->
     <record id="query_deluxe_view_tree" model="ir.ui.view">
         <field name="name">Type a query list</field>
         <field name="model">querydeluxe</field>
@@ -18,28 +18,28 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <t t-if="record.raw_output">
-                        <button name="print_result" string="Print PDF" type="object" style="color: blue !important"/>
-                    </t>
+                    <!-- استخدم attrs بدل t-if -->
+                    <button name="print_result" string="Print PDF" type="object"
+                            attrs="{'invisible':[('raw_output','in',['',[],False])]}"
+                            style="color: blue !important"/>
+                    <button name="copy_query" type="object" style="color:green" string="Copy"
+                            attrs="{'invisible':[('tips','=',False)]}"/>
                 </header>
 
                 <sheet>
                     <group string="Examples">
                         <group colspan="4">
                             <field name="tips" widget="selection" nolabel="1"/>
-                            <t t-if="record.tips">
-                                <button name="copy_query" type="object" style="color:green" string="Copy"/>
-                            </t>
                         </group>
-
                         <group colspan="4">
-                            <field name="tips_description" t-if="record.tips"/>
+                            <field name="tips_description" attrs="{'invisible':[('tips','=',False)]}"/>
                         </group>
                     </group>
 
                     <group string="Type a query" colspan="4">
                         <field name="name" nolabel="1" placeholder="SELECT * FROM res_partner"/>
                     </group>
+
                     <button name="execute" type="object" string="Execute" class="oe_highlight"/>
 
                     <div style="overflow:visible !important;">
@@ -55,7 +55,7 @@
 
                     <group>
                         <field name="show_raw_output"/>
-                        <field name="raw_output" t-if="record.show_raw_output"/>
+                        <field name="raw_output" attrs="{'invisible':[('show_raw_output','=',False)]}"/>
                     </group>
 
                     <div class="oe_chatter">
@@ -109,7 +109,10 @@
     </record>
 
     <!-- Menu Items -->
-    <menuitem id="query_deluxe_menu" name="Query Deluxe" sequence="-1" groups="query_deluxe.group_query_deluxe" web_icon="query_deluxe,static/description/icon.png"/>
-    <menuitem id="query_deluxe_submenu_querydeluxe" parent="query_deluxe_menu" action="query_deluxe_submenu_querydeluxe_action" sequence="-1" groups="query_deluxe.group_query_deluxe"/>
-    <menuitem id="query_deluxe_submenu_tipsqueries" parent="query_deluxe_menu" action="query_deluxe_submenu_tipsqueries_action" sequence="10" groups="query_deluxe.group_query_deluxe"/>
+    <menuitem id="query_deluxe_menu" name="Query Deluxe" sequence="-1"
+              groups="query_deluxe.group_query_deluxe" web_icon="query_deluxe,static/description/icon.png"/>
+    <menuitem id="query_deluxe_submenu_querydeluxe" parent="query_deluxe_menu"
+              action="query_deluxe_submenu_querydeluxe_action" sequence="-1" groups="query_deluxe.group_query_deluxe"/>
+    <menuitem id="query_deluxe_submenu_tipsqueries" parent="query_deluxe_menu"
+              action="query_deluxe_submenu_tipsqueries_action" sequence="10" groups="query_deluxe.group_query_deluxe"/>
 </odoo>
