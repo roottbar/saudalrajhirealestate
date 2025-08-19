@@ -207,7 +207,7 @@
             <field name="name">Dashboard Manager</field>
             <field name="res_model">ks_dashboard_ninja.board</field>
             <field name="view_mode">tree,form</field>
-            <field name="context">{'form_view_ref':'ks_dashboard_ninja.board_form',
+            <field name="context">{'form_view_ref':'ks_dashboard_ninja_board_form',
                 'tree_view_ref':'ks_dashboard_ninja.board_tree'}
             </field>
         </record>
