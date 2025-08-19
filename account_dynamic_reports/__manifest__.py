@@ -37,7 +37,7 @@
              'wizard/partner_ledger_view.xml',
              'wizard/trial_balance_view.xml',
              'wizard/partner_ageing_view.xml',
-             'wizard/financial_report_view.xml',
+             # 'wizard/financial_report_view.xml',
              ],
     'demo': [],
     'assets': {
