@@ -40,12 +40,12 @@
             <field name="name">account.financial.report.tree</field>
             <field name="model">ins.account.financial.report</field>
             <field name="arch" type="xml">
-                <tree string="Account Report">
+                <list string="Account Report">
                     <field name="name"/>
                     <field name="parent_id" invisible="1"/>
                     <field name="type"/>
                     <field name="account_report_id"/>
-                </tree>
+                </list>            
             </field>
         </record>
 
