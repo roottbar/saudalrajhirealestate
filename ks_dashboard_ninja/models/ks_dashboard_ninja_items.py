@@ -70,7 +70,8 @@ def ks_read(self, records):
         comodel._flush_search(domain)
         wquery = comodel._where_calc(domain)
         comodel._apply_ir_rules(wquery, 'read')
-        order_by = comodel._generate_order_by(None, wquery)
+        # order_by = comodel._generate_order_by(None, wquery)
+        order_by = None
         from_c, where_c, where_params = wquery.get_sql()
         query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
                             WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
@@ -96,6 +97,7 @@ def ks_read(self, records):
 fields.Many2many.read = ks_read
 
 read_group = models.BaseModel._read_group_postprocess_groupby
+
 
 
 def ks_time_addition(self, gb, query):
