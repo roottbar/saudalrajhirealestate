@@ -1,7 +1,9 @@
 <odoo>
     <data>
+<!-- 
+        <record model="ir.ui.view" id="ks_dashboard_ninja.board_form"> -->
+        <record model="ir.ui.view" id="ks_dashboard_ninja_board_form">
 
-        <record model="ir.ui.view" id="ks_dashboard_ninja.board_form">
             <field name="name">ks_dashboard_ninja View</field>
             <field name="model">ks_dashboard_ninja.board</field>
             <field name="arch" type="xml">
