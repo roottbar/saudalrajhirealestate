@@ -5,16 +5,12 @@ from odoo import http
 from odoo.http import request
 from odoo.api import Environment
 from odoo import SUPERUSER_ID
-# from odoo.addons.web.controllers.main import ensure_db
 import datetime
 import json
 import logging
-# from openpyxl.pivot import record
 from datetime import datetime
-
-# from docutils.languages import fa
 _logger = logging.getLogger(__name__)
-from odoo.addons.web.controllers.main import Home, serialize_exception, content_disposition
+from odoo.addons.web.controllers.main import serialize_exception, content_disposition
 from odoo.tools.translate import _
 import base64
 
