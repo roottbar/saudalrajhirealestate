@@ -3,7 +3,7 @@
 from lxml import etree
 from odoo import fields, models, _
 from odoo.tools.safe_eval import safe_eval
-from odoo.addons.base.models.ir_ui_view import transfer_field_to_modifiers
+# from odoo.addons.base.models.ir_ui_view import transfer_field_to_modifiers
 
 
 class IrUiView(models.Model):
