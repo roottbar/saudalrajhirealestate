@@ -12,29 +12,31 @@
                             <field name="date_range"/>
                             <field name="date_from"/>
                             <field name="date_to"/>
-                            <field name="financial_year" invisible="1"/>
+                            <field name="financial_year" modifiers="{'invisible': true}"/>
                         </group>
                         <group>
                             <field name="target_move" widget="radio"/>
-                            <field name="view_format" widget="radio" invisible="1"/>
-                            <field name="enable_filter" invisible="1"/>
+                            <field name="view_format" widget="radio" modifiers="{'invisible': true}"/>
+                            <field name="enable_filter" modifiers="{'invisible': true}"/>
                             <field name="debit_credit"/>
-                            <field name="company_id" invisible="1"/>
+                            <field name="company_id" modifiers="{'invisible': true}"/>
                             <field name="account_report_id" required="1" force_save="1"
                                    options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         </group>
                     </group>
+
                     <group>
                         <group>
                             <field name="enable_filter"/>
-                            <field name="date_from_cmp" attrs="{'invisible':[('enable_filter','=',False)]}"/>
+                            <field name="date_from_cmp" modifiers="{'invisible':[('enable_filter','=',False)]}"/>
                         </group>
                         <group>
-                            <field name="label_filter" attrs="{'required':[('enable_filter','=',True)], 'invisible':[('enable_filter','=',False)]}"/>
-                            <field name="filter_cmp" invisible="1"/>
-                            <field name="date_to_cmp" attrs="{'invisible':[('enable_filter','=',False)]}"/>
+                            <field name="label_filter" modifiers="{'required':[('enable_filter','=',True)], 'invisible':[('enable_filter','=',False)]}"/>
+                            <field name="filter_cmp" modifiers="{'invisible': true}"/>
+                            <field name="date_to_cmp" modifiers="{'invisible':[('enable_filter','=',False)]}"/>
                         </group>
                     </group>
+
                     <group>
                         <field name="journal_ids" widget="many2many_tags"
                                domain="[('company_id','=',company_id)]"
@@ -42,11 +44,10 @@
                         <field name="analytic_ids" widget="many2many_tags"
                                domain="[('company_id','=',company_id)]"
                                options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
-                        <field name="analytic_tag_ids" position="attributes">
-                            <attribute name="widget">many2many_tags</attribute>
-                            <attribute name="domain">['|',('company_id','=',company_id),('company_id','=',False)]</attribute>
-                            <attribute name="options">{'no_create_edit': True,'no_create': True, 'no_quick_create': True}</attribute>
-                        </field>
+                        <field name="analytic_tag_ids"
+                               widget="many2many_tags"
+                               domain="['|',('company_id','=',company_id),('company_id','=',False)]"
+                               options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                     </group>
 
                     <footer>
