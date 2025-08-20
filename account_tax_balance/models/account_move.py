@@ -28,7 +28,6 @@ class AccountMove(models.Model):
     @api.depends(
         "line_ids.account_id.account_type",
         "line_ids.balance",
-        "line_ids.account_id.user_type_id.type",
     )
     def _compute_financial_type(self):
         def _balance_get(line_ids, account_type_filter):
