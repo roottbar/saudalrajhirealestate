@@ -51,6 +51,28 @@ from odoo import http, _
 
 class AccountAccount(models.Model):
     _inherit = "account.account"
+    
+    @api.model
+    def _search(self, args, offset=0, limit=None, order=None, **kwargs):
+        """نسخة آمنة متوافقة مع Odoo 18"""
+        context = self._context or {}
+        new_args = []
+        if args:
+            for arg in args:
+                # البحث باسم الحساب أو الكود
+                if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
+                    new_args.append('|')
+                    new_args.append(arg)
+                    new_args.append(['code', arg[1], arg[2]])
+                else:
+                    new_args.append(arg)
+
+        # استثناء الحسابات من النوع 'view' إذا لم يُطلب عرضها
+        if not context.get('show_parent_account', False):
+            new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
+
+        # استدعاء السوبر بدون count أو access_rights_uid لتجنب الكراش
+        return super(AccountAccount, self)._search(new_args, offset=offset, limit=limit, order=order)
     account_type = fields.Selection(
         selection_add=[('view', 'View')],
         ondelete={'view': 'cascade'}
@@ -80,22 +102,22 @@ class AccountAccount(models.Model):
     _parent_order = 'code, name'
     _order = 'code, id'
 
-    @api.model
-    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
-        context = self._context or {}
-        new_args = []
-        if args:
-            for arg in args:
-                if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
-                    new_args.append('|')
-                    new_args.append(arg)
-                    new_args.append(['code', arg[1], arg[2]])
-                else:
-                    new_args.append(arg)
-        if not context.get('show_parent_account', False):
-            new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
-        return super(AccountAccount, self)._search(new_args, offset=offset, limit=limit, order=order,
-                                                   count=count, access_rights_uid=access_rights_uid)
+    # @api.model
+    # def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+    #     context = self._context or {}
+    #     new_args = []
+    #     if args:
+    #         for arg in args:
+    #             if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
+    #                 new_args.append('|')
+    #                 new_args.append(arg)
+    #                 new_args.append(['code', arg[1], arg[2]])
+    #             else:
+    #                 new_args.append(arg)
+    #     if not context.get('show_parent_account', False):
+    #         new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
+    #     return super(AccountAccount, self)._search(new_args, offset=offset, limit=limit, order=order,
+    #                                                count=count, access_rights_uid=access_rights_uid)
 
 
 class AccountJournal(models.Model):
