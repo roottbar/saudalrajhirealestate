@@ -66,11 +66,11 @@
     </record>
     
     <!-- Menu item -->
-    <menuitem action="account.action_account_type_form"
+<!--     <menuitem action="account.action_account_type_form"
         id="menu_action_account_type_form"
         parent="account.account_account_menu" sequence="1"
         groups="account_parent.group_coas_user" />
-
+ -->
     <!-- Chart of Account Hierarchy Action -->
     <record id="open_view_account_tree" model="ir.actions.client">
         <field name="name">Chart of Account Hierarchy</field>
