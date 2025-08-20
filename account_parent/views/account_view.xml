@@ -7,7 +7,7 @@
 		<field name="arch" type="xml">
 			<field name="code" position="after">
 				<field name="parent_id"
-					domain="[('account_type','=','view')]"
+					domain="[('user_type_id.type','=','view')]"
 					groups="account_parent.group_coas_user"
 					context="{'show_parent_account':True}" />
 			</field>
