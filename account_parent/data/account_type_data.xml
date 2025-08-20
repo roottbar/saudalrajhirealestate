@@ -3,10 +3,11 @@
     <data noupdate="1">
 
         <!-- تعريف نوع الحساب View -->
-        <record id="account_type_view_parent" model="account.account.type">
+       <record id="account_type_view_parent" model="account.account.type">
             <field name="name">Parent View</field>
-            <field name="internal_group">off_balance</field>
-        </record>
+            <field name="type">off_balance</field>
+       </record>
+
 
         <!-- إنشاء الحساب الأب -->
         <record id="account_parent_view_account" model="account.account">
