@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- تعديل واجهة الفاتورة لإظهار إمكانية التعديل -->
+        <record id="view_move_form_journal_edit" model="ir.ui.view">
+            <field name="name">account.move.form.journal.edit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <!-- إخفاء زر المسودة للمستخدمين المصرح لهم -->
+                <xpath expr="//button[@name='button_draft']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('state', '=', 'posted'), ('user_has_journal_edit_group', '=', True)]}</attribute>
+                </xpath>
+
+                <!-- إضافة حقل وظيفي للتحقق من الصلاحية -->
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="user_has_journal_edit_group" invisible="1"/>
+                </xpath>
+
+                <!-- جعل حقل الحساب قابلاً للتعديل حتى في الفواتير المؤكدة -->
+                <xpath expr="//field[@name='account_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('parent.state', '=', 'posted'), ('user_has_journal_edit_group', '=', False)]}</attribute>
+                </xpath>
+
+                <!-- إضافة تنبيه للمستخدمين المصرح لهم -->
+                <xpath expr="//sheet" position="before">
+                    <div class="alert alert-info" attrs="{'invisible': [('state', '!=', 'posted'), ('user_has_journal_edit_group', '=', False)]}">
+                        <i class="fa fa-info-circle"/>
+                        أنت تملك صلاحية تعديل الحساب في البنود حتى بعد ترحيل الفاتورة.
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
