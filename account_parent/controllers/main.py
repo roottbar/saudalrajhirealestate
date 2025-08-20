@@ -10,7 +10,7 @@
 from odoo import http, _
 from odoo.http import request, serialize_exception
 from odoo.tools import html_escape, pycompat
-from odoo.addons.web.controllers.main import ExcelExport
+# from odoo.addons.web.controllers.main import ExcelExport
 from odoo.exceptions import UserError
 
 import json
