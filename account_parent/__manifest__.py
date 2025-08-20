@@ -35,7 +35,7 @@ This module
         'security/ir.model.access.csv',
         'views/account_view.xml',
         'views/open_chart.xml',
-        # 'data/account_type_data.xml',
+        'data/account_type_data.xml',
         # 'views/account_parent_template.xml', #moved to assests tag
         'views/report_coa_hierarchy.xml',
     ],
