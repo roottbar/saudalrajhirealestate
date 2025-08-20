@@ -6,7 +6,6 @@
         <record id="account_type_view_parent" model="account.account.type">
             <field name="name">Parent View</field>
             <field name="internal_group">off_balance</field>
-            <field name="note">Used only for parent accounts</field>
         </record>
 
         <!-- إنشاء الحساب الأب -->
