@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="account_parent.CoAHierarchy">
+        <div class="o_coa_hierarchy_container">
+            <div class="o_control_panel">
+                <div class="o_cp_buttons">
+                    <button class="btn btn-primary" t-on-click="onPrintPDF">
+                        <i class="fa fa-print"/> Print PDF
+                    </button>
+                    <button class="btn btn-primary" t-on-click="onPrintXLS">
+                        <i class="fa fa-download"/> Export XLS
+                    </button>
+                </div>
+            </div>
+            <div class="o_content" t-ref="container">
+                <t t-if="state.loading">
+                    <div class="text-center p-5">
+                        <i class="fa fa-spinner fa-spin fa-3x"/>
+                        <p class="mt-3">Loading Chart of Accounts...</p>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div t-out="state.html"/>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>
