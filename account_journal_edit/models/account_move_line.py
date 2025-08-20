@@ -1,10 +1,20 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
-
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
-
+    
+    # إضافة حقل وظيفي للتحقق من الصلاحية في بنود الفاتورة
+    user_has_journal_edit_group = fields.Boolean(
+        string="يمكن تعديل اليومية",
+        compute='_compute_user_has_journal_edit_group'
+    )
+    
+    @api.depends_context('uid')
+    def _compute_user_has_journal_edit_group(self):
+        for line in self:
+            line.user_has_journal_edit_group = self.env.user.has_group('account_journal_edit.group_journal_edit_after_confirm')
+    
     def write(self, vals):
         # إذا كان المستخدم لديه الصلاحية لتعديل اليومية بعد التأكيد
         if self.env.user.has_group('account_journal_edit.group_journal_edit_after_confirm'):
@@ -15,9 +25,9 @@ class AccountMoveLine(models.Model):
                     new_account = self.env['account.account'].browse(vals['account_id'])
                     if not new_account:
                         raise UserError(_('الحساب المحدد غير صالح.'))
-
+                    
                     # السماح بتعديل الحساب
                     return super(AccountMoveLine, line).write(vals)
-
+        
         # السلوك الافتراضي للمستخدمين الآخرين
         return super(AccountMoveLine, self).write(vals)
