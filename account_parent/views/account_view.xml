@@ -46,7 +46,7 @@
                       'active_model': 'account.open.chart'}" />
     </record>
 
-    <!-- إضافة view للـ account.account.template (المفقود في الخطأ) -->
+    <!-- ⚠️ هذا الجزء مش مطلوب في Odoo 18 وتم حذفه:
     <record id="view_account_template_form_wp" model="ir.ui.view">
         <field name="name">account.account.template.wp.form</field>
         <field name="model">account.account.template</field>
@@ -57,5 +57,6 @@
             </field>
         </field>
     </record>
+    -->
 
 </odoo>
