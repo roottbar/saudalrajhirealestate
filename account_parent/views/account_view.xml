@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	<!-- تم إزالة السجلين الأولين لأن views القوالب لم تعد موجودة في Odoo 18 -->
+	<!-- تم إزالة جميع الإشارات إلى XML IDs التي لم تعد موجودة في Odoo 18 -->
 	
 	<record id="view_account_withparent_form" model="ir.ui.view">
 		<field name="name">account.account.form</field>
@@ -35,12 +35,5 @@
 	<record id="account.action_account_form" model="ir.actions.act_window">
 		<field name="context">{'show_parent_account':True}</field>
 	</record>
-	
-	<menuitem action="account.action_account_type_form"
-		id="menu_action_account_type_form"
-		parent="account.account_account_menu" sequence="1"
-		groups="account_parent.group_coas_user" />
-
-	<!-- تم إزالة السجل الأخير لأنه يعتمد على ميزة لم تعد موجودة -->
 
 </odoo>
