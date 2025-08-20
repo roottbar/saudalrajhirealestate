@@ -9,14 +9,5 @@
             <field name="note">Used only for parent accounts</field>
             <field name="include_initial_balance" eval="False" />
         </record>
-
-        <!-- account.account -->
-        <record id="account_parent_assets" model="account.account">
-            <field name="name">Assets</field>
-            <field name="code">1000</field>
-            <field name="user_type_id" ref="data_account_type_view"/>
-            <field name="company_id" ref="base.main_company"/>
-            <field name="reconcile" eval="False"/>
-        </record>
     </data>
 </odoo>
