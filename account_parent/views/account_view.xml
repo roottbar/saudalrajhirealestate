@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Form view of account.account.template (temporarily without inherit) -->
     <record id="view_account_template_form_wp" model="ir.ui.view">
         <field name="name">account.account.template.wp.form</field>
         <field name="model">account.account.template</field>
-        <field name="inherit_id" ref="account.view_account_template_form" />
+        <!-- <field name="inherit_id" ref="account.view_account_template_form" /> -->
         <field name="arch" type="xml">
             <field name="code" position="after">
                 <field name="parent_id"
@@ -14,6 +15,7 @@
         </field>
     </record>
     
+    <!-- Tree view of account.account.template -->
     <record id="view_account_template_tree_wp" model="ir.ui.view">
         <field name="name">account.account.template.wp.tree</field>
         <field name="model">account.account.template</field>
@@ -25,6 +27,7 @@
         </field>
     </record>
 
+    <!-- Form view of account.account -->
     <record id="view_account_withparent_form" model="ir.ui.view">
         <field name="name">account.account.form</field>
         <field name="model">account.account</field>
@@ -42,6 +45,7 @@
         </field>
     </record>
 
+    <!-- List view of account.account -->
     <record id="view_account_list_parent" model="ir.ui.view">
         <field name="name">account.account.list parent</field>
         <field name="model">account.account</field>
@@ -56,10 +60,12 @@
         </field>
     </record>
 
+    <!-- Action context -->
     <record id="account.action_account_form" model="ir.actions.act_window">
         <field name="context">{'show_parent_account':True}</field>
     </record>
     
+    <!-- Menu item -->
     <menuitem action="account.action_account_type_form"
         id="menu_action_account_type_form"
         parent="account.account_account_menu" sequence="1"
@@ -71,5 +77,4 @@
         <field name="tag">coa_hierarchy</field>
         <field name="context" eval="{'url': '/account_parent/output_format/account_parent/active_id', 'model': 'account.open.chart','active_model': 'account.open.chart'}" />
     </record>
-
 </odoo>
