@@ -31,13 +31,13 @@ This module
     'version': '18.0.1.0.0',
     'depends': ['account'],
     'data': [
-        'security/account_parent_security.xml',
-        'security/ir.model.access.csv',
-        'views/account_view.xml',
-        'views/open_chart.xml',
-        'data/account_type_data.xml',
+        # 'security/account_parent_security.xml',
+        # 'security/ir.model.access.csv',
+        # 'views/account_view.xml',
+        # 'views/open_chart.xml',
+        # 'data/account_type_data.xml',
         # 'views/account_parent_template.xml', #moved to assests tag
-        'views/report_coa_hierarchy.xml',
+        # 'views/report_coa_hierarchy.xml',
     ],
     'demo': [
     ],
