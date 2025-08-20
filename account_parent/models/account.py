@@ -41,9 +41,14 @@ from odoo.osv import expression
 class AccountAccount(models.Model):
     _inherit = "account.account"
 
-    parent_id = fields.Many2one('account.account', 'Parent Account', ondelete="set null")
+    # parent_id = fields.Many2one('account.account', 'Parent Account', ondelete="set null")
     child_ids = fields.One2many('account.account', 'parent_id', 'Child Accounts')
     parent_path = fields.Char(index=True)
+    parent_id = fields.Many2one(
+        'account.account', 
+        string="Parent Account",
+        domain=[('account_type','=','view')]
+    )
 
     @api.depends('move_line_ids', 'move_line_ids.debit', 'move_line_ids.credit')
     def compute_values(self):
