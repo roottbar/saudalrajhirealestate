@@ -8,9 +8,11 @@ from odoo.tools import format_time
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
-from odoo.addons.base.models.resource import HOURS_PER_DAY
 
-# تعريف float_to_time يدوياً إذا لزم الأمر
+# تعريف قيمة ثابتة بدلاً من الاستيراد
+HOURS_PER_DAY = 8
+
+# تعريف float_to_time يدوياً
 def float_to_time(hours):
     """Convert a number of hours into a time object."""
     if hours == 24.0:
