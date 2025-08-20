@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+
+        <!-- تعريف نوع الحساب View -->
+        <record id="account_type_view_parent" model="account.account.type">
+            <field name="name">Parent View</field>
+            <field name="internal_group">off_balance</field>
+            <field name="note">Used only for parent accounts</field>
+        </record>
+
+        <!-- إنشاء الحساب الأب -->
         <record id="account_parent_view_account" model="account.account">
             <field name="name">Parent Account</field>
             <field name="code">1000</field>
-            <field name="account_type">view</field>
-            <!-- تم إزالة company_id لأنه غير موجود في أودو 18 -->
+            <field name="account_type_id" ref="account_type_view_parent"/>
             <field name="reconcile" eval="False"/>
         </record>
+
     </data>
 </odoo>
