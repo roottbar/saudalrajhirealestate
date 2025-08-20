@@ -43,15 +43,18 @@ from odoo import http, _
 #                                                            access_rights_uid=access_rights_uid)
 
 
-class AccountAccountType(models.Model):
-    _inherit = "account.account.type"
+# class AccountAccountType(models.Model):
+#     _inherit = "account.account.type"
 
-    type = fields.Selection(selection_add=[('view', 'View')], ondelete={'view': 'cascade'})
+#     type = fields.Selection(selection_add=[('view', 'View')], ondelete={'view': 'cascade'})
 
 
 class AccountAccount(models.Model):
     _inherit = "account.account"
-
+    account_type = fields.Selection(
+        selection_add=[('view', 'View')],
+        ondelete={'view': 'cascade'}
+    )
     parent_id = fields.Many2one('account.account', 'Parent Account', ondelete="set null")
     child_ids = fields.One2many('account.account', 'parent_id', 'Child Accounts')
     parent_path = fields.Char(index=True)
