@@ -10,26 +10,26 @@ from odoo import api, fields, models
 from odoo.osv import expression
 
 
-class AccountAccountTemplate(models.Model):
-    _inherit = "account.account.template"
+# class AccountAccountTemplate(models.Model):
+#     _inherit = "account.account.template"
 
-    parent_id = fields.Many2one('account.account.template', 'Parent Account', ondelete="set null")
+#     parent_id = fields.Many2one('account.account.template', 'Parent Account', ondelete="set null")
 
-    @api.model
-    def _search(self, domain, offset=0, limit=None, order=None):
-        context = self._context or {}
-        new_domain = []
-        if domain:
-            for arg in domain:
-                if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
-                    new_domain.append('|')
-                    new_domain.append(arg)
-                    new_domain.append(['code', arg[1], arg[2]])
-                else:
-                    new_domain.append(arg)
-        if not context.get('show_parent_account', False):
-            new_domain = expression.AND([[('account_type', '!=', 'view')], new_domain])
-        return super()._search(new_domain, offset=offset, limit=limit, order=order)
+#     @api.model
+#     def _search(self, domain, offset=0, limit=None, order=None):
+#         context = self._context or {}
+#         new_domain = []
+#         if domain:
+#             for arg in domain:
+#                 if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
+#                     new_domain.append('|')
+#                     new_domain.append(arg)
+#                     new_domain.append(['code', arg[1], arg[2]])
+#                 else:
+#                     new_domain.append(arg)
+#         if not context.get('show_parent_account', False):
+#             new_domain = expression.AND([[('account_type', '!=', 'view')], new_domain])
+#         return super()._search(new_domain, offset=offset, limit=limit, order=order)
 
 
 class AccountAccountType(models.Model):
