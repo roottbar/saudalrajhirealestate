@@ -32,10 +32,10 @@ from odoo.osv import expression
 #         return super()._search(new_domain, offset=offset, limit=limit, order=order)
 
 
-class AccountAccountType(models.Model):
-    _inherit = "account.account.type"
+# class AccountAccountType(models.Model):
+#     _inherit = "account.account.type"
 
-    type = fields.Selection(selection_add=[('view', 'View')], ondelete={'view': 'cascade'})
+#     type = fields.Selection(selection_add=[('view', 'View')], ondelete={'view': 'cascade'})
 
 
 class AccountAccount(models.Model):
