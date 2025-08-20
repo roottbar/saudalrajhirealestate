@@ -19,28 +19,28 @@ except ImportError:
 from odoo.http import request, serialize_exception
 from odoo import http, _
 
-class AccountAccountTemplate(models.Model):
-    _inherit = "account.account.template"
+# class AccountAccountTemplate(models.Model):
+#     _inherit = "account.account.template"
 
-    parent_id = fields.Many2one('account.account', 'Parent Account', ondelete="set null")
+#     parent_id = fields.Many2one('account.account', 'Parent Account', ondelete="set null")
 
-    @api.model
-    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
-        context = self._context or {}
-        new_args = []
-        if args:
-            for arg in args:
-                if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
-                    new_args.append('|')
-                    new_args.append(arg)
-                    new_args.append(['code', arg[1], arg[2]])
-                else:
-                    new_args.append(arg)
-        if not context.get('show_parent_account', False):
-            new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
-        return super(AccountAccountTemplate, self)._search(new_args, offset=offset,
-                                                           limit=limit, order=order, count=count,
-                                                           access_rights_uid=access_rights_uid)
+#     @api.model
+#     def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+#         context = self._context or {}
+#         new_args = []
+#         if args:
+#             for arg in args:
+#                 if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
+#                     new_args.append('|')
+#                     new_args.append(arg)
+#                     new_args.append(['code', arg[1], arg[2]])
+#                 else:
+#                     new_args.append(arg)
+#         if not context.get('show_parent_account', False):
+#             new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
+#         return super(AccountAccountTemplate, self)._search(new_args, offset=offset,
+#                                                            limit=limit, order=order, count=count,
+#                                                            access_rights_uid=access_rights_uid)
 
 
 class AccountAccountType(models.Model):
