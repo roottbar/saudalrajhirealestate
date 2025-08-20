@@ -8,7 +8,7 @@
         <field name="model">account.tax</field>
         <field eval="100" name="priority" />
         <field name="arch" type="xml">
-            <tree create="false" delete="false">
+            <list create="false" delete="false">
                 <field name="name" />
                 <field name="description" string="Short Name" />
                 <field name="balance_regular" sum="Total" />
@@ -53,7 +53,7 @@
                     title="View base lines"
                     icon="fa-search-plus"
                 />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="view_tax_search_balance" model="ir.ui.view">
