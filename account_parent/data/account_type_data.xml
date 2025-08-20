@@ -5,7 +5,7 @@
         <!-- تعريف نوع الحساب View -->
        <record id="account_type_view_parent" model="account.account.type">
             <field name="name">Parent View</field>
-            <field name="type">off_balance</field>
+<!--             <field name="type">off_balance</field> -->
        </record>
 
 
