@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Form view of account.account.template (temporarily without inherit) -->
-    <record id="view_account_template_form_wp" model="ir.ui.view">
+<!--     <record id="view_account_template_form_wp" model="ir.ui.view">
         <field name="name">account.account.template.wp.form</field>
         <field name="model">account.account.template</field>
-        <!-- <field name="inherit_id" ref="account.view_account_template_form" /> -->
+        <field name="inherit_id" ref="account.view_account_template_form" />
         <field name="arch" type="xml">
             <field name="code" position="after">
                 <field name="parent_id"
@@ -13,7 +13,7 @@
                     context="{'show_parent_account':True}" />
             </field>
         </field>
-    </record>
+    </record> -->
     
     <!-- Tree view of account.account.template -->
     <record id="view_account_template_tree_wp" model="ir.ui.view">
