@@ -26,29 +26,38 @@ class AccountMove(models.Model):
     )
 
     @api.depends(
-        "line_ids.account_id.internal_type",
+        "line_ids.account_id.account_type",
         "line_ids.balance",
         "line_ids.account_id.user_type_id.type",
     )
     def _compute_financial_type(self):
-        def _balance_get(line_ids, internal_type):
+        def _balance_get(line_ids, account_type_filter):
             return sum(
                 line_ids.filtered(
-                    lambda x: x.account_id.internal_type == internal_type
+                    lambda x: x.account_id.account_type in account_type_filter
                 ).mapped("balance")
             )
 
         for move in self:
-            internal_types = move.line_ids.mapped("account_id.internal_type")
-            if "liquidity" in internal_types:
+            account_types = move.line_ids.mapped("account_id.account_type")
+            
+            # تحديد أنواع الحسابات للسيولة (الحسابات النقدية والمصرفية)
+            liquidity_types = ['asset_cash', 'asset_bank']
+            # تحديد أنواع الحسابات للذمم المدينة
+            receivable_types = ['asset_receivable']
+            # تحديد أنواع الحسابات للذمم الدائنة
+            payable_types = ['liability_payable']
+            
+            # التحقق من وجود حسابات سيولة
+            if any(acc_type in liquidity_types for acc_type in account_types):
                 move.financial_type = "liquidity"
-            elif "payable" in internal_types:
-                balance = _balance_get(move.line_ids, "payable")
+            # التحقق من وجود حسابات ذمم دائنة
+            elif any(acc_type in payable_types for acc_type in account_types):
+                balance = _balance_get(move.line_ids, payable_types)
                 move.financial_type = "payable" if balance < 0 else "payable_refund"
-            elif "receivable" in internal_types:
-                balance = _balance_get(move.line_ids, "receivable")
-                move.financial_type = (
-                    "receivable" if balance > 0 else "receivable_refund"
-                )
+            # التحقق من وجود حسابات ذمم مدينة
+            elif any(acc_type in receivable_types for acc_type in account_types):
+                balance = _balance_get(move.line_ids, receivable_types)
+                move.financial_type = "receivable" if balance > 0 else "receivable_refund"
             else:
                 move.financial_type = "other"
