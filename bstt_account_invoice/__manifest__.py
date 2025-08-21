@@ -17,7 +17,7 @@
         # 'views/assets.xml',
         'views/company.xml',
         'reports/invoice_report.xml',
-        'reports/base_document_layout.xml',
+        # 'reports/base_document_layout.xml',
     ],
     'qweb': [
 
