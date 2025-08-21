@@ -6,10 +6,8 @@ from odoo.tools import format_datetime, format_time
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
-from odoo.addons.resource.models.utils import float_to_time  # ✅ المسار الجديد
-
-HOURS_PER_DAY = 8.0  # أو احذف إذا بتجيب من calendar
-
+from odoo.addons.resource.models.utils import float_to_time  
+HOURS_PER_DAY = 8.0  # أو بدله بقراءة من calendar
 
 class HrAttendanceBatchLine(models.Model):
     _name = 'hr.attendance.batch.line'
