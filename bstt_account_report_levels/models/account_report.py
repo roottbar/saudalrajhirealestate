@@ -30,8 +30,8 @@ class AccountReport(models.AbstractModel):
 
 
 class AccountChartOfAccountReport(models.AbstractModel):
-    _inherit = "account.coa.report"
-
+    _inherit = "account.report"
+    
     filter_level1 = False
     filter_level2 = False
     filter_level3 = False
