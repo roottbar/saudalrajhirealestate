@@ -41,7 +41,7 @@
         <field name="name">view.hr.end.service.tree</field>
         <field name="model">hr.end.service</field>
         <field name="arch" type="xml">
-            <tree string="End Of Service">
+            <list string="End Of Service">
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="join_date" optional="show"/>
@@ -53,7 +53,7 @@
                 <field name="total_service" optional="hide"/>
                 <field name="total_service_year" optional="show"/>
                 <field name="state" optional="show"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -200,13 +200,13 @@
         <field name="name">hr.end.service.setting.tree</field>
         <field name="model">hr.end.service.setting</field>
         <field name="arch" type="xml">
-            <tree string="Hr End Of Service Setting">
+            <list string="Hr End Of Service Setting">
                 <field name="name" required="1"/>
                 <field name="credit_account_id" required="1"/>
                 <field name="debit_account_id" required="1"/>
                 <field name="journal_id" required="1"/>
 
-            </tree>
+            </list>
         </field>
     </record>
 
