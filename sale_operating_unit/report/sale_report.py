@@ -11,7 +11,12 @@ class SaleReport(models.Model):
     )
 
     def _query(self, with_, fields, groupby, from_clause):
-        fields = dict(fields)
+        fields = dict(fields or {})
         fields['operating_unit_id'] = ", s.operating_unit_id as operating_unit_id"
-        groupby = f"{groupby}, s.operating_unit_id"
+
+        if groupby:
+            groupby = f"{groupby}, s.operating_unit_id"
+        else:
+            groupby = "s.operating_unit_id"
+
         return super()._query(with_, fields, groupby, from_clause)
