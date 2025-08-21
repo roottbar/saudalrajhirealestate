@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="search_template_conso_extra_options" inherit_id="account_reports.search_template_extra_options">
-            <xpath expr="//div[hasclass('o_filter_menu')]" position="inside">
+        <template id="search_template_conso_extra_options">
+            <div class="o_filter_menu">
                 <a role="menuitem" class="dropdown-item js_account_report_bool_filter oe_level1"
                    t-if="options.get('level1') != None" title="Unfold Level 1" data-filter="level1">Unfold Level 1
                 </a>
@@ -12,7 +12,7 @@
                 <a role="menuitem" class="dropdown-item js_account_report_bool_filter"
                    t-if="options.get('level3') != None" title="Unfold Level 3" data-filter="level3">Unfold Level 3
                 </a>
-            </xpath>
+            </div>
         </template>
     </data>
 </odoo>
