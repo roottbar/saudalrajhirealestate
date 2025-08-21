@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='project_ids']" position="after">
                 <field name="is_progress_stage"/>
-                <field name="progress_bar" attrs="{'invisible': [('is_progress_stage', '=', False)]}"/>
+                <field name="progress_bar"/>
             </xpath>
         </field>
     </record>
