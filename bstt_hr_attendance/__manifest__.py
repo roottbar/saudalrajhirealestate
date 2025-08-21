@@ -13,12 +13,14 @@
     'version': '0.1',
     'license': 'AGPL-3',
     'images': ['static/description/logo.png'],
-    'depends': ['hr_attendance'],
+    'depends': [
+        # 'hr_attendance'
+    ],
     'data': [
         # 'security/hr_attendance_security.xml',
         # 'security/ir.model.access.csv',
-        'views/hr_attendance.xml',
-        'views/hr_attendance_batch.xml',
+        # 'views/hr_attendance.xml',
+        # 'views/hr_attendance_batch.xml',
 
     ],
 }
