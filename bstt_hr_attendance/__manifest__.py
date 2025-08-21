@@ -15,8 +15,8 @@
     'images': ['static/description/logo.png'],
     'depends': ['hr_attendance'],
     'data': [
-        'security/hr_attendance_security.xml',
-        'security/ir.model.access.csv',
+        # 'security/hr_attendance_security.xml',
+        # 'security/ir.model.access.csv',
         'views/hr_attendance.xml',
         'views/hr_attendance_batch.xml',
 
