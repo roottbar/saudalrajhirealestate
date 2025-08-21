@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Form View -->
     <record id="view_hr_attendance_batch_form" model="ir.ui.view">
         <field name="name">hr.attendance.batch.form</field>
         <field name="model">hr.attendance.batch</field>
@@ -16,29 +17,29 @@
                     <notebook>
                         <page string="Attendances">
                             <field name="attendance_ids" context="{'default_check_in_date': check_in}">
-                                <list string="Attendances" editable="bottom">
+                                <tree string="Attendances" editable="bottom">
                                     <field name="check_in_date"/>
                                     <field name="employee_id"/>
                                     <field name="check_in"/>
                                     <field name="check_out"/>
                                     <field name="worked_hours" widget="float_time"/>
                                     <field name="notes"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
                 <footer>
                     <button string="Confirm"
-                            name="action_confirm"
+                            name="action_send"
                             type="object"
                             class="btn-primary"
                             modifiers='{"invisible":[("state","!=","draft")]}'/>
                     <button string="Done"
-                            name="action_done"
+                            name="action_validate"
                             type="object"
                             class="btn-primary"
-                            modifiers='{"invisible":[("state","!=","confirm")]}'/>
+                            modifiers='{"invisible":[("state","!=","verify")]}'/>
                     <button string="Set to Draft"
                             name="action_draft"
                             type="object"
@@ -55,20 +56,22 @@
         </field>
     </record>
 
+    <!-- Tree/List View -->
     <record id="view_hr_attendance_batch_tree" model="ir.ui.view">
         <field name="name">hr.attendance.batch.list</field>
         <field name="model">hr.attendance.batch</field>
         <field name="arch" type="xml">
-            <list string="Attendances Batches" sample="1">
+            <tree string="Attendances Batches" sample="1">
                 <field name="name"/>
                 <field name="check_in"/>
                 <field name="department_id"/>
                 <field name="state"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-            </list>
+            </tree>
         </field>
     </record>
 
+    <!-- Search View -->
     <record id="view_hr_attendance_batch_search" model="ir.ui.view">
         <field name="name">hr.attendance.batch.search</field>
         <field name="model">hr.attendance.batch</field>
@@ -78,8 +81,8 @@
                 <field name="check_in"/>
                 <field name="department_id"/>
                 <field name="state"/>
-                <filter name="filter_confirmed" string="Confirmed" domain="[('state','=','confirm')]"/>
-                <filter name="filter_done" string="Done" domain="[('state','=','done')]"/>
+                <filter name="filter_confirmed" string="Confirmed" domain="[('state','=','verify')]"/>
+                <filter name="filter_done" string="Done" domain="[('state','=','close')]"/>
                 <filter name="filter_cancel" string="Cancelled" domain="[('state','=','cancel')]"/>
                 <group expand="0" string="Group By...">
                     <filter name="group_department" string="Department" context="{'group_by':'department_id'}"/>
@@ -90,12 +93,14 @@
         </field>
     </record>
 
+    <!-- Action -->
     <record id="action_hr_attendance_batch" model="ir.actions.act_window">
         <field name="name">Attendances Batches</field>
         <field name="res_model">hr.attendance.batch</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
+    <!-- Menu Items -->
     <menuitem id="menu_hr_attendance_batch_root"
               name="Attendance Batches"
               parent="hr_attendance.menu_hr_attendance_root"/>
