@@ -6,6 +6,16 @@ from odoo import api, models, fields
 class RentProduct(models.Model):
     _inherit = 'product.template'
 
+    
+    priority = fields.Selection(
+        [
+            ('0', 'Low'),
+            ('1', 'Normal'),
+            ('2', 'High'),
+            ('3', 'Very High')
+        ],
+        string='Priority',
+        default='1')
     unit_number = fields.Char(string='رقم الوحدة')
     unit_area = fields.Char(string='مساحة الوحدة')
     unit_floor_number = fields.Char(string='رقم الطابق')
