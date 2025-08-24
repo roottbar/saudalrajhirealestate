@@ -6,7 +6,7 @@ from odoo import api, fields, models, _
 
 
 class analytic_report(models.AbstractModel):
-    _inherit = 'account.analytic.report'
+    _inherit = 'account.report'
 
     def _get_columns_name(self, options):
         return [{'name': ''},
