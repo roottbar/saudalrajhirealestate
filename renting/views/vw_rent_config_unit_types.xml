@@ -6,10 +6,10 @@
             <field name="name">rent.config.unit.types.tree</field>
             <field name="model">rent.config.unit.types</field>
             <field name="arch" type="xml">
-                <tree string="Unit Types">
+                <list string="Unit Types">
                     <field name="unit_type_name"/>
                     <field name="unit_type_description"/>
-                </tree>
+                </list                                                                                >
             </field>
         </record>
         <record model="ir.ui.view" id="rent_config_unit_types_form">
