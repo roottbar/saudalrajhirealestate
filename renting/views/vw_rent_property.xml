@@ -110,7 +110,7 @@
                             </page>
                             <page string="حارس العقار">
                                 <field name="security_tab">
-                                    <list editable="botttom">
+                                    <list editable="bottom">
                                         <field name="security_name"/>
                                         <field name="security_salary"/>
                                         <field name="security_address"/>
