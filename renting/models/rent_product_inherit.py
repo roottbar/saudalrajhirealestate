@@ -67,33 +67,27 @@ class RentProduct(models.Model):
     property_analytic_account = fields.Many2one('account.analytic.account', string='الحساب التحليلي للعقار',
                                                 related='property_id.analytic_account')
     
-    # الحل: استخدام الحقل الصحيح - معظم إصدارات أودو تستخدم plan_id بدلاً من group_id
-    property_analytic_account_parent = fields.Many2one(
-        'account.analytic.plan',
-        string='مجموعة الحساب التحليلي للعقار',
-        compute='_compute_property_analytic_account_parent',
-        store=False  # تغيير إلى store=False لتجنب المشاكل
-    )
+    # إزالة الحقل المسبب للمشكلة مؤقتاً
+    # property_analytic_account_parent = fields.Many2one(
+    #     'account.analytic.plan',
+    #     string='مجموعة الحساب التحليلي للعقار',
+    #     compute='_compute_property_analytic_account_parent',
+    #     store=False
+    # )
 
-    @api.depends('property_id.analytic_account')
-    def _compute_property_analytic_account_parent(self):
-        for rec in self:
-            # تعيين قيمة فارغة مؤقتاً لتجنب الأخطاء
-            rec.property_analytic_account_parent = False
-            
-            # البحث عن الحقل الصحيح بشكل آمن
-            if rec.property_id and rec.property_id.analytic_account:
-                analytic_account = rec.property_id.analytic_account
-                
-                # المحاولة مع الحقول الشائعة في إصدارات أودو المختلفة
-                possible_fields = ['plan_id', 'category_id', 'parent_id', 'group_id']
-                
-                for field_name in possible_fields:
-                    if hasattr(analytic_account, field_name):
-                        field_value = getattr(analytic_account, field_name)
-                        if field_value:
-                            rec.property_analytic_account_parent = field_value
-                            break
+    # @api.depends('property_id.analytic_account')
+    # def _compute_property_analytic_account_parent(self):
+    #     for rec in self:
+    #         rec.property_analytic_account_parent = False
+    #         if rec.property_id and rec.property_id.analytic_account:
+    #             analytic_account = rec.property_id.analytic_account
+    #             possible_fields = ['plan_id', 'category_id', 'parent_id', 'group_id']
+    #             for field_name in possible_fields:
+    #                 if hasattr(analytic_account, field_name):
+    #                     field_value = getattr(analytic_account, field_name)
+    #                     if field_value:
+    #                         rec.property_analytic_account_parent = field_value
+    #                         break
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -111,17 +105,11 @@ class RentProduct(models.Model):
                 if existing_account:
                     rec.analytic_account = existing_account
                 else:
-                    # إنشاء الحساب التحليلي بدون الاعتماد على group_id
-                    analytic_vals = {
+                    # إنشاء الحساب التحليلي بدون الاعتماد على مجموعة محددة
+                    analytic_account = self.env['account.analytic.account'].sudo().create({
                         'name': rec.name,
                         'code': rec.ref_analytic_account,
-                    }
-                    
-                    # إضافة plan_id فقط إذا كان موجوداً وله قيمة
-                    if rec.property_analytic_account_parent:
-                        analytic_vals['plan_id'] = rec.property_analytic_account_parent.id
-                    
-                    analytic_account = self.env['account.analytic.account'].sudo().create(analytic_vals)
+                    })
                     rec.analytic_account = analytic_account
         
         return records
@@ -195,11 +183,10 @@ class RentProduct(models.Model):
                 rec.amount_paid = 0
                 rec.contract_total = 0
                 rec.amount_due = 0
+
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        res = super(RentProduct, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby,
-                                                 lazy=lazy)
-        print(fields)
+        res = super(RentProduct, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
         if 'amount_paid' in fields:
             for line in res:
                 if '__domain' in line:
@@ -267,12 +254,6 @@ class RentProduct(models.Model):
                 rec.state_id = 'شاغرة'
                 rec.unit_state = 'شاغرة'
 
-    # def _get_count(self):
-    #     self.unit_maintenance_count = self.env['account.move'].search_count(
-    #         [('unit_number', '=', self.id), ('property_name', '=', self.property_id.property_name),
-    #          ('move_type', '=', 'in_invoice')])
-
-    # For Unit Maintenance Button in rent_product_inherit_form in "vw_rent_product_inherit.xml"
     def get_unit_maintenance(self):
         return {
             'type': 'ir.actions.act_window',
@@ -290,7 +271,6 @@ class RentProduct(models.Model):
             ('product_id', '=', self.id),
             ('property_number', '=', self.property_id.property_name)])
 
-    # For Unit Maintenance Button in rent_product_inherit_form in "vw_rent_product_inherit.xml"
     def unit_sales(self):
         return {
             'type': 'ir.actions.act_window',
