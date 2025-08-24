@@ -20,7 +20,7 @@ class RentAccountMoveInherit(models.Model):
     todate = fields.Datetime(string='To Date', default=fields.Date.context_today, copy=False)
     invoice_line_ids = fields.One2many('account.move.line', 'move_id', string='Invoice lines',
                                        copy=False, readonly=True,
-                                       domain=[('exclude_from_invoice_tab', '=', False), ('rent_fees', '=', False)],
+                                       domain=[('rent_fees', '=', False)],  # exclude_from_invoice_tab تم حذفه
                                        states={'draft': [('readonly', False)]})
     rent_sale_line_id= fields.Many2one(comodel_name='rent.sale.invoices')
     # def action_post(self):
