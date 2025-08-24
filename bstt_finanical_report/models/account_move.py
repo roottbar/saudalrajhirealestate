@@ -10,17 +10,28 @@ class AccountMoveLine(models.Model):
 
     customer_vat = fields.Char(related="partner_id.vat", string="رقم الضريبي للعميل")
 
-    product_id1 = fields.Many2one('product.product', string='وحدة', ondelete='restrict', compute='get_property_data', store=True)
+    product_id1 = fields.Many2one(
+        'product.product', string='وحدة', ondelete='restrict',
+        compute='get_property_data', store=True
+    )
 
-    property_id = fields.Many2one('rent.property', compute='get_property_data', string='عمارة', store=True, index=True)
-    property_address_area = fields.Many2one('operating.unit', string='الفرع ', compute='get_property_data', store=True, index=True)
-    property_address_build = fields.Many2one('rent.property.build', string='المجمع',
-                                             compute='get_property_data', store=True, index=True)
-    property_address_city = fields.Many2one('rent.property.city', string='المدينة',
-                                            compute='get_property_data', store=True)
-    country = fields.Many2one('res.country', string='الدولة', compute='get_property_data', store=True, index=True)
+    property_id = fields.Many2one(
+        'rent.property', compute='get_property_data', string='عمارة', store=True, index=True
+    )
+    property_address_area = fields.Many2one(
+        'operating.unit', string='الفرع ', compute='get_property_data', store=True, index=True
+    )
+    property_address_build = fields.Many2one(
+        'rent.property.build', string='المجمع', compute='get_property_data', store=True, index=True
+    )
+    property_address_city = fields.Many2one(
+        'rent.property.city', string='المدينة', compute='get_property_data', store=True
+    )
+    country = fields.Many2one(
+        'res.country', string='الدولة', compute='get_property_data', store=True, index=True
+    )
 
-    @api.depends('analytic_account_id')
+    @api.depends('account_analytic_id')
     def get_property_data(self):
         for r in self:
             r.property_id = False
@@ -28,14 +39,16 @@ class AccountMoveLine(models.Model):
             r.property_address_build = False
             r.property_address_city = False
             r.country = False
+            r.product_id1 = False
 
-            if r.analytic_account_id:
-                product = self.env['product.product'].search([('analytic_account', '=', r.analytic_account_id.id)],limit=1)
-                if product.property_id.rent_config_property_type_id:
+            if r.account_analytic_id:
+                product = self.env['product.product'].search(
+                    [('analytic_account', '=', r.account_analytic_id.id)], limit=1
+                )
+                if product and product.property_id.rent_config_property_type_id:
                     r.product_id1 = product.id
                     r.property_id = product.property_id.id
                     r.property_address_area = product.property_id.property_address_area
                     r.property_address_build = product.property_id.property_address_build
                     r.property_address_city = product.property_id.property_address_city
                     r.country = product.country
-
