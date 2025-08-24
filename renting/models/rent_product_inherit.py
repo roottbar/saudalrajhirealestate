@@ -108,9 +108,11 @@ class RentProduct(models.Model):
         for rec in res:
             if rec.property_id and rec.property_id.ref_analytic_account and rec.unit_number:
                 rec.ref_analytic_account = f"{rec.property_id.ref_analytic_account}-{rec.unit_number}"
-                group_id = rec.property_analytic_account_parent.id if rec.property_analytic_account_parent else False
     
-                # check if analytic account already exists
+                # الأب سيكون حساب العقار نفسه (من الحقل المحسوب أعلاه)
+                parent_id = rec.property_analytic_account_parent.id if rec.property_analytic_account_parent else False
+    
+                # تحقق من عدم وجود كود مكرر
                 existing_account = self.env['account.analytic.account'].sudo().search([
                     ('code', '=', rec.ref_analytic_account)
                 ], limit=1)
@@ -120,13 +122,12 @@ class RentProduct(models.Model):
                 else:
                     analytic_account = self.env['account.analytic.account'].sudo().create({
                         'name': rec.name,
-                        'group_id': group_id,
-                        'code': rec.ref_analytic_account
+                        'parent_id': parent_id,        # <-- بدلاً من group_id
+                        'code': rec.ref_analytic_account,
                     })
                     rec.analytic_account = analytic_account
     
         return res
-
 
     def _get_unit_price(self):
         for rec in self:
