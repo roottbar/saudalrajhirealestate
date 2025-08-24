@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
     <data>
         <record model="ir.ui.view" id="rent_config_property_purposes_tree">
             <field name="name">rent.config.property.purposes.tree</field>
             <field name="model">rent.config.property.purposes</field>
             <field name="arch" type="xml">
-                <tree string="Property Purposes">
+                <list string="Property Purposes">
                     <field name="property_purpose_name"/>
                     <field name="property_purpose_description"/>
-                </tree>
+                </list>
             </field>
         </record>
+
         <record model="ir.ui.view" id="rent_config_property_purposes_form">
             <field name="name">rent.config.property.purposes.form</field>
             <field name="model">rent.config.property.purposes</field>
