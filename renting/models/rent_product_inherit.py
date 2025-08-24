@@ -97,33 +97,36 @@ class RentProduct(models.Model):
     @api.depends('property_id.analytic_account')
     def _compute_property_analytic_account_parent(self):
         for rec in self:
-            # تعيين قيمة افتراضية مؤقتاً لحل المشكلة
-            rec.property_analytic_account_parent = False
-            
-            # لاحقاً يمكنك تعديل هذا عندما تتعرف على الحقل الصحيح
-            # if rec.property_id and rec.property_id.analytic_account:
-            #     # سيتم إضافة المنطق الصحيح هنا بعد التعرف على هيكل النموذج
-            #     pass
-
+            rec.property_analytic_account_parent = (
+                rec.property_id.analytic_account.group_id if rec.property_id and rec.property_id.analytic_account else False
+            )
+    
     @api.model_create_multi
     def create(self, vals_list):
         res = super(RentProduct, self).create(vals_list)
-        
-        # التحقق من وجود القيم المطلوبة قبل إنشاء الحساب التحليلي
-        if res.property_id and res.property_id.ref_analytic_account and res.unit_number:
-            res.ref_analytic_account = f"{res.property_id.ref_analytic_account}-{res.unit_number}"
-            
-            # استخدام الحقل المحسوب بدلاً من المرتبط مباشرة
-            group_id = res.property_analytic_account_parent.id if res.property_analytic_account_parent else False
-            
-            analytic_account = self.env['account.analytic.account'].sudo().create({
-                'name': res.name,
-                'group_id': group_id,
-                'code': res.ref_analytic_account
-            })
-            res.analytic_account = analytic_account
-        
+    
+        for rec in res:
+            if rec.property_id and rec.property_id.ref_analytic_account and rec.unit_number:
+                rec.ref_analytic_account = f"{rec.property_id.ref_analytic_account}-{rec.unit_number}"
+                group_id = rec.property_analytic_account_parent.id if rec.property_analytic_account_parent else False
+    
+                # check if analytic account already exists
+                existing_account = self.env['account.analytic.account'].sudo().search([
+                    ('code', '=', rec.ref_analytic_account)
+                ], limit=1)
+    
+                if existing_account:
+                    rec.analytic_account = existing_account
+                else:
+                    analytic_account = self.env['account.analytic.account'].sudo().create({
+                        'name': rec.name,
+                        'group_id': group_id,
+                        'code': rec.ref_analytic_account
+                    })
+                    rec.analytic_account = analytic_account
+    
         return res
+
 
     def _get_unit_price(self):
         for rec in self:
