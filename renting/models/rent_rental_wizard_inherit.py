@@ -4,7 +4,7 @@ from odoo import models, fields
 
 
 class RentRentalWizardInherit(models.TransientModel):
-    _inherit = 'rental.wizard'
+    _inherit = 'rental.rental_wizard'
 
     duration_unit = fields.Selection(
         [
