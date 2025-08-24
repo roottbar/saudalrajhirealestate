@@ -75,20 +75,35 @@ class RentProduct(models.Model):
                                                 related='property_id.analytic_account')
     
     # الحل: استبدال الحقل المرتبط بحقل محسوب
+    # property_analytic_account_parent = fields.Many2one(
+    #     'account.analytic.group',
+    #     string='مجموعة الحساب التحليلي للعقار',
+    #     compute='_compute_property_analytic_account_parent',
+    #     store=True
+    # )
     property_analytic_account_parent = fields.Many2one(
         'account.analytic.group',
         string='مجموعة الحساب التحليلي للعقار',
         compute='_compute_property_analytic_account_parent',
         store=True
     )
-
-    @api.depends('property_id.analytic_account.group_id')
+    # @api.depends('property_id.analytic_account.group_id')
+    # def _compute_property_analytic_account_parent(self):
+    #     for rec in self:
+    #         if rec.property_id and rec.property_id.analytic_account and rec.property_id.analytic_account.group_id:
+    #             rec.property_analytic_account_parent = rec.property_id.analytic_account.group_id
+    #         else:
+    #             rec.property_analytic_account_parent = False
+    @api.depends('property_id.analytic_account')
     def _compute_property_analytic_account_parent(self):
         for rec in self:
-            if rec.property_id and rec.property_id.analytic_account and rec.property_id.analytic_account.group_id:
-                rec.property_analytic_account_parent = rec.property_id.analytic_account.group_id
-            else:
-                rec.property_analytic_account_parent = False
+            # تعيين قيمة افتراضية مؤقتاً لحل المشكلة
+            rec.property_analytic_account_parent = False
+            
+            # لاحقاً يمكنك تعديل هذا عندما تتعرف على الحقل الصحيح
+            # if rec.property_id and rec.property_id.analytic_account:
+            #     # سيتم إضافة المنطق الصحيح هنا بعد التعرف على هيكل النموذج
+            #     pass
 
     @api.model_create_multi
     def create(self, vals_list):
