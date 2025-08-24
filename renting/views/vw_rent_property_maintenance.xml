@@ -6,13 +6,13 @@
             <field name="name">rent.property.maintain.tree</field>
             <field name="model">rent.property.maintain</field>
             <field name="arch" type="xml">
-                <tree string="الصيانات">
+                <list string="الصيانات">
                     <field name="maintain_name"/>
                     <field name="property"/>
                     <field name="apartment"/>
                     <field name="maintain_provider"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="rent_property_maintenance_form">
