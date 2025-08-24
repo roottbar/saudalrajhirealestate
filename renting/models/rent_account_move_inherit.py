@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
 
 
 class RentAccountMoveInherit(models.Model):
@@ -11,36 +10,34 @@ class RentAccountMoveInherit(models.Model):
     obj_sale_order = fields.Many2one('sale.order')
     so_contract_number = fields.Char(string='Contract Number', related='obj_sale_order.contract_number')
     inv_contract_status = fields.Char(string='Contract Status')
-    is_maintain = fields.Boolean(string='صبانة')
+    is_maintain = fields.Boolean(string='صيانة')
     property_name = fields.Many2one('rent.property', string='العقار')
-    unit_number = fields.Many2one('product.template', string='رقم الوحدة',
-                                  domain="[('property_id', '=', property_name)]",
-                                  )
+    unit_number = fields.Many2one(
+        'product.template',
+        string='رقم الوحدة',
+        domain="[('property_id', '=', property_name)]"
+    )
     fromdate = fields.Datetime(string='From Date', default=fields.Date.context_today, copy=False)
     todate = fields.Datetime(string='To Date', default=fields.Date.context_today, copy=False)
-    invoice_line_ids = fields.One2many('account.move.line', 'move_id', string='Invoice lines',
-                                       copy=False, readonly=True,
-                                       domain=[('rent_fees', '=', False)],  # exclude_from_invoice_tab تم حذفه
-                                       states={'draft': [('readonly', False)]})
-    rent_sale_line_id= fields.Many2one(comodel_name='rent.sale.invoices')
-    # def action_post(self):
-    #     # update method_number in deferred earning with contract period
-    #     if self.fromdate and self.todate:
-    #         accounts = self.invoice_line_ids.filtered(lambda l: l.account_id.create_asset == 'validate')
-    #         if accounts:
-    #             date_diff_months = (self.todate.month - self.fromdate.month) + 12 * (
-    #                     self.todate.year - self.fromdate.year)
-    #             accounts.account_id.asset_model.method_number = date_diff_months
-    #
-    #     result = super(RentAccountMoveInherit, self).action_post()
-    #     return result
+
+    # ✅ بدل إعادة تعريف invoice_line_ids
+    custom_invoice_line_ids = fields.One2many(
+        'account.move.line', 'move_id',
+        string='Custom Invoice lines',
+        copy=False, readonly=True,
+        domain=[('rent_fees', '=', False)],
+        states={'draft': [('readonly', False)]})
+
+    rent_sale_line_id = fields.Many2one(comodel_name='rent.sale.invoices')
+
+    asset_id = fields.Many2one('account.asset', string="Asset")
 
     @api.onchange("asset_id", "journal_id")
     def _onchange_asset1(self):
         if (
-                self.asset_id
-                and self.asset_id.property_address_area
-                and self.asset_id.property_address_area != self.operating_unit_id
+            self.asset_id
+            and self.asset_id.property_address_area
+            and self.asset_id.property_address_area != self.operating_unit_id
         ):
             self.operating_unit_id = self.asset_id.property_address_area
             for line in self.line_ids:
@@ -49,23 +46,9 @@ class RentAccountMoveInherit(models.Model):
     @api.model
     def create(self, vals):
         result = super(RentAccountMoveInherit, self).create(vals)
-        if result.asset_id:
-            if result.asset_id.property_address_area:
-                result.operating_unit_id = result.asset_id.property_address_area.id
-
+        if result.asset_id and result.asset_id.property_address_area:
+            result.operating_unit_id = result.asset_id.property_address_area.id
         return result
-
-    # @api.model
-    # def _compute_name(self):
-    #     result = super(RentAccountMoveInherit, self)._compute_name()
-    #     for rec in self:
-    #         name = rec.name
-    #         split_name = name.split("/", 1)
-    #         if len(split_name) > 2:
-    #             if split_name[1]:
-    #                 rec.name = str(rec.journal_id.code + '/' + split_name[1])
-    #
-    #     return result
 
 
 class RentAccountMoveLineInherit(models.Model):
