@@ -6,10 +6,10 @@
             <field name="name">rent.config.property.maintenance.statuses.tree</field>
             <field name="model">rent.config.property.maintenance.statuses</field>
             <field name="arch" type="xml">
-                <tree string="Property Maintenance Statuses">
+                <list string="Property Maintenance Statuses">
                     <field name="property_maintenance_status_name"/>
                     <field name="property_maintenance_status_description"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="rent_config_property_maintenance_statuses_form">
