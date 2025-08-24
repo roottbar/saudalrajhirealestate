@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, models, fields
 
-
 class RentProduct(models.Model):
     _inherit = 'product.template'
 
@@ -36,32 +35,21 @@ class RentProduct(models.Model):
 
     unit_construction_date = fields.Date(string='تاريخ الانشاء')
 
-    rent_config_unit_overlook_id = fields.Many2one(
-        'rent.config.unit.overlooks', string='Unit Overlooking', copy=True
-    )
-    rent_config_unit_type_id = fields.Many2one(
-        'rent.config.unit.types', string='Unit type', copy=True
-    )
-    rent_config_unit_purpose_id = fields.Many2one(
-        'rent.config.unit.purposes', string='Unit Purpose', copy=True
-    )
-    rent_config_unit_finish_id = fields.Many2one(
-        'rent.config.unit.finishes', string='Unit Finish', copy=True
-    )
+    rent_config_unit_overlook_id = fields.Many2one('rent.config.unit.overlooks', string='Unit Overlooking', copy=True)
+    rent_config_unit_type_id = fields.Many2one('rent.config.unit.types', string='Unit type', copy=True)
+    rent_config_unit_purpose_id = fields.Many2one('rent.config.unit.purposes', string='Unit Purpose', copy=True)
+    rent_config_unit_finish_id = fields.Many2one('rent.config.unit.finishes', string='Unit Finish', copy=True)
 
     property_id = fields.Many2one('rent.property', string='عمارة', copy=True)
     property_address_build = fields.Many2one(
         'rent.property.build', string='المجمع',
-        related='property_id.property_address_build', store=True, index=True
-    )
+        related='property_id.property_address_build', store=True, index=True)
     property_address_city = fields.Many2one(
         'rent.property.city', string='المدينة',
-        related='property_id.property_address_city', store=True
-    )
+        related='property_id.property_address_city', store=True)
     country = fields.Many2one(
         'res.country', string='الدولة',
-        related='property_id.country', store=True, index=True
-    )
+        related='property_id.country', store=True, index=True)
     operating_unit = fields.Many2many('operating.unit', string='الفرع ')
 
     entry_number = fields.Char('عدد المداخل')
@@ -75,45 +63,38 @@ class RentProduct(models.Model):
     unit_sales_count = fields.Integer(string='Total Sales', compute='_unit_sales_count', readonly=True)
     unit_price = fields.Float(string='قيمة الوحدة', compute='_get_unit_price')
     unit_price_unit = fields.Char(string='مدة تأجير الوحدة')
-
     state_id = fields.Char()
     analytic_account = fields.Many2one('account.analytic.account', string='الحساب التحليلي', readonly=True)
     ref_analytic_account = fields.Char(string='رقم اشارة الحساب التحليلي', readonly=True)
-
     property_analytic_account = fields.Many2one(
-        'account.analytic.account',
-        string='الحساب التحليلي للعقار',
+        'account.analytic.account', string='الحساب التحليلي للعقار',
         related='property_id.analytic_account'
     )
-
-    # تعديل الحقل المرتبط للبنت
     property_analytic_account_parent = fields.Many2one(
         'account.analytic.account',
         string='Parent Analytic Account',
-        related='property_id.property_analytic_account_parent',
+        related='property_id.analytic_account.parent_id',  # تم تعديل الربط للحقل الموجود
         store=True,
     )
 
     @api.model_create_multi
     def create(self, vals_list):
         res = super(RentProduct, self).create(vals_list)
-        res.ref_analytic_account = f"{res.property_id.ref_analytic_account}-{res.unit_number}"
-        analytic_account = self.env['account.analytic.account'].sudo().create({
-            'name': res.name,
-            'parent_id': res.property_analytic_account_parent.id,
-            'code': res.ref_analytic_account
-        })
-        res.analytic_account = analytic_account
+        if res.property_id and res.property_analytic_account_parent:
+            res.ref_analytic_account = f"{res.property_id.ref_analytic_account}-{res.unit_number}"
+            analytic_account = self.env['account.analytic.account'].sudo().create(
+                {'name': res.name,
+                 'parent_id': res.property_analytic_account_parent.id,
+                 'code': res.ref_analytic_account})
+            res.analytic_account = analytic_account
         return res
 
     def _get_unit_price(self):
         for rec in self:
-            if rec.rental_pricing_ids:
-                rec.unit_price = rec.rental_pricing_ids[0].price
-                rec.unit_price_unit = rec.rental_pricing_ids[0].unit
-            else:
-                rec.unit_price = 0
-                rec.unit_price_unit = ''
+            prices = [price.price for price in rec.rental_pricing_ids] if hasattr(rec, 'rental_pricing_ids') else []
+            units = [price.unit for price in rec.rental_pricing_ids] if hasattr(rec, 'rental_pricing_ids') else []
+            rec.unit_price = prices[0] if prices else 0
+            rec.unit_price_unit = units[0] if units else ''
 
     # Sale/Contract related fields
     partner_id = fields.Many2one('res.partner', compute="get_sale_data", string='العميل')
