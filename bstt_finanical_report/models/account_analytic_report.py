@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.addons.web.controllers.main import clean_action
+# from odoo.addons.web.controllers.main import clean_action
 
 
 class analytic_report(models.AbstractModel):
@@ -72,3 +72,11 @@ class analytic_report(models.AbstractModel):
             })
 
         return line
+    def clean_action(action):
+        """Return a sanitized action dict for web client."""
+        if not action:
+            return {}
+        # keep only the keys that the web client expects
+        keys = ['type', 'name', 'res_model', 'view_mode', 'views', 'target', 'context', 'domain', 'flags']
+        return {k: action.get(k) for k in keys if k in action}
+      
