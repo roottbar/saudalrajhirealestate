@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
     <data>
         <record model="ir.ui.view" id="rent_res_partner_inherit">
@@ -8,17 +7,16 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='vat']" position="after">
-                    <field name="commercial_number" attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
-                    <field name="commercial_number_date" attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
-                    <field name="agency_number" attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
-                    <field name="agency_number_date" attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
-                    <field name="national_id_image"
-                           attrs="{'invisible': [('company_type', '!=', 'person')]}"/>
-                    <field name="national_id_number" attrs="{'invisible': [('company_type', '!=', 'person')]}"/>
-                    <field name="date_o_birth" attrs="{'invisible': [('company_type', '!=', 'person')]}"/>
+                    <field name="commercial_number" modifiers="{'invisible': [['company_type', '!=', 'company']]}"/>
+                    <field name="commercial_number_date" modifiers="{'invisible': [['company_type', '!=', 'company']]}"/>
+                    <field name="agency_number" modifiers="{'invisible': [['company_type', '!=', 'company']]}"/>
+                    <field name="agency_number_date" modifiers="{'invisible': [['company_type', '!=', 'company']]}"/>
+                    <field name="national_id_image" modifiers="{'invisible': [['company_type', '!=', 'person']]}"/>
+                    <field name="national_id_number" modifiers="{'invisible': [['company_type', '!=', 'person']]}"/>
+                    <field name="date_o_birth" modifiers="{'invisible': [['company_type', '!=', 'person']]}"/>
                 </xpath>
                 <xpath expr="//field[@name='function']" position="after">
-                    <field name="function_document" attrs="{'invisible': [('company_type', '!=', 'person')]}"/>
+                    <field name="function_document" modifiers="{'invisible': [['company_type', '!=', 'person']]}"/>
                 </xpath>
             </field>
         </record>
