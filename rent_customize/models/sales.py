@@ -37,6 +37,7 @@ class RentLog(models.Model):
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
+    transferred_id = fields.Many2one('sale.order', string="Transferred")
 
     state = fields.Selection([
         ('draft', 'Quotation'),
