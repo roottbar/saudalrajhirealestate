@@ -7,12 +7,9 @@
             <field name="model">account.move.line</field>
             <field name="inherit_id" ref="account.view_account_move_line_filter"/>
             <field name="arch" type="xml">
-                <!-- استبدال فلتر المنتج -->
                 <xpath expr="//filter[@name='product_id']" position="replace">
                     <filter string="الوحدة" name="product_id1" domain="[]" context="{'group_by': 'product_id1'}"/>
                 </xpath>
-
-                <!-- إضافة فلتر جديد للتأمينات -->
                 <xpath expr="//filter[last()]" position="after">
                     <filter string="حساب التأمينات"
                             name="insurance_account"
@@ -38,7 +35,7 @@
             </field>
         </record>
 
-        <!-- إنشاء أكشن لفتح التأمينات -->
+        <!-- إنشاء أكشن -->
         <record id="action_account_moves_insurance" model="ir.actions.act_window">
             <field name="name">التأمينات</field>
             <field name="res_model">account.move.line</field>
@@ -49,11 +46,11 @@
             <field name="context">{'search_default_insurance_account': 1}</field>
         </record>
 
-        <!-- إضافة عنصر في القائمة -->
+        <!-- إضافة عنصر القائمة تحت قائمة قيود اليومية -->
         <menuitem id="menu_action_account_moves_insurance"
                   action="action_account_moves_insurance"
                   groups="account.group_account_readonly"
-                  parent="account.menu_finance_entries_accounting_ledgers"
+                  parent="account.menu_account_moves_journal_entries"
                   sequence="3"
                   name="التأمينات"/>
     </data>
