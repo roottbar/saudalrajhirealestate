@@ -18,5 +18,5 @@
         'views/operating_unit_view.xml',
         'views/account_move_view.xml',
     ],
-     "installable": True,
+     "installable": False,
 }
