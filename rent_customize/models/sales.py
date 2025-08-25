@@ -57,7 +57,7 @@ class SaleOrder(models.Model):
 
     transfer_context_order = fields.Many2one('sale.order')
     new_rental_id = fields.Many2one('sale.order', copy=False)
-    transferred_id = fields.Many2one('sale.order', copy=False)
+    transferred_id = fields.Many2one('sale.order', string="Transferred From")
     transfer_customer_id = fields.Many2one('res.partner', 'Custoemr To Transfer')
     transfer_date = fields.Date('Transfer Date')
     transferred = fields.Boolean('Transferred ?')
