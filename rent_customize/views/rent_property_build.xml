@@ -1,0 +1,34 @@
+<odoo>
+
+    <record id="view_rent_property_build_form" model="ir.ui.view">
+        <field name="name">rent.property.build.form</field>
+        <field name="model">rent.property.build</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="sync_ref_analytic_account" type="object" string="Sync Analytic Account Ref"
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="property_address_city"/>
+                            <field name="property_address_area"/>
+                        </group>
+                        <group>
+                            <field name="ref_analytic_account"/>
+                        </group>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+</odoo>
