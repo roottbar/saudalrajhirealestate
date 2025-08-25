@@ -1,6 +1,6 @@
 {
     "name": "Custom Audit Log",
-    "version": "15.0.1.0.0",
+    "version": "18.0.1.0.0",
     "depends": ["base"],
     "author": "Othmancs",
     "category": "Tools",
