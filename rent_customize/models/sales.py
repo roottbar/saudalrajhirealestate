@@ -37,8 +37,18 @@ class RentLog(models.Model):
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-    transferred_id = fields.Many2one('sale.order', string="Transferred")
-
+    # transferred_id = fields.Many2one(
+    #     'sale.order',
+    #     string="Transferred Order"
+    # )
+    # new_rental_id = fields.Many2one(
+    #     'sale.order',
+    #     string="New Rental"
+    # )
+    # transferred = fields.Boolean(
+    #     string="Transferred",
+    #     default=False
+    # )
     state = fields.Selection([
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
@@ -60,7 +70,7 @@ class SaleOrder(models.Model):
     new_rental_id = fields.Many2one('sale.order', copy=False)
     transfer_customer_id = fields.Many2one('res.partner', 'Customer To Transfer')
     transfer_date = fields.Date('Transfer Date')
-    transferred = fields.Boolean('Transferred ?')
+    # transferred = fields.Boolean('Transferred ?')
     annual_increase = fields.Boolean('Annual Increase ?')
     annual_amount = fields.Float("Annual Amount")
 
