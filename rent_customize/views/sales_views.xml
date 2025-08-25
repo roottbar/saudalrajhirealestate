@@ -140,13 +140,13 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,sale,occupied,termination"/>
                 </xpath>
                 <div class="oe_button_box" position="inside">
-                    <field name="transferred_id" invisible="1" />
-                    <field name="new_rental_id" invisible="1" />
+<!--                     <field name="transferred_id" invisible="1" />
+                    <field name="new_rental_id" invisible="1" /> -->
                     <button class="oe_stat_button" attrs="{'invisible':[('new_rental_id', '=', False)]}"
                             name="action_view_transfer" type="object" icon="fa-building-o">
                         New Rental
                     </button>
-                    <button class="oe_stat_button" attrs="{'invisible':[('transferred_id', '=', False)]}"
+<!--                     <button class="oe_stat_button" attrs="{'invisible':[('transferred_id', '=', False)]}" -->
                             name="action_view_transferred" type="object" icon="fa-building-o">
                         Transferred from
                     </button>
