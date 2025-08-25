@@ -23,7 +23,10 @@ class AccountAsset(models.Model):
                 r.product_id = product.id if product else False
             else:
                 r.product_id = False
-
+    account_analytic_id = fields.Many2one(
+        "account.analytic.account",
+        string="Analytic Account"
+    )
     product_id = fields.Many2one('product.product', compute='get_product', string='وحدة', store=True, index=True)
     property_id = fields.Many2one('rent.property', related='product_id.property_id', string='عمارة', store=True, index=True)
     property_address_area = fields.Many2one('operating.unit', string='الفرع ', related='property_id.property_address_area', store=True, index=True)
