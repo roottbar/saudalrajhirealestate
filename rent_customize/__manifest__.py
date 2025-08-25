@@ -18,4 +18,5 @@
         'report/contract.xml',
         'report/transfer.xml',
     ]
+    'installable': False,
 }
