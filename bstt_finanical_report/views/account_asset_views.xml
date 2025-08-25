@@ -2,6 +2,7 @@
 <odoo>
     <data>
 
+        <!-- تعديل النموذج -->
         <record model="ir.ui.view" id="view_account_asset_expense_form_bstt">
             <field name="name">account.asset.expense.form</field>
             <field name="model">account.asset</field>
@@ -19,10 +20,11 @@
             </field>
         </record>
 
+        <!-- تعديل الشجرة -->
         <record model="ir.ui.view" id="view_account_asset_sale_tree_bstt">
-            <field name="name">account.asset.sale.tree</field>
+            <field name="name">account.asset.tree.inherit</field>
             <field name="model">account.asset</field>
-            <field name="inherit_id" ref="account_asset.view_account_asset_sale_tree"/>
+            <field name="inherit_id" ref="account_asset.view_account_asset_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='value_residual']" position="after">
                     <field name="account_analytic_id" optional="hide"/>
@@ -36,6 +38,7 @@
             </field>
         </record>
 
+        <!-- تعديل الفلتر -->
         <record model="ir.ui.view" id="view_account_asset_inherit_filter_bstt">
             <field name="name">view.account.asset.inherit.filter</field>
             <field name="model">account.asset</field>
@@ -54,12 +57,9 @@
                     <separator/>
                     <filter string="وحدة" name="product_id" domain="[]" context="{'group_by': 'product_id'}"/>
                     <filter string="عقارات" name="property_id" domain="[]" context="{'group_by': 'property_id'}"/>
-                    <filter string="المجمع" name="property_address_build" domain="[]"
-                            context="{'group_by': 'property_address_build'}"/>
-                    <filter string="الفرع" name="property_address_area" domain="[]"
-                            context="{'group_by': 'property_address_area'}"/>
-                    <filter string="المدينة" name="property_address_city" domain="[]"
-                            context="{'group_by': 'property_address_city'}"/>
+                    <filter string="المجمع" name="property_address_build" domain="[]" context="{'group_by': 'property_address_build'}"/>
+                    <filter string="الفرع" name="property_address_area" domain="[]" context="{'group_by': 'property_address_area'}"/>
+                    <filter string="المدينة" name="property_address_city" domain="[]" context="{'group_by': 'property_address_city'}"/>
                     <filter string="الدولة" name="country" domain="[]" context="{'group_by': 'country'}"/>
                 </xpath>
             </field>
