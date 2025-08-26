@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError, RedirectWarning, UserError, AccessError
+from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from hijri_converter import Gregorian, convert
+from hijri_converter import Gregorian
 
 
 class RentalOrder(models.TransientModel):
@@ -37,18 +37,24 @@ class RentLog(models.Model):
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-    # transferred_id = fields.Many2one(
-    #     'sale.order',
-    #     string="Transferred Order"
-    # )
-    # new_rental_id = fields.Many2one(
-    #     'sale.order',
-    #     string="New Rental"
-    # )
-    # transferred = fields.Boolean(
-    #     string="Transferred",
-    #     default=False
-    # )
+
+    # إعادة تفعيل الحقول الخاصة بالنقل لتجنب مشاكل views
+    transferred_id = fields.Many2one(
+        'sale.order',
+        string="Transferred Order"
+    )
+    transferred = fields.Boolean(
+        string="Transferred",
+        default=False
+    )
+
+    new_rental_id = fields.Many2one('sale.order', copy=False)
+    transfer_context_order = fields.Many2one('sale.order')
+    transfer_customer_id = fields.Many2one('res.partner', 'Customer To Transfer')
+    transfer_date = fields.Date('Transfer Date')
+    annual_increase = fields.Boolean('Annual Increase ?')
+    annual_amount = fields.Float("Annual Amount")
+
     state = fields.Selection([
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
@@ -66,19 +72,8 @@ class SaleOrder(models.Model):
     context_order = fields.Many2one('sale.order')
     old_rent_ids = fields.One2many(comodel_name='rent.log', inverse_name='order_id', string='Old Rents')
 
-    transfer_context_order = fields.Many2one('sale.order')
-    new_rental_id = fields.Many2one('sale.order', copy=False)
-    transfer_customer_id = fields.Many2one('res.partner', 'Customer To Transfer')
-    transfer_date = fields.Date('Transfer Date')
-    # transferred = fields.Boolean('Transferred ?')
-    annual_increase = fields.Boolean('Annual Increase ?')
-    annual_amount = fields.Float("Annual Amount")
-
     def get_date_hijri(self, date):
-        day = date.day
-        month = date.month
-        year = date.year
-        hijri_date = Gregorian(year, month, day).to_hijri()
+        hijri_date = Gregorian(date.year, date.month, date.day).to_hijri()
         return hijri_date
 
     def renew_contract(self):
@@ -94,9 +89,10 @@ class SaleOrder(models.Model):
         new_contract_id.invoice_number = self.invoice_number
         new_contract_id.is_rental_order = self.is_rental_order
         new_contract_id.partner_id = self.partner_id
+
         lines = []
         for line in self.order_line:
-            line = self.env['sale.order.line'].create({
+            line_obj = self.env['sale.order.line'].create({
                 'order_id': new_contract_id.id,
                 'property_number': line.property_number.id,
                 'product_id': line.product_id.id,
@@ -112,9 +108,12 @@ class SaleOrder(models.Model):
                 'contract_service_fees': line.contract_admin_sub_fees,
                 'contract_admin_sub_fees': line.contract_service_sub_fees,
             })
-            lines.append(line.id)
+            lines.append(line_obj.id)
+
         new_contract_id.order_line = [(6, 0, lines)]
+
         form_view_id = self.env.ref('sale_renting.rental_order_primary_form_view').ids
+
         for rent in self.old_rent_ids:
             self.env['rent.log'].create({
                 'order_id': new_contract_id.id,
@@ -123,6 +122,7 @@ class SaleOrder(models.Model):
                 'todate': rent.todate,
                 'amount': rent.amount,
             })
+
         self.env['rent.log'].create({
             'order_id': new_contract_id.id,
             'rent_id': self.id,
@@ -130,6 +130,7 @@ class SaleOrder(models.Model):
             'todate': self.todate,
             'amount': self.amount_total,
         })
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Renew Contract',
@@ -154,7 +155,6 @@ class SaleOrder(models.Model):
     def action_refund_insurance(self):
         action = self.env.ref("rent_customize.refund_insurance_action").read()[0]
         self.context_order = self.id
-        self.apartment_insurance = self.apartment_insurance
         self.refund_amount = self.apartment_insurance
         action["res_id"] = self.id
         return action
@@ -191,7 +191,7 @@ class SaleOrder(models.Model):
             uninvoiced = len(rec.order_contract_invoice.filtered(lambda ll: ll.status == 'uninvoiced').ids)
             new_rental_id = rec.copy({
                 'pricelist_id': rec.pricelist_id.id,
-                'apartment_insurance': rec.pricelist_id.id,
+                'apartment_insurance': rec.apartment_insurance,
                 'fromdate': rec.transfer_date,
                 'todate': rec.todate,
                 'date_order': fields.Date.today(),
@@ -201,6 +201,7 @@ class SaleOrder(models.Model):
             })
             rec.new_rental_id = new_rental_id.id
             rec.transferred = True
+            rec.transferred_id = rec.id
 
     def do_transfer_and_print(self):
         for rec in self:
@@ -334,7 +335,6 @@ class SaleOrder(models.Model):
                 order.invoice_status = 'to invoice'
             elif all(invoice_status == 'invoiced' for invoice_status in invoice_lines):
                 order.invoice_status = 'invoiced'
-
 
 class RentSaleInvoices(models.Model):
     _inherit = 'rent.sale.invoices'
