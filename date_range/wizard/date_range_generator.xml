@@ -31,7 +31,7 @@
                                 <field
                                     class="oe_inline"
                                     name="count"
-                                    required="!date_end"
+                                    required="date_end == False"
                                 /> entries.
                             </div>
                             <label for="name_prefix"/>
