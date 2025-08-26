@@ -46,7 +46,8 @@
                                 name="name_expr"
                                 required="unit_of_time and not name_prefix"
                             />
-                            <field name="range_name_preview"/>
+                            <field name="range_name_preview"
+                                   invisible="not range_name_preview"/>
                         </group>
                     </group>
                 </sheet>
