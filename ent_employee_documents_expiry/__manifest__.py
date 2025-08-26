@@ -21,7 +21,7 @@
 ########################################################################################
 {
     'name': 'Enterprise Open HRMS Employee Documents',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': """Manages Employee Documents With Expiry Notifications.""",
     'description': """OH Addon: Manages Employee Related Documents with Expiry Notifications.""",
     'live_test_url': 'https://www.youtube.com/watch?v=Wc__1NkMHko&feature=youtu.be',
