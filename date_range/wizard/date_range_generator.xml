@@ -8,47 +8,45 @@
                 <sheet>
                     <group>
                         <group col="2" colspan="4" string="Parameters">
-                            <field name="type_id" />
+                            <field name="type_id"/>
                             <field
                                 groups="base.group_multi_company"
                                 name="company_id"
                                 options="{'no_create': True}"
                             />
-                            <label for="duration_count" />
+                            <label for="duration_count"/>
                             <div>
-                                <field
-                                    class="oe_inline"
-                                    name="duration_count"
-                                />&amp;nbsp;
-                                <field class="oe_inline" name="unit_of_time" />
+                                <field class="oe_inline" name="duration_count"/>&amp;nbsp;
+                                <field class="oe_inline" name="unit_of_time"/>
                             </div>
-                            <field name="date_start" />
-                            <label for="date_end" string="Until" />
+                            <field name="date_start"/>
+                            <label for="date_end" string="Until"/>
                             <div>
                                 <field
                                     class="oe_inline"
                                     name="date_end"
-                                    attrs="{'required': [('count', '=', 0)]}"
+                                    required="count == 0"
                                 />,
-                                or generate <field
+                                or generate
+                                <field
                                     class="oe_inline"
                                     name="count"
-                                    attrs="{'required': [('date_end', '=', False)]}"
+                                    required="!date_end"
                                 /> entries.
                             </div>
-                            <label for="name_prefix" />
+                            <label for="name_prefix"/>
                             <div>
                                 <field
                                     name="name_prefix"
                                     class="oe_inline"
-                                    attrs="{'required': [('unit_of_time', '!=', False), ('name_expr', '=', False)]}"
+                                    required="unit_of_time and not name_expr"
                                 /> or enter a complex expression below
                             </div>
                             <field
                                 name="name_expr"
-                                attrs="{'required': [('unit_of_time', '!=', False), ('name_prefix', '=', False)]}"
+                                required="unit_of_time and not name_prefix"
                             />
-                            <field name="range_name_preview" />
+                            <field name="range_name_preview"/>
                         </group>
                     </group>
                 </sheet>
@@ -68,13 +66,15 @@
             </form>
         </field>
     </record>
+
     <record id="date_range_generator_action" model="ir.actions.act_window">
         <field name="name">Generate Date Ranges</field>
         <field name="res_model">date.range.generator</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="date_range_generator_view_form" />
+        <field name="view_id" ref="date_range_generator_view_form"/>
         <field name="target">new</field>
     </record>
+
     <menuitem
         action="date_range_generator_action"
         id="menu_date_range_generator_action"
