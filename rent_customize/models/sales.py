@@ -347,3 +347,35 @@ class RentSaleInvoices(models.Model):
             'invoice_date_due': self.fromdate,
         })
         return res
+
+    # إضافة الحقول المفقودة لتجنب أخطاء التحديث
+    locked = fields.Boolean(
+        string="Locked",
+        default=False,
+        help="Field added for compatibility with older views"
+    )
+    
+    authorized_transaction_ids = fields.One2many(
+        'payment.transaction',
+        'sale_order_id',
+        string="Authorized Transactions",
+        domain=[('state', '=', 'authorized')],
+        help="Field added for compatibility with payment views"
+    )
+    
+    subscription_state = fields.Selection([
+        ('1_draft', 'Draft'),
+        ('2_active', 'Active'),
+        ('3_closed', 'Closed'),
+        ('4_paused', 'Paused'),
+    ], string='Subscription State', default='1_draft',
+       help="Field added for compatibility with subscription views")
+    
+    def _prepare_invoice(self, invoice_lines):
+        res = super(RentSaleInvoices, self)._prepare_invoice(invoice_lines)
+        res.update({
+            'invoice_date': self.fromdate,
+            'l10n_sa_delivery_date': self.fromdate,
+            'invoice_date_due': self.fromdate,
+        })
+        return res
