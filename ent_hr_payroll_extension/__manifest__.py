@@ -1,6 +1,6 @@
 {
     'name': 'Hr Payroll Extension',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'description': 'payroll extension features',
     'category': 'Generic Modules/Human Resources',
     'author': 'Cybrosys Techno Solutions,Open HRMS',
