@@ -9,7 +9,7 @@
                 <form string="تقرير الوحدات المؤجرة">
                     <group>
                         <group string="الفلاتر">
-                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="company_ids" options="{'no_create': True}" widget="many2many_tags"/>
                             <field name="operating_unit_id" options="{'no_create': True}"/>
                             <field name="property_build_id" options="{'no_create': True}"/>
                             <field name="property_id" options="{'no_create': True}"/>
