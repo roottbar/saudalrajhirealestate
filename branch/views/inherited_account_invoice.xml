@@ -13,9 +13,8 @@
                         <field name="branch_id"/>
                     </div>
                 </xpath>
-                <xpath expr="//field[@name='line_ids']/tree//field[@name='account_id']" position="after">
-                    <field name="branch_id" attrs="{'readonly' : [('parent_state', '=' , 'posted')]}"/>
-                </xpath>
+                <!-- Removed invalid xpath targeting a non-embedded tree under line_ids -->
+                <!-- Previously tried: //field[@name='line_ids']/tree//field[@name='account_id'] -->
             </field>
         </record>
 
