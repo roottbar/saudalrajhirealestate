@@ -113,10 +113,20 @@ class RentUnitsReportWizard(models.TransientModel):
             domain.append(('property_number', '=', self.property_id.id))
         if self.product_id:
             domain.append(('product_id', '=', self.product_id.id))
-        if self.date_from:
-            domain.append(('fromdate', '>=', self.date_from))
-        if self.date_to:
-            domain.append(('todate', '<=', self.date_to))
+        
+        # تعديل منطق فلترة التواريخ لإظهار العقود التي تتداخل مع الفترة المحددة
+        if self.date_from and self.date_to:
+            # العقد يظهر إذا كان:
+            # 1. يبدأ قبل أو في نهاية الفترة المحددة
+            # 2. ينتهي بعد أو في بداية الفترة المحددة
+            domain.extend([
+                ('fromdate', '<=', self.date_to),
+                ('todate', '>=', self.date_from)
+            ])
+        elif self.date_from:
+            domain.append(('todate', '>=', self.date_from))
+        elif self.date_to:
+            domain.append(('fromdate', '<=', self.date_to))
     
         # جلب بيانات خطوط أوامر البيع
         sale_order_lines = self.env['sale.order.line'].search(domain)
@@ -129,8 +139,24 @@ class RentUnitsReportWizard(models.TransientModel):
             # حساب عدد الفواتير
             invoice_count = line.order_id.invoice_number or 0
             
-            # حساب مجموع مبالغ الفواتير من order_contract_invoice
-            invoice_total_amount = sum(line.order_id.order_contract_invoice.mapped('amount')) if line.order_id.order_contract_invoice else 0.0
+            # فلترة الفواتير بناءً على تواريخها الخاصة ضمن الفترة المحددة
+            filtered_invoices = line.order_id.order_contract_invoice
+            if self.date_from and self.date_to:
+                # فلترة الفواتير التي تتداخل مع الفترة المحددة
+                filtered_invoices = filtered_invoices.filtered(
+                    lambda inv: inv.fromdate <= self.date_to and inv.todate >= self.date_from
+                )
+            elif self.date_from:
+                filtered_invoices = filtered_invoices.filtered(
+                    lambda inv: inv.todate >= self.date_from
+                )
+            elif self.date_to:
+                filtered_invoices = filtered_invoices.filtered(
+                    lambda inv: inv.fromdate <= self.date_to
+                )
+            
+            # حساب مجموع مبالغ الفواتير المفلترة
+            invoice_total_amount = sum(filtered_invoices.mapped('amount')) if filtered_invoices else 0.0
             
             data.append({
                 'company_name': line.order_id.company_id.name,
@@ -144,7 +170,7 @@ class RentUnitsReportWizard(models.TransientModel):
                 'unit_state': line.unit_state or '',
                 'contract_amount': contract_amount,  # مبلغ العقد الجديد
                 'invoice_count': invoice_count,  # عدد الفواتير الجديد
-                'invoice_total_amount': invoice_total_amount,  # مجموع مبالغ الفواتير الجديد
+                'invoice_total_amount': invoice_total_amount,  # مجموع مبالغ الفواتير المفلترة
                 'amount_paid': line.amount_paid,
                 'amount_due': line.amount_due,
                 'from_date': line.fromdate,
@@ -152,7 +178,6 @@ class RentUnitsReportWizard(models.TransientModel):
             })
         
         return data
-
     @api.depends('date_from', 'date_to', 'company_ids', 'operating_unit_id', 'property_build_id', 'property_id', 'product_id')
     def _compute_totals(self):
         for record in self:
@@ -161,7 +186,7 @@ class RentUnitsReportWizard(models.TransientModel):
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
                     continue
-    
+
                 # جلب بيانات خطوط أوامر البيع حسب الفلاتر
                 domain = [('order_id.company_id', 'in', record.company_ids.ids)]
                 
@@ -184,7 +209,7 @@ class RentUnitsReportWizard(models.TransientModel):
                     domain.append(('todate', '>=', record.date_from))
                 elif record.date_to:
                     domain.append(('fromdate', '<=', record.date_to))
-    
+
                 sale_order_lines = self.env['sale.order.line'].search(domain)
                 
                 # تم إزالة حساب المصروفات والإيرادات حسب المطلوب
@@ -194,6 +219,7 @@ class RentUnitsReportWizard(models.TransientModel):
             except Exception as e:
                 record.total_expenses = 0.0
                 record.total_revenues = 0.0
+
 
     def _calculate_analytic_amount(self, account, amount_type):
         """حساب المبلغ لحساب تحليلي محدد"""
