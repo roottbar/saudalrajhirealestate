@@ -123,13 +123,14 @@ class RentUnitsReportWizard(models.TransientModel):
         
         data = []
         for line in sale_order_lines:
-            # حساب الإيرادات والمصروفات لكل حساب تحليلي منفصل
-            unit_expenses = 0.0
-            unit_revenues = 0.0
+            # حساب مبلغ العقد من amount_total
+            contract_amount = line.order_id.amount_total or 0.0
             
-            if line.analytic_account_id:
-                unit_expenses = self._calculate_analytic_amount(line.analytic_account_id, 'expenses')
-                unit_revenues = self._calculate_analytic_amount(line.analytic_account_id, 'revenues')
+            # حساب عدد الفواتير
+            invoice_count = line.order_id.invoice_number or 0
+            
+            # حساب مجموع مبالغ الفواتير من order_contract_invoice
+            invoice_total_amount = sum(line.order_id.order_contract_invoice.mapped('amount')) if line.order_id.order_contract_invoice else 0.0
             
             data.append({
                 'company_name': line.order_id.company_id.name,
@@ -141,10 +142,11 @@ class RentUnitsReportWizard(models.TransientModel):
                 'customer_name': line.order_partner_id.name if line.order_partner_id else '',
                 'contract_number': line.order_id.name,
                 'unit_state': line.unit_state or '',
+                'contract_amount': contract_amount,  # مبلغ العقد الجديد
+                'invoice_count': invoice_count,  # عدد الفواتير الجديد
+                'invoice_total_amount': invoice_total_amount,  # مجموع مبالغ الفواتير الجديد
                 'amount_paid': line.amount_paid,
                 'amount_due': line.amount_due,
-                'unit_expenses': unit_expenses,  # المصروفات المحسوبة للحساب التحليلي
-                'unit_revenues': unit_revenues,  # الإيرادات المحسوبة للحساب التحليلي
                 'from_date': line.fromdate,
                 'to_date': line.todate,
             })
@@ -178,19 +180,9 @@ class RentUnitsReportWizard(models.TransientModel):
 
                 sale_order_lines = self.env['sale.order.line'].search(domain)
                 
-                # حساب إجمالي المصروفات والإيرادات
-                total_expenses = 0.0
-                total_revenues = 0.0
-                
-                for line in sale_order_lines:
-                    if line.analytic_account_id:
-                        expenses = record._calculate_analytic_amount(line.analytic_account_id, 'expenses')
-                        revenues = record._calculate_analytic_amount(line.analytic_account_id, 'revenues')
-                        total_expenses += expenses
-                        total_revenues += revenues
-                
-                record.total_expenses = total_expenses
-                record.total_revenues = total_revenues
+                # تم إزالة حساب المصروفات والإيرادات حسب المطلوب
+                record.total_expenses = 0.0
+                record.total_revenues = 0.0
                 
             except Exception as e:
                 record.total_expenses = 0.0
@@ -360,7 +352,7 @@ class RentUnitsReportWizard(models.TransientModel):
                 logo_data = base64.b64decode(self.company_ids[0].logo)
                 logo_io = io.BytesIO(logo_data)
                 
-                # حساب موضع المنتصف (عمود 6-7 من أصل 15 عمود)
+                # حساب موضع المنتصف (عمود 6-7 من أصل 13 عمود)
                 logo_col = 6
                 worksheet.merge_range(current_row, logo_col, current_row + 1, logo_col + 1, '', workbook.add_format({'border': 0}))
                 
@@ -406,27 +398,11 @@ class RentUnitsReportWizard(models.TransientModel):
         worksheet.merge_range(current_row, 0, current_row, 14, report_date, date_format)
         current_row += 2
         
-        # إضافة إجماليات المصروفات والإيرادات
-        totals_format = workbook.add_format({
-            'bold': True,
-            'bg_color': '#FFE699',
-            'border': 1,
-            'align': 'center',
-            'valign': 'vcenter',
-            'num_format': '#,##0.00'
-        })
-        
-        worksheet.write(current_row, 0, 'إجمالي المصروفات:', totals_format)
-        worksheet.write(current_row, 1, self.total_expenses, totals_format)
-        worksheet.write(current_row, 3, 'إجمالي الإيرادات:', totals_format)
-        worksheet.write(current_row, 4, self.total_revenues, totals_format)
-        current_row += 2
-        
-        # العناوين
+        # العناوين المحدثة (إزالة المصروفات والإيرادات وإضافة الأعمدة الجديدة)
         headers = [
             'الشركة', 'الفرع', 'المجمع', 'العقار', 'الحساب التحليلي', 'الوحدة',
-            'اسم العميل', 'رقم العقد', 'حالة الوحدة', 'المبلغ المدفوع',
-            'المبلغ المستحق', 'المصروفات', 'الإيرادات', 'تاريخ الاستلام', 'تاريخ التسليم'
+            'اسم العميل', 'رقم العقد', 'حالة الوحدة', 'مبلغ العقد', 'عدد الفواتير', 
+            'مبلغ الفواتير', 'المبلغ المدفوع', 'المبلغ المستحق', 'تاريخ الاستلام', 'تاريخ التسليم'
         ]
         
         # حساب عرض الأعمدة ديناميكاً
@@ -451,39 +427,23 @@ class RentUnitsReportWizard(models.TransientModel):
             property_build = line_data['property_build']
             property_name = line_data['property_name']
             
-            # كتابة الشركة (فقط إذا تغيرت)
-            if company_name != prev_company:
-                worksheet.write(current_row, 0, company_name, company_format)
-                prev_company = company_name
-                prev_operating_unit = None
-                prev_property_build = None
-                prev_property = None
-            else:
-                worksheet.write(current_row, 0, '', unit_format)
+            # كتابة الشركة (تكرار القيم بدلاً من ترك فراغات)
+            worksheet.write(current_row, 0, company_name, company_format if company_name != prev_company else unit_format)
             
-            # كتابة الفرع (فقط إذا تغير)
-            if operating_unit != prev_operating_unit:
-                worksheet.write(current_row, 1, operating_unit, operating_unit_format)
-                prev_operating_unit = operating_unit
-                prev_property_build = None
-                prev_property = None
-            else:
-                worksheet.write(current_row, 1, '', unit_format)
+            # كتابة الفرع (تكرار القيم بدلاً من ترك فراغات)
+            worksheet.write(current_row, 1, operating_unit, operating_unit_format if operating_unit != prev_operating_unit else unit_format)
             
-            # كتابة المجمع (فقط إذا تغير)
-            if property_build != prev_property_build:
-                worksheet.write(current_row, 2, property_build, property_build_format)
-                prev_property_build = property_build
-                prev_property = None
-            else:
-                worksheet.write(current_row, 2, '', unit_format)
+            # كتابة المجمع (تكرار القيم بدلاً من ترك فراغات)
+            worksheet.write(current_row, 2, property_build, property_build_format if property_build != prev_property_build else unit_format)
             
-            # كتابة العقار (فقط إذا تغير)
-            if property_name != prev_property:
-                worksheet.write(current_row, 3, property_name, property_format)
-                prev_property = property_name
-            else:
-                worksheet.write(current_row, 3, '', unit_format)
+            # كتابة العقار (تكرار القيم بدلاً من ترك فراغات)
+            worksheet.write(current_row, 3, property_name, property_format if property_name != prev_property else unit_format)
+            
+            # تحديث القيم السابقة
+            prev_company = company_name
+            prev_operating_unit = operating_unit
+            prev_property_build = property_build
+            prev_property = property_name
             
             # باقي البيانات
             worksheet.write(current_row, 4, line_data['analytic_account'], unit_format)
@@ -491,20 +451,33 @@ class RentUnitsReportWizard(models.TransientModel):
             worksheet.write(current_row, 6, line_data['customer_name'], unit_format)
             worksheet.write(current_row, 7, line_data['contract_number'], unit_format)
             worksheet.write(current_row, 8, line_data['unit_state'], unit_format)
-            worksheet.write(current_row, 9, line_data['amount_paid'], number_format)
-            worksheet.write(current_row, 10, line_data['amount_due'], number_format)
-            worksheet.write(current_row, 11, line_data['unit_expenses'], number_format)
-            worksheet.write(current_row, 12, line_data['unit_revenues'], number_format)
-            worksheet.write(current_row, 13, str(line_data['from_date']) if line_data['from_date'] else '', unit_format)
-            worksheet.write(current_row, 14, str(line_data['to_date']) if line_data['to_date'] else '', unit_format)
+            worksheet.write(current_row, 9, line_data['contract_amount'], number_format)  # مبلغ العقد الجديد
+            worksheet.write(current_row, 10, line_data['invoice_count'], unit_format)  # عدد الفواتير الجديد
+            worksheet.write(current_row, 11, line_data['invoice_total_amount'], number_format)  # مبلغ الفواتير الجديد
+            worksheet.write(current_row, 12, line_data['amount_paid'], number_format)
+            worksheet.write(current_row, 13, line_data['amount_due'], number_format)
+            
+            # تنسيق التواريخ بصيغة dd/mm/yyyy
+            if line_data['from_date']:
+                worksheet.write_datetime(current_row, 14, line_data['from_date'], date_cell_format)
+            else:
+                worksheet.write(current_row, 14, '', unit_format)
+                
+            if line_data['to_date']:
+                worksheet.write_datetime(current_row, 15, line_data['to_date'], date_cell_format)
+            else:
+                worksheet.write(current_row, 15, '', unit_format)
             
             current_row += 1
         
-        # تطبيق عرض الأعمدة
+        # ضبط عرض الأعمدة ديناميكياً
         for col, width in enumerate(column_widths):
-            worksheet.set_column(col, col, width)
+            col_letter = chr(65 + col)  # A, B, C, etc.
+            worksheet.set_column(f'{col_letter}:{col_letter}', width)
         
-        # إغلاق الملف
+        # تجميد الصفوف العلوية والعمود الأول
+        worksheet.freeze_panes(current_row - len(sorted_data), 1)
+        
         workbook.close()
         output.seek(0)
         
@@ -533,16 +506,17 @@ class RentUnitsReportWizard(models.TransientModel):
             'type': 'ir.actions.report',
             'report_name': 'renting.rent_units_report_template',
             'report_type': 'qweb-html',
-            'data': {
-                'report_data': data,
-                'wizard': self,
-            },
-            'context': self.env.context,
+            'data': {'docs': data},
+            'context': {
+                'docs': data,
+                'o': self,
+            }
         }
 
     def generate_report(self):
         """إنشاء التقرير حسب النوع المختار"""
-        if self.report_type == 'excel':
-            return self.generate_excel_report()
-        else:
+        if self.report_type == 'html':
             return self.generate_html_report()
+        else:
+            return self.generate_excel_report()
+
