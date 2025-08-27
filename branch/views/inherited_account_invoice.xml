@@ -19,7 +19,7 @@
                 <xpath expr="//field[@name='invoice_line_ids']" position="attributes">
                     <attribute name="context">{'branch_id' : branch_id}</attribute>
                 </xpath> -->
-                <xpath expr="//field[@name='line_ids']//tree//field[@name='partner_id']" position="after">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='partner_id']" position="after">
                     <field name="branch_id"/>
                 </xpath>
             </field>
