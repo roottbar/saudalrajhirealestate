@@ -6,6 +6,7 @@
         <record id="branch_res_branch_view_form" model="ir.ui.view">
             <field name="name">branch.res.branch.view.form</field>
             <field name="model">res.branch</field>
+            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Branch">
                     <sheet>
@@ -29,24 +30,25 @@
             </field>
         </record>
 
-        <!-- Tree View of branch-->
+        <!-- List View of branch-->
         <record id="branch_res_branch_view_tree" model="ir.ui.view">
-            <field name="name">branch.res.branch.view.tree</field>
+            <field name="name">branch.res.branch.view.list</field>
             <field name="model">res.branch</field>
+            <field name="type">list</field>
             <field name="arch" type="xml">
-                <tree string="Branch">
+                <list string="Branch">
                     <field name="name"/>
                     <field name="company_id"/>
-                </tree>
+                </list>
             </field>
         </record>
 
-        <!--View action for branch form view and tree view-->
+        <!--View action for branch form view and list view-->
         <record id="branch_action_res_branch" model="ir.actions.act_window">
             <field name="name">Branch</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.branch</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Click here to create a new branch.
