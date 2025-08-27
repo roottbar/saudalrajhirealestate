@@ -5,7 +5,7 @@ import hashlib
 import json
 import odoo
 from odoo import api, models
-from odoo.addons.web.controllers.main import HomeStaticTemplateHelpers
+from odoo.addons.web.controllers.main import Home
 from odoo.http import request
 from odoo.tools import ustr
 
@@ -23,7 +23,6 @@ class Http(models.AbstractModel):
         version_info = odoo.service.common.exp_version()
 
         user_context = request.session.get_context() if request.session.uid else {}
-
 
         IrConfigSudo = self.env['ir.config_parameter'].sudo()
         max_file_upload_size = int(IrConfigSudo.get_param(
@@ -61,12 +60,15 @@ class Http(models.AbstractModel):
             # but is still included in some other calls (e.g. '/web/session/authenticate')
             # to avoid access errors and unnecessary information, it is only included for users
             # with access to the backend ('internal'-type users)
-            qweb_checksum = HomeStaticTemplateHelpers.get_qweb_templates_checksum(debug=request.session.debug, bundle="web.assets_qweb")
+            qweb_checksum = Home().get_qweb_templates_checksum(
+                debug=request.session.debug,
+                bundle="web.assets_qweb"
+            )
             menus = request.env['ir.ui.menu'].load_menus(request.session.debug)
             ordered_menus = {str(k): v for k, v in menus.items()}
             menu_json_utf8 = json.dumps(ordered_menus, default=ustr, sort_keys=True).encode()
             session_info['cache_hashes'].update({
-                "load_menus": hashlib.sha512(menu_json_utf8).hexdigest()[:64], # sha512/256
+                "load_menus": hashlib.sha512(menu_json_utf8).hexdigest()[:64],  # sha512/256
                 "qweb": qweb_checksum,
             })
             session_info.update({
