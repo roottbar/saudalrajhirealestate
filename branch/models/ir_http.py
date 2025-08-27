@@ -14,7 +14,12 @@ class Http(models.AbstractModel):
     _inherit = 'ir.http'
 
     def session_info(self):
-        user = request.env.user
+        res = super().session_info()
+        if request.session.uid:
+            user = request.env.user
+            # expose the active branch id while preserving Odoo 18's default payload
+            res['branch_id'] = user.branch_id.id if getattr(user, 'branch_id', False) else None
+        return res
         version_info = odoo.service.common.exp_version()
 
         user_context = request.session.get_context() if request.session.uid else {}
