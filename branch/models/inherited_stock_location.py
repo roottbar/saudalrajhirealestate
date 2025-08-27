@@ -2,7 +2,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.exceptions import Warning
+Warning = UserError
 
 
 class StockLocation(models.Model):
