@@ -161,7 +161,7 @@ class RentUnitsReportWizard(models.TransientModel):
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
                     continue
-
+    
                 # جلب بيانات خطوط أوامر البيع حسب الفلاتر
                 domain = [('order_id.company_id', 'in', record.company_ids.ids)]
                 
@@ -173,11 +173,18 @@ class RentUnitsReportWizard(models.TransientModel):
                     domain.append(('property_number', '=', record.property_id.id))
                 if record.product_id:
                     domain.append(('product_id', '=', record.product_id.id))
-                if record.date_from:
-                    domain.append(('fromdate', '>=', record.date_from))
-                if record.date_to:
-                    domain.append(('todate', '<=', record.date_to))
-
+                
+                # تطبيق نفس منطق فلترة التواريخ
+                if record.date_from and record.date_to:
+                    domain.extend([
+                        ('fromdate', '<=', record.date_to),
+                        ('todate', '>=', record.date_from)
+                    ])
+                elif record.date_from:
+                    domain.append(('todate', '>=', record.date_from))
+                elif record.date_to:
+                    domain.append(('fromdate', '<=', record.date_to))
+    
                 sale_order_lines = self.env['sale.order.line'].search(domain)
                 
                 # تم إزالة حساب المصروفات والإيرادات حسب المطلوب
