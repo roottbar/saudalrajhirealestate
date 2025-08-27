@@ -355,9 +355,8 @@ class RentSaleInvoices(models.Model):
         help="Field added for compatibility with older views"
     )
     
-    authorized_transaction_ids = fields.One2many(
+    authorized_transaction_ids = fields.Many2many(
         'payment.transaction',
-        'sale_order_id',
         string="Authorized Transactions",
         domain=[('state', '=', 'authorized')],
         help="Field added for compatibility with payment views"
@@ -380,15 +379,13 @@ class RentSaleInvoices(models.Model):
         })
         return res
 
+    # دوال التوافق المطلوب وجودها على sale.order نظراً لأزرار/إرث في العروض
     def payment_action_capture(self):
-        """دالة وهمية للتوافق مع الـ views القديمة"""
         return {'type': 'ir.actions.act_window_close'}
 
     def payment_action_void(self):
-        """دالة وهمية للتوافق مع الـ views القديمة"""
         return {'type': 'ir.actions.act_window_close'}
 
     def resume_subscription(self):
-        """دالة وهمية للتوافق مع الـ views القديمة"""
         self.subscription_state = '2_active'
         return {'type': 'ir.actions.act_window_close'}
