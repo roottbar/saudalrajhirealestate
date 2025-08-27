@@ -15,10 +15,10 @@ class RentUnitsReportWizard(models.TransientModel):
     _name = 'rent.units.report.wizard'
     _description = 'معالج تقرير الوحدات المؤجرة'
 
-    company_id = fields.Many2one('res.company', string='الشركة', required=True, 
-                                default=lambda self: self.env.company)
+    company_ids = fields.Many2many('res.company', string='الشركات', required=True, 
+                                  default=lambda self: self.env.company)
     operating_unit_id = fields.Many2one('operating.unit', string='الفرع', 
-                                       domain="[('company_id', '=', company_id)]")
+                                       domain="[('company_id', 'in', company_ids)]")
     property_build_id = fields.Many2one('rent.property.build', string='المجمع')
     property_id = fields.Many2one('rent.property', string='العقار',
                                  domain="[('property_address_build', '=', property_build_id), ('property_address_area', '=', operating_unit_id)]")
@@ -29,12 +29,12 @@ class RentUnitsReportWizard(models.TransientModel):
     date_to = fields.Date(string='إلى تاريخ')
     
     report_type = fields.Selection([
-        ('html', 'HTML'),
+        # ('html', 'HTML')
         ('excel', 'Excel')
-    ], string='نوع التقرير', default='html', required=True)
+    ], string='نوع التقرير', default='excel', required=True)
     
     # إضافة الحقول المحسوبة الجديدة
-    company_currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+    company_currency_id = fields.Many2one('res.currency', related='company_ids.currency_id', readonly=True)
     total_expenses = fields.Monetary(
         string='إجمالي المصروفات',
         currency_field='company_currency_id',
@@ -46,14 +46,16 @@ class RentUnitsReportWizard(models.TransientModel):
         compute='_compute_totals'
     )
 
-    @api.onchange('company_id')
-    def _onchange_company_id(self):
-        """تصفية الفروع حسب الشركة المختارة"""
+    @api.onchange('company_ids')
+    def _onchange_company_ids(self):
+        """تصفية الفروع حسب الشركات المختارة"""
         self.operating_unit_id = False
         self.property_build_id = False
         self.property_id = False
         self.product_id = False
-        return {'domain': {'operating_unit_id': [('company_id', '=', self.company_id.id)]}}
+        if self.company_ids:
+            return {'domain': {'operating_unit_id': [('company_id', 'in', self.company_ids.ids)]}}
+        return {'domain': {'operating_unit_id': []}}
 
     @api.onchange('operating_unit_id')
     def _onchange_operating_unit_id(self):
@@ -124,7 +126,7 @@ class RentUnitsReportWizard(models.TransientModel):
                 'operating_unit': line.property_address_area.name if line.property_address_area else '',
                 'property_build': line.property_address_build2.name if line.property_address_build2 else '',
                 'property_name': line.property_number.property_name if line.property_number else '',
-                'analytic_account': line.analytic_account_id.code if line.analytic_account_id else '',
+                'analytic_account': line.analytic_account_id.name if line.analytic_account_id else '',
                 'unit_name': line.product_id.name,
                 'customer_name': line.order_partner_id.name if line.order_partner_id else '',
                 'contract_number': line.order_id.name,
@@ -139,11 +141,11 @@ class RentUnitsReportWizard(models.TransientModel):
         
         return data
 
-    @api.depends('date_from', 'date_to', 'company_id', 'operating_unit_id', 'property_build_id', 'property_id', 'product_id')
+    @api.depends('date_from', 'date_to', 'company_ids', 'operating_unit_id', 'property_build_id', 'property_id', 'product_id')
     def _compute_totals(self):
         for record in self:
             try:
-                if not record.company_id:
+                if not record.company_ids:
                     record.total_expenses = 0.0
                     record.total_revenues = 0.0
                     continue
@@ -510,7 +512,7 @@ class RentUnitsReportWizard(models.TransientModel):
             'url': f'/web/content/{attachment.id}?download=true',
             'target': 'new',
         }
-    
+
     def generate_html_report(self):
         """إنشاء تقرير HTML"""
         data = self._get_report_data()
@@ -532,3 +534,4 @@ class RentUnitsReportWizard(models.TransientModel):
             return self.generate_html_report()
         else:
             return self.generate_excel_report()
+
