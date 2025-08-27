@@ -4,7 +4,15 @@
     'summary': """Sale Renting Customization""",
     'category': 'Sales Management',
     'version': '18.0.0.1',
-    'depends': ['sale_renting', 'renting', 'web_google_maps'],
+    # 'depends': ['sale_renting', 'renting', 'web_google_maps'],
+    'depends': [
+        'sale_renting', 
+        'renting', 
+        'web_google_maps',
+        'multi_branches',  # Add this
+        'branch',          # Add this
+        'sale_operating_unit',  # Add this
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
