@@ -336,6 +336,16 @@ class SaleOrder(models.Model):
             elif all(invoice_status == 'invoiced' for invoice_status in invoice_lines):
                 order.invoice_status = 'invoiced'
 
+    # دوال التوافق المطلوبة في العروض
+    def payment_action_capture(self):
+        return {'type': 'ir.actions.act_window_close'}
+
+    def payment_action_void(self):
+        return {'type': 'ir.actions.act_window_close'}
+
+    def resume_subscription(self):
+        self.subscription_state = '2_active'
+        return {'type': 'ir.actions.act_window_close'}
 class RentSaleInvoices(models.Model):
     _inherit = 'rent.sale.invoices'
 
@@ -378,14 +388,3 @@ class RentSaleInvoices(models.Model):
             'invoice_date_due': self.fromdate,
         })
         return res
-
-    # دوال التوافق المطلوب وجودها على sale.order نظراً لأزرار/إرث في العروض
-    def payment_action_capture(self):
-        return {'type': 'ir.actions.act_window_close'}
-
-    def payment_action_void(self):
-        return {'type': 'ir.actions.act_window_close'}
-
-    def resume_subscription(self):
-        self.subscription_state = '2_active'
-        return {'type': 'ir.actions.act_window_close'}
