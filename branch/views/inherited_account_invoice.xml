@@ -13,7 +13,7 @@
                         <field name="branch_id"/>
                     </div>
                 </xpath>
-                <xpath expr="//form/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='partner_id']" position="after">
+                <xpath expr="//field[@name='line_ids']/tree//field[@name='account_id']" position="after">
                     <field name="branch_id" attrs="{'readonly' : [('parent_state', '=' , 'posted')]}"/>
                 </xpath>
             </field>
