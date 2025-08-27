@@ -379,3 +379,16 @@ class RentSaleInvoices(models.Model):
             'invoice_date_due': self.fromdate,
         })
         return res
+
+    def payment_action_capture(self):
+        """دالة وهمية للتوافق مع الـ views القديمة"""
+        return {'type': 'ir.actions.act_window_close'}
+    
+    def payment_action_void(self):
+        """دالة وهمية للتوافق مع الـ views القديمة"""
+        return {'type': 'ir.actions.act_window_close'}
+    
+    def resume_subscription(self):
+        """دالة وهمية للتوافق مع الـ views القديمة"""
+        self.subscription_state = '2_active'
+        return {'type': 'ir.actions.act_window_close'}
