@@ -370,7 +370,7 @@ class RentSaleInvoices(models.Model):
         ('4_paused', 'Paused'),
     ], string='Subscription State', default='1_draft',
        help="Field added for compatibility with subscription views")
-    
+
     def _prepare_invoice(self, invoice_lines):
         res = super(RentSaleInvoices, self)._prepare_invoice(invoice_lines)
         res.update({
