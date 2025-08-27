@@ -1,7 +1,8 @@
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.exceptions import Warning
+from odoo.exceptions import UserError
+Warning = UserError
 
 
 class StockPicking(models.Model):
