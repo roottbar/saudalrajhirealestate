@@ -343,6 +343,14 @@ class RentUnitsReportWizard(models.TransientModel):
             'num_format': '#,##0.00'
         })
         
+        # إضافة تنسيق التاريخ المفقود
+        date_cell_format = workbook.add_format({
+            'border': 1,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': 'dd/mm/yyyy'
+        })
+        
         current_row = 0
         
         # إضافة اللوجو المحسن (في المنتصف، صفين وعامودين)
