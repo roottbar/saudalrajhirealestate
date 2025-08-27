@@ -142,17 +142,26 @@ class RentUnitsReportWizard(models.TransientModel):
             # فلترة الفواتير بناءً على تواريخها الخاصة ضمن الفترة المحددة
             filtered_invoices = line.order_id.order_contract_invoice
             if self.date_from and self.date_to:
+                # تحويل التواريخ إلى datetime لضمان التوافق
+                from datetime import datetime, date
+                date_from_dt = datetime.combine(self.date_from, datetime.min.time()) if isinstance(self.date_from, date) else self.date_from
+                date_to_dt = datetime.combine(self.date_to, datetime.max.time()) if isinstance(self.date_to, date) else self.date_to
+                
                 # فلترة الفواتير التي تتداخل مع الفترة المحددة
                 filtered_invoices = filtered_invoices.filtered(
-                    lambda inv: inv.fromdate <= self.date_to and inv.todate >= self.date_from
+                    lambda inv: inv.fromdate <= date_to_dt and inv.todate >= date_from_dt
                 )
             elif self.date_from:
+                from datetime import datetime, date
+                date_from_dt = datetime.combine(self.date_from, datetime.min.time()) if isinstance(self.date_from, date) else self.date_from
                 filtered_invoices = filtered_invoices.filtered(
-                    lambda inv: inv.todate >= self.date_from
+                    lambda inv: inv.todate >= date_from_dt
                 )
             elif self.date_to:
+                from datetime import datetime, date
+                date_to_dt = datetime.combine(self.date_to, datetime.max.time()) if isinstance(self.date_to, date) else self.date_to
                 filtered_invoices = filtered_invoices.filtered(
-                    lambda inv: inv.fromdate <= self.date_to
+                    lambda inv: inv.fromdate <= date_to_dt
                 )
             
             # حساب مجموع مبالغ الفواتير المفلترة
