@@ -1,3 +1,9 @@
+# File: branch/models/ir_http.py
+# Class/Method: Http.session_info
+
+# -*- coding: utf-8 -*-
+# Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
+
 import hashlib
 import json
 import odoo
@@ -5,6 +11,8 @@ from odoo import api, models
 from odoo.addons.web.controllers.main import HomeStaticTemplateHelpers
 from odoo.http import request
 from odoo.tools import ustr
+
+from odoo import models
 
 
 class Http(models.AbstractModel):
@@ -82,3 +90,5 @@ class Http(models.AbstractModel):
                 "display_switch_company_menu": user.has_group('base.group_multi_company') and len(user.company_ids) > 1,
             })
         return session_info
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
