@@ -29,7 +29,7 @@ class RentUnitsReportWizard(models.TransientModel):
     date_to = fields.Date(string='إلى تاريخ')
     
     report_type = fields.Selection([
-        # ('html', 'HTML')
+        # ('html', 'HTML'),
         ('excel', 'Excel')
     ], string='نوع التقرير', default='excel', required=True)
     
@@ -534,4 +534,3 @@ class RentUnitsReportWizard(models.TransientModel):
             return self.generate_html_report()
         else:
             return self.generate_excel_report()
-
