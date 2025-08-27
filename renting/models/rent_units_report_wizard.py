@@ -34,7 +34,7 @@ class RentUnitsReportWizard(models.TransientModel):
     ], string='نوع التقرير', default='excel', required=True)
     
     # إضافة الحقول المحسوبة الجديدة
-    company_currency_id = fields.Many2one('res.currency', related='company_ids.currency_id', readonly=True)
+    company_currency_id = fields.Many2one('res.currency', string='عملة الشركة', readonly=True)
     total_expenses = fields.Monetary(
         string='إجمالي المصروفات',
         currency_field='company_currency_id',
@@ -53,8 +53,14 @@ class RentUnitsReportWizard(models.TransientModel):
         self.property_build_id = False
         self.property_id = False
         self.product_id = False
+        
+        # تحديث عملة الشركة
         if self.company_ids:
+            # استخدام عملة أول شركة مختارة
+            self.company_currency_id = self.company_ids[0].currency_id.id
             return {'domain': {'operating_unit_id': [('company_id', 'in', self.company_ids.ids)]}}
+        else:
+            self.company_currency_id = False
         return {'domain': {'operating_unit_id': []}}
 
     @api.onchange('operating_unit_id')
@@ -94,7 +100,11 @@ class RentUnitsReportWizard(models.TransientModel):
         """جلب بيانات التقرير"""
         domain = []
         
-        # تطبيق الفلاتر
+        # تطبيق فلتر الشركات
+        if self.company_ids:
+            domain.append(('order_id.company_id', 'in', self.company_ids.ids))
+        
+        # تطبيق الفلاتر الأخرى
         if self.operating_unit_id:
             domain.append(('property_address_area', '=', self.operating_unit_id.id))
         if self.property_build_id:
@@ -151,7 +161,7 @@ class RentUnitsReportWizard(models.TransientModel):
                     continue
 
                 # جلب بيانات خطوط أوامر البيع حسب الفلاتر
-                domain = [('order_id.company_id', '=', record.company_id.id)]
+                domain = [('order_id.company_id', 'in', record.company_ids.ids)]
                 
                 if record.operating_unit_id:
                     domain.append(('property_address_area', '=', record.operating_unit_id.id))
@@ -192,10 +202,13 @@ class RentUnitsReportWizard(models.TransientModel):
             if not account or not account.id:
                 return 0.0
                 
+            # استخدام أول شركة من الشركات المختارة
+            company_id = self.company_ids[0].id if self.company_ids else self.env.company.id
+                
             base_domain = [
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
-                ('company_id', '=', self.company_id.id),
+                ('company_id', '=', company_id),
                 ('analytic_account_id', '=', account.id),
                 ('move_id.state', '=', 'posted')
             ]
@@ -342,8 +355,9 @@ class RentUnitsReportWizard(models.TransientModel):
         
         # إضافة اللوجو المحسن (في المنتصف، صفين وعامودين)
         try:
-            if self.company_id.logo:
-                logo_data = base64.b64decode(self.company_id.logo)
+            # استخدام أول شركة من الشركات المختارة
+            if self.company_ids and self.company_ids[0].logo:
+                logo_data = base64.b64decode(self.company_ids[0].logo)
                 logo_io = io.BytesIO(logo_data)
                 
                 # حساب موضع المنتصف (عمود 6-7 من أصل 15 عمود)
@@ -372,8 +386,9 @@ class RentUnitsReportWizard(models.TransientModel):
             filter_info.append(f"من تاريخ: {self.date_from}")
         if self.date_to:
             filter_info.append(f"إلى تاريخ: {self.date_to}")
-        if self.company_id:
-            filter_info.append(f"الشركة: {self.company_id.name}")
+        if self.company_ids:
+            company_names = ', '.join(self.company_ids.mapped('name'))
+            filter_info.append(f"الشركات: {company_names}")
         if self.operating_unit_id:
             filter_info.append(f"الفرع: {self.operating_unit_id.name}")
         if self.property_build_id:
@@ -485,14 +500,11 @@ class RentUnitsReportWizard(models.TransientModel):
             
             current_row += 1
         
-        # ضبط عرض الأعمدة ديناميكياً
+        # تطبيق عرض الأعمدة
         for col, width in enumerate(column_widths):
-            col_letter = chr(65 + col)  # A, B, C, etc.
-            worksheet.set_column(f'{col_letter}:{col_letter}', width)
+            worksheet.set_column(col, col, width)
         
-        # تجميد الصفوف العلوية والعمود الأول
-        worksheet.freeze_panes(current_row - len(sorted_data), 1)
-        
+        # إغلاق الملف
         workbook.close()
         output.seek(0)
         
@@ -521,16 +533,16 @@ class RentUnitsReportWizard(models.TransientModel):
             'type': 'ir.actions.report',
             'report_name': 'renting.rent_units_report_template',
             'report_type': 'qweb-html',
-            'data': {'docs': data},
-            'context': {
-                'docs': data,
-                'o': self,
-            }
+            'data': {
+                'report_data': data,
+                'wizard': self,
+            },
+            'context': self.env.context,
         }
 
     def generate_report(self):
         """إنشاء التقرير حسب النوع المختار"""
-        if self.report_type == 'html':
-            return self.generate_html_report()
-        else:
+        if self.report_type == 'excel':
             return self.generate_excel_report()
+        else:
+            return self.generate_html_report()
