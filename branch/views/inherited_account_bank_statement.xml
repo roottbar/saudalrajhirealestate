@@ -20,9 +20,7 @@
                             <page string="Statement Lines">
                                 <field name="line_ids">
                                     <tree editable="bottom">
-                                        <field name="date"/>
-                                        <field name="amount_currency"/> <!-- تم التصحيح هنا -->
-                                        <field name="is_reconciled" invisible="1"/>
+                                        <!-- استخدام حقول أساسية فقط -->
                                     </tree>
                                 </field>
                             </page>
@@ -39,16 +37,18 @@
             <field name="inherit_id" ref="view_bank_statement_form_base"/>
             <field name="arch" type="xml">
                 <field name="date" position="before">
-                    <field name="branch_id"/>
+                    <!-- Add your fields or attributes here -->
+                        <field name="branch_id"/>
                 </field>
 
-                <xpath expr="//field[@name='line_ids']/tree/field[@name='amount_currency']" position="after">
+                <xpath expr="//field[@name='line_ids']/tree" position="inside">
                     <field name='branch_id'/>
                 </xpath>
 
                 <xpath expr="//field[@name='line_ids']" position="attributes">
                     <attribute name="context">{'branch_id' : branch_id}</attribute>
                 </xpath>
+
             </field>
         </record>
     </data>
