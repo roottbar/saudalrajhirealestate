@@ -15,11 +15,6 @@
                                 <field name="date"/>
                                 <field name="company_id" groups="base.group_multi_company"/>
                             </group>
-                            <group>
-                                <field name="balance_start"/>
-                                <field name="balance_end_real"/>
-                                <field name="state"/>
-                            </group>
                         </group>
                         <notebook>
                             <page string="Statement Lines">
