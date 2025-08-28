@@ -17,7 +17,17 @@ class ProductTemplate(models.Model):
     @api.onchange('rent_unit_price', 'unit_area')
     def change_rent_unit_price(self):
         for rec in self:
-            rec.list_price = rec.rent_unit_price * float(rec.unit_area)
+            try:
+                # التحقق من وجود قيمة صالحة في unit_area
+                unit_area_value = 0.0
+                if rec.unit_area:
+                    # محاولة تحويل النص إلى رقم
+                    unit_area_value = float(rec.unit_area.strip()) if rec.unit_area.strip() else 0.0
+                
+                rec.list_price = rec.rent_unit_price * unit_area_value
+            except (ValueError, TypeError):
+                # في حالة فشل التحويل، استخدم قيمة افتراضية
+                rec.list_price = rec.rent_unit_price * 0.0
 
     def _get_unit_rented_state(self):
         for rec in self:
