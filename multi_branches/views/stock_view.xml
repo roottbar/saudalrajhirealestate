@@ -121,38 +121,13 @@
         </field>
     </record>
 
-    <record id="view_inventory_form_inherit_branch" model="ir.ui.view">
-        <field name="name">stock.inventory.form.inherit.branch</field>
-        <field name="model">stock.inventory</field>
-        <field name="inherit_id" ref="stock.view_inventory_form"/>
-        <field name="arch" type="xml">
-            <field name="company_id" position="after">
-                <field name="branch_id" options="{'no_create': True}" groups="multi_branches.group_multi_branch" attrs="{'readonly': [('state', 'not in', ['draft'])]}" required="1" context="{'company_id': company_id}"/>
-            </field>
-        </field>
-    </record>
-
-    <record model="ir.ui.view" id="view_stock_inventory_tree_branch_inherit">
-        <field name="name">stock.inventory.tree</field>
-        <field name="model">stock.inventory</field>
-        <field name="inherit_id" ref="stock.view_inventory_tree"/>
-        <field name="arch" type="xml">
-            <field name="company_id" position="after">
-                <field name="branch_id" groups="multi_branches.group_multi_branch" optional="show"/>
-            </field>
-        </field>
-    </record>
-
-    <record id="view_inventory_filter_inherit_branch" model="ir.ui.view">
-        <field name="name">stock.inventory.search</field>
-        <field name="model">stock.inventory</field>
-        <field name="inherit_id" ref="stock.view_inventory_filter"/>
-        <field name="arch" type="xml">
-            <xpath expr="//search/group" position="after">
-                <filter string="Branch" name="Branch" groups="multi_branches.group_multi_branch" context="{'group_by':'branch_id'}"/>
-            </xpath>
-        </field>
-    </record>
+    <!-- Note: stock.inventory views removed for Odoo 18 compatibility -->
+    <!-- Inventory adjustments are now handled through stock.quant directly -->
+    <!-- The following views were removed:
+         - view_inventory_form_inherit_branch
+         - view_stock_inventory_tree_branch_inherit  
+         - view_inventory_filter_inherit_branch
+    -->
 
     <record id="view_stock_rule_form" model="ir.ui.view">
         <field name="name">stock.rule.form</field>
