@@ -64,12 +64,8 @@
         <field name="domain_force">['|', ('branch_id', '=', False), ('branch_id', 'in', user.branch_ids.ids)]</field>
     </record>
 
-    <record model="ir.rule" id="stock_inventory_branch_user">
-        <field name="name">Stock inventory Branch</field>
-        <field name="model_id" ref="stock.model_stock_inventory"/>
-        <field name="global" eval="True"/>
-        <field name="domain_force">['|', ('branch_id', '=', False), ('branch_id', 'in', user.branch_ids.ids)]</field>
-    </record>
+    <!-- stock.inventory model was removed in Odoo 16+, inventory adjustments now handled via stock.quant -->
+    <!-- Removed stock_inventory_branch_user rule for Odoo 18 compatibility -->
 
     <record model="ir.rule" id="stock_move_branch_user">
         <field name="name">Stock Move Branch</field>
