@@ -34,7 +34,7 @@ class RentSaleInvoices(models.Model):
             'product_uom_id': line.product_uom.id,
             'quantity': 1,
             'discount': line.discount,
-            'price_unit': line.price_unit / self.sale_order_id.invoice_number,
+            'price_unit': self.amount,
             'tax_ids': [(6, 0, line.tax_id.ids)],
             'analytic_account_id': line.product_id.analytic_account.id,
             'sale_line_ids': [(4, line.id)],
@@ -45,7 +45,7 @@ class RentSaleInvoices(models.Model):
             res.update({
                 # 'property_price_unit': line.price_unit / self.sale_order_id.invoice_number,
                 # 'price_unit': (line.price_unit / self.sale_order_id.invoice_number) + line.contract_admin_sub_fees + line.contract_service_sub_fees,
-                'price_unit': (line.price_unit / self.sale_order_id.invoice_number),
+                'price_unit': self.amount,
                 # 'insurance_value': line.insurance_value,
                 # 'contract_admin_fees': line.contract_admin_fees,
                 # 'contract_service_fees': line.contract_service_fees,
