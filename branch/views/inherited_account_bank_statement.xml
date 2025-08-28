@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- إنشاء view أساسي جديد للـ bank statement form -->
+        <record id="view_bank_statement_form_base" model="ir.ui.view">
+            <field name="name">account.bank.statement.form.base</field>
+            <field name="model">account.bank.statement</field>
+            <field name="arch" type="xml">
+                <form string="Bank Statement">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="journal_id"/>
+                                <field name="date"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group>
+                                <field name="balance_start"/>
+                                <field name="balance_end_real"/>
+                                <field name="state"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Statement Lines">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="date"/>
+                                        <field name="payment_ref"/>
+                                        <field name="partner_id"/>
+                                        <field name="amount"/>
+                                        <field name="is_reconciled" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- تعديل الـ view المخصص ليرث من الـ view الجديد -->
         <record id="view_bank_statement_form_inherit_branch" model="ir.ui.view">
             <field name="name">view.bank.statement.form.inherit.branch</field>
             <field name="model">account.bank.statement</field>
-            <field name="inherit_id" ref="account.view_bank_statement_form"/>
+            <field name="inherit_id" ref="view_bank_statement_form_base"/>
             <field name="arch" type="xml">
                 <field name="date" position="before">
                     <!-- Add your fields or attributes here -->
