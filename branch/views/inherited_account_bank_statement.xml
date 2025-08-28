@@ -21,7 +21,6 @@
                                 <field name="line_ids">
                                     <tree editable="bottom">
                                         <field name="date"/>
-                                        <field name="partner_id"/>
                                         <field name="amount"/>
                                         <field name="is_reconciled" invisible="1"/>
                                     </tree>
@@ -44,7 +43,7 @@
                         <field name="branch_id"/>
                 </field>
 
-                <xpath expr="//field[@name='line_ids']/tree/field[@name='partner_id']" position="after">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='amount']" position="after">
                     <field name='branch_id'/>
                 </xpath>
 
