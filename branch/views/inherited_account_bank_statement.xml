@@ -20,7 +20,6 @@
                             <page string="Statement Lines">
                                 <field name="line_ids">
                                     <tree editable="bottom">
-                                        <field name="sequence" widget="handle"/>
                                         <field name="date"/>
                                         <field name="payment_ref"/>
                                         <field name="partner_id"/>
