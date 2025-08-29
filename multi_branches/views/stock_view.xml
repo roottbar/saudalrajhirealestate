@@ -135,7 +135,7 @@
         <field name="model">stock.rule</field>
         <field name="arch" type="xml">
             <field name="company_id" position="after">
-                <field name="branch_id" options="{'no_create': True}" groups="multi_branches.group_multi_branch" attrs="{'required': [('action', '=', 'push')]}" context="{'company_id': company_id}"/>
+                <field name="branch_id" options="{'no_create': True}" groups="multi_branches.group_multi_branch" required="action == 'push'" context="{'company_id': company_id}"/>
             </field>
         </field>
     </record>
