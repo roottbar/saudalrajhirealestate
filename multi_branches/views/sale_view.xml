@@ -7,10 +7,10 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='sales_person']/field[@name='company_id']" position="after">
-                <field name="branch_id" groups="multi_branches.group_multi_branch" options="{'no_create': True}" required="1" attrs="{'readonly': [('state', 'not in', ['draft', 'sent'])]}" context="{'company_id': company_id}"/>
+                <field name="branch_id" groups="multi_branches.group_multi_branch" options="{'no_create': True}" required="1" readonly="state not in ['draft', 'sent']" context="{'company_id': company_id}"/>
             </xpath>
             <field name="company_id" position="attributes">
-                <attribute name="attrs">{'readonly': [('state', 'not in', ['draft', 'sent'])]}</attribute>
+                <attribute name="readonly">state not in ['draft', 'sent']</attribute>
             </field>
         </field>
     </record>
