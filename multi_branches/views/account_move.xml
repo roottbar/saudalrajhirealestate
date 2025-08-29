@@ -12,7 +12,7 @@
             <xpath expr="//form/sheet/notebook/page/field[@name='line_ids']" position="attributes">
 <!--                <attribute name="context">{'default_type': context.get('default_type'), 'line_ids': line_ids, 'journal_id': journal_id, 'default_partner_id': commercial_partner_id, 'default_currency_id': currency_id != company_currency_id and currency_id or False, 'default_branch_id': branch_id}</attribute>-->
             </xpath>
-            <xpath expr="//form/sheet/notebook/page/field[@name='line_ids']/tree/field[@name='partner_id']" position="after">
+            <xpath expr="//field[@name='line_ids']//field[@name='partner_id']" position="after">
                 <field name="branch_id" required="1" groups="multi_branches.group_multi_branch" context="{'company_id': company_id}"/>
             </xpath>
         </field>
