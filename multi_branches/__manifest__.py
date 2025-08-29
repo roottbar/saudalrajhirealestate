@@ -13,7 +13,7 @@
     'category': 'Sales/Accounting',
     'author': 'erp-bank.',
     'website': 'http://www.erp-bank.com',
-    'depends': ['sale_management', 'purchase', 'sale_stock', 'crm', 'stock_account'],
+    'depends': ['sale_management', 'purchase', 'sale_stock', 'crm', 'stock_account', 'branch'],
     'data': [
         'security/multi_branches_security.xml',
         'security/ir.model.access.csv',
