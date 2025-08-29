@@ -90,7 +90,7 @@ operating-Unit Operation for POS,operating-Unit Operation for Sales,operating-Un
     'website': 'https://www.browseinfo.in',
     "price": 129.00,
     "currency": 'EUR',
-    'depends': ['base', 'sale_management', 'purchase', 'stock', 'account', 'purchase_stock', 'web', 'multi_branches'],
+    'depends': ['base', 'sale_management', 'purchase', 'stock', 'account', 'purchase_stock', 'web'],
     'data': [
         'security/branch_security.xml',
         'security/multi_branch.xml',
