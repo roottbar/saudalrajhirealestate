@@ -29,11 +29,11 @@
     <record id="view_sale_qua_tree_inherit_branch" model="ir.ui.view">
         <field name="name">sale.order.qua.tree</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
+            <field name="company_id" position="after">
                 <field name="branch_id" groups="multi_branches.group_multi_branch" optional="show"/>
-            </xpath>
+            </field>
         </field>
     </record>
 
