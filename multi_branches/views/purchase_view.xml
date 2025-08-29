@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
             <field name="company_id" position="after">
-                <field name="branch_id" options="{'no_create': True}" groups="multi_branches.group_multi_branch" attrs="{'readonly': [('state', 'in', ['done', 'cancel', 'purchase'])]}" context="{'company_id': company_id}" required="1"/>
+                <field name="branch_id" options="{'no_create': True}" groups="multi_branches.group_multi_branch" readonly="state in ['done', 'cancel', 'purchase']" context="{'company_id': company_id}" required="1"/>
             </field>
             <field name="picking_type_id" position="attributes">
                 <attribute name="context">{'branch_id': branch_id}</attribute>
