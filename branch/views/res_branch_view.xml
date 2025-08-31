@@ -6,6 +6,7 @@
         <record id="branch_res_branch_view_form" model="ir.ui.view">
             <field name="name">branch.res.branch.view.form</field>
             <field name="model">res.branch</field>
+            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Branch">
                     <sheet>
@@ -29,19 +30,20 @@
             </field>
         </record>
 
-        <!-- List View of branch-->
+        <!-- Tree View of branch-->
         <record id="branch_res_branch_view_tree" model="ir.ui.view">
-            <field name="name">branch.res.branch.view.list</field>
+            <field name="name">branch.res.branch.view.tree</field>
             <field name="model">res.branch</field>
+            <field name="type">tree</field>
             <field name="arch" type="xml">
-                <list string="Branch">
+                <tree string="Branch">
                     <field name="name"/>
                     <field name="company_id"/>
-                </list>
+                </tree>
             </field>
         </record>
 
-        <!--View action for branch form view and list view-->
+        <!--View action for branch form view and tree view-->
         <record id="branch_action_res_branch" model="ir.actions.act_window">
             <field name="name">Branch</field>
             <field name="type">ir.actions.act_window</field>
@@ -54,8 +56,9 @@
             </field>
         </record>
 
-        <!-- This Menu Item Must have a parent -->
-        <menuitem id="branch_menu_res_branch" name="Branch" parent="base.menu_users" action="branch_action_res_branch"/>
-
+        <!-- Menu Item -->
+        <menuitem id="branch_menu_res_branch" name="Branch"
+                  parent="base.menu_users"
+                  action="branch_action_res_branch"/>
     </data>
 </odoo>
