@@ -6,7 +6,6 @@
         <record id="branch_res_branch_view_form" model="ir.ui.view">
             <field name="name">branch.res.branch.view.form</field>
             <field name="model">res.branch</field>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Branch">
                     <sheet>
@@ -34,7 +33,6 @@
         <record id="branch_res_branch_view_tree" model="ir.ui.view">
             <field name="name">branch.res.branch.view.list</field>
             <field name="model">res.branch</field>
-            <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Branch">
                     <field name="name"/>
