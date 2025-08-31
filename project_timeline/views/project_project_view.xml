@@ -5,6 +5,7 @@
     <record id="project_project_timeline" model="ir.ui.view">
         <field name="model">project.project</field>
         <field name="type">timeline</field>
+        <field name="type">timeline</field>
         <field name="arch" type="xml">
             <timeline
                 date_start="date_start"
