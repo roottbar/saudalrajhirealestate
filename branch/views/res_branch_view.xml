@@ -34,10 +34,10 @@
             <field name="name">branch.res.branch.view.list</field>
             <field name="model">res.branch</field>
             <field name="arch" type="xml">
-                <tree string="Branch">
+                <list string="Branch">
                     <field name="name"/>
                     <field name="company_id"/>
-                </tree>
+                </list>
             </field>
         </record>
 
