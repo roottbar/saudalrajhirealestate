@@ -93,6 +93,18 @@ class SaleOrder(models.Model):
         ('4_paused', 'Paused'),
     ], string='Subscription State', default='1_draft',
        help="Field added for compatibility with subscription views")
+    
+    # إضافة حقل transferred_id إضافي للتوافق
+     transferred_order_id = fields.Many2one(
+         'sale.order',
+         string="Transferred Order Reference",
+         help="Additional field for transfer compatibility"
+     )
+     transferred_id = fields.Many2one(
+         'sale.order',
+         string="Transferred Order",
+         help="Field required by core Odoo payment/subscription functionality"
+     )
 
     def get_date_hijri(self, date):
         hijri_date = Gregorian(date.year, date.month, date.day).to_hijri()
