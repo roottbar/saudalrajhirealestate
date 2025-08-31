@@ -71,6 +71,28 @@ class SaleOrder(models.Model):
     refund_amount = fields.Float('Refund Amount')
     context_order = fields.Many2one('sale.order')
     old_rent_ids = fields.One2many(comodel_name='rent.log', inverse_name='order_id', string='Old Rents')
+    
+    # إضافة الحقول المفقودة لتجنب أخطاء التحديث
+    locked = fields.Boolean(
+        string="Locked",
+        default=False,
+        help="Field added for compatibility with older views"
+    )
+    
+    authorized_transaction_ids = fields.Many2many(
+        'payment.transaction',
+        string="Authorized Transactions",
+        domain=[('state', '=', 'authorized')],
+        help="Field added for compatibility with payment views"
+    )
+    
+    subscription_state = fields.Selection([
+        ('1_draft', 'Draft'),
+        ('2_active', 'Active'),
+        ('3_closed', 'Closed'),
+        ('4_paused', 'Paused'),
+    ], string='Subscription State', default='1_draft',
+       help="Field added for compatibility with subscription views")
 
     def get_date_hijri(self, date):
         hijri_date = Gregorian(date.year, date.month, date.day).to_hijri()
@@ -357,28 +379,6 @@ class RentSaleInvoices(models.Model):
             'invoice_date_due': self.fromdate,
         })
         return res
-
-    # إضافة الحقول المفقودة لتجنب أخطاء التحديث
-    locked = fields.Boolean(
-        string="Locked",
-        default=False,
-        help="Field added for compatibility with older views"
-    )
-    
-    authorized_transaction_ids = fields.Many2many(
-        'payment.transaction',
-        string="Authorized Transactions",
-        domain=[('state', '=', 'authorized')],
-        help="Field added for compatibility with payment views"
-    )
-    
-    subscription_state = fields.Selection([
-        ('1_draft', 'Draft'),
-        ('2_active', 'Active'),
-        ('3_closed', 'Closed'),
-        ('4_paused', 'Paused'),
-    ], string='Subscription State', default='1_draft',
-       help="Field added for compatibility with subscription views")
 
     def _prepare_invoice(self, invoice_lines):
         res = super(RentSaleInvoices, self)._prepare_invoice(invoice_lines)
