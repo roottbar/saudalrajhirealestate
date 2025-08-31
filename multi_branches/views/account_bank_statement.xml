@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="view_bank_statement_form_inherit_branch" model="ir.ui.view">
+<!--     <record id="view_bank_statement_form_inherit_branch" model="ir.ui.view">
         <field name="name">view.bank.statement.form.inherit.branch</field>
         <field name="model">account.bank.statement</field>
         <field name="inherit_id" ref="account.view_bank_statement_form"/>
@@ -15,6 +15,6 @@
                 </tree>
             </xpath>
         </field>
-    </record>
+    </record> -->
 
 </odoo>
