@@ -76,7 +76,7 @@
                             <field name="transfer_date"/>
                             <field name="transfer_context_order" invisible="1"/>
                             <field name="transferred" invisible="1"/>
-                            <field name="transferred_id" invisible="1"/>
+                            <!-- <field name="transferred_id" invisible="1"/> -->
                             <!-- إضافة الحقول الجديدة كحقول مخفية -->
                             <field name="locked" invisible="1"/>
                             <field name="authorized_transaction_ids" invisible="1"/>
@@ -134,7 +134,7 @@
                     <field name="has_late_lines" invisible="1"/>
                     <field name="rental_status" invisible="1"/>
                     <field name="transferred" invisible="1"/>
-                    <field name="transferred_id" invisible="1"/>
+                    <!-- <field name="transferred_id" invisible="1"/> -->
                     <!-- إضافة الحقول الجديدة كحقول مخفية -->
                     <field name="locked" invisible="1"/>
                     <field name="authorized_transaction_ids" invisible="1"/>
