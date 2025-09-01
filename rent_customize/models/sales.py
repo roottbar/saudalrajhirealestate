@@ -4,7 +4,10 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from hijri_converter import Gregorian 
+try:
+    from hijri_converter import Gregorian  # external optional dependency
+except Exception:  # pragma: no cover - fallback if library is not installed
+    Gregorian = None
 
 class RentalOrder(models.TransientModel):
     _inherit = 'rental.order.wizard'
@@ -94,6 +97,9 @@ class SaleOrder(models.Model):
        help="Field added for compatibility with subscription views")
 
     def get_date_hijri(self, date):
+        if Gregorian is None:
+            # Fallback: return the original date if hijri_converter is unavailable
+            return date
         hijri_date = Gregorian(date.year, date.month, date.day).to_hijri()
         return hijri_date
 
