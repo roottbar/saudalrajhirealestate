@@ -7,6 +7,6 @@ from odoo import models, fields, api, _
 class Company(models.Model):
     _inherit = 'res.company'
 
-    @api.model
-    def create(self, values):
-        return super(Company, self.with_context({'is_branch': True})).create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        return super(Company, self.with_context({'is_branch': True})).create(vals_list)
