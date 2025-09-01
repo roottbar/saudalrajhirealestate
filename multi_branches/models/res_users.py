@@ -30,10 +30,10 @@ class Users(models.Model):
     @api.model
     def create(self, vals):
         res = super(Users, self).create(vals)
-        res.clear_caches()
+        self.env.registry.clear_cache()
         return res
 
     def write(self, vals):
         res = super(Users, self).write(vals)
-        self.clear_caches()
+        self.env.registry.clear_cache()
         return res
