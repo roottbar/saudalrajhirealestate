@@ -60,13 +60,14 @@ class PurchaseOrder(models.Model):
     #         result.get('context')['branch_id'] = self.branch_id.id
     #     return result
 
-    @api.model
-    def create(self, vals):
-        if vals.get('branch_id'):
-            branch_id = self.env['res.branch'].browse(vals['branch_id'])
-            seq_date = None
-            if 'date_order' in vals:
-                seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
-            if branch_id.purchase_sequence_id:
-                vals['name'] = branch_id.purchase_sequence_id.next_by_id(sequence_date=seq_date) or '/'
-        return super(PurchaseOrder, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('branch_id'):
+                branch_id = self.env['res.branch'].browse(vals['branch_id'])
+                seq_date = None
+                if 'date_order' in vals:
+                    seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
+                if branch_id.purchase_sequence_id:
+                    vals['name'] = branch_id.purchase_sequence_id.next_by_id(sequence_date=seq_date) or '/'
+        return super(PurchaseOrder, self).create(vals_list)
