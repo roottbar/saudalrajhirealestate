@@ -27,9 +27,9 @@ class Users(models.Model):
             self.branch_ids = False
             return {'domain': {'branch_ids': []}}
 
-    @api.model
-    def create(self, vals):
-        res = super(Users, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(Users, self).create(vals_list)
         self.env.registry.clear_cache()
         return res
 
