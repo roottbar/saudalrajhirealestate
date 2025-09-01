@@ -18,7 +18,7 @@
         'security/ir.model.access.csv',
         'cron/cron.xml',
         'views/product.xml',
-        'views/sales_views.xml',
+        'views/disable_views_temp.xml',
         'views/rent_property_build.xml',
         'views/sale_rental_schedule.xml',
         'views/attachment.xml',
