@@ -9,8 +9,8 @@
         'sale_renting', 
         'renting', 
         'web_google_maps',
-        'multi_branches',  # Add this
-        'branch',          # Add this
+        # 'multi_branches',  # Add this
+        # 'branch',          # Add this
         'sale_operating_unit',  # Add this
     ],
     'data': [
