@@ -27,7 +27,7 @@
                     </div>
                 </xpath>
             </field>
-        </record>
+        </record> 
 
         <!-- نموذج استرجاع التأمين -->
         <record id="refund_insurance_view_form" model="ir.ui.view">
