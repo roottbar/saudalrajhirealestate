@@ -1,49 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <!-- تعديل view النموذج الرئيسي لعقود الإيجار -->
         <record id="rental_order_form_view2" model="ir.ui.view">
-            <field name="name">sale.order</field>
+            <field name="name">sale.order.rental.form.view2</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_renting.rental_order_form_view"/>
             <field name="arch" type="xml">
-
-                <!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>-->
-                <!--          <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>-->
-                <!--          <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>-->
-                <!--          <div class="badge-pill badge-danger float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>-->
-                <!--          <div class="badge-pill badge-success float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>-->
-                <!--        -->
-                <xpath expr="//div[@name='button_box']" position="inside">
-                    <button type="object" name="action_open_letters" class="oe_stat_button" icon="fa-envelope">
-                        <field name="letter_count" widget="statinfo" string="Letters" attrs="{'invisible': [('letter_count', '=', 0)]}"/>
-                    </button>
-                </xpath>
-                <xpath expr="//button[@name='action_quotation_send']" position="before">
-                    <button name="action_submit" states="draft" string="Submit" type="object" class="oe_highlight" groups="rent_customize.submit_rental_order"/>
-                    <button name="action_review" states="review" string="Reviewed" type="object" class="oe_highlight" groups="rent_customize.review_rental_order"/>
-                </xpath>
                 <xpath expr="//div[@class='badge-pill badge-info float-right']" position="replace">
-                    <div class="badge-pill badge-info float-right" attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']),'|', ('rental_status', '!=', 'sent'), ('has_late_lines', '=', True)]}">
+                    <div class="badge-pill badge-info float-right"
+                         attrs="{'invisible': ['|', ('state', 'not in', ['sale', 'done']), '|', ('rental_status', '!=', 'sent'), ('has_late_lines', '=', True)]}">
                         Confirmed
                     </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-warning float-right']" position="replace">
-                    <div class="badge-pill badge-warning float-right" attrs="{'invisible': ['|','|', ('state', 'not in', ['done', 'occupied']), ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">
+                    <div class="badge-pill badge-warning float-right"
+                         attrs="{'invisible': ['|','|', ('state', 'not in', ['done', 'occupied']), ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">
                         Picked-up
                     </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-success float-right']" position="replace">
-                    <div class="badge-pill badge-success float-right" attrs="{'invisible': ['|', ('state', 'not in', ['cancel','termination']), ('rental_status', '!=', 'returned')]}">
+                    <div class="badge-pill badge-success float-right"
+                         attrs="{'invisible': ['|', ('state', 'not in', ['cancel','termination']), ('rental_status', '!=', 'returned')]}">
                         Returned
                     </div>
                 </xpath>
             </field>
         </record>
+
+        <!-- نموذج استرجاع التأمين -->
         <record id="refund_insurance_view_form" model="ir.ui.view">
             <field name="name">refund_insurance_view_form</field>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
-                <form string="refund_insurance_form">
+                <form string="Refund Insurance Form">
                     <sheet>
                         <group>
                             <field name="apartment_insurance" invisible="1"/>
@@ -52,9 +43,6 @@
                             <field name="company_id" invisible="1"/>
                             <field name="state" invisible="1"/>
                             <field name="damage_amount"/>
-                            <field name="product_ids" widget="many2many_tags" readonly="1" invisible="1" force_save="1"/>
-                            <field name="product_id" options="{'no_create':True,'no_open':True}" domain="[('id','in', product_ids)]"/>
-                            <!--  -->
                             <field name="refund_amount" invisible="1"/>
                             <field name="context_order" invisible="1"/>
                         </group>
@@ -66,11 +54,13 @@
             </field>
         </record>
 
+        <!-- نموذج نقل الوحدة -->
+        <!-- في نموذج transfer_view_form -->
         <record id="transfer_view_form" model="ir.ui.view">
             <field name="name">transfer_view_form</field>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
-                <form string="refund_insurance_form">
+                <form string="Transfer Apartment">
                     <sheet>
                         <group>
                             <field name="id" invisible="1"/>
@@ -78,23 +68,30 @@
                             <field name="company_id" invisible="1"/>
                             <field name="partner_id" invisible="1"/>
                             <field name="apartment_insurance" invisible="1"/>
-                            <field name="apartment_insurance" invisible="1"/>
                             <field name="partner_invoice_id" invisible="1"/>
                             <field name="pricelist_id" store="1" force_save="1" invisible="1"/>
                             <field name="order_contract_invoice" invisible="1"/>
                             <field name="partner_shipping_id" invisible="1"/>
-                            <field name="transfer_customer_id" required="1"/>
-                            <field name="transfer_date" required="1"/>
+                            <field name="transfer_customer_id"/>
+                            <field name="transfer_date"/>
                             <field name="transfer_context_order" invisible="1"/>
+                            <field name="transferred" invisible="1"/>
+                            <!-- <field name="transferred_id" invisible="1"/> -->
+                            <!-- إضافة الحقول الجديدة كحقول مخفية -->
+                            <!-- <field name="locked" invisible="1"/> -->
+                            <!-- <field name="authorized_transaction_ids" invisible="1"/> -->
+                            <!-- <field name="subscription_state" invisible="1"/> -->
                         </group>
                     </sheet>
                     <footer>
                         <button name="do_transfer" type="object" string="Transfer" class="oe_highlight"/>
-                        <button name="do_transfer_and_print" type="object" string="Transfer and print" invisible="1" class="oe_highlight"/>
+                        <button name="do_transfer_and_print" type="object" string="Transfer and Print" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
         </record>
+
+        <!-- أفعال النوافذ -->
         <record id="refund_insurance_action" model="ir.actions.act_window">
             <field name="name">Refund Insurance</field>
             <field name="type">ir.actions.act_window</field>
@@ -103,13 +100,13 @@
             <field name="target">new</field>
         </record>
 
+        <!-- تعديل النموذج الرئيسي لعقود الإيجار في أوردرات الإيجار -->
         <record id="rent_sale_order_r_inherit_form2" model="ir.ui.view">
-            <field name="name">sale.order</field>
+            <field name="name">sale.order.rent.form.inherit2</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="renting.rent_sale_order_r_inherit_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='contract_extra_maintenance_cost']" position="after">
-
                     <field name="apartment_insurance" required="1"/>
                     <field name="refund_insurance"/>
                 </xpath>
@@ -125,174 +122,36 @@
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="replace">
                     <field name="no_of_invoiced" invisible="1"/>
-                    <button name="action_cancel" type="object" string="Cancel" groups="rent_customize.cancel_contract_rental_order" attrs="{'invisible': ['|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
-                    <button name="action_termination" type="object" string="Termination" class="oe_highlight" groups="rent_customize.termination_contract_rental_order" states="occupied"/>
-                    <button name="action_refund_insurance" type="object" string="Refund Insurance" class="oe_highlight" attrs="{'invisible':['|', ('refund_insurance', '=', True), ('state', '!=', 'termination')]}"/>
-                    <button name="renew_contract" type="object" string="Renew" groups="rent_customize.renew_contract_rental_order" class="oe_highlight"/>
-                    <!-- attrs="{'invisible':[('state', 'not in', ['occupied', 'termination'])]}" -->
+                    <button name="action_cancel" type="object" string="Cancel"
+                            attrs="{'invisible':['|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
+                    <button name="action_termination" type="object" string="Termination" class="oe_highlight"
+                            states="occupied"/>
+                    <button name="action_refund_insurance" type="object" string="Refund Insurance" class="oe_highlight"
+                            attrs="{'invisible':['|', ('refund_insurance','=',True), ('state','!=','termination')]}"/>
+                    <button name="renew_contract" type="object" string="Renew" class="oe_highlight"
+                            attrs="{'invisible':[('state','not in',['occupied','termination'])]}"/>
                     <field name="no_of_invoiced" invisible="1"/>
                     <field name="has_late_lines" invisible="1"/>
                     <field name="rental_status" invisible="1"/>
+                    <field name="transferred" invisible="1"/>
+                    <!-- <field name="transferred_id" invisible="1"/> -->
+                    <!-- إضافة الحقول الجديدة كحقول مخفية -->
+                    <!-- <field name="locked" invisible="1"/> -->
+                    <!-- <field name="authorized_transaction_ids" invisible="1"/> -->
+                    <!-- <field name="subscription_state" invisible="1"/> -->
                 </xpath>
             </field>
         </record>
 
-
-        <record id="sale.view_order_form" model="ir.ui.view">
-            <field name="priority" eval="15"/>
-
-        </record>
-
+        <!-- تعديل عرض الحالة -->
         <record id="rent_view_order_form" model="ir.ui.view">
-            <field name="name">sale.order</field>
+            <field name="name">sale.order.rent.statusbar</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="replace">
-                    <field name="state" widget="statusbar" statusbar_visible="draft,sale,occupied,termination"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sale,occupied,termination,cancel,done"/>
                 </xpath>
-                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
-                    <attribute name="attrs">{'invisible': [('state', 'not in', ['approve'])]}</attribute>
-                </xpath>
-                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
-                    <attribute name="groups">rent_customize.confirm_contract_rental_order</attribute>
-                </xpath>
-                <div class="oe_button_box" position="inside">
-                    <field name="transferred_id" invisible="1"/>
-                    <field name="new_rental_id" invisible="1"/>
-                    <button class="oe_stat_button" attrs="{'invisible':[('new_rental_id', '=', False)]}" name="action_view_transfer" type="object" icon="fa-building-o">
-                        New Rental
-                    </button>
-                    <field name="old_rent_ids" invisible="1"/>
-                    <button class="oe_stat_button" attrs="{'invisible':[('old_rent_ids', '=', [])]}" name="action_view_old_contract" type="object" icon="fa-building-o">
-                        Old Rental
-                    </button>
-                    <button class="oe_stat_button" attrs="{'invisible':[('transferred_id', '=', False)]}" name="action_view_transferred" type="object" icon="fa-building-o">
-                        Transferred from
-                    </button>
-                </div>
-
-            </field>
-        </record>
-
-        <record id="sale_renting.rental_order_action" model="ir.actions.act_window">
-            <field name="name">Rental Orders</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.order</field>
-            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
-            <field name="search_view_id" ref="sale_renting.rental_order_view_search"/>
-            <field name="context">{'default_is_rental_order': 1, 'search_default_from_rental': 1}</field>
-            <field name="view_ids" eval="[(5, 0, 0),
-                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_renting.rental_order_view_tree')}),
-                (0, 0, {'view_mode': 'form', 'view_id': ref('sale_renting.rental_order_primary_form_view')})]"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create a new quotation, the first step of a new rental!
-                </p>
-                <p>
-                    Once the quotation is confirmed, it becomes a rental order.
-                    <br/>
-                    You will be able to create an invoice and collect the payment.
-                </p>
-            </field>
-        </record>
-
-        <record id="contract_view_tree" model="ir.ui.view">
-            <field name="name">contract_view_tree</field>
-            <field name="model">sale.order</field>
-            <field name="arch" type="xml">
-                <tree string="contract_tree">
-                    <field name="state" invisible="1"/>
-                    <field name="currency_id" invisible="1"/>
-                    <field name="has_late_lines" invisible="1"/>
-                    <field name="name" readonly="1" decoration-bf="1"/>
-                    <field name="date_order" widget="date"/>
-                    <field name="fromdate"/>
-                    <field name="todate"/>
-                    <field name="partner_id"/>
-                    <field name="user_id" optional="show" widget="many2one_avatar_user"/>
-                    <field name="amount_total"/>
-                    <field name="rental_status" widget="badge" decoration-info="rental_status == 'draft' or rental_status == 'sent'" decoration-warning="rental_status == 'pickup'" decoration-success="rental_status == 'return'"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="filter_dates_action" model="ir.actions.act_window">
-            <field name="name">Contract In Dates</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.order</field>
-            <field name="view_mode">tree</field>
-            <field name="view_ids" eval="[(5, 0, 0),
-                        (0, 0, {'view_mode': 'form', 'view_id': ref('rent_customize.contract_view_tree')})]"/>
-        </record>
-        <record id="view_order_form_rent_customize" model="ir.ui.view">
-            <field name="name">view.sale.order.form</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale_renting.rental_order_primary_form_view"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="after">
-                    <field name="fromdate" invisible="1"/>
-                    <field name="todate" invisible="1"/>
-                </xpath>
-                <!--                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">-->
-                <!--                    <attribute name="context">-->
-                <!-- [('product_tmpl_id.property_id','=',property_number),('unit_rented','=',False)]-->
-                <!--                    </attribute>-->
-                <!--                </xpath>-->
-                <xpath expr="//button[@name='action_quotation_send']" position="before">
-                    <button name="action_pickup" type="object" class="btn-primary" string="PICKUP" groups="rent_customize.group_pickup_rental_order" attrs="{'invisible':['|', ('rental_status','not in',['sent']), ('state', 'not in', ['sale', 'done'])]}"/>
-                    <button name="action_transfer" type="object" class="btn-primary" string="Contract Sale" groups="rent_customize.sale_contract_rental_order" attrs="{'invisible':[ ('transferred', '=', True)]}"/>
-                    <!--                    <button name="%(rent_customize.apartment_transfer_wizard_action)d" type="action" class="btn-primary" string="Print Transfer"-->
-                    <!-- attrs="{'invisible':[ ('transferred', '!=', True)]}"/>-->
-                    <button name="print_transfer" type="object" class="btn-primary" string="Print Transfer" attrs="{'invisible':[ ('transferred', '!=', True)]}"/>
-
-
-                    <field name="transferred" invisible="1"/>
-                    <field name="transfer_customer_id" invisible="1"/>
-                    <field name="transfer_date" invisible="1"/>
-                    <field name="new_rental_id" invisible="1"/>
-                    <field name="is_rental_order" invisible="1"/>
-                    <field name="rental_status" invisible="1"/>
-                </xpath>
-                <xpath expr="//field[@name='payment_term_id']" position="after">
-
-                    <field name="annual_increase"/>
-                    <field name="product_ids" invisible="1"/>
-                    <field name="annual_increase_type" attrs="{'invisible':[('annual_increase', '!=', True)], 'required':[('annual_increase', '=', True)]}"/>
-                    <field name="annual_amount" attrs="{'invisible':[ ('annual_increase', '!=', True)]}"/>
-                </xpath>
-                <xpath expr="//notebook" position="inside">
-                    <page name="old_rents" string="Old Rents">
-                        <field name="old_rent_ids" readonly="1" force_save="1">
-                            <tree create="0" edit="0" delete="0">
-                                <field name="rent_id"/>
-                                <field name="fromdate"/>
-                                <field name="todate"/>
-                                <field name="amount"/>
-                            </tree>
-                        </field>
-                    </page>
-                </xpath>
-            </field>
-        </record>
-
-
-
-
-        <record model="ir.ui.menu" id="sale_renting.menu_rental_config">
-            <field name="groups_id" eval="[(6,0,[ref('rent_customize.renting_config_group')])]"/>
-        </record>
-
-        <record id="update_invoice_status_action_server" model="ir.actions.server">
-            <field name="name">Update Invoice Status</field>
-            <field name="type">ir.actions.server</field>
-            <field name="model_id" ref="model_sale_order"/>
-            <field name="binding_model_id" ref="model_sale_order"/>
-            <field name="binding_view_types">list</field>
-            <field name="state">code</field>
-            <field name="code">
-                if records:
-                action = records._get_invoice_status()
             </field>
         </record>
 
