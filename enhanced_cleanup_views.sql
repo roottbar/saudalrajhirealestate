@@ -1,7 +1,7 @@
 -- Enhanced cleanup script for problematic views in sale.order
--- This script handles foreign key constraints by deleting child views first
+-- This script handles nested inheritance chains by recursively deleting views
 
--- First, let's analyze the current problematic views
+-- First, let's analyze the current problematic views and their inheritance
 SELECT 
     id, 
     name, 
@@ -31,31 +31,18 @@ AND (
 )
 ORDER BY inherit_id NULLS LAST, id;
 
--- Show inheritance relationships for problematic views
-SELECT 
-    child.id as child_id,
-    child.name as child_name,
-    parent.id as parent_id,
-    parent.name as parent_name
-FROM ir_ui_view child
-JOIN ir_ui_view parent ON child.inherit_id = parent.id
-WHERE parent.model = 'sale.order'
-AND (
-    parent.arch_db::text LIKE '%transferred_id%' OR
-    parent.arch_db::text LIKE '%locked%' OR
-    parent.arch_db::text LIKE '%authorized_transaction_ids%' OR
-    parent.arch_db::text LIKE '%subscription_state%' OR
-    parent.arch_db::text LIKE '%payment_action_capture%' OR
-    parent.arch_db::text LIKE '%payment_action_void%' OR
-    parent.arch_db::text LIKE '%resume_subscription%'
-)
-ORDER BY parent_id, child_id;
-
--- Step 1: Delete child views that inherit from problematic views
-DELETE FROM ir_ui_view 
-WHERE inherit_id IN (
-    SELECT id FROM ir_ui_view 
+-- Show complete inheritance tree for problematic views
+WITH RECURSIVE inheritance_tree AS (
+    -- Base case: problematic parent views
+    SELECT 
+        id,
+        name,
+        inherit_id,
+        0 as level,
+        ARRAY[id] as path
+    FROM ir_ui_view 
     WHERE model = 'sale.order' 
+    AND inherit_id IS NULL
     AND (
         arch_db::text LIKE '%transferred_id%' OR
         arch_db::text LIKE '%locked%' OR
@@ -65,11 +52,141 @@ WHERE inherit_id IN (
         arch_db::text LIKE '%payment_action_void%' OR
         arch_db::text LIKE '%resume_subscription%'
     )
+    
+    UNION ALL
+    
+    -- Recursive case: child views
+    SELECT 
+        child.id,
+        child.name,
+        child.inherit_id,
+        parent.level + 1,
+        parent.path || child.id
+    FROM ir_ui_view child
+    JOIN inheritance_tree parent ON child.inherit_id = parent.id
+    WHERE child.model = 'sale.order'
+)
+SELECT 
+    level,
+    id,
+    name,
+    inherit_id,
+    path
+FROM inheritance_tree
+ORDER BY level DESC, id;
+
+-- Step 1: Delete views at deepest level first (level 3 and above)
+DELETE FROM ir_ui_view 
+WHERE id IN (
+    WITH RECURSIVE inheritance_tree AS (
+        SELECT 
+            id,
+            name,
+            inherit_id,
+            0 as level
+        FROM ir_ui_view 
+        WHERE model = 'sale.order' 
+        AND inherit_id IS NULL
+        AND (
+            arch_db::text LIKE '%transferred_id%' OR
+            arch_db::text LIKE '%locked%' OR
+            arch_db::text LIKE '%authorized_transaction_ids%' OR
+            arch_db::text LIKE '%subscription_state%' OR
+            arch_db::text LIKE '%payment_action_capture%' OR
+            arch_db::text LIKE '%payment_action_void%' OR
+            arch_db::text LIKE '%resume_subscription%'
+        )
+        
+        UNION ALL
+        
+        SELECT 
+            child.id,
+            child.name,
+            child.inherit_id,
+            parent.level + 1
+        FROM ir_ui_view child
+        JOIN inheritance_tree parent ON child.inherit_id = parent.id
+        WHERE child.model = 'sale.order'
+    )
+    SELECT id FROM inheritance_tree WHERE level >= 3
 );
 
--- Step 2: Delete problematic parent views using LIKE patterns
+-- Step 2: Delete views at level 2
+DELETE FROM ir_ui_view 
+WHERE id IN (
+    WITH RECURSIVE inheritance_tree AS (
+        SELECT 
+            id,
+            name,
+            inherit_id,
+            0 as level
+        FROM ir_ui_view 
+        WHERE model = 'sale.order' 
+        AND inherit_id IS NULL
+        AND (
+            arch_db::text LIKE '%transferred_id%' OR
+            arch_db::text LIKE '%locked%' OR
+            arch_db::text LIKE '%authorized_transaction_ids%' OR
+            arch_db::text LIKE '%subscription_state%' OR
+            arch_db::text LIKE '%payment_action_capture%' OR
+            arch_db::text LIKE '%payment_action_void%' OR
+            arch_db::text LIKE '%resume_subscription%'
+        )
+        
+        UNION ALL
+        
+        SELECT 
+            child.id,
+            child.name,
+            child.inherit_id,
+            parent.level + 1
+        FROM ir_ui_view child
+        JOIN inheritance_tree parent ON child.inherit_id = parent.id
+        WHERE child.model = 'sale.order'
+    )
+    SELECT id FROM inheritance_tree WHERE level = 2
+);
+
+-- Step 3: Delete views at level 1
+DELETE FROM ir_ui_view 
+WHERE id IN (
+    WITH RECURSIVE inheritance_tree AS (
+        SELECT 
+            id,
+            name,
+            inherit_id,
+            0 as level
+        FROM ir_ui_view 
+        WHERE model = 'sale.order' 
+        AND inherit_id IS NULL
+        AND (
+            arch_db::text LIKE '%transferred_id%' OR
+            arch_db::text LIKE '%locked%' OR
+            arch_db::text LIKE '%authorized_transaction_ids%' OR
+            arch_db::text LIKE '%subscription_state%' OR
+            arch_db::text LIKE '%payment_action_capture%' OR
+            arch_db::text LIKE '%payment_action_void%' OR
+            arch_db::text LIKE '%resume_subscription%'
+        )
+        
+        UNION ALL
+        
+        SELECT 
+            child.id,
+            child.name,
+            child.inherit_id,
+            parent.level + 1
+        FROM ir_ui_view child
+        JOIN inheritance_tree parent ON child.inherit_id = parent.id
+        WHERE child.model = 'sale.order'
+    )
+    SELECT id FROM inheritance_tree WHERE level = 1
+);
+
+-- Step 4: Delete problematic parent views (level 0)
 DELETE FROM ir_ui_view 
 WHERE model = 'sale.order' 
+AND inherit_id IS NULL
 AND (
     arch_db::text LIKE '%transferred_id%' OR
     arch_db::text LIKE '%locked%' OR
@@ -80,7 +197,7 @@ AND (
     arch_db::text LIKE '%resume_subscription%'
 );
 
--- Step 3: Alternative deletion using regex patterns for any remaining views
+-- Step 5: Clean up any remaining problematic views using regex patterns
 DELETE FROM ir_ui_view 
 WHERE model = 'sale.order' 
 AND (
@@ -93,11 +210,11 @@ AND (
     arch_db::text ~ '.*<button[^>]*name="resume_subscription".*'
 );
 
--- Step 4: Clean up orphaned view-group relations
+-- Step 6: Clean up orphaned view-group relations
 DELETE FROM ir_ui_view_group_rel 
 WHERE view_id NOT IN (SELECT id FROM ir_ui_view);
 
--- Step 5: Clean up orphaned model data
+-- Step 7: Clean up orphaned model data
 DELETE FROM ir_model_data 
 WHERE model = 'ir.ui.view' 
 AND res_id NOT IN (SELECT id FROM ir_ui_view);
