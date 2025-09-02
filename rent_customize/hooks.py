@@ -33,23 +33,15 @@ def clean_problematic_views(env):
         # حذف العروض المشكلة
         problematic_views = env['ir.ui.view'].search([
             ('model', '=', 'sale.order'),
-            '|',
-            # حذف العروض التي تحتوي على الحقول المشكلة
-            '&',
-            ('arch_db', 'ilike', '%field%'),
-            '|', '|', '|', '|',
-            ('arch_db', 'ilike', '%transferred_id%'),
-            ('arch_db', 'ilike', '%locked%'),
-            ('arch_db', 'ilike', '%authorized_transaction_ids%'),
-            ('arch_db', 'ilike', '%subscription_state%'),
-            ('arch_db', 'not ilike', '%<!--%'),
-            # حذف العروض التي تحتوي على الأزرار المشكلة
-            '&',
-            ('arch_db', 'ilike', '%button%'),
-            '|', '|',
-            ('arch_db', 'ilike', '%payment_action_capture%'),
-            ('arch_db', 'ilike', '%payment_action_void%'),
-            ('arch_db', 'ilike', '%resume_subscription%')
+            '|', '|', '|', '|', '|', '|', '|',
+            ('arch_db', 'ilike', '%<field name="transferred_id"%'),
+            ('arch_db', 'ilike', '%<field name="locked"%'),
+            ('arch_db', 'ilike', '%<field name="authorized_transaction_ids"%'),
+            ('arch_db', 'ilike', '%<field name="subscription_state"%'),
+            ('arch_db', 'ilike', '%<button name="payment_action_capture"%'),
+            ('arch_db', 'ilike', '%<button name="payment_action_void"%'),
+            ('arch_db', 'ilike', '%<button name="resume_subscription"%'),
+            ('arch_db', 'ilike', '%<button string="Resume" name="resume_subscription"%')
         ])
         
         if problematic_views:
