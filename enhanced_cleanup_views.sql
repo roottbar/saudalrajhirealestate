@@ -1,11 +1,12 @@
 -- Enhanced cleanup script for problematic views in sale.order
--- This script fixes JSONB type casting issues
+-- This script handles foreign key constraints by deleting child views first
 
 -- First, let's analyze the current problematic views
 SELECT 
     id, 
     name, 
     model,
+    inherit_id,
     LENGTH(arch_db::text) as arch_length,
     CASE 
         WHEN arch_db::text LIKE '%transferred_id%' THEN 'Contains transferred_id'
@@ -27,19 +28,46 @@ AND (
     arch_db::text LIKE '%payment_action_capture%' OR
     arch_db::text LIKE '%payment_action_void%' OR
     arch_db::text LIKE '%resume_subscription%'
+)
+ORDER BY inherit_id NULLS LAST, id;
+
+-- Show inheritance relationships for problematic views
+SELECT 
+    child.id as child_id,
+    child.name as child_name,
+    parent.id as parent_id,
+    parent.name as parent_name
+FROM ir_ui_view child
+JOIN ir_ui_view parent ON child.inherit_id = parent.id
+WHERE parent.model = 'sale.order'
+AND (
+    parent.arch_db::text LIKE '%transferred_id%' OR
+    parent.arch_db::text LIKE '%locked%' OR
+    parent.arch_db::text LIKE '%authorized_transaction_ids%' OR
+    parent.arch_db::text LIKE '%subscription_state%' OR
+    parent.arch_db::text LIKE '%payment_action_capture%' OR
+    parent.arch_db::text LIKE '%payment_action_void%' OR
+    parent.arch_db::text LIKE '%resume_subscription%'
+)
+ORDER BY parent_id, child_id;
+
+-- Step 1: Delete child views that inherit from problematic views
+DELETE FROM ir_ui_view 
+WHERE inherit_id IN (
+    SELECT id FROM ir_ui_view 
+    WHERE model = 'sale.order' 
+    AND (
+        arch_db::text LIKE '%transferred_id%' OR
+        arch_db::text LIKE '%locked%' OR
+        arch_db::text LIKE '%authorized_transaction_ids%' OR
+        arch_db::text LIKE '%subscription_state%' OR
+        arch_db::text LIKE '%payment_action_capture%' OR
+        arch_db::text LIKE '%payment_action_void%' OR
+        arch_db::text LIKE '%resume_subscription%'
+    )
 );
 
--- Show sample content of problematic views
-SELECT 
-    id,
-    name,
-    SUBSTRING(arch_db::text FROM POSITION('transferred_id' IN arch_db::text) FOR 100) as sample_content
-FROM ir_ui_view 
-WHERE model = 'sale.order' 
-AND arch_db::text LIKE '%transferred_id%'
-LIMIT 3;
-
--- Delete problematic views using LIKE patterns with proper JSONB to text casting
+-- Step 2: Delete problematic parent views using LIKE patterns
 DELETE FROM ir_ui_view 
 WHERE model = 'sale.order' 
 AND (
@@ -52,7 +80,7 @@ AND (
     arch_db::text LIKE '%resume_subscription%'
 );
 
--- Alternative deletion using regex patterns for more precise matching
+-- Step 3: Alternative deletion using regex patterns for any remaining views
 DELETE FROM ir_ui_view 
 WHERE model = 'sale.order' 
 AND (
@@ -65,11 +93,11 @@ AND (
     arch_db::text ~ '.*<button[^>]*name="resume_subscription".*'
 );
 
--- Clean up orphaned view-group relations
+-- Step 4: Clean up orphaned view-group relations
 DELETE FROM ir_ui_view_group_rel 
 WHERE view_id NOT IN (SELECT id FROM ir_ui_view);
 
--- Clean up orphaned model data
+-- Step 5: Clean up orphaned model data
 DELETE FROM ir_model_data 
 WHERE model = 'ir.ui.view' 
 AND res_id NOT IN (SELECT id FROM ir_ui_view);
