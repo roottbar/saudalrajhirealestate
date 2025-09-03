@@ -21,7 +21,7 @@
 ########################################################################################
 {
     'name': 'Enterprise Open HRMS Resignation',
-    'version': '15.0.1.1.0',
+    'version': '18.0.1.1.0',
     'summary': 'Handle the resignation process of the employee',
     'description' : 'To handle the resignation of the employee',
     'live_test_url': 'https://youtu.be/BorJthxY_VI',
