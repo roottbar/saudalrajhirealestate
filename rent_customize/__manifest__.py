@@ -6,12 +6,12 @@
     'version': '18.0.0.1',
     # 'depends': ['sale_renting', 'renting', 'web_google_maps'],
     'depends': [
-        'sale_renting', 
+        # 'sale_renting',     # Removed - not available in project
         'renting', 
-        'web_google_maps',
-        'multi_branches',  # Add this
-        'branch',          # Add this
-        'sale_operating_unit',  # Add this
+        # 'web_google_maps',  # Removed - not available in project
+        'multi_branches',
+        'branch',
+        'sale_operating_unit',
     ],
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
