@@ -94,6 +94,12 @@ class Branch(models.Model):
     internal_transit_location_id = fields.Many2one(
         'stock.location', 'Internal Transit Location', on_delete="restrict",
         help="Technical field used for resupply routes between warehouses that belong to this branch")
+    
+    # Additional fields from branch module
+    telephone = fields.Char(string='Telephone No')
+    address = fields.Text('Address')
+    vat = fields.Char(string="Tax ID")
+    company_registry = fields.Char(string="Company Registry")
 
     _sql_constraints = [
         ('name_uniq', 'unique (name)', 'The branch name must be unique !')
@@ -155,33 +161,64 @@ class Branch(models.Model):
                 if not picking.warehouse_id.branch_id.id:
                     picking.write({'active': False})
 
-    @api.model
-    def create(self, vals):
-        if not vals.get('name') or vals.get('partner_id'):
-            self.clear_caches()
-            return super(Branch, self).create(vals)
-        partner = self.env['res.partner'].create({
-            'name': vals['name'],
-            'company_id': vals.get('company_id'),
-            'image_1920': vals.get('logo'),
-            'email': vals.get('email'),
-            'phone': vals.get('phone'),
-            'website': vals.get('website')
-        })
-        vals['partner_id'] = partner.id
-        self.clear_caches()
-        branch = super(Branch, self).create(vals)
-        self.env.user.write({'branch_ids': [(4, branch.id)]})
-        partner.write({'branch_id': branch.id})
-        branch._create_transit_location()
-        # multi-branch rules prevents creating warehouse and sub-locations
-        self.env['stock.warehouse'].check_access_rights('create')
-        # self.env['stock.warehouse'].sudo().create({'partner_id': branch.partner_id.id, 'branch_id': branch.id, 'name': branch.name, 'code': branch.name[:5], 'company_id': branch.company_id.id})
-        # self.inactive()
-        return branch
+    @api.model_create_multi
+    def create(self, vals_list):
+        # معالجة القيم أولاً
+        processed_vals_list = []
+        partners_to_create = []
+        
+        for vals in vals_list:
+            if not vals.get('name') or vals.get('partner_id'):
+                processed_vals_list.append(vals)
+            else:
+                # إنشاء بيانات الشريك
+                partner_vals = {
+                    'name': vals['name'],
+                    'company_id': vals.get('company_id'),
+                    'image_1920': vals.get('logo'),
+                    'email': vals.get('email'),
+                    'phone': vals.get('phone'),
+                    'website': vals.get('website')
+                }
+                partners_to_create.append((vals, partner_vals))
+        
+        # إنشاء الشركاء في batch
+        partners = self.env['res.partner']
+        if partners_to_create:
+            partner_vals_list = [item[1] for item in partners_to_create]
+            partners = self.env['res.partner'].create(partner_vals_list)
+            
+            for i, (vals, _) in enumerate(partners_to_create):
+                vals['partner_id'] = partners[i].id
+                processed_vals_list.append(vals)
+        
+        # مسح الكاش مرة واحدة
+        self.env.registry.clear_cache()
+        
+        # إنشاء الفروع في batch
+        branches = super(Branch, self).create(processed_vals_list)
+        
+        # معالجة ما بعد الإنشاء
+        partner_index = 0
+        for branch in branches:
+            # التحقق من وجود شريك تم إنشاؤه لهذا الفرع
+            if partner_index < len(partners):
+                partner = partners[partner_index]
+                # تحديث المستخدم والشريك
+                self.env.user.write({'branch_ids': [(4, branch.id)]})
+                partner.write({'branch_id': branch.id})
+                # إنشاء موقع النقل
+                branch._create_transit_location()
+                # multi-branch rules prevents creating warehouse and sub-locations
+                self.env['stock.warehouse'].check_access_rights('create')
+                # self.env['stock.warehouse'].sudo().create({'partner_id': branch.partner_id.id, 'branch_id': branch.id, 'name': branch.name, 'code': branch.name[:5], 'company_id': branch.company_id.id})
+                # self.inactive()
+                partner_index += 1
+        
+        return branches
 
     def write(self, values):
-        self.clear_caches()
+        self.env.registry.clear_cache()
         return super(Branch, self).write(values)
 
     @api.model
