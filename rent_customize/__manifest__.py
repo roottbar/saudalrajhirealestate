@@ -6,9 +6,9 @@
     'version': '18.0.0.1',
     # 'depends': ['sale_renting', 'renting', 'web_google_maps'],
     'depends': [
-        # 'sale_renting',     # Removed - not available in project
+        'sale_renting',     # Removed - not available in project
         'renting', 
-        # 'web_google_maps',  # Removed - not available in project
+        'web_google_maps',  # Removed - not available in project
         'multi_branches',
         'branch',
         'sale_operating_unit',
