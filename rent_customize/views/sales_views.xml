@@ -25,7 +25,7 @@
                          invisible="state not in ['cancel','termination'] or rental_status != 'returned'">
                         Returned
                     </div>
-                </xpath>
+                </xpath> 
             </field>
         </record> -->
 
