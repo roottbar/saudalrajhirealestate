@@ -25,13 +25,13 @@
                                 <field
                                     class="oe_inline"
                                     name="date_end"
-                                    required="count == 0"
+                                    attrs="{'required': [('count', '=', 0)]}"
                                 />,
                                 or generate
                                 <field
                                     class="oe_inline"
                                     name="count"
-                                    required="date_end == False"
+                                    attrs="{'required': [('date_end', '=', False)]}"
                                 /> entries.
                             </div>
                             <label for="name_prefix"/>
