@@ -41,10 +41,11 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     # إعادة تفعيل الحقول الخاصة بالنقل لتجنب مشاكل views
-    transferred_id = fields.Many2one(
-        'sale.order',
-        string="Transferred Order"
-    )
+    # تم حذف transferred_id لحل مشاكل التحقق
+    # transferred_id = fields.Many2one(
+    #     'sale.order',
+    #     string="Transferred Order"
+    # )
     transferred = fields.Boolean(
         string="Transferred",
         default=False
@@ -246,7 +247,7 @@ class SaleOrder(models.Model):
             })
             rec.new_rental_id = new_rental_id.id
             rec.transferred = True
-            rec.transferred_id = rec.id
+            # rec.transferred_id = rec.id  # تم حذف هذا الحقل
 
     def do_transfer_and_print(self):
         for rec in self:
@@ -381,9 +382,18 @@ class SaleOrder(models.Model):
             elif all(invoice_status == 'invoiced' for invoice_status in invoice_lines):
                 order.invoice_status = 'invoiced'
 
-    # تم حذف الدوال المشكلة لحل أخطاء التحقق
-    # payment_action_capture, payment_action_void, resume_subscription
-    # تم حذفها لتجنب أخطاء "not a valid action"
+    # إضافة الأساليب المفقودة لتجنب أخطاء التحقق في العروض
+    def payment_action_capture(self):
+        """Method for payment capture - placeholder for compatibility"""
+        raise UserError(_("Payment capture functionality is not available in this version."))
+    
+    def payment_action_void(self):
+        """Method for payment void - placeholder for compatibility"""
+        raise UserError(_("Payment void functionality is not available in this version."))
+    
+    def resume_subscription(self):
+        """Method for subscription resume - placeholder for compatibility"""
+        raise UserError(_("Subscription resume functionality is not available in this version."))
 class RentSaleInvoices(models.Model):
     _inherit = 'rent.sale.invoices'
 
