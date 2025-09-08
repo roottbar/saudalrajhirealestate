@@ -11,7 +11,6 @@ _logger = logging.getLogger(__name__)
 class IrModelAccess(models.Model):
     _inherit = 'ir.model.access'
 
-    @api.model
     @tools.ormcache_context('self.env.uid', 'self.env.su', 'model', 'mode', 'raise_exception', keys=('lang',))
     def check(self, model, mode='read', raise_exception=True):
         res = super(IrModelAccess, self).check(model, mode=mode, raise_exception=raise_exception)
