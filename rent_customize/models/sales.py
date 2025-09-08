@@ -95,6 +95,24 @@ class SaleOrder(models.Model):
         ('4_paused', 'Paused'),
     ], string='Subscription State', default='1_draft',
        help="Field added for compatibility with subscription views")
+    
+    # إضافة حقول التاريخ المطلوبة للقيود
+    start_date = fields.Date(
+        string="Start Date",
+        help="Field added for compatibility with subscription constraints"
+    )
+    
+    next_invoice_date = fields.Date(
+        string="Next Invoice Date",
+        help="Field added for compatibility with subscription constraints"
+    )
+    
+    # إضافة القيد المطلوب
+    _sql_constraints = [
+        ('sale_order_check_start_date_lower_next_invoice_date',
+         'CHECK((next_invoice_date IS NULL OR start_date IS NULL) OR (next_invoice_date >= start_date))',
+         'Next invoice date must be greater than or equal to start date')
+    ]
 
     def get_date_hijri(self, date):
         if Gregorian is None:
