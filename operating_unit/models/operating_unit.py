@@ -65,7 +65,6 @@ class OperatingUnit(models.Model):
             res.append((ou.id, name))
         return res
 
-    @api.model
     def create(self, values):
         res = super(OperatingUnit, self).create(values)
         res.user_ids += self.env.user
