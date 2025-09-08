@@ -269,7 +269,6 @@ class StockRequestOrder(models.Model):
             action["res_id"] = self.stock_request_ids.id
         return action
 
-    @api.model
     def create(self, vals):
         upd_vals = vals.copy()
         if upd_vals.get("name", "/") == "/":
