@@ -25,7 +25,7 @@
                          invisible="state not in ['cancel','termination'] or rental_status != 'returned'">
                         Returned
                     </div>
-                </xpath> 
+                </xpath>
             </field>
         </record> -->
 
@@ -134,11 +134,11 @@
                     <field name="has_late_lines" invisible="1"/>
                     <field name="rental_status" invisible="1"/>
                     <field name="transferred" invisible="1"/>
-                    <!-- <field name="transferred_id" invisible="1"/> -->
+                    <field name="transferred_id" invisible="1"/>
                     <!-- إضافة الحقول الجديدة كحقول مخفية -->
-                    <!-- <field name="locked" invisible="1"/> -->
-                    <!-- <field name="authorized_transaction_ids" invisible="1"/> -->
-                    <!-- <field name="subscription_state" invisible="1"/> -->
+                    <field name="locked" invisible="1"/>
+                    <field name="authorized_transaction_ids" invisible="1"/>
+                    <field name="subscription_state" invisible="1"/>
                 </xpath>
             </field>
         </record>
