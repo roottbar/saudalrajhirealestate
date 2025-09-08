@@ -136,9 +136,9 @@
                     <field name="transferred" invisible="1"/>
                     <!-- <field name="transferred_id" invisible="1"/> -->
                     <!-- إضافة الحقول الجديدة كحقول مخفية -->
-                    <field name="locked" invisible="1"/>
-                    <field name="authorized_transaction_ids" invisible="1"/>
-                    <field name="subscription_state" invisible="1"/>
+                    <!-- <field name="locked" invisible="1"/> -->
+                    <!-- <field name="authorized_transaction_ids" invisible="1"/> -->
+                    <!-- <field name="subscription_state" invisible="1"/> -->
                 </xpath>
             </field>
         </record>
