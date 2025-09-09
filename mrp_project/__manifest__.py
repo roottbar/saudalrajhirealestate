@@ -6,7 +6,7 @@
 {
     "name": "MRP Project Link",
     "summary": "Link production with projects",
-    "version": "15.0.1.2.1",
+    "version": "18.0.1.2.1",
     "depends": [
         "mrp_analytic",
         "project",
@@ -30,3 +30,4 @@
     'application': False,
     'auto_install': False,
 }
+
