@@ -5,8 +5,7 @@ from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.exceptions import ValidationError
 import datetime
 import json
-from odoo.addons.ks_dashboard_ninja.common_lib.ks_date_filter_selections import ks_get_date, ks_convert_into_local, \
-    ks_convert_into_utc
+from odoo.addons.ks_dashboard_ninja.common_lib.ks_date_filter_selections import ks_get_date, ks_convert_into_local, ks_convert_into_utc
 from odoo.tools.safe_eval import safe_eval
 import locale
 from dateutil.parser import parse

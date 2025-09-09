@@ -1,11 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
 
-        <record model="ir.ui.view" id="ks_dashboard_ninja.board_form">
-            <field name="name">ks_dashboard_ninja View</field>
+        <!-- تحديث العروض للتوافق مع Odoo 18 -->
+        <record id="ks_dashboard_ninja_form_view" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.board.form</field>
             <field name="model">ks_dashboard_ninja.board</field>
             <field name="arch" type="xml">
-                <form string="Dashboards">
+                <form string="Dashboard Ninja">
                     <sheet>
                         <group>
                             <group>

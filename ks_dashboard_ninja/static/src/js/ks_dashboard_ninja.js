@@ -1,28 +1,25 @@
 odoo.define('ks_dashboard_ninja.ks_dashboard', function(require) {
     "use strict";
 
-    var core = require('web.core');
-    var Dialog = require('web.Dialog');
-    var viewRegistry = require('web.view_registry');
-    var _t = core._t;
-    var QWeb = core.qweb;
-    var utils = require('web.utils');
-    var config = require('web.config');
-    var framework = require('web.framework');
-    var time = require('web.time');
-    var datepicker = require("web.datepicker");
-
+    const core = require('web.core');
+    const Dialog = require('web.Dialog');
+    const viewRegistry = require('web.view_registry');
+    const _t = core._t;
+    const QWeb = core.qweb;
+    const utils = require('web.utils');
+    const config = require('web.config');
+    const framework = require('web.framework');
+    const time = require('web.time');
+    const datepicker = require("web.datepicker");
     const session = require('web.session');
-    var AbstractAction = require('web.AbstractAction');
-    var ajax = require('web.ajax');
-    var framework = require('web.framework');
-    var field_utils = require('web.field_utils');
-    var KsGlobalFunction = require('ks_dashboard_ninja.KsGlobalFunction');
-
-    var KsQuickEditView = require('ks_dashboard_ninja.quick_edit_view');
+    const AbstractAction = require('web.AbstractAction');
+    const ajax = require('web.ajax');
+    const field_utils = require('web.field_utils');
+    const KsGlobalFunction = require('ks_dashboard_ninja.KsGlobalFunction');
+    const KsQuickEditView = require('ks_dashboard_ninja.quick_edit_view');
 
 
-    var KsDashboardNinja = AbstractAction.extend({
+    const KsDashboardNinja = AbstractAction.extend({
         // To show or hide top control panel flag.
         hasControlPanel: false,
 
