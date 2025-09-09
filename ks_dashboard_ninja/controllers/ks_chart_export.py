@@ -5,7 +5,7 @@ import io
 import json
 import operator
 
-from odoo.addons.web.controllers.utils import serialize_exception
+from odoo.http import serialize_exception
 from odoo.addons.web.controllers.export import ExportXlsxWriter
 from odoo.tools.translate import _
 from odoo import http
@@ -13,6 +13,7 @@ from odoo.http import content_disposition, request
 from odoo.tools.misc import xlwt
 from odoo.exceptions import UserError
 from odoo.tools import pycompat
+from odoo.http import serialize_exception
 
 
 class KsChartExport(http.Controller):
