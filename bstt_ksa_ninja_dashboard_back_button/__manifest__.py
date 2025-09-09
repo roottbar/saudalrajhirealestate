@@ -10,13 +10,19 @@
 
     'category': 'Test',
 
-    'version': '0.1',
-
+    'version': '18.0.0.1',  # تحديث رقم الإصدار
     'depends': [
         'base',
         'ks_dashboard_ninja',
     ],
 
+    # تحديث من qweb إلى assets
+    'assets': {
+        'web.assets_backend': [
+            'bstt_ksa_ninja_dashboard_back_button/static/src/xml/bstt_ksa_ninja_dashboard_back_button.xml',
+        ]
+    },
+    # إزالة 'qweb' القديم
     'data': [],
 
     'demo': [],
