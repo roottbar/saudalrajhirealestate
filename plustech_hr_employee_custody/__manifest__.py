@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Plus Tech Employee Custody",
-    'version': '15.0.0.0.0',
+    'version': '18.0.0.0.0',
     'author': 'Plus Technology Team',
     'company': 'Plus Technology',
     'category': 'Human Resources/Custody',
