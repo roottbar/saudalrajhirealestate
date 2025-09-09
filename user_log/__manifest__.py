@@ -1,6 +1,6 @@
 {
     'name': 'User Activity Log',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': 'Track and log user activities in the system',
     'description': """
         This module tracks and logs all user activities including create, write, unlink operations
