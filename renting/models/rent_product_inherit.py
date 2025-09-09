@@ -239,6 +239,7 @@ class RentProduct(models.Model):
                     line['insurance_value'] = total_insurance_value
         return res
 
+    @api.depends('property_id')
     def _get_state(self):
         for rec in self:
             rec.unit_state = 'شاغرة'
