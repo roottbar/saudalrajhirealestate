@@ -6,7 +6,7 @@
 {
     'name': 'Analytic for manufacturing',
     'summary': 'Adds the analytic account to the production order',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': "Manufacturing",
     'author': 'Eficent, '
               'Antiun Ingeniería, '
@@ -23,3 +23,4 @@
     'application': False,
     'auto_install': False,
 }
+
