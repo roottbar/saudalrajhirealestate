@@ -9,7 +9,7 @@
     'author': 'erp-bank.',
     'website': 'http://www.erp-bank.com',
     'category': 'Generic Modules/Human Resources',
-    'version': '1.0',
+    'version': '18.0.0.0',
     'license': 'OPL-1',
     'depends': ['base','saudi_hr_loan'],
     'data': [
