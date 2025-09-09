@@ -11,7 +11,7 @@
     'website': 'http://www.erp-bank.com',
     'license': 'OPL-1',
     'category': 'HR',
-    'version': '1.0',
+    'version': '18.0.0.0',
     'depends': ['hr_attendance'],
     'data': [
         'wizard/employee_attendance_report_wizard.xml',
