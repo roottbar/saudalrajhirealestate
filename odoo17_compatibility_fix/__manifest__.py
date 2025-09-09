@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Odoo 17.0 Compatibility Fix',
-    'version': '17.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Technical',
     'summary': 'Fix compatibility issues for Odoo 17.0+ validation errors',
     'description': '''
