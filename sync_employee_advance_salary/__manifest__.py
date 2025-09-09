@@ -3,7 +3,7 @@
 
 {
     'name': 'HR Employee Advance Salary',
-    'version': '13.0.1.0.1',
+    'version': '18.0.1.0.1',
     'category': 'Generic Modules/Human Resources',
     'license': "OPL-1",
     'summary': 'Employee request for advance salary.',
