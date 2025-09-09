@@ -3,7 +3,7 @@
 
 {
     'name': 'Biometric Device Integration for HR Attendance',
-    'version': '1.0',
+    'version': '18.0.0.0',
     'author': 'erp-bank',
     'website': 'http://www.erp-bank.com',
     'category': 'HR',
