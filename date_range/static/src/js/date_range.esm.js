@@ -2,8 +2,8 @@
 import {patch} from "@web/core/utils/patch";
 import {_lt} from "@web/core/l10n/translation";
 import {session} from "@web/session";
-import {FIELD_OPERATORS, FIELD_TYPES} from "web.searchUtils";
-import CustomFilterItem from "web.CustomFilterItem";
+import {FIELD_OPERATORS, FIELD_TYPES} from "@web/search/utils/search_utils";
+import {CustomFilterItem} from "@web/search/filter_menu/custom_filter_item";
 
 patch(CustomFilterItem.prototype, "date_range.CustomFilterItem", {
     /**
@@ -15,7 +15,7 @@ patch(CustomFilterItem.prototype, "date_range.CustomFilterItem", {
      * @override
      */
     async willStart() {
-        this._super(...arguments);
+        await super.willStart(...arguments);
         this._computeDateRangeOperators();
     },
 
