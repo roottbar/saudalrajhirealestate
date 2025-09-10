@@ -100,7 +100,7 @@ class KsDashboardNinjaBoard(models.Model):
             if rec.ks_dashboard_start_date > rec.ks_dashboard_end_date:
                 raise ValidationError(_('Start date must be less than end date'))
 
-    @api.model
+    @api.model_create_single
     def create(self, vals):
         record = super(KsDashboardNinjaBoard, self).create(vals)
         if 'ks_dashboard_top_menu_id' in vals and 'ks_dashboard_menu_name' in vals:
