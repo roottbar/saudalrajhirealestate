@@ -3,7 +3,7 @@ import json
 import operator
 
 # from odoo.http import serialize_exception  # Removed due to compatibility issues in Odoo 18
-from odoo.addons.web.controllers.main import ExportFormat
+# from odoo.addons.web.controllers.main import ExportFormat  # Removed - not used and causes ImportError in Odoo 18
 
 from odoo import http
 from odoo.http import request
