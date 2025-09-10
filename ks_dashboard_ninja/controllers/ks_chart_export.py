@@ -5,7 +5,7 @@ import io
 import json
 import operator
 
-from odoo.http import serialize_exception
+# from odoo.http import serialize_exception  # Removed due to compatibility issues in Odoo 18
 from odoo.addons.web.controllers.export import ExportXlsxWriter
 from odoo.tools.translate import _
 from odoo import http
@@ -45,7 +45,6 @@ class KsChartExcelExport(KsChartExport, http.Controller):
     raw_data = True
 
     @http.route('/ks_dashboard_ninja/export/chart_xls', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
         return self.base(data)
 
@@ -68,7 +67,6 @@ class KsChartExcelExport(KsChartExport, http.Controller):
 class KsChartCsvExport(KsChartExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/chart_csv', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
         return self.base(data)
 
