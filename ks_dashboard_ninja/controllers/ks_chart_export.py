@@ -5,7 +5,7 @@ import io
 import json
 import operator
 
-from odoo.addons.web.controllers.main import serialize_exception
+from odoo.http import serialize_exception
 from odoo.addons.web.controllers.export import ExportXlsxWriter
 from odoo.tools.translate import _
 from odoo import http
