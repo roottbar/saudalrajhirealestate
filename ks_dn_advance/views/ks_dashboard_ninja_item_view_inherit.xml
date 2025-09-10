@@ -81,8 +81,7 @@
                                    required="[('ks_dashboard_item_type','!=','ks_list_view'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')]"/>
                             <field name="ks_ylabels" widget="ks_y_labels" string="Y-Axis"
                                    invisible="[('ks_dashboard_item_type','=','ks_list_view')]"
-                                   required="[('ks_dashboard_item_type','!=','ks_list_view'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')]"
-                            />
+                                   required="[('ks_dashboard_item_type','!=','ks_list_view'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')]"/>
                         </group>
                     </page>
                 </xpath>
