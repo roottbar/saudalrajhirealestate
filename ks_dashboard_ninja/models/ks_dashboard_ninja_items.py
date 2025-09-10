@@ -22,6 +22,10 @@ read = fields.Many2one.read
 
 
 def ks_read(self, records):
+    # Only apply custom logic to dashboard ninja items that have ks_pagination_limit field
+    if not hasattr(records, 'ks_pagination_limit'):
+        return read(self, records)
+        
     if self.name == 'ks_list_view_fields' or self.name == 'ks_list_view_group_fields':
         comodel = records.env[self.comodel_name]
 
