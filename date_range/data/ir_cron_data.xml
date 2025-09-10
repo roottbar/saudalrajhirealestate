@@ -4,7 +4,7 @@
         <field name="name">Auto-generate date ranges</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
+        <field name="max_calls">-1</field>
         <field name="active">True</field>
         <field name="doall" eval="False" />
         <field name="model_id" ref="model_date_range_type" />
