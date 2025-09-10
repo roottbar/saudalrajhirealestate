@@ -3,7 +3,7 @@ import io
 import json
 import operator
 import logging
-from odoo.http import serialize_exception
+# from odoo.http import serialize_exception  # Removed due to compatibility issues in Odoo 18
 from odoo.addons.web.controllers.main import ExportFormat, ExportXlsxWriter
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 import datetime
@@ -134,7 +134,6 @@ class KsListExcelExport(KsListExport, http.Controller):
     raw_data = True
 
     @http.route('/ks_dashboard_ninja/export/list_xls', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
         return self.base(data)
 
@@ -157,7 +156,6 @@ class KsListExcelExport(KsListExport, http.Controller):
 class KsListCsvExport(KsListExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/list_csv', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
         return self.base(data)
 
