@@ -29,16 +29,17 @@ def ks_read(self, records):
         # only (thus ignored here).
         domain = self.domain if isinstance(self.domain, list) else []
 
-        wquery = comodel._where_calc(domain)
-        comodel._apply_ir_rules(wquery, 'read')
-        from_c, where_c, where_params = wquery.get_sql()
-        query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
-                    WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
+        # Query.get_sql() is deprecated in Odoo 18, using simplified approach
+        # Use ORM search to get filtered record IDs instead of manual SQL construction
+        filtered_records = comodel.search(domain)
+        
+        # Build simple query for many2many relation
+        query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}
+                    WHERE {rel}.{id1} IN %s AND {rel}.{id2} IN %s
+                    {limit}
                 """.format(rel=self.relation, id1=self.column1, id2=self.column2,
-                           tbl=comodel._table, from_c=from_c, where_c=where_c or '1=1',
-                           limit=(' LIMIT %d' % self.limit) if self.limit else '',
-                           )
-        where_params.append(tuple(records.ids))
+                           limit=(' LIMIT %d' % self.limit) if self.limit else '')
+        where_params = [tuple(records.ids), tuple(filtered_records.ids) if filtered_records else (0,)]
 
         # retrieve lines and group them by record
         group = defaultdict(list)
@@ -68,19 +69,21 @@ def ks_read(self, records):
         comodel = records.env[self.comodel_name].with_context(**context)
         domain = self.get_domain_list(records)
         comodel._flush_search(domain)
-        wquery = comodel._where_calc(domain)
-        comodel._apply_ir_rules(wquery, 'read')
+        # Query.get_sql() is deprecated in Odoo 18, using simplified approach
+        # Use ORM search to get filtered record IDs instead of manual SQL construction
+        filtered_records = comodel.search(domain)
+        
         # _generate_order_by is deprecated in Odoo 18, using _order attribute instead
         order_by = 'ORDER BY %s' % comodel._order if comodel._order else ''
-        from_c, where_c, where_params = wquery.get_sql()
-        query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
-                            WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
+        
+        # Build simple query for many2many relation
+        query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}
+                            WHERE {rel}.{id1} IN %s AND {rel}.{id2} IN %s
                             {order_by} {limit} OFFSET {offset}
                         """.format(rel=self.relation, id1=self.column1, id2=self.column2,
-                                   tbl=comodel._table, from_c=from_c, where_c=where_c or '1=1',
                                    limit=(' LIMIT %d' % self.limit) if self.limit else '',
                                    offset=0, order_by=order_by)
-        where_params.append(tuple(records.ids))
+        where_params = [tuple(records.ids), tuple(filtered_records.ids) if filtered_records else (0,)]
 
         # retrieve lines and group them by record
         group = defaultdict(list)
