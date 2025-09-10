@@ -38,7 +38,7 @@ def ks_read(self, records):
                     WHERE {rel}.{id1} IN %s AND {rel}.{id2} IN %s
                     {limit}
                 """.format(rel=self.relation, id1=self.column1, id2=self.column2,
-                           limit=(' LIMIT %d' % self.limit) if self.limit else '')
+                           limit=(' LIMIT %d' % records.ks_pagination_limit) if records.ks_pagination_limit else '')
         where_params = [tuple(records.ids), tuple(filtered_records.ids) if filtered_records else (0,)]
 
         # retrieve lines and group them by record
@@ -81,7 +81,7 @@ def ks_read(self, records):
                             WHERE {rel}.{id1} IN %s AND {rel}.{id2} IN %s
                             {order_by} {limit} OFFSET {offset}
                         """.format(rel=self.relation, id1=self.column1, id2=self.column2,
-                                   limit=(' LIMIT %d' % self.limit) if self.limit else '',
+                                   limit=(' LIMIT %d' % records.ks_pagination_limit) if records.ks_pagination_limit else '',
                                    offset=0, order_by=order_by)
         where_params = [tuple(records.ids), tuple(filtered_records.ids) if filtered_records else (0,)]
 
