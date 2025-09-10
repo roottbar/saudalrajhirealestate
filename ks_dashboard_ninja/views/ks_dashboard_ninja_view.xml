@@ -90,21 +90,21 @@
 
                     <field name="name"/>
                     <field name="ks_dashboard_menu_name"
-                           attrs="{'required':[('ks_dashboard_state','!=','Locked')]}"/>
+                           required="ks_dashboard_state != 'Locked'"/>
                     <field name="ks_dashboard_menu_sequence"/>
                     <field name="ks_dashboard_top_menu_id"
-                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}" attrs="{'readonly':[('ks_dashboard_state','=','Locked')],
-                                                                                            'required':[('ks_dashboard_state','!=','Locked')]}"/>
-                    <field name="ks_dashboard_active" attrs="{'readonly':[('ks_dashboard_state','=','Locked')]}"/>
+                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}" readonly="ks_dashboard_state == 'Locked'"
+                           required="ks_dashboard_state != 'Locked'"/>
+                    <field name="ks_dashboard_active" readonly="ks_dashboard_state == 'Locked'"/>
                     <field name="ks_dashboard_default_template"
-                           attrs="{'readonly':[('id','>', 0)], 'required':[('id','&lt;', 1)]}"
+                           readonly="id > 0" required="id < 1"
                            options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                     <field name="ks_set_interval"/>
                     <field name="ks_date_filter_selection" required="1"/>
                     <field name="ks_dashboard_start_date"
-                           attrs="{'readonly':[('ks_date_filter_selection','!=','l_custom')], 'required':[('ks_date_filter_selection','=','l_custom')]}"/>
+                           readonly="ks_date_filter_selection != 'l_custom'" required="ks_date_filter_selection == 'l_custom'"/>
                     <field name="ks_dashboard_end_date"
-                           attrs="{'readonly':[('ks_date_filter_selection','!=','l_custom')], 'required':[('ks_date_filter_selection','=','l_custom')]}"/>
+                           readonly="ks_date_filter_selection != 'l_custom'" required="ks_date_filter_selection == 'l_custom'"/>
                     <field name="ks_dashboard_group_access" widget="many2many_tags"/>
                     <button name="ks_view_items_view" string="View Items" type="object" class="btn-primary"/>
                 </tree>
