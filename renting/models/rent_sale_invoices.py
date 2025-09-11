@@ -63,12 +63,12 @@ class RentSaleInvoices(models.Model):
     def unlink(self):
         """منع حذف السطور عند حالة occupied إلا إذا المستخدم عنده صلاحية الإعدادات"""
         for record in self:
-            if record.state == 'occupied':
-                # إذا ما كان المستخدم عنده صلاحية الإعدادات (مدير النظام)
+            if getattr(record, 'state', None) == 'occupied':  # يستخدم getattr لتجنب الخطأ
                 if not self.env.user.has_group('base.group_system'):
                     raise UserError(_('لا يمكن حذف سطور العقد عندما تكون الحالة occupied'))
         
         return super(RentSaleInvoices, self).unlink()
+    
 
     def _prepare_invoice_line(self, line):
         self.ensure_one()
