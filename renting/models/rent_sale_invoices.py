@@ -61,9 +61,12 @@ class RentSaleInvoices(models.Model):
         return super(RentSaleInvoices, self).write(vals)
 
     def unlink(self):
-        """منع حذف السطور عند حالة occupied"""
-        if self._check_occupied_state_restrictions():
-            raise UserError(_('لا يمكن حذف سطور العقد عندما تكون الحالة occupied'))
+        """منع حذف السطور عند حالة occupied إلا إذا المستخدم عنده صلاحية الإعدادات"""
+        for record in self:
+            if record.state == 'occupied':
+                # إذا ما كان المستخدم عنده صلاحية الإعدادات (مدير النظام)
+                if not self.env.user.has_group('base.group_system'):
+                    raise UserError(_('لا يمكن حذف سطور العقد عندما تكون الحالة occupied'))
         
         return super(RentSaleInvoices, self).unlink()
 
