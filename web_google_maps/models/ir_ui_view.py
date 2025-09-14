@@ -14,13 +14,13 @@ class IrUiView(models.Model):
     # added 'google_map' as list of original views to be validated are hardcoded :/
     def _validate_tag_field(self, node, name_manager, node_info):
         validate = node_info['validate']
-
+    
         name = node.get('name')
         if not name:
             self._raise_view_error(
                 _("Field tag must have a \"name\" attribute defined"), node
             )
-
+    
         field = name_manager.model._fields.get(name)
         if field:
             if validate and field.relational:
@@ -47,7 +47,7 @@ class IrUiView(models.Model):
                         name_manager.must_have_fields(
                             vnames, f"{desc} ({domain})"
                         )
-
+    
             elif validate and node.get('domain'):
                 msg = _(
                     'Domain on non-relational field "%(name)s" makes no sense (domain:%(domain)s)',
@@ -55,7 +55,7 @@ class IrUiView(models.Model):
                     domain=node.get('domain'),
                 )
                 self._raise_view_error(msg, node)
-
+    
             for child in node:
                 if child.tag not in (
                     'form',
@@ -75,7 +75,7 @@ class IrUiView(models.Model):
                 )
                 for fname, use in sub_manager.mandatory_parent_fields.items():
                     name_manager.must_have_field(fname, use)
-
+    
         elif validate and name not in name_manager.field_info:
             msg = _(
                 'Field "%(field_name)s" does not exist in model "%(model_name)s"',
@@ -83,11 +83,12 @@ class IrUiView(models.Model):
                 model_name=name_manager.model._name,
             )
             self._raise_view_error(msg, node)
-
+    
+        # هذا هو السطر الذي يحتاج التعديل - إضافة node_info كمعامل أول
         name_manager.has_field(
-            name, {'id': node.get('id'), 'select': node.get('select')}
+            node_info, name, {'id': node.get('id'), 'select': node.get('select')}
         )
-
+    
         if validate:
             for attribute in ('invisible', 'readonly', 'required'):
                 val = node.get(attribute)
@@ -100,7 +101,7 @@ class IrUiView(models.Model):
                             value=val,
                         )
                         self._raise_view_error(msg, node)
-
+                    
     # FIXME: this is a deep copy of the original method
     # added 'google_map' as list of original views to be validated are hardcoded :/
     def _postprocess_tag_field(self, node, name_manager, node_info):
