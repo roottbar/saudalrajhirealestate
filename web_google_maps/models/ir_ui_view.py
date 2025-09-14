@@ -85,7 +85,7 @@ class IrUiView(models.Model):
             self._raise_view_error(msg, node)
 
         name_manager.has_field(
-            name, {'id': node.get('id'), 'select': node.get('select')}
+            name, {'id': node.get('id'), 'select': node.get('select')}, node_info
         )
 
         if validate:
