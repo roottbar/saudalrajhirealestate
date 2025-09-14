@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- أولاً: حذف الـ view القديم إذا كان موجوداً -->
-    <function model="ir.ui.view" name="unlink" eval="[['&amp;', ('name', '=', 'view.res.partner.google_map'), ('model', '=', 'res.partner')]]"/>
+    <!-- أولاً: حذف الـ view القديم إذا كان موجوداً - التصحيح هنا -->
+    <function model="ir.ui.view" name="unlink" eval="[ref('view_res_partner_google_map')]"/>
     
     <!-- ثانياً: إنشاء الـ view الجديد من نوع tree -->
     <record id="view_res_partner_google_map" model="ir.ui.view">
