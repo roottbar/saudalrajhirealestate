@@ -13,8 +13,11 @@
         </t>
         <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
     </template>
+
+    <!-- التعديل هنا: تغيير XPath إلى مسار صحيح -->
     <template id="webclient_bootstrap" name="webclient_bootstrap gmaps" inherit_id="web.webclient_bootstrap">
-        <xpath expr="//head" position="inside">
+        <!-- استبدال //head بمسارات بديلة -->
+        <xpath expr="//script[last()]" position="after">
             <t t-call="web_google_maps.assets_gmaps"/>
         </xpath>
     </template>
