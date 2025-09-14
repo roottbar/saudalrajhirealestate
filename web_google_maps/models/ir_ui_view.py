@@ -3,9 +3,6 @@
 from lxml import etree
 from odoo import fields, models, _
 from odoo.tools.safe_eval import safe_eval
-from odoo.addons.base.models.ir_ui_view import (
-    transfer_field_to_modifiers,
-)
 
 
 class IrUiView(models.Model):
@@ -159,4 +156,5 @@ class IrUiView(models.Model):
 
             field_info = name_manager.field_info.get(node.get('name'))
             if field_info:
-                transfer_field_to_modifiers(field_info, node_info['modifiers'])
+                # transfer_field_to_modifiers functionality is now handled internally
+                pass
