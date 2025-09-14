@@ -14,13 +14,13 @@ class IrUiView(models.Model):
     # added 'google_map' as list of original views to be validated are hardcoded :/
     def _validate_tag_field(self, node, name_manager, node_info):
         validate = node_info['validate']
-    
+
         name = node.get('name')
         if not name:
             self._raise_view_error(
                 _("Field tag must have a \"name\" attribute defined"), node
             )
-    
+
         field = name_manager.model._fields.get(name)
         if field:
             if validate and field.relational:
@@ -47,7 +47,7 @@ class IrUiView(models.Model):
                         name_manager.must_have_fields(
                             vnames, f"{desc} ({domain})"
                         )
-    
+
             elif validate and node.get('domain'):
                 msg = _(
                     'Domain on non-relational field "%(name)s" makes no sense (domain:%(domain)s)',
@@ -55,7 +55,7 @@ class IrUiView(models.Model):
                     domain=node.get('domain'),
                 )
                 self._raise_view_error(msg, node)
-    
+
             for child in node:
                 if child.tag not in (
                     'form',
@@ -75,7 +75,7 @@ class IrUiView(models.Model):
                 )
                 for fname, use in sub_manager.mandatory_parent_fields.items():
                     name_manager.must_have_field(fname, use)
-    
+
         elif validate and name not in name_manager.field_info:
             msg = _(
                 'Field "%(field_name)s" does not exist in model "%(model_name)s"',
@@ -83,12 +83,11 @@ class IrUiView(models.Model):
                 model_name=name_manager.model._name,
             )
             self._raise_view_error(msg, node)
-    
-        # هذا هو السطر الذي يحتاج التعديل - إضافة node_info كمعامل أول
+
         name_manager.has_field(
-            node_info, name, {'id': node.get('id'), 'select': node.get('select')}
+            name, {'id': node.get('id'), 'select': node.get('select')}
         )
-    
+
         if validate:
             for attribute in ('invisible', 'readonly', 'required'):
                 val = node.get(attribute)
@@ -101,61 +100,6 @@ class IrUiView(models.Model):
                             value=val,
                         )
                         self._raise_view_error(msg, node)
-                    
-    # FIXME: this is a deep copy of the original method
-    # added 'google_map' as list of original views to be validated are hardcoded :/
-    def _postprocess_tag_field(self, node, name_manager, node_info):
-        if node.get('name'):
-            attrs = {'id': node.get('id'), 'select': node.get('select')}
-            field = name_manager.model._fields.get(node.get('name'))
-            if field:
-                # apply groups (no tested)
-                if field.groups and not self.user_has_groups(
-                    groups=field.groups
-                ):
-                    node.getparent().remove(node)
-                    # no point processing view-level ``groups`` anymore, return
-                    return
-                views = {}
-                for child in node:
-                    if child.tag in (
-                        'form',
-                        'tree',
-                        'graph',
-                        'kanban',
-                        'calendar',
-                        'google_map',
-                    ):
-                        node.remove(child)
-                        sub_name_manager = self.with_context(
-                            base_model_name=name_manager.model._name,
-                        )._postprocess_view(
-                            child,
-                            field.comodel_name,
-                            editable=node_info['editable'],
-                        )
-                        xarch = etree.tostring(
-                            child, encoding="unicode"
-                        ).replace('\t', '')
-                        views[child.tag] = {
-                            'arch': xarch,
-                            'fields': dict(sub_name_manager.available_fields),
-                        }
-                attrs['views'] = views
-                if field.type in ('many2one', 'many2many'):
-                    comodel = self.env[field.comodel_name].sudo(False)
-                    can_create = comodel.check_access_rights(
-                        'create', raise_exception=False
-                    )
-                    can_write = comodel.check_access_rights(
-                        'write', raise_exception=False
-                    )
-                    node.set('can_create', 'true' if can_create else 'false')
-                    node.set('can_write', 'true' if can_write else 'false')
 
-            name_manager.has_field(node.get('name'), attrs)
-
-            field_info = name_manager.field_info.get(node.get('name'))
-            if field_info:
-                # transfer_field_to_modifiers functionality is now handled internally
-                pass
+    # Remove custom _postprocess_tag_field method to let Odoo 18 core handle it
+    # The _validate_tag_field method above already handles google_map validation
