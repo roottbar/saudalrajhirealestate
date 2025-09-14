@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- تغيير نوع view إلى tree مؤقتاً مع إزالة قسم templates غير المتوافق -->
+    <!-- أولاً: حذف الـ view القديم إذا كان موجوداً -->
+    <function model="ir.ui.view" name="unlink" eval="[['&amp;', ('name', '=', 'view.res.partner.google_map'), ('model', '=', 'res.partner')]]"/>
+    
+    <!-- ثانياً: إنشاء الـ view الجديد من نوع tree -->
     <record id="view_res_partner_google_map" model="ir.ui.view">
         <field name="name">view.res.partner.google_map</field>
         <field name="model">res.partner</field>
@@ -34,9 +37,9 @@
         </field>
     </record>
 
-    <!-- إزالة google_map من view_mode لأن النوع غير مدعوم -->
+    <!-- ثالثاً: تحديث action لإزالة google_map من view_mode -->
     <function model="ir.actions.act_window" name="write" eval="[[ref('base.action_partner_form')], {'view_mode': 'kanban,tree,form'}]"/>
-
-    <!-- حذف سجل action view الخاص بـ google_map إذا كان موجوداً -->
+    
+    <!-- رابعاً: حذف أي سجلات action view تشير إلى google_map -->
     <delete model="ir.actions.act_window.view" search="[('view_mode', '=', 'google_map'), ('act_window_id', '=', ref('base.action_partner_form'))]"/>
 </odoo>
