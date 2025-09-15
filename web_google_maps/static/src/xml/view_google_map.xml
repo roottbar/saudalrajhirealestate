@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <div t-name="GoogleMapView.MapView" class="o_google_map_container">
-        <div class="o_google_map_view" tabindex="-1"></div>
+    <div t-name="web_google_maps.GoogleMapView" class="o_google_map_container">
+        <div class="o_google_map_view" t-ref="map" tabindex="-1"></div>
         <div class="o_map_right_sidebar open">
             <div class="content"/>
             <div class="toggle_right_sidenav">
-                <button data-toggle="tooltip" data-placement="right" title="Expand side panel"></button>
+                <button data-toggle="tooltip" data-placement="right" title="Expand side panel" t-on-click="onToggleRightSidenav"></button>
             </div>
         </div>
     </div>
-    <t t-name="GoogleMapView.buttons">
+    <t t-name="web_google_maps.GoogleMapView.Buttons">
         <div class="o_list_buttons">
             <div class="o_form_marker_buttons_actions pb-2">
-                <t t-if="widget.is_action_enabled('create')">
-                    <button type="button" class="btn btn-primary o-map-button-new" accesskey="c">
-                        <t t-esc="create_text || _t('Create')"/>
+                <t t-if="props.hasButtons">
+                    <button type="button" class="btn btn-primary o-map-button-new" accesskey="c" t-on-click="onButtonNew">
+                        <t t-esc="props.create_text || 'Create'"/>
                     </button>
                 </t>
-                <button type="button" class="btn btn-secondary o-map-button-center-map">
-                    <t t-esc="_t('Center Map')"/>
+                <button type="button" class="btn btn-secondary o-map-button-center-map" t-on-click="onButtonMapCenter">
+                    Center Map
                 </button>
             </div>
-            <div class="o_form_marker_buttons_edit o_hidden">
-                <button type="button" class="btn btn-primary o-map-button-marker-save">
-                    <t t-esc="_('Save')"/>
+            <div class="o_form_marker_buttons_edit" t-att-class="{ 'o_hidden': !state.is_marker_edit }">
+                <button type="button" class="btn btn-primary o-map-button-marker-save" t-on-click="onButtonSaveMarker">
+                    Save
                 </button>
-                <button type="button" class="btn btn-secondary o-map-button-marker-discard">
-                    <t t-esc="_('Discard')"/>
+                <button type="button" class="btn btn-secondary o-map-button-marker-discard" t-on-click="onButtonDiscardMarker">
+                    Discard
                 </button>
             </div>
         </div>
