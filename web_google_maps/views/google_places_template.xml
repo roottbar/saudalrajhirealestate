@@ -17,16 +17,16 @@
     </template>
 
     <!-- Assets للـ Backend -->
-    <template id="webclient_bootstrap_backend" name="webclient_bootstrap gmaps backend" inherit_id="web.assets_common">
-        <xpath expr="." position="inside">
-            <t t-call="web_google_maps.assets_gmaps"/>
-        </xpath>
-    </template>
+    <record id="google_maps_assets_backend" model="ir.asset">
+        <field name="name">Google Maps Backend Assets</field>
+        <field name="bundle">web.assets_backend</field>
+        <field name="path">web_google_maps/static/src/js/google_maps.js</field>
+    </record>
 
     <!-- Assets للـ Frontend (Website) -->
-    <template id="webclient_bootstrap_frontend" name="webclient_bootstrap gmaps frontend" inherit_id="web._assets_frontend">
-        <xpath expr="." position="inside">
-            <t t-call="web_google_maps.assets_gmaps"/>
-        </xpath>
-    </template>
+    <record id="google_maps_assets_frontend" model="ir.asset">
+        <field name="name">Google Maps Frontend Assets</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="path">web_google_maps/static/src/js/google_maps.js</field>
+    </record>
 </odoo>
