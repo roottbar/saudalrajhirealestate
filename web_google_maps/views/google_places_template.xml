@@ -17,7 +17,7 @@
     </template>
 
     <!-- Assets للـ Backend -->
-    <template id="webclient_bootstrap_backend" name="webclient_bootstrap gmaps backend" inherit_id="web.assets_backend_helpers">
+    <template id="webclient_bootstrap_backend" name="webclient_bootstrap gmaps backend" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
             <t t-call="web_google_maps.assets_gmaps"/>
         </xpath>
