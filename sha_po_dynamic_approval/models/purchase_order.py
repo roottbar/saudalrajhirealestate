@@ -5,9 +5,7 @@ from odoo.exceptions import UserError
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
 
-    purchase_team_id = fields.Many2one(comodel_name='purchase.order.teams', string="Purchase Team",
-                                       default=lambda self: self.env['purchase.order.teams'].search(
-                                           [('short_code', '=', 'DefaultPO')], limit=1) or False)
+    purchase_team_id = fields.Many2one(comodel_name='purchase.order.teams', string="Purchase Team")
     purchase_approve_line = fields.One2many(comodel_name="purchase.approve.route", inverse_name="purchase_id")
     team_lead_id = fields.Many2one('res.users', related='purchase_team_id.team_lead_id')
     is_approval_member = fields.Boolean(string="Is Approval Member", compute='_compute_is_approval_member')
@@ -21,6 +19,12 @@ class PurchaseOrder(models.Model):
 
     @api.model
     def create(self, vals):
+        # Set default purchase team if not provided
+        if 'purchase_team_id' not in vals or not vals['purchase_team_id']:
+            default_team = self.env['purchase.order.teams'].search([('short_code', '=', 'DefaultPO')], limit=1)
+            if default_team:
+                vals['purchase_team_id'] = default_team.id
+        
         res = super(PurchaseOrder, self).create(vals)
         if res.purchase_team_id:
             for member_id in res.purchase_team_id.team_member:
