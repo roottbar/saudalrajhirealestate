@@ -109,7 +109,7 @@ Dashboard Ninja v18.0 - Updated for Odoo 18 compatibility,
 
     'data': [
         'security/ir.model.access.csv',
-        'data/ks_default_dashboard_data.xml',
+        'data/ks_default_data.xml',
         'views/ks_dashboard_ninja_view.xml',
         'views/ks_dashboard_ninja_item_view.xml',
         'views/ks_dashboard_ninja_assets.xml',
