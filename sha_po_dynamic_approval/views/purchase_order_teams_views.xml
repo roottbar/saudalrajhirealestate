@@ -1,0 +1,61 @@
+<odoo>
+    <record id="purchase_order_teams_tree_view" model="ir.ui.view">
+        <field name="name">purchase.order.teams.tree.views</field>
+        <field name="model">purchase.order.teams</field>
+        <field name="arch" type="xml">
+            <tree delete="false">
+                <field name="short_code"/>
+                <field name="name"/>
+                <field name="team_lead_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="purchase_order_teams_form_view" model="ir.ui.view">
+        <field name="name">purchase.order.teams.form.views</field>
+        <field name="model">purchase.order.teams</field>
+        <field name="arch" type="xml">
+            <form string="Account" delete="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Enter Approval Team Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="short_code" placeholder="Enter Short Code For Team Name" attrs="{'readonly': [('short_code','=','DefaultPO')]}"/>
+                            <field name="team_lead_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <notebook>
+                        <page string="Members">
+                            <field name="team_member" mode="tree">
+                                <tree editable="bottom">
+                                    <field name="purchase_team_id" invisible="1"/>
+                                    <field name="partner_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="role"/>
+                                    <field name="min_amount"/>
+                                    <field name="max_amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="purchase_order_teams_action" model="ir.actions.act_window">
+        <field name="name">Purchase Order Approval Teams</field>
+        <field name="res_model">purchase.order.teams</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem parent="purchase.menu_purchase_config" id="menu_purchase_order_teams" name="PO Approval Teams"
+              action="purchase_order_teams_action" groups="purchase.group_purchase_manager"/>
+
+
+    <record id="default_po_team" model="purchase.order.teams">
+        <field name="short_code">DefaultPO</field>
+        <field name="name">PO Approval Team</field>
+    </record>
+</odoo>
