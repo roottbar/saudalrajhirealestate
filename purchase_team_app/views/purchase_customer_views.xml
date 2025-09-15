@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<odoo>
+    <data> 
+          <record id="view_partner_form_inherit" model="ir.ui.view">
+          		<field name="name">res.partner.form</field>
+          		<field name="model">res.partner</field>
+          		<field name="inherit_id" ref="base.view_partner_form"/>
+          		<field name="arch" type="xml">
+          		    <xpath expr="//group[@name='purchase']"  position="inside">
+                          <field name="team_id" groups='purchase_team_app.group_purchase_team'/>
+                  </xpath>
+              </field>
+          </record>
+
+          <record id="purchase_order_form_inherit" model="ir.ui.view">
+              <field name="name">purchase.order.form</field>
+              <field name="model">purchase.order</field>
+              <field name="inherit_id" ref="purchase.purchase_order_form"/>
+              <field name="arch" type="xml">
+                  <xpath expr="//group[@name='other_info']/field[@name='user_id']"  position="after">
+                          <field name="team_id" groups='purchase_team_app.group_purchase_team'/>
+                  </xpath>
+              </field>
+          </record>
+
+  </data>
+</odoo>
