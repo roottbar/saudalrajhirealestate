@@ -17,14 +17,14 @@
     </template>
 
     <!-- Assets للـ Backend -->
-    <template id="webclient_bootstrap_backend" name="webclient_bootstrap gmaps backend" inherit_id="web.assets_backend">
+    <template id="webclient_bootstrap_backend" name="webclient_bootstrap gmaps backend" inherit_id="web._assets_backend">
         <xpath expr="." position="inside">
             <t t-call="web_google_maps.assets_gmaps"/>
         </xpath>
     </template>
 
     <!-- Assets للـ Frontend (Website) -->
-    <template id="webclient_bootstrap_frontend" name="webclient_bootstrap gmaps frontend" inherit_id="web.assets_frontend">
+    <template id="webclient_bootstrap_frontend" name="webclient_bootstrap gmaps frontend" inherit_id="web._assets_frontend">
         <xpath expr="." position="inside">
             <t t-call="web_google_maps.assets_gmaps"/>
         </xpath>
