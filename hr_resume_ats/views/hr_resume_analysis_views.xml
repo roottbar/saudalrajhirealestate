@@ -256,14 +256,14 @@
                     <filter string="Failed" name="failed" domain="[('state', '=', 'failed')]"/>
                     
                     <separator/>
-                    <filter string="High Score (>80%)" name="high_score" domain="[('overall_score', '>', 80)]"/>
-                    <filter string="Medium Score (60-80%)" name="medium_score" domain="[('overall_score', '>=', 60), ('overall_score', '<=', 80)]"/>
-                    <filter string="Low Score (<60%)" name="low_score" domain="[('overall_score', '<', 60)]"/>
+                    <filter string="High Score (&gt;80%)" name="high_score" domain="[('overall_score', '&gt;', 80)]"/>
+                    <filter string="Medium Score (60-80%)" name="medium_score" domain="[('overall_score', '&gt;=', 60), ('overall_score', '&lt;=', 80)]"/>
+                    <filter string="Low Score (&lt;60%)" name="low_score" domain="[('overall_score', '&lt;', 60)]"/>
                     
                     <separator/>
                     <filter string="My Analyses" name="my_analyses" domain="[('user_id', '=', uid)]"/>
                     <filter string="This Month" name="this_month" 
-                            domain="[('analysis_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                            domain="[('analysis_date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
                     
                     <group expand="0" string="Group By">
                         <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
