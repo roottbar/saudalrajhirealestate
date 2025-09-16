@@ -3,9 +3,9 @@
     <record id="view_res_partner_google_map" model="ir.ui.view">
         <field name="name">view.res.partner.google_map</field>
         <field name="model">res.partner</field>
-        <field name="type">google_map</field>
+        <field name="type">kanban</field>
         <field name="arch" type="xml">
-            <google_map class="o_res_partner_map" string="Contacts" lat="partner_latitude" lng="partner_longitude" colors="blue:company_type=='person';green:company_type=='company';" sidebar_title="display_name" sidebar_subtitle="contact_address">
+            <kanban class="o_res_partner_kanban" string="Contacts">
                 <field name="id"/>
                 <field name="partner_latitude"/>
                 <field name="partner_longitude"/>
@@ -64,16 +64,8 @@
                         </div>
                     </t>
                 </templates>
-            </google_map>
+            </kanban>
         </field>
     </record>
-    <record id="base.action_partner_form" model="ir.actions.act_window">
-        <field name="view_mode">kanban,tree,form,google_map</field>
-    </record>
-    <record id="action_partner_form_view3" model="ir.actions.act_window.view">
-        <field eval="3" name="sequence"/>
-        <field name="view_mode">google_map</field>
-        <field name="view_id" ref="view_res_partner_google_map"/>
-        <field name="act_window_id" ref="base.action_partner_form"/>
-    </record>
+    <!-- Google Maps view converted to standard kanban view -->
 </odoo>
