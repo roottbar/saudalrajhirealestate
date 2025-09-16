@@ -32,6 +32,26 @@
                   sequence="30"
                   groups="group_hr_resume_ats_officer"/>
         
+        <!-- Report Analysis Action for Reports Menu -->
+        <record id="action_resume_analysis_report_view" model="ir.actions.act_window">
+            <field name="name">Resume Analysis Reports</field>
+            <field name="res_model">hr.resume.analysis</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="domain">[('state', '=', 'completed')]</field>
+            <field name="context">{
+                'search_default_group_job_position': 1,
+                'search_default_this_month': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No analysis reports found!
+                </p>
+                <p>
+                    Analysis reports will appear here once resume analyses are completed.
+                </p>
+            </field>
+        </record>
+        
         <!-- Resume Analysis Report Menu -->
         <menuitem id="menu_resume_analysis_report" 
                   name="Analysis Reports" 
@@ -55,25 +75,7 @@
                   action="action_hr_resume_ats_ai_settings"
                   groups="group_hr_resume_ats_manager"/>
         
-        <!-- Report Analysis Action for Reports Menu -->
-        <record id="action_resume_analysis_report_view" model="ir.actions.act_window">
-            <field name="name">Resume Analysis Reports</field>
-            <field name="res_model">hr.resume.analysis</field>
-            <field name="view_mode">tree,form,pivot,graph</field>
-            <field name="domain">[('state', '=', 'completed')]</field>
-            <field name="context">{
-                'search_default_group_job_position': 1,
-                'search_default_this_month': 1
-            }</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    No analysis reports found!
-                </p>
-                <p>
-                    Analysis reports will appear here once resume analyses are completed.
-                </p>
-            </field>
-        </record>
+
         
         <!-- AI Settings Action -->
         <record id="action_hr_resume_ats_ai_settings" model="ir.actions.act_window">
