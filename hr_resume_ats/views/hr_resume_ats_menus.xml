@@ -93,8 +93,8 @@
                     <field name="job_position_id" type="row"/>
                     <field name="analysis_date" type="col" interval="month"/>
                     <field name="overall_score" type="measure"/>
-                    <field name="ats_score" type="measure"/>
-                    <field name="skills_score" type="measure"/>
+                    <field name="ats_compatibility_score" type="measure"/>
+                    <field name="skills_match_score" type="measure"/>
                     <field name="experience_score" type="measure"/>
                     <field name="education_score" type="measure"/>
                 </pivot>
