@@ -8,16 +8,14 @@
     'support': 'yopiangi@gmail.com',
     'category': 'Extra Tools',
     'description': """
-Web Google Map and google places autocomplete address form
+Web Google Map and Google Places autocomplete address form
 ==========================================================
 
-This module brings two features:
-1. Allows user to view all partners addresses on google maps.
-2. Enabled google places autocomplete address form into partner
-form view, provide autocomplete feature when typing address of partner
+Features:
+1. View all partners' addresses on Google Maps.
+2. Enable Google Places autocomplete in partner form for addresses.
 """,
     'depends': ['base', 'web'],
-    'website': '',
     'data': [
         'data/google_maps_libraries.xml',
         'views/google_places_template.xml',
@@ -30,6 +28,10 @@ form view, provide autocomplete feature when typing address of partner
         'web.assets_backend': [
             'web_google_maps/static/src/js/**/*.js',
             'web_google_maps/static/src/xml/**/*.xml',
+            'web_google_maps/static/src/css/**/*.css',
+        ],
+        'web.assets_frontend': [
+            'web_google_maps/static/src/js/**/*.js',
             'web_google_maps/static/src/css/**/*.css',
         ],
     },
