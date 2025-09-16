@@ -168,9 +168,9 @@
                     <filter string="Remote Work" name="remote_work" domain="[('remote_work', '=', True)]"/>
                     
                     <separator/>
-                    <filter string="Entry Level (0-2 years)" name="entry_level" domain="[('required_experience_years', '<=', 2)]"/>
-                    <filter string="Mid Level (3-5 years)" name="mid_level" domain="[('required_experience_years', '>', 2), ('required_experience_years', '<=', 5)]"/>
-                    <filter string="Senior Level (5+ years)" name="senior_level" domain="[('required_experience_years', '>', 5)]"/>
+                    <filter string="Entry Level (0-2 years)" name="entry_level" domain="[('required_experience_years', '&lt;=', 2)]"/>
+                    <filter string="Mid Level (3-5 years)" name="mid_level" domain="[('required_experience_years', '&gt;', 2), ('required_experience_years', '&lt;=', 5)]"/>
+                    <filter string="Senior Level (5+ years)" name="senior_level" domain="[('required_experience_years', '&gt;', 5)]"/>
                     
                     <group expand="0" string="Group By">
                         <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
