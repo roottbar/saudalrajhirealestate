@@ -27,8 +27,8 @@ Features:
     'assets': {
         'web.assets_backend': [
             'web_google_maps/static/src/js/**/*.js',
-            'web_google_maps/static/src/xml/**/*.xml',
             'web_google_maps/static/src/css/**/*.css',
+            'web_google_maps/static/src/xml/**/*.xml',
         ],
         'web.assets_frontend': [
             'web_google_maps/static/src/js/**/*.js',
