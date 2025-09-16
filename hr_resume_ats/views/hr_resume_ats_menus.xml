@@ -67,16 +67,6 @@
                   sequence="90"
                   groups="group_hr_resume_ats_manager"/>
         
-        <!-- AI Settings Menu -->
-        <menuitem id="menu_hr_resume_ats_ai_settings" 
-                  name="AI Settings" 
-                  parent="menu_hr_resume_ats_config" 
-                  sequence="10"
-                  action="action_hr_resume_ats_ai_settings"
-                  groups="group_hr_resume_ats_manager"/>
-        
-
-        
         <!-- AI Settings Action -->
         <record id="action_hr_resume_ats_ai_settings" model="ir.actions.act_window">
             <field name="name">AI Settings</field>
@@ -85,6 +75,14 @@
             <field name="target">inline</field>
             <field name="context">{'module': 'hr_resume_ats'}</field>
         </record>
+        
+        <!-- AI Settings Menu -->
+        <menuitem id="menu_hr_resume_ats_ai_settings" 
+                  name="AI Settings" 
+                  parent="menu_hr_resume_ats_config" 
+                  sequence="10"
+                  action="action_hr_resume_ats_ai_settings"
+                  groups="group_hr_resume_ats_manager"/>
         
         <!-- Pivot View for Resume Analysis Reports -->
         <record id="view_hr_resume_analysis_pivot" model="ir.ui.view">
