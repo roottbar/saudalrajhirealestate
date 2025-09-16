@@ -44,7 +44,7 @@ class HrResumeAnalysis(models.Model):
     
     # Job Position
     job_position_id = fields.Many2one('hr.job.position', 'Target Job Position', required=True, tracking=True)
-    job_description = fields.Text('Job Description', related='job_position_id.description', readonly=True)
+    job_description = fields.Html('Job Description', related='job_position_id.description', readonly=True)
     
     # Analysis Results
     overall_score = fields.Float('Overall Score (%)', readonly=True, tracking=True)
