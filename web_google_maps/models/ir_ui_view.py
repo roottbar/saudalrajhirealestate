@@ -85,7 +85,7 @@ class IrUiView(models.Model):
             self._raise_view_error(msg, node)
 
         # التعديل هنا: إضافة node_info= لجعلها معلمة مسماة
-        name_manager.has_field(name)
+        # name_manager.has_field(name)
 
         if validate:
             for attribute in ('invisible', 'readonly', 'required'):
