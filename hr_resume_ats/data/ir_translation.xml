@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Translation data for HR Resume ATS module -->
+        <!-- This file contains initial translation data and configurations -->
+        
+        <!-- Default translation entries can be added here if needed -->
+        <!-- Currently empty as translations are handled via .po files -->
+        
+    </data>
+</odoo>
