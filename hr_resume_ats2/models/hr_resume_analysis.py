@@ -707,7 +707,7 @@ class HrResumeAnalysis(models.Model):
         """Open analysis report"""
         return {
             'type': 'ir.actions.report',
-            'report_name': 'hr_resume_ats.resume_analysis_report',
+            'report_name': 'hr_resume_ats.resume_analysis_report_template',
             'report_type': 'qweb-pdf',
             'res_ids': [self.id],
             'context': self.env.context,
