@@ -15,7 +15,7 @@ Features:
 1. View all partners' addresses on Google Maps.
 2. Enable Google Places autocomplete in partner form for addresses.
 """,
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web', 'base_setup'],
     'data': [
         'data/google_maps_libraries.xml',
         'views/res_partner.xml',
