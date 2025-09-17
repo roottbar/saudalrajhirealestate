@@ -8,13 +8,16 @@ from odoo.tools.safe_eval import safe_eval
 class IrUiView(models.Model):
     _inherit = 'ir.ui.view'
 
+    # إضافة نوع Google Maps
     type = fields.Selection(selection_add=[('google_map', 'Google Maps')])
 
-    # FIXME: this is a deep copy of the original method
-    # added 'google_map' as list of original views to be validated are hardcoded :/
     def _validate_tag_field(self, node, name_manager, node_info):
+        """
+        نسخة محدثة لتدعم Odoo 18:
+        - دعم tag 'google_map'
+        - استخدام _validate_domain_identifiers بدلًا من _get_domain_identifiers
+        """
         validate = node_info['validate']
-
         name = node.get('name')
         if not name:
             self._raise_view_error(
@@ -30,23 +33,16 @@ class IrUiView(models.Model):
                     and field._description_domain(self.env)
                 )
                 if isinstance(domain, str):
-                    # dynamic domain: in [('foo', '=', bar)], field 'foo' must
-                    # exist on the comodel and field 'bar' must be in the view
+                    # تحقق من domain باستخدام الدالة الجديدة في Odoo 18
                     desc = (
                         f'domain of <field name="{name}">'
                         if node.get('domain')
                         else f"domain of field '{name}'"
                     )
-                    fnames, vnames = self._get_domain_identifiers(
-                        node, domain, desc
-                    )
-                    self._check_field_paths(
-                        node, fnames, field.comodel_name, f"{desc} ({domain})"
-                    )
-                    if vnames:
-                        name_manager.must_have_fields(
-                            vnames, f"{desc} ({domain})"
-                        )
+                    try:
+                        self._validate_domain_identifiers(node, domain, desc)
+                    except Exception as e:
+                        self._raise_view_error(str(e), node)
 
             elif validate and node.get('domain'):
                 msg = _(
@@ -56,15 +52,9 @@ class IrUiView(models.Model):
                 )
                 self._raise_view_error(msg, node)
 
+            # تحقق من الفيوهات الفرعية
             for child in node:
-                if child.tag not in (
-                    'form',
-                    'tree',
-                    'graph',
-                    'kanban',
-                    'calendar',
-                    'google_map',
-                ):
+                if child.tag not in ('form', 'tree', 'graph', 'kanban', 'calendar', 'google_map'):
                     continue
                 node.remove(child)
                 sub_manager = self._validate_view(
@@ -84,9 +74,7 @@ class IrUiView(models.Model):
             )
             self._raise_view_error(msg, node)
 
-        # التعديل هنا: إضافة node_info= لجعلها معلمة مسماة
-        # name_manager.has_field(name)
-
+        # التحقق من attributes مثل invisible و readonly و required
         if validate:
             for attribute in ('invisible', 'readonly', 'required'):
                 val = node.get(attribute)
@@ -99,6 +87,3 @@ class IrUiView(models.Model):
                             value=val,
                         )
                         self._raise_view_error(msg, node)
-
-    # Remove custom _postprocess_tag_field method to let Odoo 18 core handle it
-    # The _validate_tag_field method above already handles google_map validation
