@@ -6,6 +6,7 @@ from odoo.tools.safe_eval import safe_eval
 class KsDashboardNinjaDefinedFilters(models.Model):
     _name = 'ks_dashboard_ninja.board_defined_filters'
     _description = 'Dashboard Ninja Defined Filters'
+    _order = 'sequence, id'
 
     name = fields.Char("Filter Label")
     ks_dashboard_board_id = fields.Many2one('ks_dashboard_ninja.board', string="Dashboard")
