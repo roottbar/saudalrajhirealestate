@@ -232,9 +232,9 @@ class HrResumeAnalysis(models.Model):
             if "EOF marker not found" in error_msg or "startxref not found" in error_msg:
                 raise UserError(_("PDF file appears to be corrupted or incomplete. Please try uploading the file again."))
             elif "Invalid PDF" in error_msg or "not a PDF file" in error_msg:
-                 raise UserError(_("The uploaded file is not a valid PDF. Please check the file format."))
-             else:
-                 raise UserError(_("Error processing PDF file: %s. Please ensure it's a valid PDF document.") % str(e))
+                raise UserError(_("The uploaded file is not a valid PDF. Please check the file format."))
+            else:
+                raise UserError(_("Error processing PDF file: %s. Please ensure it's a valid PDF document.") % str(e))
     
     def _extract_text_from_word(self, file_data):
         """Extract text from Word document"""
