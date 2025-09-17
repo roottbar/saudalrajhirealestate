@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- To Do Headers Form View -->
+        <record id="ks_to_do_headers_form_view" model="ir.ui.view">
+            <field name="name">ks.to.do.headers.form</field>
+            <field name="model">ks_to.do.headers</field>
+            <field name="arch" type="xml">
+                <form string="To Do Headers">
+                    <sheet>
+                        <group>
+                            <field name="ks_to_do_header"/>
+                        </group>
+                        <notebook>
+                            <page string="Description Lines">
+                                <field name="ks_to_do_description_lines">
+                                    <list editable="bottom">
+                                        <field name="ks_description"/>
+                                        <field name="ks_active"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- To Do Headers List View -->
+        <record id="ks_to_do_headers_list_view" model="ir.ui.view">
+            <field name="name">ks.to.do.headers.list</field>
+            <field name="model">ks_to.do.headers</field>
+            <field name="arch" type="xml">
+                <list string="To Do Headers">
+                    <field name="ks_to_do_header"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- To Do Description Form View -->
+        <record id="ks_to_do_description_form_view" model="ir.ui.view">
+            <field name="name">ks.to.do.description.form</field>
+            <field name="model">ks_to.do.description</field>
+            <field name="arch" type="xml">
+                <form string="To Do Description">
+                    <sheet>
+                        <group>
+                            <field name="ks_description"/>
+                            <field name="ks_active"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- To Do Description List View -->
+        <record id="ks_to_do_description_list_view" model="ir.ui.view">
+            <field name="name">ks.to.do.description.list</field>
+            <field name="model">ks_to.do.description</field>
+            <field name="arch" type="xml">
+                <list string="To Do Description">
+                    <field name="ks_description"/>
+                    <field name="ks_active"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>
