@@ -40,7 +40,7 @@
     'data': [
         'security/hr_resume_ats_security.xml',
         'security/ir.model.access.csv',
-        'data/ir_translation.xml',
+        # 'data/ir_translation.xml',
         'views/hr_resume_analysis_views.xml',
         'views/hr_job_position_views.xml',
         'views/res_config_settings_views.xml',
@@ -60,4 +60,5 @@
     'auto_install': False,
     'application': True,
     'sequence': 95,
+
 }
