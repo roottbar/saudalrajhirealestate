@@ -32,14 +32,14 @@
                         </group>
                         <notebook>
                             <page name="pre_defined_filters" string="Pre Defined Filters">
-                                <field name="ks_dashboard_defined_filters_ids" widget="section_and_note_one2many">
-                                    <tree model="ks_dashboard_ninja.board_defined_filters">
+                                <field name="ks_dashboard_defined_filters_ids" widget="section_and_note_one2many" context="{'default_ks_dashboard_board_id': active_id}" mode="tree">
+                                    <tree>
                                         <control>
                                             <create name="add_filter_control" string="Add a filter"/>
                                             <create name="add_section_control" string="Add a separator"
                                                     context="{'default_display_type': 'line_section'}"/>
                                         </control>
-                                        <field name="sequence" widget="handle"/>
+                                        <field name="sequence" widget="handle" string="Order"/>
                                         <field name="display_type" invisible="1"/>
                                         <field name="id" invisible="1"/>
                                         <field name="ks_model_name" invisible="1"/>
@@ -146,6 +146,7 @@
                             <group attrs="{'invisible': [('display_type', '=', 'line_section')]}">
                                 <field name="id" invisible="1"/>
                                 <field name="display_type" invisible="1"/>
+                                <field name="sequence" invisible="1"/>
                                 <field name="ks_model_name" invisible="1"/>
                                 <field name="name" attrs="{'required': [('display_type', '!=', 'line_section')]}"/>
                                 <field name="ks_domain_temp" invisible="1"/>
