@@ -41,8 +41,8 @@ class PurchaseOrderLine(models.Model):
             vals = line._prepare_compute_all_values()
             taxes = line.taxes_id.compute_all(
                 vals['price_unit'],
-                vals['currency_id'],
-                vals['product_qty'],
+                vals['currency'],
+                vals['quantity'],
                 product=vals['product'],
                 partner=vals['partner']
             )
@@ -57,8 +57,8 @@ class PurchaseOrderLine(models.Model):
         self.ensure_one()
         return {
             'price_unit': self.price_unit,
-            'currency_id': self.order_id.currency_id,
-            'product_qty': self.product_qty,
+            'currency': self.order_id.currency_id,
+            'quantity': self.product_qty,
             'product': self.product_id,
             'partner': self.order_id.partner_id,
         }
