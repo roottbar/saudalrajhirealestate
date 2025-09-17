@@ -1,52 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Dashboard Ninja Assets -->
-        <record id="ks_dashboard_ninja_assets" model="ir.ui.view">
-            <field name="name">ks_dashboard_ninja.assets</field>
-            <field name="key">ks_dashboard_ninja.assets</field>
-            <field name="type">qweb</field>
-            <field name="arch" type="xml">
-                <templates>
-                    <t t-name="ks_dashboard_ninja.assets">
-                        <!-- CSS Files -->
-                        <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_ninja.css"/>
-                        <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_ninja_item.css"/>
-                        <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_to_do_item.css"/>
-                        <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_import_dashboard.css"/>
-                        <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_options.css"/>
-                        <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_ninja_kpi.css"/>
-                        
-                        <!-- JavaScript Files -->
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_kpi_preview.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_list_view_preview.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_graph_preview.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_to_do_dashboard.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_to_do_preview.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_import_dashboard.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_color_picker.js"></script>
-                        <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_item.js"></script>
-                    </t>
-                </templates>
-            </field>
-        </record>
-
-        <!-- Web Assets Bundle -->
-        <record id="ks_dashboard_ninja_web_assets" model="ir.ui.view">
-            <field name="name">ks_dashboard_ninja web assets</field>
+        <!-- Web Assets Bundle for Backend -->
+        <record id="ks_dashboard_ninja_assets_backend" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.assets_backend</field>
             <field name="key">web.assets_backend</field>
             <field name="type">qweb</field>
             <field name="inherit_id" ref="web.assets_backend"/>
             <field name="arch" type="xml">
                 <xpath expr="." position="inside">
+                    <!-- CSS Files -->
                     <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_ninja.css"/>
                     <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_ninja_item.css"/>
                     <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_to_do_item.css"/>
                     <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_import_dashboard.css"/>
                     <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_options.css"/>
                     <link rel="stylesheet" type="text/css" href="/ks_dashboard_ninja/static/src/css/ks_dashboard_ninja_kpi.css"/>
+                    
+                    <!-- JavaScript Files -->
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_kpi_preview.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_list_view_preview.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_graph_preview.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_to_do_dashboard.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_to_do_preview.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_import_dashboard.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_color_picker.js"></script>
+                    <script type="text/javascript" src="/ks_dashboard_ninja/static/src/js/ks_dashboard_ninja_item.js"></script>
                 </xpath>
             </field>
         </record>
