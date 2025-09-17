@@ -43,6 +43,7 @@ class IrUiView(models.Model):
                         # استدعاء الدالة مع المعاملات الصحيحة لـ Odoo 18
                         self._validate_domain_identifiers(
                             domain,
+                            'search',              # use
                             field.comodel_name,    # target_model
                             node_info              # node_info
                         )
