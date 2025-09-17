@@ -43,8 +43,8 @@ class PurchaseOrderLine(models.Model):
                 vals['price_unit'],
                 vals['currency_id'],
                 vals['product_qty'],
-                vals['product'],
-                vals['partner']
+                product=vals['product'],
+                partner=vals['partner']
             )
             line.update({
                 'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
