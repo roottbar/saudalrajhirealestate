@@ -79,7 +79,9 @@ def ks_read(self, records):
         filtered_records = comodel.search(domain)
         
         # _generate_order_by is deprecated in Odoo 18, using _order attribute instead
-        order_by = 'ORDER BY %s' % comodel._order if comodel._order else ''
+        # For many2many relations, we cannot use ORDER BY on the relation table
+        # as it only contains foreign key columns, not the actual data fields
+        order_by = ''
         
         # Build simple query for many2many relation
         query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}
