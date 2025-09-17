@@ -2,17 +2,15 @@
 <odoo>
     <data noupdate="1">
         
-        <!-- Default Job Position Categories -->
-        <record id="job_category_technical" model="hr.job.category">
-            <field name="name">Technical</field>
+        <!-- Default System Parameters -->
+        <record id="resume_ats_max_file_size" model="ir.config_parameter">
+            <field name="key">hr_resume_ats.max_file_size_mb</field>
+            <field name="value">10</field>
         </record>
         
-        <record id="job_category_management" model="hr.job.category">
-            <field name="name">Management</field>
-        </record>
-        
-        <record id="job_category_sales" model="hr.job.category">
-            <field name="name">Sales &amp; Marketing</field>
+        <record id="resume_ats_supported_formats" model="ir.config_parameter">
+            <field name="key">hr_resume_ats.supported_formats</field>
+            <field name="value">pdf,doc,docx</field>
         </record>
         
         <!-- Default Resume Analysis Configuration -->
