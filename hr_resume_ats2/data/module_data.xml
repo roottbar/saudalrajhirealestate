@@ -2,22 +2,10 @@
 <odoo>
     <data noupdate="1">
         
-        <!-- Default System Parameters -->
-        <record id="resume_ats_max_file_size" model="ir.config_parameter">
-            <field name="key">hr_resume_ats.max_file_size_mb</field>
-            <field name="value">10</field>
-        </record>
+        <!-- Module initialization marker -->
+        <!-- This file ensures the data directory structure is properly recognized -->
         
-        <record id="resume_ats_supported_formats" model="ir.config_parameter">
-            <field name="key">hr_resume_ats.supported_formats</field>
-            <field name="value">pdf,doc,docx</field>
-        </record>
-        
-        <!-- Default Resume Analysis Configuration -->
-        <record id="default_analysis_config" model="ir.config_parameter">
-            <field name="key">hr_resume_ats.default_analysis_enabled</field>
-            <field name="value">True</field>
-        </record>
+    </data>
         
     </data>
 </odoo>
