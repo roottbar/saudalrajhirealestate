@@ -15,7 +15,7 @@ class IrUiView(models.Model):
         """
         نسخة محدثة لتدعم Odoo 18:
         - دعم tag 'google_map'
-        - استخدام _validate_domain_identifiers بدلًا من _get_domain_identifiers
+        - استخدام _validate_domain_identifiers مع كل المعاملات المطلوبة
         """
         validate = node_info['validate']
         name = node.get('name')
@@ -40,9 +40,14 @@ class IrUiView(models.Model):
                         else f"domain of field '{name}'"
                     )
                     try:
-                        use = 'search'  # غالبًا 'search' كإعداد افتراضي
-                        target_model = field.comodel_name
-                        self._validate_domain_identifiers(node, domain, use, target_model, node_info)
+                        # هنا المعاملات الخمسة المطلوبة
+                        self._validate_domain_identifiers(
+                            node,
+                            domain,
+                            'search',              # use
+                            field.comodel_name,    # target_model
+                            node_info              # node_info
+                        )
                     except Exception as e:
                         self._raise_view_error(str(e), node)
 
