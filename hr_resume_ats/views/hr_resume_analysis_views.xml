@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Resume Analysis Form View -->
+        <record id="view_hr_resume_analysis_form" model="ir.ui.view">
+            <field name="name">hr.resume.analysis.form</field>
+            <field name="model">hr.resume.analysis</field>
+            <field name="arch" type="xml">
+                <form string="Resume Analysis">
+                    <header>
+                        <button name="action_start_analysis" type="object" string="Start Analysis" 
+                                class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_reset_analysis" type="object" string="Reset Analysis" 
+                                attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                        <button name="action_view_report" type="object" string="View Report" 
+                                class="oe_highlight" attrs="{'invisible': [('state', '!=', 'completed')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,analyzing,completed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_report" type="object" class="oe_stat_button" icon="fa-file-pdf-o"
+                                    attrs="{'invisible': [('state', '!=', 'completed')]}">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Analysis</span>
+                                    <span class="o_stat_text">Report</span>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Analysis Name..."/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group name="candidate_info" string="Candidate Information">
+                                <field name="candidate_name"/>
+                                <field name="candidate_email" widget="email"/>
+                                <field name="candidate_phone" widget="phone"/>
+                                <field name="user_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group name="analysis_info" string="Analysis Information">
+                                <field name="job_position_id" options="{'no_create': True}"/>
+                                <field name="ai_provider" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="analysis_date" readonly="1"/>
+                                <field name="analysis_duration" readonly="1" widget="float_time"/>
+                            </group>
+                        </group>
+                        
+                        <group name="resume_upload" string="Resume Upload">
+                            <field name="resume_file" filename="resume_filename" 
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="resume_filename" invisible="1"/>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Analysis Results" attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <group>
+                                    <group name="scores" string="Scores">
+                                        <field name="overall_score" widget="progressbar"/>
+                                        <field name="ats_compatibility_score" widget="progressbar"/>
+                                        <field name="skills_match_score" widget="progressbar"/>
+                                        <field name="experience_score" widget="progressbar"/>
+                                        <field name="education_score" widget="progressbar"/>
+                                        <field name="keywords_score" widget="progressbar"/>
+                                    </group>
+                                    <group name="candidate_profile" string="Candidate Profile">
+                                        <field name="total_experience_years"/>
+                                        <field name="relevant_experience_years"/>
+                                        <field name="education_level"/>
+                                    </group>
+                                </group>
+                                
+                                <group name="analysis_summary" string="Analysis Summary">
+                                    <field name="analysis_summary" nolabel="1" colspan="2"/>
+                                </group>
+                                
+                                <group>
+                                    <group name="strengths" string="Strengths">
+                                        <field name="strengths" nolabel="1"/>
+                                    </group>
+                                    <group name="weaknesses" string="Areas for Improvement">
+                                        <field name="weaknesses" nolabel="1"/>
+                                    </group>
+                                </group>
+                                
+                                <group name="recommendations" string="Recommendations">
+                                    <field name="recommendations" nolabel="1" colspan="2"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Skills Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <group>
+                                    <group name="skills_summary">
+                                        <field name="found_skills"/>
+                                        <field name="missing_skills"/>
+                                        <field name="missing_keywords"/>
+                                    </group>
+                                </group>
+                                <field name="skill_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="skill_name"/>
+                                        <field name="is_found"/>
+                                        <field name="relevance_score" widget="progressbar"/>
+                                        <field name="skill_category"/>
+                                        <field name="mentions_count"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            
+                            <page string="Experience Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <field name="experience_ids" nolabel="1">
+                                    <tree>
+                                        <field name="job_title"/>
+                                        <field name="company_name"/>
+                                        <field name="start_date"/>
+                                        <field name="end_date"/>
+                                        <field name="duration_years"/>
+                                        <field name="relevance_score" widget="progressbar"/>
+                                        <field name="is_relevant"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="job_title"/>
+                                                <field name="company_name"/>
+                                                <field name="industry"/>
+                                                <field name="role_level"/>
+                                            </group>
+                                            <group>
+                                                <field name="start_date"/>
+                                                <field name="end_date"/>
+                                                <field name="is_current"/>
+                                                <field name="duration_years"/>
+                                                <field name="relevance_score"/>
+                                            </group>
+                                        </group>
+                                        <group>
+                                            <field name="job_description" colspan="2"/>
+                                            <field name="responsibilities" colspan="2"/>
+                                            <field name="achievements" colspan="2"/>
+                                            <field name="technologies_used" colspan="2"/>
+                                            <field name="skills_demonstrated" colspan="2"/>
+                                        </group>
+                                        <group>
+                                            <field name="is_relevant"/>
+                                            <field name="has_leadership"/>
+                                            <field name="has_team_management"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            
+                            <page string="Education Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <field name="education_ids" nolabel="1">
+                                    <tree>
+                                        <field name="degree_name"/>
+                                        <field name="field_of_study"/>
+                                        <field name="institution_name"/>
+                                        <field name="education_level"/>
+                                        <field name="graduation_year"/>
+                                        <field name="relevance_score" widget="progressbar"/>
+                                        <field name="is_relevant"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="degree_name"/>
+                                                <field name="field_of_study"/>
+                                                <field name="education_level"/>
+                                                <field name="institution_name"/>
+                                                <field name="location"/>
+                                            </group>
+                                            <group>
+                                                <field name="start_year"/>
+                                                <field name="graduation_year"/>
+                                                <field name="is_ongoing"/>
+                                                <field name="gpa"/>
+                                                <field name="gpa_scale"/>
+                                                <field name="honors"/>
+                                            </group>
+                                        </group>
+                                        <group>
+                                            <field name="coursework" colspan="2"/>
+                                            <field name="projects" colspan="2"/>
+                                            <field name="thesis_topic" colspan="2"/>
+                                        </group>
+                                        <group>
+                                            <field name="relevance_score"/>
+                                            <field name="is_relevant"/>
+                                            <field name="is_verified"/>
+                                            <field name="verification_notes" colspan="2"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            
+                            <page string="Resume Text" attrs="{'invisible': [('resume_text', '=', False)]}">
+                                <field name="resume_text" nolabel="1" readonly="1"/>
+                            </page>
+                            
+                            <page string="Job Description">
+                                <field name="job_description" nolabel="1" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Resume Analysis Tree View -->
+        <record id="view_hr_resume_analysis_tree" model="ir.ui.view">
+            <field name="name">hr.resume.analysis.tree</field>
+            <field name="model">hr.resume.analysis</field>
+            <field name="arch" type="xml">
+                <tree string="Resume Analyses" decoration-success="state=='completed'" 
+                      decoration-warning="state=='analyzing'" decoration-muted="state=='draft'">
+                    <field name="name"/>
+                    <field name="candidate_name"/>
+                    <field name="candidate_email"/>
+                    <field name="job_position_id"/>
+                    <field name="overall_score" widget="progressbar"/>
+                    <field name="analysis_date"/>
+                    <field name="state" widget="badge" 
+                           decoration-success="state=='completed'" 
+                           decoration-warning="state=='analyzing'"
+                           decoration-info="state=='draft'"/>
+                    <field name="user_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Resume Analysis Search View -->
+        <record id="view_hr_resume_analysis_search" model="ir.ui.view">
+            <field name="name">hr.resume.analysis.search</field>
+            <field name="model">hr.resume.analysis</field>
+            <field name="arch" type="xml">
+                <search string="Resume Analyses">
+                    <field name="name" string="Analysis Name"/>
+                    <field name="candidate_name" string="Candidate"/>
+                    <field name="candidate_email" string="Email"/>
+                    <field name="job_position_id" string="Job Position"/>
+                    <field name="user_id" string="Analyzed By"/>
+                    
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Analyzing" name="analyzing" domain="[('state', '=', 'analyzing')]"/>
+                    <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                    <filter string="Failed" name="failed" domain="[('state', '=', 'failed')]"/>
+                    
+                    <separator/>
+                    <filter string="High Score (&gt;80%)" name="high_score" domain="[('overall_score', '&gt;', 80)]"/>
+                    <filter string="Medium Score (60-80%)" name="medium_score" domain="[('overall_score', '&gt;=', 60), ('overall_score', '&lt;=', 80)]"/>
+                    <filter string="Low Score (&lt;60%)" name="low_score" domain="[('overall_score', '&lt;', 60)]"/>
+                    
+                    <separator/>
+                    <filter string="My Analyses" name="my_analyses" domain="[('user_id', '=', uid)]"/>
+                    <filter string="This Month" name="this_month" 
+                            domain="[('analysis_date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Job Position" name="group_job_position" context="{'group_by': 'job_position_id'}"/>
+                        <filter string="Analyzed By" name="group_user" context="{'group_by': 'user_id'}"/>
+                        <filter string="Analysis Date" name="group_analysis_date" context="{'group_by': 'analysis_date:month'}"/>
+                        <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Resume Analysis Kanban View -->
+        <record id="view_hr_resume_analysis_kanban" model="ir.ui.view">
+            <field name="name">hr.resume.analysis.kanban</field>
+            <field name="model">hr.resume.analysis</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="candidate_name"/>
+                    <field name="job_position_id"/>
+                    <field name="overall_score"/>
+                    <field name="state"/>
+                    <field name="analysis_date"/>
+                    <field name="user_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <t t-if="record.overall_score.raw_value > 0">
+                                                <span class="badge badge-pill" 
+                                                      t-attf-class="badge-{record.overall_score.raw_value >= 80 and 'success' or record.overall_score.raw_value >= 60 and 'warning' or 'danger'}">
+                                                    <t t-esc="Math.round(record.overall_score.raw_value)"/>%
+                                                </span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_subtitle">
+                                            <i class="fa fa-user"/> <field name="candidate_name"/>
+                                        </div>
+                                        <div class="o_kanban_record_subtitle">
+                                            <i class="fa fa-briefcase"/> <field name="job_position_id"/>
+                                        </div>
+                                        <t t-if="record.analysis_date.raw_value">
+                                            <div class="o_kanban_record_subtitle">
+                                                <i class="fa fa-calendar"/> <field name="analysis_date"/>
+                                            </div>
+                                        </t>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <field name="user_id" widget="many2one_avatar_user"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Resume Analysis Action -->
+        <record id="action_hr_resume_analysis" model="ir.actions.act_window">
+            <field name="name">Resume Analysis</field>
+            <field name="res_model">hr.resume.analysis</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first resume analysis!
+                </p>
+                <p>
+                    Upload a resume file, select a target job position, and let our AI-powered system analyze the resume for ATS compatibility and job matching.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
