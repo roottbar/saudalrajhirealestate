@@ -40,13 +40,8 @@ class IrUiView(models.Model):
                         else f"domain of field '{name}'"
                     )
                     try:
-                        # استدعاء الدالة مع المعاملات الصحيحة لـ Odoo 18
-                        self._validate_domain_identifiers(
-                            domain,
-                            'search',              # use
-                            field.comodel_name,    # target_model
-                            node_info              # node_info
-                        )
+                        # تحقق من صحة domain باستخدام safe_eval
+                        safe_eval(domain, {'context': self._context})
                     except Exception as e:
                         self._raise_view_error(str(e), node)
 
