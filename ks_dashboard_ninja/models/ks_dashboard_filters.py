@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 
 
-class KsDashboardNinjaTemplate(models.Model):
+class KsDashboardNinjaDefinedFilters(models.Model):
     _name = 'ks_dashboard_ninja.board_defined_filters'
     _description = 'Dashboard Ninja Defined Filters'
 
@@ -46,7 +46,7 @@ class KsDashboardNinjaTemplate(models.Model):
 
 
 
-class KsDashboardNinjaTemplate(models.Model):
+class KsDashboardNinjaCustomFilters(models.Model):
     _name = 'ks_dashboard_ninja.board_custom_filters'
     _description = 'Dashboard Ninja Custom Filters'
 
