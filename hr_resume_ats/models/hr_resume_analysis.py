@@ -127,8 +127,24 @@ class HrResumeAnalysis(models.Model):
         if not self.resume_file:
             return ''
         
-        file_data = base64.b64decode(self.resume_file)
+        try:
+            file_data = base64.b64decode(self.resume_file)
+        except Exception as e:
+            _logger.error(f"Error decoding file data: {str(e)}")
+            raise UserError(_("Invalid file data. Please upload a valid file."))
+        
+        if not self.resume_filename:
+            raise UserError(_("File name is required. Please upload the file again."))
+            
         filename = self.resume_filename.lower()
+        
+        # Check file size (max 10MB)
+        if len(file_data) > 10 * 1024 * 1024:
+            raise UserError(_("File size too large. Please upload a file smaller than 10MB."))
+        
+        # Check if file data is not empty
+        if len(file_data) == 0:
+            raise UserError(_("Empty file detected. Please upload a valid file."))
         
         if filename.endswith('.pdf'):
             return self._extract_text_from_pdf(file_data)
@@ -143,15 +159,48 @@ class HrResumeAnalysis(models.Model):
             raise UserError(_("PyPDF2 library is required for PDF processing. Please install it."))
         
         try:
+            # Check if file starts with PDF header
+            if not file_data.startswith(b'%PDF'):
+                raise UserError(_("Invalid PDF file format. Please ensure you're uploading a valid PDF file."))
+            
             pdf_file = io.BytesIO(file_data)
             pdf_reader = PyPDF2.PdfReader(pdf_file)
+            
+            # Check if PDF is encrypted
+            if pdf_reader.is_encrypted:
+                raise UserError(_("PDF file is password protected. Please upload an unprotected PDF file."))
+            
+            # Check if PDF has pages
+            if len(pdf_reader.pages) == 0:
+                raise UserError(_("PDF file has no pages. Please upload a valid PDF file."))
+            
             text = ''
-            for page in pdf_reader.pages:
-                text += page.extract_text() + '\n'
-            return text.strip()
+            for page_num, page in enumerate(pdf_reader.pages):
+                try:
+                    page_text = page.extract_text()
+                    if page_text:
+                        text += page_text + '\n'
+                except Exception as page_error:
+                    _logger.warning(f"Error extracting text from page {page_num + 1}: {str(page_error)}")
+                    continue
+            
+            extracted_text = text.strip()
+            if not extracted_text:
+                raise UserError(_("No text could be extracted from the PDF. The file might be image-based or corrupted."))
+            
+            return extracted_text
+            
+        except UserError:
+            raise
         except Exception as e:
             _logger.error(f"Error extracting text from PDF: {str(e)}")
-            raise UserError(_("Error reading PDF file. Please ensure it's not corrupted or password protected."))
+            error_msg = str(e)
+            if "EOF marker not found" in error_msg or "startxref not found" in error_msg:
+                raise UserError(_("PDF file appears to be corrupted or incomplete. Please try uploading the file again."))
+            elif "Invalid PDF" in error_msg:
+                raise UserError(_("Invalid PDF file format. Please ensure you're uploading a valid PDF file."))
+            else:
+                raise UserError(_("Error reading PDF file. Please ensure it's a valid, unprotected PDF document."))
     
     def _extract_text_from_word(self, file_data):
         """Extract text from Word document"""
