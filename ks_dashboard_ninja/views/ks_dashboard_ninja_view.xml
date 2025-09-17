@@ -97,7 +97,7 @@
                            required="ks_dashboard_state != 'Locked'"/>
                     <field name="ks_dashboard_active" readonly="ks_dashboard_state == 'Locked'"/>
                     <field name="ks_dashboard_default_template"
-                           readonly="id > 0" required="id < 1"
+                           readonly="id &gt; 0" required="id &lt; 1"
                            options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                     <field name="ks_set_interval"/>
                     <field name="ks_date_filter_selection" required="1"/>
