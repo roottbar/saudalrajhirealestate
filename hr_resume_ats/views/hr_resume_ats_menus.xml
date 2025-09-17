@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Main Menu -->
+        <menuitem id="menu_hr_resume_ats_root" 
+                  string="Resume ATS" 
+                  sequence="85" 
+                  web_icon="hr_resume_ats,static/description/icon.png"
+                  groups="group_hr_resume_ats_user"/>
+        
+        <!-- Resume Analysis Menu -->
+        <menuitem id="menu_hr_resume_analysis" 
+                  string="Resume Analysis" 
+                  parent="menu_hr_resume_ats_root" 
+                  sequence="10"
+                  action="action_hr_resume_analysis"
+                  groups="group_hr_resume_ats_user"/>
+        
+        <!-- Job Positions Menu -->
+        <menuitem id="menu_hr_job_position" 
+                  string="Job Positions" 
+                  parent="menu_hr_resume_ats_root" 
+                  sequence="20"
+                  action="action_hr_job_position"
+                  groups="group_hr_resume_ats_user"/>
+        
+        <!-- Reports Menu -->
+        <menuitem id="menu_hr_resume_ats_reports" 
+                  string="Reports" 
+                  parent="menu_hr_resume_ats_root" 
+                  sequence="30"
+                  groups="group_hr_resume_ats_officer"/>
+        
+        <!-- Report Analysis Action for Reports Menu -->
+        <record id="action_resume_analysis_report_view" model="ir.actions.act_window">
+            <field name="name">Resume Analysis Reports</field>
+            <field name="res_model">hr.resume.analysis</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="domain">[('state', '=', 'completed')]</field>
+            <field name="context">{
+                'search_default_group_job_position': 1,
+                'search_default_this_month': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No analysis reports found!
+                </p>
+                <p>
+                    Analysis reports will appear here once resume analyses are completed.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Resume Analysis Report Menu -->
+        <menuitem id="menu_resume_analysis_report" 
+                  string="Analysis Reports" 
+                  parent="menu_hr_resume_ats_reports" 
+                  sequence="10"
+                  action="action_resume_analysis_report_view"
+                  groups="group_hr_resume_ats_officer"/>
+        
+        <!-- Configuration Menu -->
+        <menuitem id="menu_hr_resume_ats_config" 
+                  string="Configuration" 
+                  parent="menu_hr_resume_ats_root" 
+                  sequence="90"
+                  groups="group_hr_resume_ats_manager"/>
+        
+        <!-- AI Settings Action -->
+        <record id="action_hr_resume_ats_ai_settings" model="ir.actions.act_window">
+            <field name="name">AI Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module': 'hr_resume_ats'}</field>
+        </record>
+        
+        <!-- AI Settings Menu -->
+        <menuitem id="menu_hr_resume_ats_ai_settings" 
+                  string="AI Settings" 
+                  parent="menu_hr_resume_ats_config" 
+                  sequence="10"
+                  action="action_hr_resume_ats_ai_settings"
+                  groups="group_hr_resume_ats_manager"/>
+        
+        <!-- Pivot View for Resume Analysis Reports -->
+        <record id="view_hr_resume_analysis_pivot" model="ir.ui.view">
+            <field name="name">hr.resume.analysis.pivot</field>
+            <field name="model">hr.resume.analysis</field>
+            <field name="arch" type="xml">
+                <pivot string="Resume Analysis Statistics">
+                    <field name="job_position_id" type="row"/>
+                    <field name="analysis_date" type="col" interval="month"/>
+                    <field name="overall_score" type="measure"/>
+                    <field name="ats_compatibility_score" type="measure"/>
+                    <field name="skills_match_score" type="measure"/>
+                    <field name="experience_score" type="measure"/>
+                    <field name="education_score" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <!-- Graph View for Resume Analysis Reports -->
+        <record id="view_hr_resume_analysis_graph" model="ir.ui.view">
+            <field name="name">hr.resume.analysis.graph</field>
+            <field name="model">hr.resume.analysis</field>
+            <field name="arch" type="xml">
+                <graph string="Resume Analysis Trends" type="line">
+                    <field name="analysis_date" type="row" interval="week"/>
+                    <field name="overall_score" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        
+        <!-- Dashboard functionality will be implemented in future updates -->
+        
+        <!-- Quick Actions -->
+        
+        <!-- Quick Resume Analysis Action -->
+        <record id="action_quick_resume_analysis" model="ir.actions.act_window">
+            <field name="name">Quick Resume Analysis</field>
+            <field name="res_model">hr.resume.analysis</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{
+                'default_state': 'draft',
+                'form_view_initial_mode': 'edit'
+            }</field>
+        </record>
+        
+        <!-- Quick Job Position Action -->
+        <record id="action_quick_job_position" model="ir.actions.act_window">
+            <field name="name">Quick Job Position</field>
+            <field name="res_model">hr.job.position</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{
+                'default_state': 'draft',
+                'form_view_initial_mode': 'edit'
+            }</field>
+        </record>
+        
+        <!-- Server Actions for Bulk Operations -->
+        
+        <!-- Bulk Analyze Resumes -->
+        <record id="action_bulk_analyze_resumes" model="ir.actions.server">
+            <field name="name">Analyze Selected Resumes</field>
+            <field name="model_id" ref="model_hr_resume_analysis"/>
+            <field name="binding_model_id" ref="model_hr_resume_analysis"/>
+            <field name="binding_type">action</field>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                    if record.state == 'draft' and record.resume_file:
+                        record.action_start_analysis()
+            </field>
+        </record>
+        
+        <!-- Bulk Reset to Draft -->
+        <record id="action_bulk_reset_to_draft" model="ir.actions.server">
+            <field name="name">Reset to Draft</field>
+            <field name="model_id" ref="model_hr_resume_analysis"/>
+            <field name="binding_model_id" ref="model_hr_resume_analysis"/>
+            <field name="binding_type">action</field>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                    record.action_reset_analysis()
+            </field>
+        </record>
+        
+        <!-- Bulk Publish Job Positions -->
+        <record id="action_bulk_publish_positions" model="ir.actions.server">
+            <field name="name">Publish Selected Positions</field>
+            <field name="model_id" ref="model_hr_job_position"/>
+            <field name="binding_model_id" ref="model_hr_job_position"/>
+            <field name="binding_type">action</field>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                    if record.state == 'draft':
+                        record.action_publish()
+            </field>
+        </record>
+        
+    </data>
+</odoo>
