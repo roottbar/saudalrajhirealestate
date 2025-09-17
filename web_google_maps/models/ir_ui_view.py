@@ -40,7 +40,9 @@ class IrUiView(models.Model):
                         else f"domain of field '{name}'"
                     )
                     try:
-                        self._validate_domain_identifiers(node, domain, desc)
+                        use = 'search'  # غالبًا 'search' كإعداد افتراضي
+                        target_model = field.comodel_name
+                        self._validate_domain_identifiers(node, domain, use, target_model, node_info)
                     except Exception as e:
                         self._raise_view_error(str(e), node)
 
