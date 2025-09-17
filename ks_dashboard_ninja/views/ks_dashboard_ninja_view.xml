@@ -32,7 +32,7 @@
                         </group>
                         <notebook>
                             <page name="pre_defined_filters" string="Pre Defined Filters">
-                                <field name="ks_dashboard_defined_filters_ids" widget="section_and_note_one2many" context="{'default_ks_dashboard_board_id': active_id}" mode="tree"/>
+                                <field name="ks_dashboard_defined_filters_ids" widget="section_and_note_one2many" context="{'default_ks_dashboard_board_id': id}" mode="tree"/>
                             </page>
                             <page name="custom_defined_filters" string="Custom Filters">
                                 <field name="ks_dashboard_custom_filters_ids"/>
