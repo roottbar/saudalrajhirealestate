@@ -289,8 +289,8 @@
             <field name="name">Resume Analysis Report</field>
             <field name="model">hr.resume.analysis</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">hr_resume_ats.resume_analysis_report_template</field>
-            <field name="report_file">hr_resume_ats.resume_analysis_report_template</field>
+            <field name="report_name">hr_resume_ats2.resume_analysis_report_template</field>
+            <field name="report_file">hr_resume_ats2.resume_analysis_report_template</field>
             <field name="binding_model_id" ref="hr_resume_ats2.model_hr_resume_analysis"/>
             <field name="binding_type">report</field>
         </record>
