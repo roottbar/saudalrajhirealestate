@@ -5,7 +5,7 @@
             <field name="name">Dashboard Items</field>
             <field name="model">ks_dashboard_ninja.item</field>
             <field name="arch" type="xml">
-                <tree create="false">
+                <list create="false">
                     <field name="id"/>
                     <field name="name"/>
                     <field name="ks_dashboard_ninja_board_id" string="Dashboard"/>
@@ -18,7 +18,7 @@
                     <field name="ks_compare_period"/>
                     <field name="ks_year_period"/>
                     <field name="ks_update_items_data"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -236,13 +236,13 @@
                             <group name="ks_dn_header_line"
                                    invisible="ks_dashboard_item_type != 'ks_to_do'">
                                 <field name="ks_dn_header_lines" string="Sections">
-                                    <tree string="Section"
+                                    <list string="Section"
                                           widget="section_and_note_one2many">
                                         <control>
                                             <create string="Add a Section"/>
                                         </control>
                                         <field name="ks_to_do_header" string="Section"/>
-                                    </tree>
+                                    </list>
                                     <form>
                                         <group>
                                             <group>
@@ -253,14 +253,14 @@
                                             <page string="Tasks">
 
                                                 <field name="ks_to_do_description_lines" string="Tasks">
-                                                    <tree string="Task Lines" editable="top"
+                                                    <list string="Task Lines" editable="top"
                                                           widget="section_and_note_one2many">
                                                         <control>
                                                             <create string="Add a Line"/>
                                                         </control>
                                                         <field name="ks_description" string="Tasks" required="1"/>
                                                         <field name="ks_active" string="Active"/>
-                                                    </tree>
+                                                    </list>
                                                 </field>
 
                                             </page>
@@ -486,7 +486,7 @@
 
                             <field name="ks_action_lines" required="1" style="width: 90% !important;"
                                    attrs="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="ks_item_action_field" required="1"
                                            options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
@@ -500,7 +500,7 @@
                                     <field name="ks_sort_by_field" options="{'no_open':True,'no_create':True}"/>
                                     <field name="ks_sort_by_order"/>
                                     <field name="ks_record_limit"/>
-                                </tree>
+                                </list>
                             </field>
                             <group name="ks_show_messages"
                                    attrs="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'])]}">
@@ -541,7 +541,7 @@
                             </div>
                             <field name="ks_goal_lines"
                                    invisible="not ks_goal_enable or ks_dashboard_item_type == 'ks_kpi' or ks_chart_relation_sub_groupby">
-                                <tree string="Goal Lines"
+                                <list string="Goal Lines"
                                       editable="top"
                                       widget="section_and_note_one2many">
                                     <control>
@@ -549,7 +549,7 @@
                                     </control>
                                     <field name="ks_goal_date" required="1"/>
                                     <field name="ks_goal_value"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Auto Update" attrs="{'invisible': [('ks_dashboard_item_type','=','ks_to_do')]}">
@@ -580,11 +580,11 @@
                                 <field name="ks_multiplier_active" force_save="1"
                                        attrs="{'invisible': ['|','|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),('ks_data_calculation_type','=','query'),'&amp;',('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart']),('ks_chart_data_count_type', '=', 'count')]}"/>
                                 <field name="ks_multiplier_lines" attrs="{'invisible':[('ks_multiplier_active','=',False)]}">
-                                    <tree editable="bottom" create="false"  delete="false">
+                                    <list editable="bottom" create="false"  delete="false">
                                         <field name="ks_model_id" invisible="1"/>
                                         <field name="ks_multiplier_fields" readonly="1" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                                         <field name="ks_multiplier_value"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </group>
                             <group attrs="{'invisible':[('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'])]}">
