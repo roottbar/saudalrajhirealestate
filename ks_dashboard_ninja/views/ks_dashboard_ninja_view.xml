@@ -35,13 +35,7 @@
                                 <field name="ks_dashboard_defined_filters_ids" widget="section_and_note_one2many" context="{'default_ks_dashboard_board_id': active_id}" mode="tree"/>
                             </page>
                             <page name="custom_defined_filters" string="Custom Filters">
-                                <field name="ks_dashboard_custom_filters_ids">
-                                    <tree editable="bottom">
-                                        <field name="name" required="1"/>
-                                        <field name="ks_model_id" required="1"/>
-                                        <field name="ks_domain_field_id" required="1"/>
-                                    </tree>
-                                </field>
+                                <field name="ks_dashboard_custom_filters_ids"/>
                             </page>
                             <page name="advance_setting" string="Advance Settings">
                                 <group>
@@ -253,6 +247,19 @@
                     <field name="ks_model_id"/>
                     <field name="ks_domain"/>
                     <field name="ks_is_active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Tree view for Dashboard Custom Filters -->
+        <record id="ks_dashboard_custom_filters_tree_view" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.board_custom_filters.tree</field>
+            <field name="model">ks_dashboard_ninja.board_custom_filters</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" required="1"/>
+                    <field name="ks_model_id" required="1"/>
+                    <field name="ks_domain_field_id" required="1"/>
                 </tree>
             </field>
         </record>
