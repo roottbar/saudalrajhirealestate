@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- This file is required by the manifest but translations are handled via .po files -->
-        <record id="hr_resume_ats_translations" model="ir.model.data">
-            <field name="name">hr_resume_ats.translations</field>
-            <field name="module">hr_resume_ats</field>
-            <field name="model">ir.translation</field>
-        </record>
+        <!-- Translations are handled via .po files in i18n directory -->
     </data>
 </odoo>
