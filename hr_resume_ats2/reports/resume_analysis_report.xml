@@ -43,12 +43,12 @@
                                         <div class="col-6">
                                             <table class="table table-borderless">
                                                 <tr>
-                                                    <td><strong>Address:</strong></td>
-                                                    <td><span t-field="analysis.candidate_address"/></td>
+                                                    <td><strong>Resume File:</strong></td>
+                                                    <td><span t-field="analysis.resume_filename"/></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>LinkedIn:</strong></td>
-                                                    <td><span t-field="analysis.candidate_linkedin"/></td>
+                                                    <td><strong>Analysis Status:</strong></td>
+                                                    <td><span t-field="analysis.state"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Years of Experience:</strong></td>
@@ -110,13 +110,13 @@
                                     <div class="row">
                                         <div class="col-3 text-center">
                                             <div class="border rounded p-3">
-                                                <h4 t-field="analysis.ats_score" t-options="{'widget': 'float', 'precision': 1}"/>%
+                                                <h4 t-field="analysis.ats_compatibility_score" t-options="{'widget': 'float', 'precision': 1}"/>%
                                                 <p class="text-muted mb-0">ATS Score</p>
                                             </div>
                                         </div>
                                         <div class="col-3 text-center">
                                             <div class="border rounded p-3">
-                                                <h4 t-field="analysis.skills_score" t-options="{'widget': 'float', 'precision': 1}"/>%
+                                                <h4 t-field="analysis.skills_match_score" t-options="{'widget': 'float', 'precision': 1}"/>%
                                                 <p class="text-muted mb-0">Skills Match</p>
                                             </div>
                                         </div>
@@ -243,13 +243,13 @@
                                 </div>
                             </t>
                             
-                            <!-- AI Analysis Summary -->
+                            <!-- Analysis Summary -->
                             <div class="row mb-4">
                                 <div class="col-12">
-                                    <h4 class="border-bottom pb-2 mb-3">AI Analysis Summary</h4>
+                                    <h4 class="border-bottom pb-2 mb-3">Analysis Summary</h4>
                                     <div class="card">
                                         <div class="card-body">
-                                            <p t-field="analysis.ai_summary" class="card-text"/>
+                                            <div t-field="analysis.analysis_summary" class="card-text"/>
                                         </div>
                                     </div>
                                 </div>
@@ -291,7 +291,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">hr_resume_ats.resume_analysis_report_template</field>
             <field name="report_file">hr_resume_ats.resume_analysis_report_template</field>
-            <field name="binding_model_id" ref="model_hr_resume_analysis"/>
+            <field name="binding_model_id" ref="hr_resume_ats.model_hr_resume_analysis"/>
             <field name="binding_type">report</field>
         </record>
         
