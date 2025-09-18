@@ -13,7 +13,7 @@
     'data': [
         'views/account_move_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'application': False,
     'license': 'LGPL-3',
 }
