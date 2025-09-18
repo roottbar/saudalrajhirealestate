@@ -131,12 +131,7 @@ class ResConfigSettings(models.TransientModel):
         string='Google Autocomplete Language Restriction',
         config_parameter='web_google_maps.autocomplete_lang_restrict')
     
-    # Add external_report_layout_id field for Odoo 18 compatibility
-    external_report_layout_id = fields.Many2one(
-        'ir.ui.view', 
-        string='Document Template',
-        related='company_id.external_report_layout_id',
-        readonly=False)
+
 
     @api.onchange('google_maps_lang_localization')
     def onchange_lang_localization(self):
