@@ -132,6 +132,11 @@ class ResConfigSettings(models.TransientModel):
         config_parameter='web_google_maps.autocomplete_lang_restrict')
 
 
+    external_report_layout_id = fields.Many2one(
+        related='company_id.external_report_layout_id',
+        readonly=False
+    )
+
     @api.onchange('google_maps_lang_localization')
     def onchange_lang_localization(self):
         if not self.google_maps_lang_localization:
