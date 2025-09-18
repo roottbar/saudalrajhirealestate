@@ -11,5 +11,5 @@
     "category": "Sales",
     "depends": ["sales_team", "operating_unit"],
     "data": ["security/crm_security.xml", "views/crm_team_view.xml", "views/crm_team_override.xml"],
-    "installable": True,
+    "installable": False,
 }
