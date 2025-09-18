@@ -22,4 +22,5 @@
         "views/account_payment_view.xml",
         "views/account_invoice_report_view.xml",
     ],
+        "installable": False,
 }
