@@ -42,9 +42,9 @@
                                             <label for="google_maps_theme" string="Theme"/>
                                             <field name="google_maps_theme" widget="radio"/>
                                         </div>
-                                        <div class="mt16" invisible="1">
+                                        <div class="mt16">
                                             <label for="external_report_layout_id" string="External Report Layout"/>
-                                            <field name="external_report_layout_id"/>
+                                            <field name="external_report_layout_id" invisible="1"/>
                                         </div>
                                     </div>
                                 </div>
