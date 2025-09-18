@@ -15,6 +15,6 @@
     "depends": ["stock", "operating_unit"],
     "data": ["security/stock_security.xml", "data/stock_data.xml", "view/stock.xml"],
     "demo": ["demo/stock_demo.xml"],
-    "installable": True,
+    "installable": False,
     "post_init_hook": "update_operating_unit_location",
 }
