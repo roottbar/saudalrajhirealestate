@@ -5,9 +5,14 @@
         <field name="model">account.analytic.account</field>
         <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>  <!-- المرجع الصحيح للواجهة الأصلية -->
         <field name="arch" type="xml">
+            <!-- إضافة حقل company_id للتأكد من توفره في السياق -->
+            <field name="company_id" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </field>
             <field name="company_id" position="before">
                 <field name="operating_unit_ids"
                        widget="many2many_tags"
+                       domain="[('company_id', '=', parent.company_id), ('user_ids', 'in', uid)]"
                        groups="operating_unit.group_multi_operating_unit"/>
             </field>
         </field>
