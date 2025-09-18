@@ -5,10 +5,6 @@
         <field name="model">account.analytic.account</field>
         <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>  <!-- المرجع الصحيح للواجهة الأصلية -->
         <field name="arch" type="xml">
-            <!-- إضافة domain بسيط لحقل parent_id لتجنب خطأ company_id -->
-            <field name="parent_id" position="attributes">
-                <attribute name="domain">[]</attribute>
-            </field>
             <field name="company_id" position="before">
                 <field name="operating_unit_ids"
                        widget="many2many_tags"
