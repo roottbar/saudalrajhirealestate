@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="mt16">
                                             <label for="external_report_layout_id" string="External Report Layout"/>
-                                            <field name="external_report_layout_id" invisible="1"/>
+                                            <field name="external_report_layout_id"/>
                                         </div>
                                     </div>
                                 </div>
