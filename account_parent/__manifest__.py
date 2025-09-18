@@ -53,6 +53,6 @@ This module
     'currency': 'EUR',
     'price': '25.0',
     'images': ['static/description/account_parent_9.png'],
-    'installable': True,
+    'installable': False,
     'post_init_hook': '_assign_account_parent',
 }
