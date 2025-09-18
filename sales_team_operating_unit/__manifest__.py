@@ -10,6 +10,9 @@
     "website": "https://github.com/OCA/operating-unit",
     "category": "Sales",
     "depends": ["sales_team", "operating_unit"],
-    "data": ["security/crm_security.xml", "views/crm_team_view.xml", "views/crm_team_fix.xml"],
+    "data": ["security/crm_security.xml", 
+             "views/crm_team_view.xml", 
+             # "views/crm_team_fix.xml"
+            ],
     "installable": True,
 }
