@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <!-- Fix the member_ids field domain for Odoo 18 -->
             <field name="member_ids" position="attributes">
-                <attribute name="domain">['&amp;', ('share', '=', False), ('company_ids', 'in', company_ids)]</attribute>
+                <attribute name="domain">['&amp;', ('share', '=', False), ('company_ids', 'in', [company_id])]</attribute>
             </field>
         </field>
     </record>
