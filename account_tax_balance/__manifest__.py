@@ -13,7 +13,7 @@
     "author": "Agile Business Group, Therp BV, Tecnativa, ACSONE SA/NV, "
     "Odoo Community Association (OCA)",
     "license": "AGPL-3",
-    "installable": True,
+    "installable": False,
     "depends": ["account", "date_range"],
     "data": [
         "wizard/open_tax_balances_view.xml",
