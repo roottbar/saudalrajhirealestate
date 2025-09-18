@@ -26,6 +26,6 @@
             "/partner_statement/static/src/scss/layout_statement.scss",
         ],
     },
-    "installable": True,
+    "installable": False,
     "application": False,
 }
