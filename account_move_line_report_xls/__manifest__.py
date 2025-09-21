@@ -11,5 +11,5 @@
     "summary": "Journal Items Excel export",
     "depends": ["account", "report_xlsx_helper"],
     "data": ["report/account_move_line_xlsx.xml"],
-    "installable": True,
+    "installable": False,
 }
