@@ -188,7 +188,7 @@
                     </div>
                     <div class="col-3" colspan="5" name="qr_code">
                             <t t-if="o.l10n_sa_qr_code_str">
-                                <t t-esc="o.generate_qr_code()"/>
+<!--                                 <t t-esc="o.generate_qr_code()"/> -->
                                 <img t-att-src="image_data_uri(o.qr_code)" style="max-height: 100px; display:block;margin: auto;" alt="QR Code"/>
                             </t>
                         </div>
