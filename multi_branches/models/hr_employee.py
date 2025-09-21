@@ -96,11 +96,7 @@ class LeaveEncashmentDetails(models.TransientModel):
 
     name = fields.Char(string="Name")
 
-class EmployeeBonusLines(models.Model):
-    _name = "employee.bonus.lines"
-    _description = "Bonus"
-
-    name = fields.Char(string="Name")
+# Removed duplicate model employee.bonus.lines - already exists in saudi_hr_bonus module
 
 class EmployeeCard(models.Model):
     _name = 'hr.employee.card'
