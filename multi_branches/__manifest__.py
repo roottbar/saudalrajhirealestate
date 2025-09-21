@@ -34,7 +34,7 @@
         'menu.xml',
         ],
     'demo': [],
-    'installable': True,
+    'installable': False,
     'application': False,
     'auto_install': False,
     'license': 'OPL-1'
