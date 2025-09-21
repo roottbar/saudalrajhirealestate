@@ -24,7 +24,7 @@ class ResPartnerBank(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    l10n_sa_qr_code_str = fields.Char(string='Saudi QR Code String', compute='_compute_l10n_sa_qr_code_str', store=True)
+    l10n_sa_qr_code_str = fields.Char(string='Saudi QR Code String', compute='_compute_l10n_sa_qr_code_str')
     qr_code = fields.Binary(string='QR Code Image', compute='_compute_qr_code_image')
 
     @api.depends('company_id.name', 'company_id.vat', 'invoice_date', 'amount_tax', 'amount_total')
