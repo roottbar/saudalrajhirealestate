@@ -16,4 +16,6 @@
     'data': [
         'data/action_server.xml',
     ],
+    'installable': False,
+
 }
