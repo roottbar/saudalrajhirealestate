@@ -12,5 +12,5 @@
         "security/analytic_account_security.xml",
         # "views/analytic_account_view.xml",
     ],
-    "installable": True,
+    "installable": False,
 }
