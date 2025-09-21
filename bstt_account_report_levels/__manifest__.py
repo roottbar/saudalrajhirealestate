@@ -12,4 +12,6 @@
     'qweb': [
         # 'static/src/xml/levels.xml',
     ],
+    "installable": False,
+
 }
