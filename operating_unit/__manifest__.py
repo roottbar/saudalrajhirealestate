@@ -22,5 +22,5 @@
         "view/res_users_view.xml",
     ],
     "demo": ["demo/operating_unit_demo.xml"],
-    "installable": True,
+    "installable": False,
 }
