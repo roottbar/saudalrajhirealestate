@@ -17,4 +17,5 @@
     'data': [
         'views/hr_payroll_analytic_account_view.xml',
     ],
+    'installable': True
 }
