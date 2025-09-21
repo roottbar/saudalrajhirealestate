@@ -34,7 +34,7 @@ Features:
             'web_google_maps/static/src/css/**/*.css',
         ],
     },
-    'installable': True,
+    'installable': False,
     'application': False,
     'auto_install': False,
     'uninstall_hook': 'uninstall_hook',
