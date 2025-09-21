@@ -28,5 +28,6 @@
         'views/res_users.xml',
 
     ],
+    "installable": False,
 
 }
