@@ -24,6 +24,6 @@
             '/print_journal_entries/static/src/css/style.css',
         ],
     },
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }
