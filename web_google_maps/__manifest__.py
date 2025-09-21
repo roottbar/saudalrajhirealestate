@@ -19,7 +19,7 @@ Features:
     'data': [
         'data/google_maps_libraries.xml',
         'views/res_partner.xml',
-        # 'views/res_config_settings.xml',
+        # 'views/res_config_settings.xml',  # File does not exist
     ],
     'demo': [],
     'images': ['static/description/thumbnails.png'],
