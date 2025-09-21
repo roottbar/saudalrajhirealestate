@@ -25,10 +25,8 @@
         'static/src/xml/*.xml',
     ],
     'assets': {
-        'web.assets_common': [
-            'petty_cash/static/src/css/style_petty_cash.css',
-        ],
         'web.assets_backend': [
+            'petty_cash/static/src/css/style_petty_cash.css',
             'petty_cash/static/src/js/petty_cash_line_import_action.js',
             'petty_cash/static/src/js/fields/custom_basic_fields.js',
             'petty_cash/static/src/js/dynamic_report_petty_cash_lines.js',
