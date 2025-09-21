@@ -187,9 +187,10 @@
 
                     </div>
                     <div class="col-3" colspan="5" name="qr_code">
-                            <img t-if="o.l10n_sa_qr_code_str"
-                             style="display:block;margin: auto;"
-                             t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 100, 100)"/>
+                            <t t-if="o.l10n_sa_qr_code_str">
+                                <t t-esc="o.generate_qr_code()"/>
+                                <img t-att-src="image_data_uri(o.qr_code)" style="max-height: 100px; display:block;margin: auto;" alt="QR Code"/>
+                            </t>
                         </div>
                 </div>
                 <div class="col-auto mw-100 mb-4" t-if="o.ref" name="reference">
