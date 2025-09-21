@@ -6,6 +6,9 @@
     "depends": [
         'base', 'web', 'account',
     ],
+    "external_dependencies": {
+        "python": ["qrcode", "Pillow"],
+    },
     "author": "Genius Valley",
     "category": "Accounting",
     "website": "https://genius-valley.com/",
