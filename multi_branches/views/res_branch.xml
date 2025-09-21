@@ -55,19 +55,19 @@
                     <page string="Sequence">
                         <group>
                             <group>
-                                <field name="sale_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="payment_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="invoice_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="invoice_hertz_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="invoice_emper_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="invoice_refund_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="invoice_hertz_refund_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="invoice_emper_refund_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
+                                <field name="sale_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="payment_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="invoice_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="invoice_hertz_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="invoice_emper_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="invoice_refund_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="invoice_hertz_refund_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="invoice_emper_refund_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
                             </group>
                             <group>
-                                <field name="purchase_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="bill_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
-                                <field name="bill_refund_sequence_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
+                                <field name="purchase_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="bill_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
+                                <field name="bill_refund_sequence_id" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]"/>
                             </group>
                         </group>
                     </page>
