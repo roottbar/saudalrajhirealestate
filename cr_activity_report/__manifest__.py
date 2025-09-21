@@ -24,7 +24,7 @@ Range like less-then, grater-then, equal-to the due date added.
         "report/activity_report.xml",
         "report/activity_template.xml",
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'application': True,
     "images": ["static/description/banner.png", ],
