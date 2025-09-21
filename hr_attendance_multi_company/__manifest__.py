@@ -15,7 +15,7 @@
         'views/hr_attendance_views.xml',
         'security/security.xml'
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': False,
     'license': 'LGPL-3',
 }
