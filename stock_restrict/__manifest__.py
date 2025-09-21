@@ -12,6 +12,6 @@
         'security/security.xml',
         'views/res_users_views.xml'
     ],
-    'installable': True,
+    "installable": False,
     'auto_install': False,
 }
