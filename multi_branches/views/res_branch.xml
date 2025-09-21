@@ -44,7 +44,7 @@
                                 </div>
                             </group>
                             <group>
-                                <field name="currency_id" options="{'no_create': True, 'no_open': True}" id="company_currency"/>
+                                <field name="currency_id" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
                                 <field name="phone"/>
                                 <field name="email"/>
