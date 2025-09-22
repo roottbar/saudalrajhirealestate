@@ -129,7 +129,7 @@ Dashboard Ninja v18.0 - Updated for Odoo 18 compatibility,
         'static/src/xml/ks_color_picker.xml',
     ],
     'uninstall_hook': 'uninstall_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': True,
 }
