@@ -80,11 +80,17 @@ class HrEndOfService(models.Model):
     # معلومات إضافية
     company_id = fields.Many2one('res.company', string='الشركة', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='العملة', related='company_id.currency_id')
+    payslip_count = fields.Integer(string='عدد قسائم الراتب', compute='_compute_payslip_count')
     
     @api.depends('basic_salary', 'housing_allowance', 'transport_allowance', 'other_allowances')
     def _compute_total_salary(self):
         for record in self:
             record.total_salary = record.basic_salary + record.housing_allowance + record.transport_allowance + record.other_allowances
+    
+    def _compute_payslip_count(self):
+        """حساب عدد قسائم الراتب للموظف"""
+        for record in self:
+            record.payslip_count = self.env['hr.payslip'].search_count([('employee_id', '=', record.employee_id.id)])
     
     @api.depends('start_date', 'end_date')
     def _compute_service_period(self):
@@ -293,6 +299,19 @@ class HrEndOfService(models.Model):
         """طباعة التصفية"""
         self.ensure_one()
         return self.env.ref('hr_end_of_service_sa.action_report_end_of_service').report_action(self)
+    
+    def action_view_payslips(self):
+        """عرض قسائم الراتب المرتبطة بالموظف"""
+        self.ensure_one()
+        payslips = self.env['hr.payslip'].search([('employee_id', '=', self.employee_id.id)])
+        return {
+            'name': _('قسائم الراتب'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'hr.payslip',
+            'view_mode': 'tree,form',
+            'domain': [('employee_id', '=', self.employee_id.id)],
+            'context': {'default_employee_id': self.employee_id.id},
+        }
     
     def name_get(self):
         result = []
