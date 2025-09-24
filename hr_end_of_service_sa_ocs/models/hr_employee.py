@@ -11,7 +11,7 @@ class HrEmployee(models.Model):
     # حقول تصفية نهاية الخدمة
     end_of_service_ids = fields.One2many('hr.end.of.service', 'employee_id', string='تصفيات نهاية الخدمة')
     end_of_service_count = fields.Integer(string='عدد التصفيات', compute='_compute_end_of_service_count')
-    has_end_of_service = fields.Boolean(string='له تصفية نهاية خدمة', compute='_compute_has_end_of_service')
+    has_end_of_service = fields.Boolean(string='له تصفية نهاية خدمة', compute='_compute_has_end_of_service', store=True)
     last_end_of_service_date = fields.Date(string='تاريخ آخر تصفية', compute='_compute_last_end_of_service_date')
     
     # حقول تصفية الإجازة السنوية
@@ -21,7 +21,7 @@ class HrEmployee(models.Model):
     # معلومات إضافية للحسابات
     hire_date = fields.Date(string='تاريخ التوظيف', help='تاريخ بداية العمل الفعلي')
     probation_period_months = fields.Integer(string='فترة التجربة (بالأشهر)', default=3)
-    is_probation_completed = fields.Boolean(string='انتهت فترة التجربة', compute='_compute_probation_status')
+    is_probation_completed = fields.Boolean(string='انتهت فترة التجربة', compute='_compute_probation_status', store=True)
     
     @api.depends('end_of_service_ids')
     def _compute_end_of_service_count(self):
