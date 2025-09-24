@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="partner_ledger_wizard_form_view" model="ir.ui.view">
+            <field name="name">partner.ledger.wizard.form.view</field>
+            <field name="model">partner.ledger.report</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="partner_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <footer class="ms-0" style="display: flex; justify-content: left; align-items: left;">
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <button name="generate_template_report" string="PDF" type="object" class="oe_highlight"/>
+                            <span style="vertical-align: middle; margin: 0 5px;">or</span>
+                            <button name="generate_excel_report" string="Excel" type="object" class="oe_highlight"/>
+                            <span style="margin: 0 5px;">or</span>
+                            <button special="cancel" string="Cancel" type="object" class="oe_highlight"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="partner_ledger_wizard_action" model="ir.actions.act_window">
+            <field name="name">Partner Ledger</field>
+            <field name="res_model">partner.ledger.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <record id="partner_ledger_wizard_action_open" model="ir.actions.server">
+            <field name="name">Partner Ledger</field>
+            <field name="model_id" ref="tk_partner_ledger.model_res_partner"/>
+            <field name="binding_model_id" ref="tk_partner_ledger.model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_open_wizard_ledger()</field>
+        </record>
+    </data>
+</odoo>
