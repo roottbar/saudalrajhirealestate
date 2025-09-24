@@ -11,7 +11,8 @@ class HrAnnualLeaveSettlementWizard(models.TransientModel):
     _description = 'معالج إنشاء تصفية الإجازة السنوية'
     
     # معلومات أساسية
-    employee_ids = fields.Many2many('hr.employee', string='الموظفين', required=True)
+    employee_id = fields.Many2one('hr.employee', string='الموظف')
+    employee_ids = fields.Many2many('hr.employee', string='الموظفين')
     calculation_date = fields.Date(string='تاريخ الحساب', default=fields.Date.context_today, required=True)
     settlement_type = fields.Selection([
         ('annual', 'تصفية سنوية'),
@@ -60,6 +61,24 @@ class HrAnnualLeaveSettlementWizard(models.TransientModel):
             self.settlement_period_from = date(today.year, 1, 1)
             self.settlement_period_to = today
     
+    @api.onchange('employee_id')
+    def _onchange_employee_id(self):
+        if self.employee_id and self.settlement_type == 'annual':
+            # تعيين فترة التصفية حسب تاريخ توظيف الموظف
+            if self.employee_id.hire_date:
+                hire_date = self.employee_id.hire_date
+                current_year = date.today().year
+                
+                # حساب بداية ونهاية السنة المالية للإجازة
+                year_start = date(current_year, hire_date.month, hire_date.day)
+                if year_start > date.today():
+                    year_start = date(current_year - 1, hire_date.month, hire_date.day)
+                
+                year_end = year_start + relativedelta(years=1) - relativedelta(days=1)
+                
+                self.settlement_period_from = year_start
+                self.settlement_period_to = min(year_end, date.today())
+    
     @api.onchange('employee_ids')
     def _onchange_employee_ids(self):
         if self.employee_ids and self.settlement_type == 'annual':
@@ -83,12 +102,14 @@ class HrAnnualLeaveSettlementWizard(models.TransientModel):
         """إنشاء تصفيات الإجازة السنوية"""
         self.ensure_one()
         
-        if not self.employee_ids:
+        # تحديد الموظفين المراد إنشاء تصفيات لهم
+        employees = self.employee_ids if self.employee_ids else self.employee_id
+        if not employees:
             raise UserError(_('يجب تحديد موظف واحد على الأقل!'))
         
         created_settlements = self.env['hr.annual.leave.settlement']
         
-        for employee in self.employee_ids:
+        for employee in employees:
             # إنشاء تصفية جديدة
             settlement_vals = self._prepare_settlement_vals(employee)
             settlement = self.env['hr.annual.leave.settlement'].create(settlement_vals)
@@ -177,12 +198,14 @@ class HrAnnualLeaveSettlementWizard(models.TransientModel):
         """معاينة التصفيات قبل الإنشاء"""
         self.ensure_one()
         
-        if not self.employee_ids:
+        # تحديد الموظفين المراد معاينة تصفياتهم
+        employees = self.employee_ids if self.employee_ids else self.employee_id
+        if not employees:
             raise UserError(_('يجب تحديد موظف واحد على الأقل!'))
         
         preview_data = []
         
-        for employee in self.employee_ids:
+        for employee in employees:
             # جلب العقد الحالي
             contract = self.env['hr.contract'].search([
                 ('employee_id', '=', employee.id),
@@ -245,7 +268,9 @@ class HrAnnualLeaveSettlementWizard(models.TransientModel):
         """حساب الإجازة لفترة محددة"""
         self.ensure_one()
         
-        if not self.employee_ids:
+        # تحديد الموظفين المراد حساب إجازاتهم
+        employees = self.employee_ids if self.employee_ids else self.employee_id
+        if not employees:
             raise UserError(_('يجب تحديد موظف واحد على الأقل!'))
         
         # حساب عدد الأشهر في الفترة
