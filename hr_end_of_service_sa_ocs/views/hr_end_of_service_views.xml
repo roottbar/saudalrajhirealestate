@@ -92,8 +92,8 @@
                             <page string="الخصومات والصافي" name="deductions">
                                 <group>
                                     <group name="deductions_group" string="الخصومات">
-                                        <field name="loan_deductions"/>
-                                        <field name="advance_deductions"/>
+                                        <field name="loan_deduction"/>
+                                        <field name="advance_deduction"/>
                                         <field name="other_deductions"/>
                                         <field name="total_deductions" readonly="1" class="oe_subtotal_footer_separator"/>
                                     </group>
