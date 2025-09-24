@@ -10,7 +10,8 @@ class HrEndOfServiceWizard(models.TransientModel):
     _description = 'معالج إنشاء تصفية نهاية الخدمة'
     
     # معلومات أساسية
-    employee_ids = fields.Many2many('hr.employee', string='الموظفين', required=True)
+    employee_id = fields.Many2one('hr.employee', string='الموظف', required=True)
+    employee_ids = fields.Many2many('hr.employee', string='الموظفين')
     calculation_date = fields.Date(string='تاريخ الحساب', default=fields.Date.context_today, required=True)
     end_date = fields.Date(string='تاريخ انتهاء الخدمة', default=fields.Date.context_today, required=True)
     termination_type = fields.Selection([
@@ -38,6 +39,23 @@ class HrEndOfServiceWizard(models.TransientModel):
             if record.calculation_date > record.end_date:
                 raise ValidationError(_('تاريخ الحساب يجب أن يكون قبل أو يساوي تاريخ انتهاء الخدمة!'))
     
+    @api.onchange('employee_id')
+    def _onchange_employee_id(self):
+        if self.employee_id:
+            # التحقق من وجود تصفيات سابقة
+            existing_settlements = self.env['hr.end.of.service'].search([
+                ('employee_id', '=', self.employee_id.id),
+                ('state', 'in', ['confirmed', 'approved', 'paid'])
+            ])
+            
+            if existing_settlements:
+                return {
+                    'warning': {
+                        'title': _('تحذير'),
+                        'message': _('يوجد تصفية نهاية خدمة سابقة للموظف: %s') % self.employee_id.name
+                    }
+                }
+    
     @api.onchange('employee_ids')
     def _onchange_employee_ids(self):
         if self.employee_ids:
@@ -60,12 +78,14 @@ class HrEndOfServiceWizard(models.TransientModel):
         """إنشاء تصفيات نهاية الخدمة"""
         self.ensure_one()
         
-        if not self.employee_ids:
+        # تحديد الموظفين المراد إنشاء تصفيات لهم
+        employees = self.employee_ids if self.employee_ids else self.employee_id
+        if not employees:
             raise UserError(_('يجب تحديد موظف واحد على الأقل!'))
         
         created_settlements = self.env['hr.end.of.service']
         
-        for employee in self.employee_ids:
+        for employee in employees:
             # التحقق من وجود تصفية سابقة
             existing_settlement = self.env['hr.end.of.service'].search([
                 ('employee_id', '=', employee.id),
