@@ -9,6 +9,7 @@ import calendar
 
 class HrEndOfService(models.Model):
     _name = 'hr.end.of.service'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'تصفية نهاية الخدمة'
     _order = 'create_date desc'
     _rec_name = 'employee_id'
