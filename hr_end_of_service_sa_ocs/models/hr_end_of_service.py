@@ -83,6 +83,7 @@ class HrEndOfService(models.Model):
     company_id = fields.Many2one('res.company', string='الشركة', default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', string='العملة', related='company_id.currency_id')
     payslip_count = fields.Integer(string='عدد قسائم الراتب', compute='_compute_payslip_count')
+    color = fields.Integer(string='اللون', default=0)
     
     @api.depends('basic_salary', 'housing_allowance', 'transport_allowance', 'other_allowances')
     def _compute_total_salary(self):
