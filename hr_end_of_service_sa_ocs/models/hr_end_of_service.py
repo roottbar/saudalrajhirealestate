@@ -54,6 +54,7 @@ class HrEndOfService(models.Model):
     notice_period_amount = fields.Float(string='بدل فترة الإشعار')
     remaining_vacation_days = fields.Float(string='أيام الإجازة المتبقية')
     vacation_amount = fields.Float(string='مبلغ الإجازات المتبقية', compute='_compute_vacation_amount', store=True)
+    other_benefits = fields.Float(string='مزايا أخرى')
     
     # خصومات
     advance_deduction = fields.Float(string='خصم السلف')
@@ -201,10 +202,10 @@ class HrEndOfService(models.Model):
         for record in self:
             record.total_deductions = record.advance_deduction + record.loan_deduction + record.other_deductions
     
-    @api.depends('end_of_service_benefit', 'notice_period_amount', 'vacation_amount')
+    @api.depends('end_of_service_benefit', 'notice_period_amount', 'vacation_amount', 'other_benefits')
     def _compute_gross_amount(self):
         for record in self:
-            record.gross_amount = record.end_of_service_benefit + record.notice_period_amount + record.vacation_amount
+            record.gross_amount = record.end_of_service_benefit + record.notice_period_amount + record.vacation_amount + record.other_benefits
     
     @api.depends('gross_amount', 'total_deductions')
     def _compute_net_amount(self):
