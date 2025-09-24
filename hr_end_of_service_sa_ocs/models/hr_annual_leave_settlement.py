@@ -35,6 +35,7 @@ class HrAnnualLeaveSettlement(models.Model):
     
     # المبالغ
     leave_settlement_amount = fields.Float(string='مبلغ تصفية الإجازة', compute='_compute_leave_settlement_amount', store=True)
+    settlement_amount = fields.Float(string='مبلغ التصفية', compute='_compute_settlement_amount', store=True)
     deductions = fields.Float(string='الخصومات', default=0.0)
     net_amount = fields.Float(string='صافي المبلغ', compute='_compute_net_amount', store=True)
     
@@ -80,6 +81,12 @@ class HrAnnualLeaveSettlement(models.Model):
         for record in self:
             # حساب مبلغ تصفية الإجازة = أيام الإجازة المتبقية × الراتب اليومي
             record.leave_settlement_amount = record.remaining_leave_days * record.daily_salary
+    
+    @api.depends('leave_settlement_amount')
+    def _compute_settlement_amount(self):
+        for record in self:
+            # مبلغ التصفية هو نفس مبلغ تصفية الإجازة
+            record.settlement_amount = record.leave_settlement_amount
     
     @api.depends('leave_settlement_amount', 'deductions')
     def _compute_net_amount(self):
@@ -213,6 +220,7 @@ class HrAnnualLeaveSettlement(models.Model):
             'used_leave_days': self.used_leave_days,
             'remaining_leave_days': self.remaining_leave_days,
             'leave_settlement_amount': self.leave_settlement_amount,
+            'settlement_amount': self.settlement_amount,
             'deductions': self.deductions,
             'net_amount': self.net_amount,
             'state': dict(self._fields['state'].selection)[self.state],
