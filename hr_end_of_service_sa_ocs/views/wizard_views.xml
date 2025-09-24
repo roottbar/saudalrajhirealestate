@@ -67,8 +67,8 @@
                                 <field name="settlement_type" required="1"/>
                             </group>
                             <group name="period_info" string="فترة التصفية">
-                                <field name="period_from" required="1"/>
-                                <field name="period_to" required="1"/>
+                                <field name="settlement_period_from" required="1"/>
+                                <field name="settlement_period_to" required="1"/>
                                 <field name="settlement_date"/>
                             </group>
                         </group>
