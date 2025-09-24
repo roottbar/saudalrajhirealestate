@@ -305,7 +305,7 @@ class HrEndOfService(models.Model):
     def action_print_settlement(self):
         """طباعة التصفية"""
         self.ensure_one()
-        return self.env.ref('hr_end_of_service_sa.action_report_end_of_service').report_action(self)
+        return self.env.ref('hr_end_of_service_sa.action_report_end_of_service_pdf').report_action(self)
     
     def action_view_payslips(self):
         """عرض قسائم الراتب المرتبطة بالموظف"""
