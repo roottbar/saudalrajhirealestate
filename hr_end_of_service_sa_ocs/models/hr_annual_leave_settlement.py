@@ -18,6 +18,7 @@ class HrAnnualLeaveSettlement(models.Model):
     calculation_date = fields.Date(string='تاريخ الحساب', default=fields.Date.context_today, required=True)
     settlement_period_from = fields.Date(string='من تاريخ', required=True)
     settlement_period_to = fields.Date(string='إلى تاريخ', required=True)
+    settlement_date = fields.Date(string='تاريخ التصفية', default=fields.Date.context_today)
     settlement_type = fields.Selection([
         ('annual', 'تصفية سنوية'),
         ('end_of_service', 'تصفية نهاية خدمة'),
@@ -25,7 +26,12 @@ class HrAnnualLeaveSettlement(models.Model):
     ], string='نوع التصفية', default='annual', required=True)
     
     # معلومات الراتب
-    monthly_salary = fields.Float(string='الراتب الشهري', required=True)
+    basic_salary = fields.Float(string='الراتب الأساسي', required=True)
+    housing_allowance = fields.Float(string='بدل السكن')
+    transport_allowance = fields.Float(string='بدل المواصلات')
+    other_allowances = fields.Float(string='بدلات أخرى')
+    total_salary = fields.Float(string='إجمالي الراتب', compute='_compute_total_salary', store=True)
+    monthly_salary = fields.Float(string='الراتب الشهري', compute='_compute_total_salary', store=True)
     daily_salary = fields.Float(string='الراتب اليومي', compute='_compute_daily_salary', store=True)
     
     # حساب الإجازة
@@ -65,11 +71,17 @@ class HrAnnualLeaveSettlement(models.Model):
             else:
                 record.display_name = "تصفية إجازة سنوية"
     
-    @api.depends('monthly_salary')
+    @api.depends('basic_salary', 'housing_allowance', 'transport_allowance', 'other_allowances')
+    def _compute_total_salary(self):
+        for record in self:
+            record.total_salary = record.basic_salary + record.housing_allowance + record.transport_allowance + record.other_allowances
+            record.monthly_salary = record.total_salary
+    
+    @api.depends('total_salary')
     def _compute_daily_salary(self):
         for record in self:
             # حساب الراتب اليومي (الراتب الشهري / 30 يوم)
-            record.daily_salary = record.monthly_salary / 30 if record.monthly_salary else 0
+            record.daily_salary = record.total_salary / 30 if record.total_salary else 0
     
     @api.depends('total_leave_days', 'used_leave_days')
     def _compute_remaining_leave_days(self):
