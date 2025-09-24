@@ -32,12 +32,7 @@
                             <field name="notes" placeholder="أدخل أي ملاحظات إضافية..."/>
                         </group>
                         
-                        <separator string="معاينة المكافآت المقدرة"/>
-                        <button name="action_preview_benefits" string="معاينة المكافآت" type="object" class="btn-info" attrs="{'invisible': [('employee_id', '=', False)]}"/>
-                        
-                        <div attrs="{'invisible': [('employee_id', '=', False)]}">
-                            <p class="text-muted">ملاحظة: هذه معاينة تقديرية للمكافآت بناءً على البيانات الحالية. القيم الفعلية قد تختلف حسب آخر راتب وتفاصيل العقد.</p>
-                        </div>
+
                     </sheet>
                     
                     <footer>
