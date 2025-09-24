@@ -36,7 +36,7 @@
                     </sheet>
                     
                     <footer>
-                        <button name="action_create_settlement" string="إنشاء التصفية" type="object" class="oe_highlight"/>
+                        <button name="action_create_settlements" string="إنشاء التصفية" type="object" class="oe_highlight"/>
                         <button string="إلغاء" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
