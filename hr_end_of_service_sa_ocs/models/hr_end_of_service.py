@@ -289,6 +289,11 @@ class HrEndOfService(models.Model):
                 raise UserError(_('لا يمكن إعادة التصفيات المدفوعة إلى المسودة!'))
             record.state = 'draft'
     
+    def action_print_settlement(self):
+        """طباعة التصفية"""
+        self.ensure_one()
+        return self.env.ref('hr_end_of_service_sa.action_report_end_of_service').report_action(self)
+    
     def name_get(self):
         result = []
         for record in self:
