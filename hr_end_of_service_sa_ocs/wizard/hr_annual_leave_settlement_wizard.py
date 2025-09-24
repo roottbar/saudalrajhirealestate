@@ -22,6 +22,7 @@ class HrAnnualLeaveSettlementWizard(models.TransientModel):
     # فترة التصفية
     settlement_period_from = fields.Date(string='من تاريخ', required=True)
     settlement_period_to = fields.Date(string='إلى تاريخ', required=True)
+    settlement_date = fields.Date(string='تاريخ التصفية', default=fields.Date.context_today)
     
     # إعدادات الإجازة
     annual_leave_days = fields.Float(string='أيام الإجازة السنوية', default=22.0, help='22 يوم حسب النظام السعودي')
