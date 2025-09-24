@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Tree View -->
+        <record id="view_hr_end_of_service_tree" model="ir.ui.view">
+            <field name="name">hr.end.of.service.tree</field>
+            <field name="model">hr.end.of.service</field>
+            <field name="arch" type="xml">
+                <tree string="تصفيات نهاية الخدمة" decoration-info="state=='draft'" decoration-success="state=='approved'" decoration-warning="state=='confirmed'" decoration-danger="state=='cancelled'">
+                    <field name="employee_id"/>
+                    <field name="calculation_date"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="service_years"/>
+                    <field name="termination_type"/>
+                    <field name="total_salary" sum="إجمالي الراتب"/>
+                    <field name="end_of_service_benefit" sum="إجمالي المكافأة"/>
+                    <field name="net_amount" sum="صافي المبلغ"/>
+                    <field name="state" widget="badge"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Form View -->
+        <record id="view_hr_end_of_service_form" model="ir.ui.view">
+            <field name="name">hr.end.of.service.form</field>
+            <field name="model">hr.end.of.service</field>
+            <field name="arch" type="xml">
+                <form string="تصفية نهاية الخدمة">
+                    <header>
+                        <button name="action_confirm" string="تأكيد" type="object" states="draft" class="oe_highlight"/>
+                        <button name="action_approve" string="اعتماد" type="object" states="confirmed" class="oe_highlight" groups="hr.group_hr_manager"/>
+                        <button name="action_set_to_paid" string="تعيين كمدفوع" type="object" states="approved" class="oe_highlight" groups="hr.group_hr_manager"/>
+                        <button name="action_cancel" string="إلغاء" type="object" states="draft,confirmed" confirm="هل أنت متأكد من إلغاء هذه التصفية؟"/>
+                        <button name="action_reset_to_draft" string="إعادة تعيين كمسودة" type="object" states="cancelled"/>
+                        <button name="action_print_settlement" string="طباعة" type="object" states="confirmed,approved,paid" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approved,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_payslips" type="object" class="oe_stat_button" icon="fa-money" attrs="{'invisible': [('payslip_count', '=', 0)]}">
+                                <field name="payslip_count" widget="statinfo" string="قسائم الراتب"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group name="employee_info" string="معلومات الموظف">
+                                <field name="employee_id" options="{'no_create': True, 'no_edit': True}"/>
+                                <field name="contract_id" options="{'no_create': True}"/>
+                                <field name="calculation_date"/>
+                                <field name="termination_type"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group name="service_period" string="فترة الخدمة">
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="total_service_days" readonly="1"/>
+                                <field name="service_years" readonly="1"/>
+                                <field name="service_months" readonly="1"/>
+                                <field name="service_days" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="تفاصيل الراتب" name="salary_details">
+                                <group>
+                                    <group name="salary_components" string="مكونات الراتب">
+                                        <field name="basic_salary"/>
+                                        <field name="housing_allowance"/>
+                                        <field name="transport_allowance"/>
+                                        <field name="other_allowances"/>
+                                        <field name="total_salary" readonly="1" class="oe_subtotal_footer_separator"/>
+                                    </group>
+                                    <group name="benefits" string="المكافآت والاستحقاقات">
+                                        <field name="end_of_service_benefit" readonly="1"/>
+                                        <field name="remaining_vacation_days"/>
+                                        <field name="vacation_amount" readonly="1"/>
+                                        <field name="other_benefits"/>
+                                        <field name="gross_amount" readonly="1" class="oe_subtotal_footer_separator"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="الخصومات والصافي" name="deductions">
+                                <group>
+                                    <group name="deductions_group" string="الخصومات">
+                                        <field name="loan_deductions"/>
+                                        <field name="advance_deductions"/>
+                                        <field name="other_deductions"/>
+                                        <field name="total_deductions" readonly="1" class="oe_subtotal_footer_separator"/>
+                                    </group>
+                                    <group name="net_group" string="صافي المبلغ">
+                                        <field name="net_amount" readonly="1" class="oe_subtotal_footer_separator"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="ملاحظات" name="notes">
+                                <field name="notes" placeholder="أدخل أي ملاحظات إضافية هنا..."/>
+                            </page>
+                            
+                            <page string="معلومات النظام" name="system_info">
+                                <group>
+                                    <group>
+                                        <field name="create_uid" readonly="1"/>
+                                        <field name="create_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="write_uid" readonly="1"/>
+                                        <field name="write_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Search View -->
+        <record id="view_hr_end_of_service_search" model="ir.ui.view">
+            <field name="name">hr.end.of.service.search</field>
+            <field name="model">hr.end.of.service</field>
+            <field name="arch" type="xml">
+                <search string="البحث في تصفيات نهاية الخدمة">
+                    <field name="employee_id" string="الموظف"/>
+                    <field name="calculation_date" string="تاريخ الحساب"/>
+                    <field name="termination_type" string="نوع الإنهاء"/>
+                    <field name="state" string="الحالة"/>
+                    
+                    <filter name="draft" string="مسودة" domain="[('state', '=', 'draft')]"/>
+                    <filter name="confirmed" string="مؤكد" domain="[('state', '=', 'confirmed')]"/>
+                    <filter name="approved" string="معتمد" domain="[('state', '=', 'approved')]"/>
+                    <filter name="paid" string="مدفوع" domain="[('state', '=', 'paid')]"/>
+                    <separator/>
+                    <filter name="resignation" string="استقالة" domain="[('termination_type', '=', 'resignation')]"/>
+                    <filter name="termination" string="فصل" domain="[('termination_type', 'in', ['termination_with_cause', 'termination_without_cause'])]"/>
+                    <filter name="retirement" string="تقاعد" domain="[('termination_type', '=', 'retirement')]"/>
+                    <separator/>
+                    <filter name="current_month" string="الشهر الحالي" domain="[('calculation_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('calculation_date', '&lt;', (context_today().replace(day=1) + relativedelta(months=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter name="current_year" string="السنة الحالية" domain="[('calculation_date', '>=', context_today().strftime('%Y-01-01')), ('calculation_date', '&lt;=', context_today().strftime('%Y-12-31'))]"/>
+                    
+                    <group expand="0" string="تجميع حسب">
+                        <filter name="group_employee" string="الموظف" context="{'group_by': 'employee_id'}"/>
+                        <filter name="group_termination_type" string="نوع الإنهاء" context="{'group_by': 'termination_type'}"/>
+                        <filter name="group_state" string="الحالة" context="{'group_by': 'state'}"/>
+                        <filter name="group_calculation_date" string="تاريخ الحساب" context="{'group_by': 'calculation_date'}"/>
+                        <filter name="group_company" string="الشركة" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Kanban View -->
+        <record id="view_hr_end_of_service_kanban" model="ir.ui.view">
+            <field name="name">hr.end.of.service.kanban</field>
+            <field name="model">hr.end.of.service</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_kanban_small_column">
+                    <field name="employee_id"/>
+                    <field name="calculation_date"/>
+                    <field name="net_amount"/>
+                    <field name="state"/>
+                    <field name="termination_type"/>
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle o-no-caret btn" type="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div class="dropdown-menu" role="menu">
+                                        <t t-if="widget.editable"><a type="edit" class="dropdown-item">تعديل</a></t>
+                                        <t t-if="widget.deletable"><a type="delete" class="dropdown-item">حذف</a></t>
+                                        <a name="action_print_settlement" type="object" class="dropdown-item">طباعة</a>
+                                    </div>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title"><field name="employee_id"/></strong>
+                                        </div>
+                                        <span class="fa fa-circle" t-attf-style="color: #{record.state.raw_value == 'paid' ? 'green' : record.state.raw_value == 'approved' ? 'orange' : 'red'};"/>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <field name="calculation_date"/><br/>
+                                        <t t-esc="record.termination_type.value"/><br/>
+                                        <strong>صافي المبلغ: <field name="net_amount" widget="monetary"/></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Action -->
+        <record id="action_hr_end_of_service" model="ir.actions.act_window">
+            <field name="name">تصفيات نهاية الخدمة</field>
+            <field name="res_model">hr.end.of.service</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_hr_end_of_service_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    إنشاء تصفية نهاية خدمة جديدة
+                </p>
+                <p>
+                    يمكنك إنشاء تصفيات نهاية الخدمة للموظفين حسب النظام السعودي.
+                    سيتم حساب المكافآت والاستحقاقات تلقائياً حسب نوع إنهاء الخدمة وسنوات الخدمة.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Menu Items -->
+        <menuitem id="menu_hr_end_of_service_root" name="تصفيات نهاية الخدمة" parent="hr.menu_hr_root" sequence="50"/>
+        
+        <menuitem id="menu_hr_end_of_service" name="تصفيات نهاية الخدمة" parent="menu_hr_end_of_service_root" action="action_hr_end_of_service" sequence="10"/>
+        
+    </data>
+</odoo>
