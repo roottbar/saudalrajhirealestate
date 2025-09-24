@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 class HrAnnualLeaveSettlement(models.Model):
     _name = 'hr.annual.leave.settlement'
     _description = 'تصفية الإجازة السنوية'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'calculation_date desc'
     _rec_name = 'display_name'
     
