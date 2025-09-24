@@ -22,6 +22,7 @@
         'hr',
         'hr_contract',
         'hr_holidays',
+        'mail',
         'report_xlsx',
     ],
     'data': [
