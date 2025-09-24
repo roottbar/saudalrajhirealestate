@@ -18,6 +18,11 @@ class HrAnnualLeaveSettlement(models.Model):
     calculation_date = fields.Date(string='تاريخ الحساب', default=fields.Date.context_today, required=True)
     settlement_period_from = fields.Date(string='من تاريخ', required=True)
     settlement_period_to = fields.Date(string='إلى تاريخ', required=True)
+    settlement_type = fields.Selection([
+        ('annual', 'تصفية سنوية'),
+        ('end_of_service', 'تصفية نهاية خدمة'),
+        ('custom', 'تصفية مخصصة')
+    ], string='نوع التصفية', default='annual', required=True)
     
     # معلومات الراتب
     monthly_salary = fields.Float(string='الراتب الشهري', required=True)
