@@ -42,7 +42,15 @@ class HrAnnualLeaveSettlement(models.Model):
     # المبالغ
     leave_settlement_amount = fields.Float(string='مبلغ تصفية الإجازة', compute='_compute_leave_settlement_amount', store=True)
     settlement_amount = fields.Float(string='مبلغ التصفية', compute='_compute_settlement_amount', store=True)
-    deductions = fields.Float(string='الخصومات', default=0.0)
+    other_benefits = fields.Float(string='مزايا أخرى', default=0.0)
+    gross_amount = fields.Float(string='إجمالي المبلغ', compute='_compute_gross_amount', store=True)
+    
+    # الخصومات
+    loan_deductions = fields.Float(string='خصم القروض', default=0.0)
+    advance_deductions = fields.Float(string='خصم السلف', default=0.0)
+    other_deductions = fields.Float(string='خصومات أخرى', default=0.0)
+    total_deductions = fields.Float(string='إجمالي الخصومات', compute='_compute_total_deductions', store=True)
+    deductions = fields.Float(string='الخصومات', compute='_compute_total_deductions', store=True)
     net_amount = fields.Float(string='صافي المبلغ', compute='_compute_net_amount', store=True)
     
     # معلومات إضافية
@@ -100,10 +108,25 @@ class HrAnnualLeaveSettlement(models.Model):
             # مبلغ التصفية هو نفس مبلغ تصفية الإجازة
             record.settlement_amount = record.leave_settlement_amount
     
-    @api.depends('leave_settlement_amount', 'deductions')
+    @api.depends('settlement_amount', 'other_benefits')
+    def _compute_gross_amount(self):
+        for record in self:
+            # إجمالي المبلغ = مبلغ التصفية + المزايا الأخرى
+            record.gross_amount = record.settlement_amount + record.other_benefits
+    
+    @api.depends('loan_deductions', 'advance_deductions', 'other_deductions')
+    def _compute_total_deductions(self):
+        for record in self:
+            # إجمالي الخصومات = خصم القروض + خصم السلف + خصومات أخرى
+            total = record.loan_deductions + record.advance_deductions + record.other_deductions
+            record.total_deductions = total
+            record.deductions = total
+    
+    @api.depends('gross_amount', 'total_deductions')
     def _compute_net_amount(self):
         for record in self:
-            record.net_amount = record.leave_settlement_amount - record.deductions
+            # صافي المبلغ = إجمالي المبلغ - إجمالي الخصومات
+            record.net_amount = record.gross_amount - record.total_deductions
     
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
