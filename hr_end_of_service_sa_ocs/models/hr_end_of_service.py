@@ -218,11 +218,15 @@ class HrEndOfService(models.Model):
     def _onchange_employee_id(self):
         if self.employee_id:
             # التحقق من وجود تصفية سابقة
-            existing_settlement = self.search([
+            domain = [
                 ('employee_id', '=', self.employee_id.id),
-                ('state', 'in', ['confirmed', 'approved', 'paid']),
-                ('id', '!=', self.id)
-            ])
+                ('state', 'in', ['confirmed', 'approved', 'paid'])
+            ]
+            # إضافة شرط استبعاد السجل الحالي فقط إذا كان له معرف صحيح
+            if self.id and not str(self.id).startswith('NewId'):
+                domain.append(('id', '!=', self.id))
+            
+            existing_settlement = self.search(domain)
             if existing_settlement:
                 raise UserError(_('يوجد تصفية نهاية خدمة سابقة لهذا الموظف!'))
             
