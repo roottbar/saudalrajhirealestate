@@ -69,6 +69,7 @@ class HrAnnualLeaveSettlement(models.Model):
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', string='العملة')
     create_uid = fields.Many2one('res.users', string='أنشأ بواسطة', default=lambda self: self.env.user)
     create_date = fields.Datetime(string='تاريخ الإنشاء', default=fields.Datetime.now)
+    color = fields.Integer(string='اللون', default=0)
     
     display_name = fields.Char(string='الاسم', compute='_compute_display_name')
     
