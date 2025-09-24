@@ -11,8 +11,8 @@
                     <field name="employee_id"/>
                     <field name="calculation_date"/>
                     <field name="settlement_type"/>
-                    <field name="period_from"/>
-                    <field name="period_to"/>
+                    <field name="settlement_period_from"/>
+                    <field name="settlement_period_to"/>
                     <field name="total_leave_days"/>
                     <field name="used_leave_days"/>
                     <field name="remaining_leave_days"/>
@@ -56,8 +56,8 @@
                                 <field name="company_id" groups="base.group_multi_company"/>
                             </group>
                             <group name="period_info" string="فترة التصفية">
-                                <field name="period_from"/>
-                                <field name="period_to"/>
+                                <field name="settlement_period_from"/>
+                                <field name="settlement_period_to"/>
                                 <field name="settlement_date"/>
                             </group>
                         </group>
