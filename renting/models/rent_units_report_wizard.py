@@ -176,6 +176,7 @@ class RentUnitsReportWizard(models.TransientModel):
                 'unit_name': line.product_id.name,
                 'customer_name': line.order_partner_id.name if line.order_partner_id else '',
                 'contract_number': line.order_id.name,
+                'ejar_contract_number': line.order_id.contract_number or '',
                 'unit_state': line.unit_state or '',
                 'contract_amount': contract_amount,  # مبلغ العقد الجديد
                 'invoice_count': invoice_count,  # عدد الفواتير الجديد
@@ -451,7 +452,7 @@ class RentUnitsReportWizard(models.TransientModel):
         # العناوين المحدثة (إزالة المصروفات والإيرادات وإضافة الأعمدة الجديدة)
         headers = [
             'الشركة', 'الفرع', 'المجمع', 'العقار', 'الحساب التحليلي', 'الوحدة',
-            'اسم العميل', 'رقم العقد', 'حالة الوحدة', 'مبلغ العقد', 'عدد الفواتير', 
+            'اسم العميل', 'رقم العقد', 'رقم عقد منصة إيجار', 'حالة الوحدة', 'مبلغ العقد', 'عدد الفواتير', 
             'مبلغ الفواتير', 'المبلغ المدفوع', 'المبلغ المستحق', 'تاريخ الاستلام', 'تاريخ التسليم'
         ]
         
@@ -500,23 +501,24 @@ class RentUnitsReportWizard(models.TransientModel):
             worksheet.write(current_row, 5, line_data['unit_name'], unit_format)
             worksheet.write(current_row, 6, line_data['customer_name'], unit_format)
             worksheet.write(current_row, 7, line_data['contract_number'], unit_format)
-            worksheet.write(current_row, 8, line_data['unit_state'], unit_format)
-            worksheet.write(current_row, 9, line_data['contract_amount'], number_format)  # مبلغ العقد الجديد
-            worksheet.write(current_row, 10, line_data['invoice_count'], unit_format)  # عدد الفواتير الجديد
-            worksheet.write(current_row, 11, line_data['invoice_total_amount'], number_format)  # مبلغ الفواتير الجديد
-            worksheet.write(current_row, 12, line_data['amount_paid'], number_format)
-            worksheet.write(current_row, 13, line_data['amount_due'], number_format)
+            worksheet.write(current_row, 8, line_data['ejar_contract_number'], unit_format)
+            worksheet.write(current_row, 9, line_data['unit_state'], unit_format)
+            worksheet.write(current_row, 10, line_data['contract_amount'], number_format)  # مبلغ العقد الجديد
+            worksheet.write(current_row, 11, line_data['invoice_count'], unit_format)  # عدد الفواتير الجديد
+            worksheet.write(current_row, 12, line_data['invoice_total_amount'], number_format)  # مبلغ الفواتير الجديد
+            worksheet.write(current_row, 13, line_data['amount_paid'], number_format)
+            worksheet.write(current_row, 14, line_data['amount_due'], number_format)
             
             # تنسيق التواريخ بصيغة dd/mm/yyyy
             if line_data['from_date']:
-                worksheet.write_datetime(current_row, 14, line_data['from_date'], date_cell_format)
-            else:
-                worksheet.write(current_row, 14, '', unit_format)
-                
-            if line_data['to_date']:
-                worksheet.write_datetime(current_row, 15, line_data['to_date'], date_cell_format)
+                worksheet.write_datetime(current_row, 15, line_data['from_date'], date_cell_format)
             else:
                 worksheet.write(current_row, 15, '', unit_format)
+                
+            if line_data['to_date']:
+                worksheet.write_datetime(current_row, 16, line_data['to_date'], date_cell_format)
+            else:
+                worksheet.write(current_row, 16, '', unit_format)
             
             current_row += 1
         
@@ -569,4 +571,3 @@ class RentUnitsReportWizard(models.TransientModel):
             return self.generate_html_report()
         else:
             return self.generate_excel_report()
-
