@@ -21,13 +21,22 @@
 #############################################################################
 {
     'name': "Readonly User Access",
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'category': 'Extra Tools',
     'summary': """Grant read-only access to users""",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""This module helps you to grant read-only
-     access to selected users.""",
+        
+        Enhanced Module
+        
+        This module helps you to grant read-only
+     access to selected users.
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',

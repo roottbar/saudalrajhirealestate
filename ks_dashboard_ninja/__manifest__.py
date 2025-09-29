@@ -6,9 +6,12 @@
 Ksolves Dashboard Ninja gives you a wide-angle view of your business that you might have missed. Get smart visual data with interactive and engaging dashboards for your Odoo ERP.  Odoo Dashboard, CRM Dashboard, Inventory Dashboard, Sales Dashboard, Account Dashboard, Invoice Dashboard, Revamp Dashboard, Best Dashboard, Odoo Best Dashboard, Odoo Apps Dashboard, Best Ninja Dashboard, Analytic Dashboard, Pre-Configured Dashboard, Create Dashboard, Beautiful Dashboard, Customized Robust Dashboard, Predefined Dashboard, Multiple Dashboards, Advance Dashboard, Beautiful Powerful Dashboards, Chart Graphs Table View, All In One Dynamic Dashboard, Accounting Stock Dashboard, Pie Chart Dashboard, Modern Dashboard, Dashboard Studio, Dashboard Builder, Dashboard Designer, Odoo Studio.  Revamp your Odoo Dashboard like never before! It is one of the best dashboard odoo apps in the market.
 """,
 
-	'description': "
+	'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 Dashboard Ninja v14.0,
         Odoo Dashboard,
         Dashboard,
@@ -63,7 +66,13 @@ Dashboard Ninja v14.0,
         create odoo dashboard
         odoo dashboard extension
         odoo dashboard module
-""",
+
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
 
 	'author': 'Ksolves India Ltd.',
 
@@ -81,7 +90,7 @@ Dashboard Ninja v14.0,
 
 	'category': 'Tools',
 
-	'version': '18.0.1.0.7',
+	'version': '15.0.1.0.0',
 
 	'support': 'sales@ksolves.com',
 

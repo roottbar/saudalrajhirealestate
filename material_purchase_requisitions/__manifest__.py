@@ -4,14 +4,17 @@
 
 {
     'name': 'Product/Material Purchase Requisitions by Employees/Users',
-    'version': '18.0.2.7.3',
+    'version': '15.0.1.0.0',
     'price': 79.0,
     'currency': 'EUR',
     'license': 'Other proprietary',
     'summary': """This module allow your employees/users to create Purchase Requisitions.""",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
     Material Purchase Requisitions
     This module allowed Purchase requisition of employee.
 Purchase_Requisition_Via_iProcurement
@@ -88,6 +91,12 @@ Email notifications to Department Manager, Requisition Manager for approval.
 - For more details please see Video on live preview or ask us by email...
 
 
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'author': 'Probuse Consulting Service Pvt. Ltd.',
     'maintainer': 'roottbar',

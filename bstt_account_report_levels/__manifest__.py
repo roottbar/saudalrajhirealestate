@@ -2,11 +2,12 @@
 {
     'name': "Account Report Levels",
     'summary': "Adds levels Buttons in the trial balance",
-    'description': "Adds levels Buttons in the trial balance
+    'description': """Adds levels Buttons in the trial balance
         
-        Updated for Odoo 18.0 - 2025 Edition",
+        Enhanced by roottbar for better functionality.
+    """,
     'category': 'Accounting',
-    'version': '18.0.0',
+    'version': '15.0.1.0',
     'depends': ['account_reports'],
     'data': [
         'views/template.xml',

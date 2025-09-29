@@ -9,16 +9,25 @@
     'summary': 'Generate PDF & Excel report of user activitys based on due date, type and range.',
     'license': 'LGPL-3',
     'version': '18.0',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 
 Generate Excel & PDF Report For Activity Of Users will allow to
 generate the PDF and Excel Report of user activity on bases of
 activity type like Email, Call, etc, Due date and 
 Range like less-then, grater-then, equal-to the due date added.
 
-""",
+
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'depends': ["base", "sale"],
     'data': [
         "security/ir.model.access.csv",

@@ -2,10 +2,19 @@
 {
     'name': 'Inventory User Restrict',
     'summary': """Restricts User access to warehouses and Operations""",
-    'version': '18.0.1.0.1',
-    'description': "
+    'version': '15.0.1.0.0',
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""Restricts User access to warehouses and Operations""",
+        
+        Enhanced Module
+        
+        Restricts User access to warehouses and Operations
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'author': "Crevisoft",
     'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",

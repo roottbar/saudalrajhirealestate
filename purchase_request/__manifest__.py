@@ -4,9 +4,18 @@
 
     'summary': """Purchase Request""",
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""Create Request for Quotations from Purchase Requests""",
+        
+        Enhanced Module
+        
+        Create Request for Quotations from Purchase Requests
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
 
     'author': "Crevisoft Corporate",
     'maintainer': 'roottbar',
@@ -16,7 +25,7 @@
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Inventory/Purchase',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
 
     # any module necessary for this one to work correctly
     'depends': ['purchase_stock', 'user_action_rule'],

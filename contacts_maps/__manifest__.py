@@ -1,20 +1,29 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Contacts Maps',
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'author': 'Yopi Angi',
     'license': 'AGPL-3',
     'maintainer': 'Yopi Angi<yopiangi@gmail.com>',
     'support': 'yopiangi@gmail.com',
     'category': 'Tools',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 Contacts Maps
 =============
 
 Added Google Map view on contacts
-""",
+
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'depends': [
         'contacts',
         'base_geolocalize',

@@ -5,10 +5,19 @@
     'summary': """
        Operational Addons""",
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         Long description of module's purpose
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
 
     'author': "Ibrahim Abdullatif",

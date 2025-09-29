@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Web Google Maps',
-    'version': '18.0.1.0.3',
+    'version': '15.0.1.0.0',
     'author': 'Yopi Angi',
     'license': 'AGPL-3',
     'maintainer': 'Yopi Angi<yopiangi@gmail.com>',
     'support': 'yopiangi@gmail.com',
     'category': 'Extra Tools',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 Web Google Map and google places autocomplete address form
 ==========================================================
 
@@ -17,7 +20,13 @@ This module brings two features:
 1. Allows user to view all partners addresses on google maps.
 2. Enabled google places autocomplete address form into partner
 form view, provide autocomplete feature when typing address of partner
-""",
+
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'depends': ['base_setup', 'base_geolocalize'],
     'website': '',
     'data': [

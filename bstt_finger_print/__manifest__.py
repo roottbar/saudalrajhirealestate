@@ -3,17 +3,26 @@
     'name': "BSTT Finger Print",
     "version" : "15.0.0.1",
     "category" : "Accounting",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
        Database connection details
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'author': "BSTT company",
     'maintainer': 'roottbar',
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'accounting',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
     'license': 'AGPL-3',
     'images': ['static/description/logo.png'],
     'depends': ['base','mail', 'hr','resource','hr_payroll','hr_attendance'],

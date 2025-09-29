@@ -8,7 +8,7 @@
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'hr',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
     'license': 'AGPL-3',
     'images': ['static/description/logo.png'],
     'depends': ['hr_letter', 'dynamic_portal'],

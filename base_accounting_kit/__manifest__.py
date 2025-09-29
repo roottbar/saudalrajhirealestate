@@ -22,16 +22,19 @@
 
 {
     'name': 'Odoo 15 Full Accounting Kit',
-    'version': '18.0.2.2.2',
+    'version': '15.0.1.0.0',
     'category': 'Accounting',
     'live_test_url': 'https://www.youtube.com/watch?v=peAp2Tx_XIs',
     'summary': """ Asset and Budget Management,
                  Accounting Reports, PDC, Lock dates,
                  Credit Limit, Follow Ups,
                  Day-Bank-Cash book reports.""",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
                     AccountingKit, Fullaccounting, Odoo accounting, Odooaccounting, all in one accounting,
                     allinoneaccounting, accounting,
                     Odoo 15 Accounting,Accounting Reports, Odoo 15 Accounting
@@ -47,7 +50,13 @@
                     Reconciliation Widget,
                     Reconciliation Widget For Odoo15,
                     Payments Matching
-                    """,
+                    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'author': 'Cybrosys Techno Solutions, Odoo SA',
     'website': "https://www.cybrosys.com",
     'company': 'Cybrosys Techno Solutions',

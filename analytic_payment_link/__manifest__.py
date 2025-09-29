@@ -1,12 +1,21 @@
 {
     'name': 'ربط المدفوعات بالحسابات التحليلية',
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'summary': 'ربط المدفوعات بحسابات وتحليلات مراكز التكلفة',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         يهدف إلى ربط المدفوعات بحسابات وتحليلات مراكز التكلفة (Analytic Accounts and Tags)،
         مما يُمكن من تتبع التكاليف والإيرادات بشكل أدق من خلال مراكز تحليلية حتى على مستوى الدفع.
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'author': 'Othmancs',
     'maintainer': 'roottbar',

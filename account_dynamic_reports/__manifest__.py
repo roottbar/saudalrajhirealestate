@@ -6,6 +6,8 @@
     'summary': "General Ledger Trial Balance Ageing Balance Sheet Profit and Loss Cash Flow Dynamic",
     'sequence': 15,
     'description': """
+        
+        
         Dynamic Accounting Reports Module
         
         Comprehensive accounting reports including General Ledger, Trial Balance, 
@@ -16,7 +18,7 @@
         - Dynamic View, Drill down, Clickable
         - Complete Accounting Reports
         
-        Updated for Odoo 18.0 - 2025 Edition
+        Enhanced by roottbar for Odoo 15.0
         
         Odoo 15 Full Accouning, Odoo 15 All in one Accouning, PDF Reports, XLSX Reports,
                     Dynamic View, Drill down, Clickable, Pdf and Xlsx package, Odoo 15 Accounting,
@@ -25,7 +27,10 @@
                     General Ledger, Partner Ledger, Trial Balance, Balance Sheet, Profit and Loss,
                     Financial Report Kit, Cash Flow Statements, Cash Flow Report, Cash flow, Dynamic reports,
                     Dynamic accounting, Dynamic financial
-                    """,
+                    
+        
+        Enhanced by roottbar.
+    """,
     'category': 'Accounting/Accounting',
     "price": 100,
     'author': 'Pycus',

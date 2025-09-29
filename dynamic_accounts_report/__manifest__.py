@@ -22,14 +22,14 @@
 
 {
     'name': 'Dynamic Financial Reports',
-    'version': '18.0.1.1.5',
+    'version': '15.0.1.0.0',
     'category': 'Accounting',
     'live_test_url': 'https://www.youtube.com/watch?v=gVQi9q9Rs-E&t=5s',
     'summary': """Dynamic Financial Reports with drill 
                 down and filters– Community Edition""",
     'description': "Dynamic Financial Reports, DynamicFinancialReports, FinancialReport, Accountingreports, odoo reports, odoo
         
-        Updated for Odoo 18.0 - 2025 Edition"
+        Enhanced by roottbar for Odoo 15.0"
                    "This module creates dynamic Accounting General Ledger, Trial Balance, Balance Sheet "
                    "Proft and Loss, Cash Flow Statements, Partner Ledger,"
                    "Partner Ageing, Day book"

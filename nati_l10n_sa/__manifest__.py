@@ -2,15 +2,24 @@
 
 {
     'name': 'Saudi Arabia Chart of Accounts standard',
-    'version': '18.0.0.0',
+    'version': '15.0.1.0',
     'author': "Mali,
     'maintainer': 'roottbar', MuhlhelITS",
     'website': "http://muhlhel.com",
     'category': 'Localization',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
      Arabic localization for most arabic countries.
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'depends': ['account', 'l10n_multilang'],
     'data': [

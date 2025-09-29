@@ -2,12 +2,12 @@
         'name': 'PostgreSQL Query Deluxe',
         'description': 'Execute postgreSQL query into Odoo interface
         
-        Updated for Odoo 18.0 - 2025 Edition',
+        Enhanced by roottbar for Odoo 15.0',
         'author': 'Yvan Dotet',
     'maintainer': 'roottbar',
         'depends': ['base', 'mail'],
         'application': True,
-        'version': '18.0.1.0.0',
+        'version': '15.0.1.0.0',
         'license': 'AGPL-3',
         'support': 'yvandotet@yahoo.fr',
         'website': 'https://github.com/YvanDotet/',

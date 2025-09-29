@@ -1,6 +1,6 @@
 {
     "name": "Filter Products by Unit State",
-    "version": "18.0.1.0.0",
+    "version": "15.0.1.0.0",
     "category": "Sales",
     "summary": "Hide products not marked as 'شاغرة' in sale order lines",
     "depends": ["sale"],

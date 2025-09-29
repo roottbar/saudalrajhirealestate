@@ -5,14 +5,23 @@
     'summary': """
         Glossy Path Advanced""",
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 Glossy Path Advanced
 ===================
 It consist of:
 
 1) Assets 
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
 
     'author': "Crevisoft Corporate",
@@ -20,7 +29,7 @@ It consist of:
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
 
     'depends': ['account_asset', 'hr_attendance','hr_payroll','analytic'],
 

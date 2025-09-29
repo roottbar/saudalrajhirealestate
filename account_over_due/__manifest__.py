@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Account Over Due Report',
-    'version': '18.0.1.0',
+    'version': '15.0.1.0',
     'category': 'Accounting/Accounting',
-    'description': "
+    'description': """
+        Account Over Due Report
         
-        Updated for Odoo 18.0 - 2025 Edition""Account Over Due Report""",
+        This module provides comprehensive overdue account reporting and management.
+        Enhanced by roottbar for better functionality.
+    """,
     'author': "Crevisoft Corporate",
     'maintainer': 'roottbar',
     'website': 'https://www.crevisoft.com',

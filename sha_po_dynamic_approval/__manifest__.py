@@ -1,12 +1,21 @@
 {
     'name': 'Dynamic Purchase Order Approval/Purchase Approval',
-    'version': '18.0.1.0.0',
-    'description': "
+    'version': '15.0.1.0.0',
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
     Purchase order approval system. 
     Any authorized designated user who is a member of PO approval team can approve the purchase. Without every members approval a purchase cannot be confirmed.
     However the team lead of that team can directly confirm the purchase order even if any member's approval state is pending. 
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'category': 'Purchase',
     'summary': 'Dynamic, Customizable and Flexible Approval Process for Purchase Orders',

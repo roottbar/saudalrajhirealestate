@@ -21,11 +21,14 @@
 #############################################################################
 {
     'name': 'Odoo 15 Budget Management',
-    'version': '18.0.1.1.0',
+    'version': '15.0.1.0.0',
     'summary': """ Budget Management for Odoo 15 Community Edition. """,
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition"" This module allows accountants to manage analytic and budgets.
+        
+        Enhanced Module
+        
+         This module allows accountants to manage analytic and budgets.
 
      Once the Budgets are defined (in Accounting/Accounting/Budgets), the Project Managers
      can set the planned amount on each Analytic Account.
@@ -44,7 +47,13 @@
      3. The last one is available from the Analytic Chart of Accounts. It gives
      the spreading, for the selected Analytic Accounts of Budgets. 
      Odoo 15 Budget Management,Odoo 15, Odoo 15 Budget, Odoo 15 Accounting, 
-     Odoo 15 Account,Budget Management, Budget""",
+     Odoo 15 Account,Budget Management, Budget
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'category': 'Accounting',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',

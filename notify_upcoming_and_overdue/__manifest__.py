@@ -6,7 +6,7 @@
     'maintainer': 'roottbar',
     'website': "",
     'category': 'Accounting/Accounting',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
     'depends': ['base', 'account', 'sale'],
     'data': [
         'cron/cron.xml',

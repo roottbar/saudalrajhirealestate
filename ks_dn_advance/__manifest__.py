@@ -12,9 +12,12 @@
     """,
 
 
-	'description': "
+	'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 Best Odoo Dashboard Apps
         Slider Dashboard Apps
         Odoo Query Dashboard Apps
@@ -88,7 +91,13 @@ Best Odoo Dashboard Apps
         Odoo Dashboard v14.0
         New Odoo Dashboard Apps
         Dashboard Ninja Advance
-""",
+
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
 
 	'author': 'Ksolves India Ltd.',
 
@@ -106,7 +115,7 @@ Best Odoo Dashboard Apps
 
 	'category': 'Tools',
 
-	'version': '18.0.1.0.2',
+	'version': '15.0.1.0.0',
 
 	'support': 'sales@ksolves.com',
 

@@ -21,7 +21,7 @@
 #############################################################################
 {
     'name': 'Project and Task Progress Status',
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'category': 'Project',
     'summary': 'Keep your finger on the projects pulse with this module. '
                'Featuring a dynamic progress bar, it provides a visual snapshot'
@@ -30,7 +30,7 @@
                'experience.',
     'description': 'Dive into project progression with a sleek module offering
         
-        Updated for Odoo 18.0 - 2025 Edition'
+        Enhanced by roottbar for Odoo 15.0'
                    ' a task-focused progress bar. Switch between Kanban and '
                    'list views seamlessly, ensuring a comprehensive '
                    'understanding of your projects evolving landscape. '

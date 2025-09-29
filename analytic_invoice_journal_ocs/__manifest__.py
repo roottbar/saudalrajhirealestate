@@ -1,12 +1,21 @@
 {
     'name': 'الحساب التحليلي الافتراضي من المنتج',
-    'version': '18.0.1.0.1',
+    'version': '15.0.1.0.0',
     'summary': 'تعيين الحساب التحليلي للمنتج كقيمة افتراضية في بنود الفاتورة',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         يجعل الحساب التحليلي للمنتج هو القيمة الافتراضية في بنود الفاتورة
         مع الحفاظ على إمكانية التعديل يدوياً.
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'author': 'othmancs',
     'maintainer': 'roottbar',

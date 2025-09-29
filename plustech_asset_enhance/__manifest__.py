@@ -2,13 +2,22 @@
 {
     'name': "Accounting Advanced",
     'summary': """  Accounting Advanced""",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""  Accounting Asset  """,
+        
+        Enhanced Module
+        
+          Accounting Asset  
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'author': "Plus Tech",
     'maintainer': 'roottbar',
     'category': 'Accounting/Accounting',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
     'depends': ['account', 'account_asset', 'renting'],
     'data': [
         'security/security.xml',

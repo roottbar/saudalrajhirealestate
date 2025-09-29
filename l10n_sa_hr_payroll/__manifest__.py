@@ -5,12 +5,21 @@
     'author': 'Odoo PS',
     'maintainer': 'roottbar',
     'category': 'Human Resources/Payroll',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 Kingdom of Saudi Arabia Payroll and End of Service rules.
 ===========================================================
 
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'license': 'OEEL-1',
     'depends': ['hr_payroll'],

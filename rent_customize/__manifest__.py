@@ -3,7 +3,7 @@
     'name': "Rent Customize",
     'summary': """Sale Renting Customization""",
     'category': 'Sales Management',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
     'depends': ['sale_renting', 'renting', 'web_google_maps'],
     'data': [
         'security/security.xml',

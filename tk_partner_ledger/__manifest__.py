@@ -1,13 +1,22 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Partner Ledger Reports in XLS and PDF',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
             Partner Ledger Reports in XLS and PDF
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'summary': 'Partner Ledger Reports in XLS and PDF',
-    'version': '18.0.1.0',
+    'version': '15.0.1.0',
     'category': 'Accounting',
     'author': 'Othmancs.',
     'company': 'Tbarholding.',

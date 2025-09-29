@@ -11,9 +11,12 @@
     'name': "Parent Account (Chart of Account Hierarchy)",
     'summary': """
         Adds Parent account and ability to open chart of account list view based on the date and moves""",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 This module 
         * Adds new type 'view' in account type
         * Adds parent account in account
@@ -23,6 +26,12 @@ This module
         * Provide PDF and XLS reports
     - Need to set the group show chart of account structure to view the chart of account hierarchy.
     For any support contact o4odoo@gmail.com or omalbastin@gmail.com
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
 
     'author': 'Omal Bastin / O4ODOO',
@@ -31,7 +40,7 @@ This module
     'license': 'OPL-1',
     'website': 'http://o4odoo.com',
     'category': 'Accounting',
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'depends': ['account'],
     'data': [
         'security/account_parent_security.xml',

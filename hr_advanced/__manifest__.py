@@ -5,9 +5,12 @@
     'summary': """
         HR Advanced""",
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 HR Advanced
 ===================
 It consist of:
@@ -16,6 +19,12 @@ It consist of:
 1) Allowances 
 2) Number and Age Employee
 3) Employee Access Own Profile
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
 
     'author': "Crevisoft Corporate",
@@ -26,7 +35,7 @@ It consist of:
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Human Resources',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
 
     # any module necessary for this one to work correctly
     'depends': ['hr_payroll','hr_holidays'],

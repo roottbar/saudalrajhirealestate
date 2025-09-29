@@ -23,13 +23,22 @@
 
 {
     'name': 'Inter Company Stock Transfer',
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'summary': """Create counterpart Receipt/Delivery Orders between companies.""",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""Automatically Create Receipt/Delivery orders if any company validates a 
+        
+        Enhanced Module
+        
+        Automatically Create Receipt/Delivery orders if any company validates a 
                       Deliver Order/Receipt to the selected company,Inter Company Stock Transfer, Stock Transfer,
-                      Create counterpart Receipt/Delivery Orders between companies""",
+                      Create counterpart Receipt/Delivery Orders between companies
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'category': 'Warehouse',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',

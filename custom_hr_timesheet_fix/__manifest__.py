@@ -3,11 +3,20 @@
     'version': '18.0',
     'category': 'Accounting',
     'summary': 'Fixes TypeError in Timesheet portal due to _compute_domain missing mode',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         This module fixes the issue when opening portal invoices
         where hr_timesheet _compute_domain() was missing required argument 'mode'.
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'author': 'Your Name',
     'maintainer': 'roottbar',

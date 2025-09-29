@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Plus Tech Employee Custody Management",
-    'version': '18.0.1.0.0',  # Updated for 2025 - Force rebuild trigger
+    'version': '15.0.1.0.0',  # Updated for 2025 - Force rebuild trigger
     'author': 'Plus Technology Team',
     'company': 'Plus Technology',
     'maintainer': 'roottbar',
     'category': 'Human Resources/Custody',
     'website': "www.plustech-it.com",
     'description': """
+        
+        
         Employee Custody Management System
         ==================================
         
@@ -18,7 +20,10 @@
         * Integration with HR and Asset modules
         * Automated reminders and reports
         
-        Updated for Odoo 18.0 - 2025 Edition
+        Enhanced by roottbar for Odoo 15.0
+    
+        
+        Enhanced by roottbar.
     """,
     'summary': """Complete employee custody and asset management solution""",
     'depends': ['base', 'plustech_hr_employee', 'account_asset'],

@@ -6,10 +6,19 @@
         This module provides integration between, Odoo POS Module and Saudi Geidea POS Terminal without the need to use POSBox.
     """,
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         This module provides integration between, Odoo POS Module and Saudi Geidea POS Terminal without the need to use POSBox.
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
 
     'author': "Barameg",
@@ -20,7 +29,7 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Point Of Sale',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'point_of_sale'],

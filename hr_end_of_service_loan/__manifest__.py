@@ -7,7 +7,7 @@
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
 
     'depends': ['hr_end_of_service', 'hr_loan'],
 

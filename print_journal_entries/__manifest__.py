@@ -2,12 +2,15 @@
 
 {
     'name': 'Print Journal Entries Report in Odoo',
-    'version': '18.0.0.0',
+    'version': '15.0.1.0',
     'category': 'Account',
     'summary': 'Allow to print pdf report of Journal Entries.',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
     Allow to print pdf report of Journal Entries.
     journal entry
     print journal entry 
@@ -15,7 +18,13 @@
     print journal entry reports
     account journal entry reports
     journal reports
-    account entry reports""",
+    account entry reports
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'depends': ['base', 'account'],
     'data': [
             'report/report_journal_entries.xml',

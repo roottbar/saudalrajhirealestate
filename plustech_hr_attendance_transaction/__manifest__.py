@@ -1,15 +1,24 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Plus Tech HR Attendance Transaction",
-    'version': '18.0.0.0.0',
+    'version': '15.0.1.0.0',
     'author': 'Plus Technology Team',
     'maintainer': 'roottbar',
     'company': 'Plus Technology',
     'category': 'Human Resources/Attendance',
     'website': "www.plustech-it.com",
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""Employees Attendance Transactions Management """,
+        
+        Enhanced Module
+        
+        Employees Attendance Transactions Management 
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
     'summary': """Recording Attendance Transaction for Employees""",
     'depends': ['base',
                 'hr',

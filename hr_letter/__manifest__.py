@@ -4,13 +4,22 @@
 
     'summary': """Letter For Employee""",
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         Letter For Employee
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'category': 'Human Resources',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
     'depends': ['hr','hr_contract','bstt_hr'],
 
     # always loaded

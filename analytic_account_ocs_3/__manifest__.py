@@ -1,10 +1,13 @@
 {
     'name': 'تقرير مراكز التكلفة',
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'summary': 'تقرير مفصل عن المصروفات والإيرادات والتحصيل والمديونية حسب مراكز التكلفة',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         تقرير مراكز التكلفة
         ==================
 
@@ -15,6 +18,12 @@
         - المديونية حسب مراكز التكلفة
 
         مع إمكانية تصدير التقرير إلى Excel أو PDF
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'author': 'othmancs',
     'maintainer': 'roottbar',

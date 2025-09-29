@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'HR Resume ATS Analysis',
-    'version': '18.0.1.0.0',
+    'version': '15.0.1.0.0',
     'category': 'Human Resources',
     'summary': 'Resume Analysis using ATS System with AI Evaluation',
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         HR Resume ATS Analysis
         ======================
         
@@ -27,6 +30,12 @@
         * Experience evaluation
         * Education verification
         * Keyword optimization suggestions
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
     'author': 'Your Company',
     'maintainer': 'roottbar',

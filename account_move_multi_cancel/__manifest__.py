@@ -21,7 +21,7 @@
 #############################################################################
 {
     'name': "Mass Journal Entry Cancel",
-    "version": "18.0.1.0.0",
+    "version": "15.0.1.0.0",
     "category": "Accounting",
     "summary": "User can cancel or reset multiple journal entries ",
     "description": """ This module helps cancel or reset multiple journal 

@@ -5,21 +5,30 @@
     'summary': """
         Customer Tickets""",
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
 This module allow customer has a valid subscription to submit ticket for support team. 
 First you neet to activate developer mode in order to set up configuration so go to menu:
 Tickets -> Configuration -> Subscription create new record with db,user,password the press get date data button, it will 
 get subscription code and subscription status, 
 You can submit a ticket while the status of subscription is running
- """,
+ 
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
+    """,
 
     'author': "PlusTech",
     'maintainer': 'roottbar',
     'website': "http://www.plustech-it.com",
     'category': 'Sales',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
     'depends': ['base', 'mail'],
     'data': [
         'security/groups.xml',

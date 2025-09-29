@@ -21,15 +21,17 @@
 
 {
     'name': "Task Deadline Reminder",
-    'version': "18.0.1.0.0",
+    'version': "15.0.1.0.0",
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
     'summary': '''Automatically Send Mail To Responsible User if Deadline Of Task is Today''',
-    'description': '
+    'description': '''Task Deadline Reminder
         
-        Updated for Odoo 18.0 - 2025 Edition''Automatically Send Mail To Responsible User if Deadline Of Task is Today''',
+        Automatically Send Mail To Responsible User if Deadline Of Task is Today.
+        Enhanced by roottbar for better functionality.
+    ''',
     'category': "Project",
     'depends': ['project'],
     'license': 'AGPL-3',

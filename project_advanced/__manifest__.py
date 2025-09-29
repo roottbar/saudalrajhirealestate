@@ -5,10 +5,19 @@
     'summary': """
         Template stages for projects""",
 
-    'description': "
+    'description': """
         
-        Updated for Odoo 18.0 - 2025 Edition""
+        
+        Enhanced Module
+        
+        
         Template stages for projects
+    
+        
+        Updated by roottbar for better functionality.
+    
+        
+        Enhanced by roottbar.
     """,
 
     'author': "Crevisoft",
@@ -19,7 +28,7 @@
     # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'hidden',
-    'version': '18.0.0.1',
+    'version': '15.0.1.0',
 
     # any module necessary for this one to work correctly
     'depends': ['project_forecast', 'project_enterprise', 'hr_contract', 'hr_timesheet', 'web_dashboard'],
