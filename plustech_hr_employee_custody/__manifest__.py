@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Plus Tech Employee Custody Management",
-    'version': '18.0.1.0.0',  # Updated for 2025
+    'version': '18.0.1.0.0',  # Updated for 2025 - Force rebuild trigger
     'author': 'Plus Technology Team',
     'company': 'Plus Technology',
     'maintainer': 'roottbar',
