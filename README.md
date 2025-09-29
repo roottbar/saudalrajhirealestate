@@ -8,3 +8,5 @@ This repository contains the Odoo modules for Saudi Al-Rajhi Real Estate managem
 - Branch: Update_Odoo_2025
 - Updated by: Hamads88
 <!-- Trigger update -->
+
+Trigger update
