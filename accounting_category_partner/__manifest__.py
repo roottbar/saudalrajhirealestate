@@ -6,10 +6,13 @@
     'summary': """
         Partner Accounting Categories""",
 
-    'description': "
+    'description': """
+        Partner Accounting Categories
         
-        Updated for Odoo 18.0 - 2025 Edition""
-        Partner accounting categories used when created customers or vendors to select payable & receivable accounts
+        Partner accounting categories used when creating customers or vendors 
+        to select payable & receivable accounts automatically.
+        
+        Updated for Odoo 18.0 - 2025 Edition
     """,
     'author': "Crevisoft",
     'maintainer': 'roottbar',

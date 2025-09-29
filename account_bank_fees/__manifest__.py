@@ -7,10 +7,12 @@
         Account Bank Fees""",
 
 
-    'description': "
+    'description': """
+        Account Bank Fees Module
         
-        Updated for Odoo 18.0 - 2025 Edition""
-        Account Bank Fees
+        This module manages bank fees and charges for accounting transactions.
+        
+        Updated for Odoo 18.0 - 2025 Edition
     """,
 
     'author': "Crevisoft Corporate",

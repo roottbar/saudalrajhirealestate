@@ -7,10 +7,12 @@
     'summary': """
         Accounting Advanced""",
 
-    'description': "
+    'description': """
+        Accounting Advanced Module
         
-        Updated for Odoo 18.0 - 2025 Edition""
-        Accounting Advanced
+        This module provides advanced accounting features and enhancements.
+        
+        Updated for Odoo 18.0 - 2025 Edition
     """,
 
     'author': "Crevisoft Corporate",

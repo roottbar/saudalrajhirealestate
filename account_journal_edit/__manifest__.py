@@ -3,11 +3,16 @@
     'version': '18.0.1.0.0',
     'category': 'Accounting',
     'summary': 'يسمح بتعديل الحساب في البنود بعد الترحيل',
-    'description': "
+    'description': """
+        Account Journal Edit Module
         
-        Updated for Odoo 18.0 - 2025 Edition""
         هذا الموديول يسمح للمستخدمين المصرح لهم بتعديل الحساب في بنود الفواتير
         بعد تأكيدها دون الحاجة إلى تعديل حالة الفاتورة إلى مسودة.
+        
+        This module allows authorized users to edit accounts in invoice lines
+        after confirmation without changing the invoice state to draft.
+        
+        Updated for Odoo 18.0 - 2025 Edition
     """,
     'author': 'Othmancs',
     'maintainer': 'roottbar',
