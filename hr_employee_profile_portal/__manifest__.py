@@ -3,9 +3,10 @@
     'name': 'Employee Profile Portal',
     'version': '15.0.1.0.0',
     'summary': """ Employee Profile Portal """,
-    'description': 'Employee Profile Portal
+    'description': '''Employee Profile Portal
         
-        Enhanced by roottbar for Odoo 15.0',
+        Enhanced by roottbar for Odoo 15.0
+    ''',
     'category': 'web',
     'author': 'Mahmoud Abd-Elaziz',
     'maintainer': 'roottbar',

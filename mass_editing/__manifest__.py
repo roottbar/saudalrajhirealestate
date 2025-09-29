@@ -3,10 +3,8 @@
 {
     'name': 'Mass Editing',
     'version': '15.0.1.0.0',
-    'author': 'Serpent Consulting Services Pvt. Ltd.,
-    'maintainer': 'roottbar', '
-              'Tecnativa, '
-              'Odoo Community Association (OCA)',
+    'author': 'Serpent Consulting Services Pvt. Ltd., Tecnativa, Odoo Community Association (OCA)',
+    'maintainer': 'roottbar',
     'category': 'Tools',
     'website': 'https://github.com/OCA/server-ux',
     'license': 'AGPL-3',

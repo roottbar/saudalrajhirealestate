@@ -28,9 +28,10 @@
                'of project and task advancement. Toggle effortlessly between'
                'Kanban and list views for a personalized project tracking '
                'experience.',
-    'description': 'Dive into project progression with a sleek module offering
+    'description': '''Dive into project progression with a sleek module offering
         
-        Enhanced by roottbar for Odoo 15.0'
+        Enhanced by roottbar for Odoo 15.0
+    ''',
                    ' a task-focused progress bar. Switch between Kanban and '
                    'list views seamlessly, ensuring a comprehensive '
                    'understanding of your projects evolving landscape. '

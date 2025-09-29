@@ -1,8 +1,9 @@
 {
         'name': 'PostgreSQL Query Deluxe',
-        'description': 'Execute postgreSQL query into Odoo interface
+        'description': '''Execute postgreSQL query into Odoo interface
         
-        Enhanced by roottbar for Odoo 15.0',
+        Enhanced by roottbar for Odoo 15.0
+    ''',
         'author': 'Yvan Dotet',
     'maintainer': 'roottbar',
         'depends': ['base', 'mail'],

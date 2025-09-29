@@ -21,6 +21,7 @@
         
         Enhanced by roottbar.
     """,
+    """,
     'depends': ['account', 'l10n_multilang'],
     'data': [
         'data/account_chart_template_data.xml',

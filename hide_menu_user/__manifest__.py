@@ -24,9 +24,10 @@
     'name': 'Hide Any Menu User Wise',
     'version': '15.0.1.0.0',
     'summary': 'Hide Menu,hide menu, hide, hide menus, hide menu odoo,Hide Any Menu Item User Wise',
-    'description': 'Hide Menu,hide menu, hide, hide menus, hide menu odoo,Hide Any Menu Item User Wise, Hide Menu Items, Hide Menu
+    'description': '''Hide Menu,hide menu, hide, hide menus, hide menu odoo,Hide Any Menu Item User Wise, Hide Menu Items, Hide Menu
         
-        Enhanced by roottbar for Odoo 15.0',
+        Enhanced by roottbar for Odoo 15.0
+    ''',
     'category': 'Extra Tools',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',

@@ -30,9 +30,11 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
-    'description': "Advance Activity Management and Dashboard View
+    'description': """Advance Activity Management and Dashboard View
         
-        Enhanced by roottbar for Odoo 15.0",
+        This module provides advanced activity management and dashboard views.
+        Enhanced by roottbar for Odoo 15.0
+    """,
     'depends': ['base', 'mail'],
     'images': ['static/description/banner.png'],
     'data': [

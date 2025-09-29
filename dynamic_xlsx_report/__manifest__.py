@@ -3,9 +3,10 @@
     'name': 'Dynamic XLS Report',
     'version': '15.0.1.0.0',
     'summary': """Dynamic XLS Report""",
-    'description': 'Dynamic XLS Report
+    'description': '''Dynamic XLS Report
         
-        Enhanced by roottbar for Odoo 15.0',
+        Enhanced by roottbar for Odoo 15.0
+    ''',
     'category': 'Tools',
     'author': 'Mahmoud Abd-Elaziz',
     'maintainer': 'roottbar',

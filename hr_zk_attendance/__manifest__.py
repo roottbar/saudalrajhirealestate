@@ -35,6 +35,7 @@
         
         Enhanced by roottbar.
     """,
+    """,
     'category': 'Generic Modules/Human Resources',
     'author': 'Cybrosys Techno Solutions,
     'maintainer': 'roottbar', Mostafa Shokiel',
