@@ -4,7 +4,9 @@
 
     'summary': """Letter For Employee""",
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         Letter For Employee
     """,
     'category': 'Human Resources',

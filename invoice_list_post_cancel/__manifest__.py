@@ -11,8 +11,11 @@
         'account',
     ],
     'author': 'Naing Lynn Htun',
+    'maintainer': 'roottbar',
     'support': 'konainglynnhtun@gmail.com',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
     - Post, Reset to Draft, Register Payment and cancel customer invoice from list view
     - Post, Reset to Draft, Register Payment and cancel vendor bill from list view
     """,

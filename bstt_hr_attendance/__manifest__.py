@@ -3,10 +3,13 @@
     'name': "BSTT HR Attendance ",
     "version" : "15.0.0.1",
     "category" : "hr",
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
        Electronic BSTT HR Attendance
     """,
     'author': "BSTT company",
+    'maintainer': 'roottbar',
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'hr',

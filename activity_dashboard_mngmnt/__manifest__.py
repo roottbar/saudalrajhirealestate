@@ -30,7 +30,9 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
-    'description': "Advance Activity Management and Dashboard View",
+    'description': "Advance Activity Management and Dashboard View
+        
+        Updated for Odoo 18.0 - 2025 Edition",
     'depends': ['base', 'mail'],
     'images': ['static/description/banner.png'],
     'data': [

@@ -11,7 +11,9 @@
     'name': "Parent Account (Chart of Account Hierarchy)",
     'summary': """
         Adds Parent account and ability to open chart of account list view based on the date and moves""",
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
 This module 
         * Adds new type 'view' in account type
         * Adds parent account in account
@@ -24,6 +26,7 @@ This module
     """,
 
     'author': 'Omal Bastin / O4ODOO',
+    'maintainer': 'roottbar',
     'live_test_url': 'https://accountparent.o4odoo.com/',
     'license': 'OPL-1',
     'website': 'http://o4odoo.com',

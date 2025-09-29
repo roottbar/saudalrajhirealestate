@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Odoo 18.0 Compatible - Updated by roottbar
 {
     'name': "Account Bank Fees",
 
@@ -6,11 +7,14 @@
         Account Bank Fees""",
 
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         Account Bank Fees
     """,
 
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     # Categories can be used to filter modules in modules listing

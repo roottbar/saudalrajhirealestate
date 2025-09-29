@@ -5,7 +5,9 @@
     'version': '18.0.0.0',
     'category': 'Account',
     'summary': 'Allow to print pdf report of Journal Entries.',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
     Allow to print pdf report of Journal Entries.
     journal entry
     print journal entry 

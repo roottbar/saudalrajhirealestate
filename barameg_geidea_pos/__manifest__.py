@@ -6,11 +6,14 @@
         This module provides integration between, Odoo POS Module and Saudi Geidea POS Terminal without the need to use POSBox.
     """,
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         This module provides integration between, Odoo POS Module and Saudi Geidea POS Terminal without the need to use POSBox.
     """,
 
     'author': "Barameg",
+    'maintainer': 'roottbar',
     'website': "https://barameg.co",
 
     # Categories can be used to filter modules in modules listing

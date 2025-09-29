@@ -4,11 +4,14 @@
 
     'summary': """Approvals action of any object""",
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         Approvals action of any object
     """,
 
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     # Categories can be used to filter modules in modules listing

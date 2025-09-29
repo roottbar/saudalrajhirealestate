@@ -4,7 +4,9 @@
     'version': '18.0.1.0.0',
     'category': 'Human Resources',
     'summary': 'Resume Analysis using ATS System with AI Evaluation',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         HR Resume ATS Analysis
         ======================
         
@@ -27,6 +29,7 @@
         * Keyword optimization suggestions
     """,
     'author': 'Your Company',
+    'maintainer': 'roottbar',
     'website': 'https://www.yourcompany.com',
     'license': 'LGPL-3',
     'depends': [

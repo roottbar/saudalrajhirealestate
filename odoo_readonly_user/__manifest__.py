@@ -24,7 +24,9 @@
     'version': '18.0.1.0.0',
     'category': 'Extra Tools',
     'summary': """Grant read-only access to users""",
-    'description': """This module helps you to grant read-only
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""This module helps you to grant read-only
      access to selected users.""",
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',

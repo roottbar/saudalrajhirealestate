@@ -4,7 +4,9 @@
     'version': '18.0.1.0.0',
     'category': 'Human Resources',
     'summary': 'تصفية نهاية الخدمة والإجازة السنوية حسب النظام السعودي',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         HR End of Service Saudi Arabia
         ==============================
         
@@ -16,6 +18,7 @@
         * إدارة كاملة لعمليات نهاية الخدمة
     """,
     'author': 'Othmancs',
+    'maintainer': 'roottbar',
     'website': 'https://www.Othmancs.com',
     'depends': [
         'base',

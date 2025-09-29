@@ -3,8 +3,11 @@
     'name': 'Account Over Due Report',
     'version': '18.0.1.0',
     'category': 'Accounting/Accounting',
-    'description': """Account Over Due Report""",
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""Account Over Due Report""",
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': 'https://www.crevisoft.com',
     'depends': ['account_followup'],
     'data': [

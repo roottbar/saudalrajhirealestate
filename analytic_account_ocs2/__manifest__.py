@@ -2,7 +2,9 @@
     'name': 'تقرير مراكز التكلفة',
     'version': '18.0.1.0.0',
     'summary': 'تقرير مفصل عن المصروفات والإيرادات والتحصيل والمديونية حسب مراكز التكلفة',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         تقرير مراكز التكلفة
         ==================
 
@@ -15,6 +17,7 @@
         مع إمكانية تصدير التقرير إلى Excel أو PDF
     """,
     'author': 'othmancs',
+    'maintainer': 'roottbar',
     'website': 'https://www.tbarholdingocs.com',
     'category': 'Accounting',
     'depends': ['base', 'account', 'analytic'],

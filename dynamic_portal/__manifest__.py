@@ -3,9 +3,12 @@
     'name': 'Dynamic Portal',
     'version': '18.0.1.0.0',
     'summary': """ Dynamic Portal """,
-    'description': 'Dynamic Portal',
+    'description': 'Dynamic Portal
+        
+        Updated for Odoo 18.0 - 2025 Edition',
     'category': 'web',
     'author': 'Mahmoud Abd-Elaziz',
+    'maintainer': 'roottbar',
     'depends': ['portal','calendar','mail'],
     'data': [
         'security/ir.model.access.csv',

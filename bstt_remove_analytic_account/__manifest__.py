@@ -3,10 +3,13 @@
     'name': "Remove Analytic Account From Journal Entries",
     "version": "15.0.0.1",
     "category": "stock",
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
        Remove Analytic Account From Journal Entries
     """,
     'author': "BSTT company",
+    'maintainer': 'roottbar',
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'stock',

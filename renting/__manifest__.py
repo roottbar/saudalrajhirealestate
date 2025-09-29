@@ -5,11 +5,14 @@
     'summary': """
        Operational Addons""",
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         Long description of module's purpose
     """,
 
     'author': "Ibrahim Abdullatif",
+    'maintainer': 'roottbar',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'sale_renting', 'sale_operating_unit', 'analytic', 'account_asset', 'l10n_gcc_invoice',

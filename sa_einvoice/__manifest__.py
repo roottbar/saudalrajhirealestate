@@ -4,11 +4,14 @@
 
     'summary': """ Saudi e-Invoicing """,
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         Saudi e-Invoicing
     """,
 
     'author': "BSTT Company",
+    'maintainer': 'roottbar',
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml

@@ -29,9 +29,9 @@
                         <field name="bucket_5" class="oe_inline" nolabel="1"/>
                     </group>
                     <footer>
-                        <button name="action_pdf" type="object" string="PDF" class="oe_highlight"/>
-                        <button name="action_xlsx" type="object" string="XLSX" class="oe_highlight"/>
-                        <button name="action_view" type="object" string="VIEW" class="oe_highlight"/>
+                        <button name="action_pdf" type="object" string="PDF" class="btn-primary"/>
+                        <button name="action_xlsx" type="object" string="XLSX" class="btn-primary"/>
+                        <button name="action_view" type="object" string="VIEW" class="btn-primary"/>
                         <button string="Cancel" class="btn-default" special="cancel" />
                     </footer>
                 </form>

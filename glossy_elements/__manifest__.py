@@ -6,11 +6,14 @@
         Short (1 phrase/line) summary of the module's purpose, used as
         subtitle on modules listing or apps.openerp.com""",
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         Long description of module's purpose
     """,
 
     'author': "O2M Technology",
+    'maintainer': 'roottbar',
     'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing

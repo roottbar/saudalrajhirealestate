@@ -3,10 +3,13 @@
     'name': "Electronic invoice BSTT",
     "version" : "14.0.0.1",
     "category" : "Accounting",
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
        Electronic invoice BSTT
     """,
     'author': "BSTT company",
+    'maintainer': 'roottbar',
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'accounting',

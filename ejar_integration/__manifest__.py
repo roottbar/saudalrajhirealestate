@@ -5,7 +5,9 @@
     'summary': """
         Integration with Saudi Arabia's Ejar Platform for Real Estate Rental Management
     """,
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         This module provides comprehensive integration with the Ejar platform (https://www.ejar.sa/),
         the official Saudi Arabian electronic platform for real estate rental sector regulation.
         
@@ -21,6 +23,7 @@
         - Comprehensive reporting and analytics
     """,
     'author': "Ibrahim Abdullatif",
+    'maintainer': 'roottbar',
     'website': "https://www.ejar.sa/",
     'category': 'Real Estate',
     'license': 'LGPL-3',

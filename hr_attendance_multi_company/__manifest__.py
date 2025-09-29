@@ -8,6 +8,7 @@
     'name': 'HR Attendance Multi-company',
     'version': '18.0.1.0.0',
     'author': 'Bashier Elbashier',
+    'maintainer': 'roottbar',
     'category': 'Human Resources',
     'summary': 'HR Attendance Multi Company',
     'depends': ['hr', 'hr_attendance'],

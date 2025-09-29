@@ -4,9 +4,12 @@
 
     'summary': """HR Attendance Summary""",
 
-    'description': """HR Attendance Summary""",
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""HR Attendance Summary""",
 
     'author': "Mahmoud Abdelaziz",
+    'maintainer': 'roottbar',
     'category': 'Human Resources',
     'version': '18.0.0.1',
 

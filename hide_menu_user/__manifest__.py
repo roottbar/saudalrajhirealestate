@@ -24,7 +24,9 @@
     'name': 'Hide Any Menu User Wise',
     'version': '18.0.1.0.0',
     'summary': 'Hide Menu,hide menu, hide, hide menus, hide menu odoo,Hide Any Menu Item User Wise',
-    'description': 'Hide Menu,hide menu, hide, hide menus, hide menu odoo,Hide Any Menu Item User Wise, Hide Menu Items, Hide Menu',
+    'description': 'Hide Menu,hide menu, hide, hide menus, hide menu odoo,Hide Any Menu Item User Wise, Hide Menu Items, Hide Menu
+        
+        Updated for Odoo 18.0 - 2025 Edition',
     'category': 'Extra Tools',
     'author': 'Cybrosys Techno Solutions',
     'company': 'Cybrosys Techno Solutions',

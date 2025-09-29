@@ -2,11 +2,14 @@
     'name': 'Suprema Biometric Integration',
     'version': '18.0.1.0.0',
     'summary': 'Integration with Suprema Biometric Devices',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         This module integrates Odoo with Suprema biometric devices
         to manage employee attendance automatically.
     """,
     'author': 'Your Company',
+    'maintainer': 'roottbar',
     'website': 'https://www.yourcompany.com',
     'category': 'Human Resources',
     'depends': ['web', 'hr', 'hr_attendance'],

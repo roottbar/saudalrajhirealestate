@@ -12,7 +12,9 @@
     """,
 
 
-	'description': """
+	'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
 Best Odoo Dashboard Apps
         Slider Dashboard Apps
         Odoo Query Dashboard Apps

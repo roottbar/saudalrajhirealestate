@@ -29,7 +29,9 @@
                  Accounting Reports, PDC, Lock dates,
                  Credit Limit, Follow Ups,
                  Day-Bank-Cash book reports.""",
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
                     AccountingKit, Fullaccounting, Odoo accounting, Odooaccounting, all in one accounting,
                     allinoneaccounting, accounting,
                     Odoo 15 Accounting,Accounting Reports, Odoo 15 Accounting

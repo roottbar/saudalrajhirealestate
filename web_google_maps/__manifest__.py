@@ -7,7 +7,9 @@
     'maintainer': 'Yopi Angi<yopiangi@gmail.com>',
     'support': 'yopiangi@gmail.com',
     'category': 'Extra Tools',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
 Web Google Map and google places autocomplete address form
 ==========================================================
 

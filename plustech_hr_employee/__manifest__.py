@@ -4,10 +4,13 @@
     'name': 'PlusTech HR Employee',
     'version': '18.0.0.0.0',
     'author': 'Plus Technology Team',
+    'maintainer': 'roottbar',
     'company': 'Plus Technology',
     'category': 'Human Resources/Employees',
     'website': "www.plustech-it.com",
-    'description': """manage employees data""",
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""manage employees data""",
     'summary': """employees module localization""",
     'depends': ['base', 'hr', 'resource', 'account'],
     'data': [

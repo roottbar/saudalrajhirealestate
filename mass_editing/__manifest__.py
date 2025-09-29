@@ -3,7 +3,8 @@
 {
     'name': 'Mass Editing',
     'version': '18.0.1.1.1',
-    'author': 'Serpent Consulting Services Pvt. Ltd., '
+    'author': 'Serpent Consulting Services Pvt. Ltd.,
+    'maintainer': 'roottbar', '
               'Tecnativa, '
               'Odoo Community Association (OCA)',
     'category': 'Tools',

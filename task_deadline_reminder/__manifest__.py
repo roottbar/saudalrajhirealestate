@@ -27,7 +27,9 @@
     'maintainer': 'Cybrosys Techno Solutions',
     'website': 'https://www.cybrosys.com',
     'summary': '''Automatically Send Mail To Responsible User if Deadline Of Task is Today''',
-    'description': '''Automatically Send Mail To Responsible User if Deadline Of Task is Today''',
+    'description': '
+        
+        Updated for Odoo 18.0 - 2025 Edition''Automatically Send Mail To Responsible User if Deadline Of Task is Today''',
     'category': "Project",
     'depends': ['project'],
     'license': 'AGPL-3',

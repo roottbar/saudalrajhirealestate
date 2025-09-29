@@ -3,12 +3,15 @@
     'version': '18.0.1.0.0',
     'category': 'Sales/Rental',
     'summary': 'Control product availability in rental orders based on occupancy status',
-    'description': '''
+    'description': '
+        
+        Updated for Odoo 18.0 - 2025 Edition''
         This module prevents rented products from appearing in new rental orders
         if they are in 'occupied' status and within the contract period.
         Products will only be available when their status is 'termination'.
     ''',
     'author': 'Your Company',
+    'maintainer': 'roottbar',
     'website': 'https://www.yourcompany.com',
     'depends': [
         'base',

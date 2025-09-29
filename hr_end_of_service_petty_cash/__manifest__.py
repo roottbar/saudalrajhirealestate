@@ -3,6 +3,7 @@
     'name': "HR End Of Service Petty Cash",
     'summary': """HR End Of Service  Petty Cash""",
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',

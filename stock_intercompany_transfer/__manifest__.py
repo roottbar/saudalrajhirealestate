@@ -25,7 +25,9 @@
     'name': 'Inter Company Stock Transfer',
     'version': '18.0.1.0.0',
     'summary': """Create counterpart Receipt/Delivery Orders between companies.""",
-    'description': """Automatically Create Receipt/Delivery orders if any company validates a 
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""Automatically Create Receipt/Delivery orders if any company validates a 
                       Deliver Order/Receipt to the selected company,Inter Company Stock Transfer, Stock Transfer,
                       Create counterpart Receipt/Delivery Orders between companies""",
     'category': 'Warehouse',

@@ -3,6 +3,7 @@
     'name': "Accounting Reports Operating",
     'summary': """Account Reportsl Operating""",
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
     'category': 'Accounting/Accounting',
     'version': '18.0.0.1',

@@ -3,8 +3,11 @@
 {
     'name': 'K.S.A. - Payroll',
     'author': 'Odoo PS',
+    'maintainer': 'roottbar',
     'category': 'Human Resources/Payroll',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
 Kingdom of Saudi Arabia Payroll and End of Service rules.
 ===========================================================
 

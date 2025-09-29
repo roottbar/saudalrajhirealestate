@@ -3,10 +3,13 @@
     'name': "BSTT Account Operating Unit Sequence",
     "version" : "15.0.0.1",
     "category" : "Accounting",
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
        Account Operating Unit Sequence BSTT
     """,
     'author': "BSTT company",
+    'maintainer': 'roottbar',
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'Generic',

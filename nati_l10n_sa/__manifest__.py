@@ -3,10 +3,13 @@
 {
     'name': 'Saudi Arabia Chart of Accounts standard',
     'version': '18.0.0.0',
-    'author': "Mali, MuhlhelITS",
+    'author': "Mali,
+    'maintainer': 'roottbar', MuhlhelITS",
     'website': "http://muhlhel.com",
     'category': 'Localization',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
      Arabic localization for most arabic countries.
     """,
     'depends': ['account', 'l10n_multilang'],

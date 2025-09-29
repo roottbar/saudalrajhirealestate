@@ -4,6 +4,7 @@
     "version": "15.0.0.1",
     "category": "hr",
     'author': "BSTT company",
+    'maintainer': 'roottbar',
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'hr',

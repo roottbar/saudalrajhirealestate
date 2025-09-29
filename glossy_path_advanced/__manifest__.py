@@ -5,7 +5,9 @@
     'summary': """
         Glossy Path Advanced""",
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
 Glossy Path Advanced
 ===================
 It consist of:
@@ -14,6 +16,7 @@ It consist of:
     """,
 
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',

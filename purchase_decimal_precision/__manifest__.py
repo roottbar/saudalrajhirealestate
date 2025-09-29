@@ -4,7 +4,9 @@
     'version': '18.0.1.0.0',
     'category': 'Purchase',
     'summary': 'Allow up to 4 decimal places in purchase order lines',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
 Purchase Decimal Precision
 ==========================
 
@@ -32,6 +34,7 @@ After installation, you can enter decimal values with up to 4 decimal places
 in purchase order lines.
     """,
     'author': 'Your Company',
+    'maintainer': 'roottbar',
     'website': 'https://www.yourcompany.com',
     'depends': ['purchase'],
     'data': [

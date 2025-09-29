@@ -5,11 +5,14 @@
     'summary': """
         Journal Entry Report""",
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         This module help to print a Journal Entry
     """,
 
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     # Categories can be used to filter modules in modules listing

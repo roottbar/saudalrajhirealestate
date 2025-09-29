@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Partner Ledger Reports in XLS and PDF',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
             Partner Ledger Reports in XLS and PDF
     """,
     'summary': 'Partner Ledger Reports in XLS and PDF',

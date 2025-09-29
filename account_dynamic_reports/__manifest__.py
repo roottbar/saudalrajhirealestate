@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+# Odoo 18.0 Compatible - Updated by roottbar
 {
     'name' : 'All in one Dynamic Financial Reports v15',
     'version' : '15.1.0',
     'summary': "General Ledger Trial Balance Ageing Balance Sheet Profit and Loss Cash Flow Dynamic",
     'sequence': 15,
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
                     Odoo 15 Full Accouning, Odoo 15 All in one Accouning, PDF Reports, XLSX Reports,
                     Dynamic View, Drill down, Clickable, Pdf and Xlsx package, Odoo 15 Accounting,
                     Full Account Reports, Complete Accounting Reports, Financial Report for Odoo 13,

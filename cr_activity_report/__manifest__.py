@@ -9,7 +9,9 @@
     'summary': 'Generate PDF & Excel report of user activitys based on due date, type and range.',
     'license': 'LGPL-3',
     'version': '18.0',
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
 
 Generate Excel & PDF Report For Activity Of Users will allow to
 generate the PDF and Excel Report of user activity on bases of

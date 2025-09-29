@@ -3,6 +3,7 @@
     'name': "HR End Of Service Time Off",
     'summary': """HR End Of Service  Time Off""",
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',

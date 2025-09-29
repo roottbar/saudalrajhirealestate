@@ -9,7 +9,9 @@
     'currency': 'EUR',
     'license': 'Other proprietary',
     'summary': """This module allow your employees/users to create Purchase Requisitions.""",
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
     Material Purchase Requisitions
     This module allowed Purchase requisition of employee.
 Purchase_Requisition_Via_iProcurement
@@ -88,6 +90,7 @@ Email notifications to Department Manager, Requisition Manager for approval.
 
     """,
     'author': 'Probuse Consulting Service Pvt. Ltd.',
+    'maintainer': 'roottbar',
     'website': 'http://www.probuse.com',
     'support': 'contact@probuse.com',
     'images': ['static/description/img1.jpeg'],

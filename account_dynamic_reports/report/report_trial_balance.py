@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Odoo 18.0 Compatible - Updated by roottbar
 
 import time
 from odoo import api, models, _

@@ -3,6 +3,7 @@
     'name': "HR End Of Service Loan",
     'summary': """HR End Of Service  Loan""",
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',

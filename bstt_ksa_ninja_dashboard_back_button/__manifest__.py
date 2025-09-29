@@ -5,6 +5,7 @@
     'summary': "BSTT KSA Ninja Dashboard Add Back Button",
 
     'author': "BSTT Company",
+    'maintainer': 'roottbar',
 
     'website': "https://bstt.com.sa",
 

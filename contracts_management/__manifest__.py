@@ -5,11 +5,14 @@
     'summary': """
         Contracts Management""",
 
-    'description': """
+    'description': "
+        
+        Updated for Odoo 18.0 - 2025 Edition""
         Contracts Management
     """,
 
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     # Categories can be used to filter modules in modules listing

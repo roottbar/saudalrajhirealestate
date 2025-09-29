@@ -3,6 +3,7 @@
     'name': "HR End Of Service",
     'summary': """HR End Of Service""",
     'author': "Crevisoft Corporate",
+    'maintainer': 'roottbar',
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',

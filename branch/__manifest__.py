@@ -87,6 +87,7 @@ operating Unit for POS,operating Unit for Sales,operating Unit for Purchase,oper
 operating-Unit Operation for POS,operating-Unit Operation for Sales,operating-Unit operation for Purchase,operating-Unit operation for all, operating-Unit operation for Accounting,operating-Unit Operation for invoicing,operating-Unit operation for Payment order,operating-Unit operation for point of sales,operating-Unit operation for voucher,operating-Unit operation for All Accounting reports,operating-Unit operation Accounting filter.
     """,
     'author': 'BrowseInfo',
+    'maintainer': 'roottbar',
     'website': 'https://www.browseinfo.in',
     "price": 129.00,
     "currency": 'EUR',
