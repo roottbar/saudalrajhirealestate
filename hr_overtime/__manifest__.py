@@ -27,3 +27,4 @@
         # 'views/hr_payroll.xml',
     ]
 }
+ 
