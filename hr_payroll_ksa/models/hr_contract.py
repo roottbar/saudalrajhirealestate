@@ -19,7 +19,7 @@ class HrContract(models.Model):
         ('semi-annually', 'Semi-annually'),
         ('annually', 'Annually'),
     ], string='Scheduled Pay', index=True, default='monthly',
-        help="Defines the frequency of the wage payment.")
+        help="Defines the frequency of the wage payment.", store=True)
     resource_calendar_id = fields.Many2one(required=True, help="Employee's working schedule.")
     hra = fields.Monetary(string='Housing Allowance', tracking=True, help="House rent allowance.")
     tea = fields.Monetary(string="Telecom Allowance", help="Telecom allowance.")
