@@ -56,7 +56,6 @@ class HrHolidaysPublic(models.Model):
         return result
 
     @api.model
-    @api.returns("hr.holidays.public.line")
     def get_holidays_list(
         self, year=None, start_dt=None, end_dt=None, employee_id=None
     ):

@@ -21,7 +21,7 @@
 #############################################################################
 {
     'name': 'Project and Task Progress Status',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Project',
     'summary': 'Keep your finger on the projects pulse with this module. '
                'Featuring a dynamic progress bar, it provides a visual snapshot'

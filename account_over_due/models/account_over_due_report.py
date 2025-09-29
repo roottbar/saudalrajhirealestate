@@ -6,7 +6,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, html2plaintext
 from odoo.tools.misc import formatLang, format_date, get_lang
-from odoo.tools.translate import _
+from odoo import _
 
 
 class AccountOverDuepReport(models.AbstractModel):

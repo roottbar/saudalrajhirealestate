@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Ejar Platform Integration",
-    'version': "15.0.1.0.0",
+    'version': "18.0.1.0.0",
     'summary': """
         Integration with Saudi Arabia's Ejar Platform for Real Estate Rental Management
     """,

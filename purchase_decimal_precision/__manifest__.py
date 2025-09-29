@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Purchase Decimal Precision',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Purchase',
     'summary': 'Allow up to 4 decimal places in purchase order lines',
     'description': """

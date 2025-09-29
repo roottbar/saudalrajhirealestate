@@ -1,6 +1,6 @@
 {
     'name': 'Fix Timesheet Portal _compute_domain',
-    'version': '15.0',
+    'version': '18.0',
     'category': 'Accounting',
     'summary': 'Fixes TypeError in Timesheet portal due to _compute_domain missing mode',
     'description': """

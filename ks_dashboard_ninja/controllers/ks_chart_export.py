@@ -6,7 +6,7 @@ import json
 import operator
 
 from odoo.addons.web.controllers.main import ExportFormat,serialize_exception, ExportXlsxWriter
-from odoo.tools.translate import _
+from odoo import _
 from odoo import http
 from odoo.http import content_disposition, request
 from odoo.tools.misc import xlwt

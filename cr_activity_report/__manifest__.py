@@ -8,7 +8,7 @@
     'category': 'Sales,Mail',
     'summary': 'Generate PDF & Excel report of user activitys based on due date, type and range.',
     'license': 'LGPL-3',
-    'version': '15.0',
+    'version': '18.0',
     'description': """
 
 Generate Excel & PDF Report For Activity Of Users will allow to

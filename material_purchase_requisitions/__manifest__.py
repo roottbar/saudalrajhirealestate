@@ -4,7 +4,7 @@
 
 {
     'name': 'Product/Material Purchase Requisitions by Employees/Users',
-    'version': '2.7.3',
+    'version': '18.0.2.7.3',
     'price': 79.0,
     'currency': 'EUR',
     'license': 'Other proprietary',

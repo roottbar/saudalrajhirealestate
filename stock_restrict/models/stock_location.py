@@ -13,7 +13,6 @@ class StockLocation(models.Model):
 
 
 
-    @api.returns('stock.warehouse', lambda value: value.id)
     def get_warehouse(self):
         """ Returns warehouse id of warehouse that contains location """
         domain = [('view_location_id', 'parent_of', self.ids)]

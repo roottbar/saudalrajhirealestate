@@ -21,7 +21,7 @@
 #############################################################################
 {
     'name': "Readonly User Access",
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Extra Tools',
     'summary': """Grant read-only access to users""",
     'description': """This module helps you to grant read-only

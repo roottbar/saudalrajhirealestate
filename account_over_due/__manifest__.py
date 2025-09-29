@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Account Over Due Report',
-    'version': '1.0',
+    'version': '18.0.1.0',
     'category': 'Accounting/Accounting',
     'description': """Account Over Due Report""",
     'author': "Crevisoft Corporate",

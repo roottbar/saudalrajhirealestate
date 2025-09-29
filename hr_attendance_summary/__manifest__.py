@@ -8,7 +8,7 @@
 
     'author': "Mahmoud Abdelaziz",
     'category': 'Human Resources',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     'depends': ['hr_attendance', 'bstt_hr','hr_payroll', 'hr_overtime'],
 

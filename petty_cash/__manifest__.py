@@ -16,15 +16,15 @@
     # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['board', 'stock', 'account_accountant', 'project', 'account_check_printing', 'attachment_indexation',
                 'accounting_category_partner', 'base_dynamic_reports'],
-    'qweb': [
-        'static/src/xml/*.xml',
-    ],
     'assets': {
+        'web.assets_qweb': [
+            'petty_cash/static/src/xml/*.xml',
+        ],
         'web.assets_common': [
             'petty_cash/static/src/css/style_petty_cash.css',
         ],

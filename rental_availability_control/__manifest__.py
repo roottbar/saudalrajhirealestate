@@ -1,6 +1,6 @@
 {
     'name': 'Rental Availability Control',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Sales/Rental',
     'summary': 'Control product availability in rental orders based on occupancy status',
     'description': '''

@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'hidden',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['project_forecast', 'project_enterprise', 'hr_contract', 'hr_timesheet', 'web_dashboard'],

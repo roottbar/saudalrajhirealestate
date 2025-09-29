@@ -5,7 +5,7 @@
             Partner Ledger Reports in XLS and PDF
     """,
     'summary': 'Partner Ledger Reports in XLS and PDF',
-    'version': '1.0',
+    'version': '18.0.1.0',
     'category': 'Accounting',
     'author': 'Othmancs.',
     'company': 'Tbarholding.',

@@ -13,7 +13,7 @@
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Inventory/Purchase',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['purchase_stock', 'user_action_rule'],

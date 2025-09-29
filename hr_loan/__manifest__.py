@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Human Resources',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['mail', 'hr', 'hr_payroll', 'hr_payroll_account', 'bstt_hr'],

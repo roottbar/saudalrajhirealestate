@@ -6,7 +6,7 @@
     'website': "https://www.crevisoft.com",
 
     'category': 'Human Resources',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     'depends': ['hr_payroll', 'hr_holidays'],
 

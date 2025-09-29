@@ -23,7 +23,7 @@ It consist of:
     # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Human Resources',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['hr_payroll','hr_holidays'],

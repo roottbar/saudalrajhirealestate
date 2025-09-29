@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Dynamic XLS Report',
-    'version': '1.0.0',
+    'version': '18.0.1.0.0',
     'summary': """Dynamic XLS Report""",
     'description': 'Dynamic XLS Report',
     'category': 'Tools',

@@ -5,7 +5,7 @@
     'description': """  Accounting Asset  """,
     'author': "Plus Tech",
     'category': 'Accounting/Accounting',
-    'version': '0.1',
+    'version': '18.0.0.1',
     'depends': ['account', 'account_asset', 'renting'],
     'data': [
         'security/security.xml',

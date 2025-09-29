@@ -11,7 +11,7 @@
     'author': "Crevisoft",
     'website': "https://www.crevisoft.com",
     'category': 'hidden',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['account'],

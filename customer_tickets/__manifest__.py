@@ -16,7 +16,7 @@ You can submit a ticket while the status of subscription is running
     'author': "PlusTech",
     'website': "http://www.plustech-it.com",
     'category': 'Sales',
-    'version': '0.1',
+    'version': '18.0.0.1',
     'depends': ['base', 'mail'],
     'data': [
         'security/groups.xml',

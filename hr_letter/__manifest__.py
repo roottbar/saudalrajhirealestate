@@ -8,7 +8,7 @@
         Letter For Employee
     """,
     'category': 'Human Resources',
-    'version': '0.1',
+    'version': '18.0.0.1',
     'depends': ['hr','hr_contract','bstt_hr'],
 
     # always loaded

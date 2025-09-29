@@ -9,7 +9,7 @@
     """,
     'author': "Inwizards software Technology Pvt Ltd",
     'website': "https://www.inwizards.com/",
-    'version': '0.1',
+    'version': '18.0.0.1',
     'depends': ['base', 'sale'],
     "license": "AGPL-3",
     'live_test_url': 'https://pos.onlineemenu.com/web/login?db=whatsapp_go',

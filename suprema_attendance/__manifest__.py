@@ -1,6 +1,6 @@
 {
     'name': 'Suprema Biometric Integration',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': 'Integration with Suprema Biometric Devices',
     'description': """
         This module integrates Odoo with Suprema biometric devices

@@ -151,7 +151,7 @@ class TenderServiceManpower(models.Model):
     _description = "Tender Services Manpower"
     _inherits = {"tender.service.template": "service_template_id"}
 
-    service_template_id = fields.Many2one("tender.service.template", "Service Template", auto_join=True, index=True,
+    service_template_id = fields.Many2one("tender.service.template", "Service Template", index=True,
                                           ondelete="cascade", required=True)
     profession_id = fields.Many2one("hr.job", string="Profession/Specialized", copy=False)
     nationality_id = fields.Many2one("res.country", "Nationality", copy=False)
@@ -225,7 +225,7 @@ class TenderServiceEquipments(models.Model):
     _description = "Tender Services Equipments & tools"
     _inherits = {"tender.service.template": "service_template_id"}
 
-    service_template_id = fields.Many2one("tender.service.template", "Service Template", auto_join=True, index=True,
+    service_template_id = fields.Many2one("tender.service.template", "Service Template", index=True,
                                           ondelete="cascade", required=True)
     code = fields.Char("Code", copy=False)
     consumption_duration_monthly = fields.Integer(string="Duration/Month", default=1, required=True,
@@ -273,7 +273,7 @@ class TenderSpecialtyServicesRequest(models.Model):
     _description = "Tender Specialty Services Request"
     _inherits = {"tender.service.template": "service_template_id"}
 
-    service_template_id = fields.Many2one("tender.service.template", "Service Template", auto_join=True, index=True,
+    service_template_id = fields.Many2one("tender.service.template", "Service Template", index=True,
                                           ondelete="cascade", required=True)
     visit_duration = fields.Float(string="Visit/hrs", default=1, required=True, copy=False)
     total_visits_monthly = fields.Integer(string="Visits Monthly", default=1, required=True, copy=False)

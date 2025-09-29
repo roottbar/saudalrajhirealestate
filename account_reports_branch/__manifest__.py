@@ -5,7 +5,7 @@
     'author': "Crevisoft Corporate",
     'website': "https://www.crevisoft.com",
     'category': 'Accounting/Accounting',
-    'version': '0.1',
+    'version': '18.0.0.1',
 
     'depends': ['account_reports', 'branch'],
 

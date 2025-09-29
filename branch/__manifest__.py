@@ -2,7 +2,7 @@
 
 {
     'name': 'Multiple Branch Unit Operation Setup for All Applications Odoo',
-    'version': '14.0.0.9',
+    'version': '18.0.0.9',
     'category': 'Sales',
     'summary': 'Multiple Branch Management Multi Branch app Multiple Unit multiple Operating unit sales branch Sales Purchase branch Invoicing branch billing Voucher branch warehouse branch Payment branch Accounting Reports for single company Multi Branches multi company',
     "description": """
@@ -114,14 +114,16 @@ operating-Unit Operation for POS,operating-Unit Operation for Sales,operating-Un
         'views/stock_valuation_layer_views.xml',
         # 'views/branch_template.xml',
     ],
-    'qweb': [
-        'static/src/xml/branch.xml',
-    ],
-    'web.assets_backend':[
-        '/static/src/js/default_branch.js',
-        '/static/src/js/session.js',
-        '/static/src/js/abstract_web_client.js',
-    ],
+    'assets': {
+        'web.assets_backend': [
+            'branch/static/src/js/default_branch.js',
+            'branch/static/src/js/session.js',
+            'branch/static/src/js/abstract_web_client.js',
+        ],
+        'web.assets_qweb': [
+            'branch/static/src/xml/branch.xml',
+        ],
+    },
     'demo': [],
     'test': [],
     'installable': True,

@@ -22,7 +22,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from odoo.tools.translate import _
+from odoo import _
 
 
 class ResPartner(models.Model):
