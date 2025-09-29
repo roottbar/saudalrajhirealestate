@@ -17,9 +17,7 @@
             <xpath expr="//field[@name='type_id']" position="before">
                 <field name="currency_id" invisible="1"/>
             </xpath>
-            <xpath expr="//field[@name='resource_calendar_id']" position="after">
-                <field name="schedule_pay"/>
-            </xpath>
+
         </field>
     </record>
 
