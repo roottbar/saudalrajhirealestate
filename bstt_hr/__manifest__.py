@@ -33,7 +33,7 @@
         'data/ir_sequence.xml',
         'data/data.xml',
         'data/medical_insurance_type_data.xml',
-        'data/hr_payroll_data.xml',
+        # 'data/hr_payroll_data.xml',  # Disabled - requires hr_payroll Enterprise module
         'views/hr.xml',
         'views/hr_department_views.xml',
         'views/hr_contract_views.xml',
@@ -41,8 +41,8 @@
         'views/hr_start_work_views.xml',
         'views/hr_leave_views.xml',
         'views/hr_travel_views.xml',
-        'views/hr_payroll.xml',
+        # 'views/hr_payroll.xml',  # Disabled - requires hr_payroll Enterprise module
         'reports/start_work_report_templates.xml',
-        'wizard/hr_payroll_payslips_by_employees_views.xml',
+        # 'wizard/hr_payroll_payslips_by_employees_views.xml',  # Disabled - requires hr_payroll Enterprise module
     ],
 }
