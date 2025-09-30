@@ -47,7 +47,7 @@
         'reports/reports.xml',
     ],
     'demo': [],
-    'installable': True,
+    'installable': False,  # Temporarily disabled due to hr.payslip references in staging
     'auto_install': False,
     'application': True,
     'license': 'LGPL-3',
