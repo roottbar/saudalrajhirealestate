@@ -16,12 +16,12 @@ from odoo.http import (
 from odoo.tools import html_escape
 from odoo.tools.safe_eval import safe_eval, time
 
-from odoo.addons.web.controllers import main as report
+from odoo.addons.web.controllers.main import ReportController as BaseReportController
 
 _logger = logging.getLogger(__name__)
 
 
-class ReportController(report.ReportController):
+class ReportController(BaseReportController):
     @route()
     def report_routes(self, reportname, docids=None, converter=None, **data):
         if converter == "xlsx":

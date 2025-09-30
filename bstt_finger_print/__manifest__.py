@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+# Odoo 18.0 Compatible - Migrated by roottbar on 2025-01-30
 {
     'name': "BSTT Finger Print",
-    "version" : "15.0.0.1",
+    "version": "18.0.1.0.0",
     "category" : "Accounting",
     'description': """
         
@@ -22,10 +23,10 @@
     'email': "info@bstt.com.sa ",
     'website': "https://bstt.com.sa",
     'category': 'accounting',
-    'version': '15.0.1.0',
+    'version': '18.0.1.0.0',
     'license': 'AGPL-3',
     'images': ['static/description/logo.png'],
-    'depends': ['base','mail', 'hr','resource','hr_payroll','hr_attendance'],
+    'depends': ['base','mail', 'hr','resource','hr_attendance'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
