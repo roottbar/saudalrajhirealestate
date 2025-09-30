@@ -24,6 +24,7 @@
     'category': 'accounting',
     'version': '15.0.1.0',
     'license': 'AGPL-3',
+    'installable': False,  # Requires hr_payroll_account (Enterprise module)
     'images': ['static/description/logo.png'],
     'depends': ['hr_payroll_account'],
     'data': [

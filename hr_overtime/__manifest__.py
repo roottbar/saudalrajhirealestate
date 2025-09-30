@@ -21,6 +21,7 @@
     'maintainer': 'roottbar',
     'category': 'Human Resources',
     'version': '15.0.1.0',
+    'installable': False,  # Requires hr_payroll (Enterprise module)
 
     'depends': ['bstt_hr', 'hr_payroll'],
 

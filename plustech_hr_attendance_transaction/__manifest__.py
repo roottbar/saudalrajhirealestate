@@ -20,6 +20,7 @@
         Enhanced by roottbar.
     """,
     'summary': """Recording Attendance Transaction for Employees""",
+    'installable': False,  # Requires hr_payroll (Enterprise module)
     'depends': ['base',
                 'hr',
                 'hr_payroll',

@@ -21,6 +21,7 @@
     'maintainer': 'roottbar',
     'category': 'Human Resources',
     'version': '15.0.1.0',
+    'installable': False,  # Requires hr_payroll and hr_overtime (Enterprise modules)
 
     'depends': ['hr_attendance', 'bstt_hr','hr_payroll', 'hr_overtime'],
 

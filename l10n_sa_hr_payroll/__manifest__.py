@@ -22,6 +22,7 @@ Kingdom of Saudi Arabia Payroll and End of Service rules.
         Enhanced by roottbar.
     """,
     'license': 'OEEL-1',
+    'installable': False,  # Requires hr_payroll (Enterprise module)
     'depends': ['hr_payroll'],
     'data': [
         'data/hr_payroll_structure_type_data.xml',

@@ -29,6 +29,7 @@
     # for the full list
     'category': 'Services/Project',
     'version': '15.0.1.0',
+    'installable': False,  # Requires hr_payroll (Enterprise module)
 
     # any module necessary for this one to work correctly
     'depends': ['account_accountant', 'project', 'planning', 'sale_timesheet', 'purchase_stock', 'crm',

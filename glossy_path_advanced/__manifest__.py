@@ -30,6 +30,7 @@ It consist of:
 
     'category': 'Human Resources',
     'version': '15.0.1.0',
+    'installable': False,  # Requires hr_payroll (Enterprise module)
 
     'depends': ['account_asset', 'hr_attendance','hr_payroll','analytic'],
 
