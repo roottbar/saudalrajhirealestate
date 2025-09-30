@@ -12,6 +12,7 @@
     "depends": [
         "web",
     ],
+    "test": False,
     # odoo_test_helper is needed for the tests
     "data": [
         "data/ir_cron_data.xml",
