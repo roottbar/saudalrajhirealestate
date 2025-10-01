@@ -7,13 +7,11 @@ class AccountPayment(models.Model):
     analytic_account_id = fields.Many2one(
         'account.analytic.account',
         string='الحساب التحليلي',
-        readonly=True,
         readonly="state != 'draft'"
     )
     analytic_tag_ids = fields.Many2many(
         'account.analytic.tag',
         string='الوسوم التحليلية',
-        readonly=True,
         readonly="state != 'draft'"
     )
 
