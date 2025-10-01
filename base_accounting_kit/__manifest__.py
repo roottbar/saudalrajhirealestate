@@ -21,8 +21,8 @@
 #############################################################################
 
 {
-    'name': 'Odoo 15 Full Accounting Kit',
-    'version': '15.0.1.0.0',
+    'name': 'Odoo 18 Full Accounting Kit',
+    'version': '18.0.1.0.0',
     'category': 'Accounting',
     'live_test_url': 'https://www.youtube.com/watch?v=peAp2Tx_XIs',
     'summary': """ Asset and Budget Management,
@@ -37,16 +37,16 @@
         
                     AccountingKit, Fullaccounting, Odoo accounting, Odooaccounting, all in one accounting,
                     allinoneaccounting, accounting,
-                    Odoo 15 Accounting,Accounting Reports, Odoo 15 Accounting
+                    Odoo 18 Accounting,Accounting Reports, Odoo 18 Accounting
                     PDF Reports, Asset Management, Budget Management,
                     Customer Credit Limit, Recurring Payment,
                     PDC Management, Customer Follow-up,
-                    Lock Dates into Odoo 15 Community Edition,
-                    Odoo Accounting,Odoo 15 Accounting Reports,Odoo 15,,
+                    Lock Dates into Odoo 18 Community Edition,
+                    Odoo Accounting,Odoo 18 Accounting Reports,Odoo 18,,
                     Full Accounting, Complete Accounting,
                     Odoo Community Accounting, Accounting for odoo 15,
                     Full Accounting Package,
-                    Financial Reports, Financial Report for Odoo 15,
+                    Financial Reports, Financial Report for Odoo 18,
                     Reconciliation Widget,
                     Reconciliation Widget For Odoo15,
                     Payments Matching

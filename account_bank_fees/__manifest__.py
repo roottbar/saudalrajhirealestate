@@ -14,7 +14,7 @@
         
         This module manages bank fees and charges for accounting transactions.
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     
         
         Enhanced by roottbar.

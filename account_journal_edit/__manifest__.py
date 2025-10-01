@@ -1,6 +1,6 @@
 {
     'name': 'تعديل اليومية بعد التأكيد',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Accounting',
     'summary': 'يسمح بتعديل الحساب في البنود بعد الترحيل',
     'description': """
@@ -14,7 +14,7 @@
         This module allows authorized users to edit accounts in invoice lines
         after confirmation without changing the invoice state to draft.
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     
         
         Enhanced by roottbar.

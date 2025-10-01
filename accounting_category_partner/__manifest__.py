@@ -14,7 +14,7 @@
         Partner accounting categories used when creating customers or vendors 
         to select payable & receivable accounts automatically.
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     
         
         Enhanced by roottbar.

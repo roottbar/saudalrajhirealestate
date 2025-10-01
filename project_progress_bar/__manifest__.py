@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Project Progress Bar',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': 'Project Progress Bar',
     'description': '''
         Project Progress Bar
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     ''',
     'category': 'Project',
     'author': 'Cybrosys Techno Solutions',

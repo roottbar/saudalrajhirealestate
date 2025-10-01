@@ -23,7 +23,7 @@
 
 {
     'name': 'Activity Management',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Tools',
     'summary': 'Advance Activity Management and Dashboard View',
     'author': 'Cybrosys Techno Solutions',
@@ -33,7 +33,7 @@
     'description': """Advance Activity Management and Dashboard View
         
         This module provides advanced activity management and dashboard views.
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     """,
     'depends': ['base', 'mail'],
     'images': ['static/description/banner.png'],

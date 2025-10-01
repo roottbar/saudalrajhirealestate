@@ -18,10 +18,10 @@
         - Dynamic View, Drill down, Clickable
         - Complete Accounting Reports
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
         
-        Odoo 15 Full Accouning, Odoo 15 All in one Accouning, PDF Reports, XLSX Reports,
-                    Dynamic View, Drill down, Clickable, Pdf and Xlsx package, Odoo 15 Accounting,
+        Odoo 18 Full Accouning, Odoo 18 All in one Accouning, PDF Reports, XLSX Reports,
+                    Dynamic View, Drill down, Clickable, Pdf and Xlsx package, Odoo 18 Accounting,
                     Full Account Reports, Complete Accounting Reports, Financial Report for Odoo 13,
                     Financial Reports, Excel reports, Financial Reports in Excel, Ageing Report,
                     General Ledger, Partner Ledger, Trial Balance, Balance Sheet, Profit and Loss,

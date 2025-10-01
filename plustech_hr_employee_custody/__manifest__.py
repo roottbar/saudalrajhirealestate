@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Plus Tech Employee Custody Management",
-    'version': '15.0.1.0.0',  # Updated for 2025 - Force rebuild trigger
+    'version': '18.0.1.0.0',  # Updated for 2025 - Force rebuild trigger
     'author': 'Plus Technology Team',
     'company': 'Plus Technology',
     'maintainer': 'roottbar',
@@ -20,7 +20,7 @@
         * Integration with HR and Asset modules
         * Automated reminders and reports
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     
         
         Enhanced by roottbar.

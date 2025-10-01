@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Rental Availability Control',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': 'Rental Availability Control',
     'description': '''
         Rental Availability Control
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     ''',
     'category': 'Sales',
     'author': 'Cybrosys Techno Solutions',

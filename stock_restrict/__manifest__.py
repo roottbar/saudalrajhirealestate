@@ -2,7 +2,7 @@
 {
     'name': 'Inventory User Restrict',
     'summary': """Restricts User access to warehouses and Operations""",
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'description': """
         
         

@@ -22,19 +22,19 @@
 
 {
     'name': 'Dynamic Financial Reports',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'category': 'Accounting',
     'live_test_url': 'https://www.youtube.com/watch?v=gVQi9q9Rs-E&t=5s',
     'summary': """Dynamic Financial Reports with drill 
                 down and filters– Community Edition""",
     'description': """Dynamic Financial Reports, DynamicFinancialReports, FinancialReport, Accountingreports, odoo reports, odoo
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
         
         This module creates dynamic Accounting General Ledger, Trial Balance, Balance Sheet 
         Proft and Loss, Cash Flow Statements, Partner Ledger,
         Partner Ageing, Day book
-        Bank book and Cash book reports in Odoo 15 community edition.
+        Bank book and Cash book reports in Odoo 18 community edition.
     """,
     'author': 'Cybrosys Techno Solutions',
     'website': "https://www.cybrosys.com",

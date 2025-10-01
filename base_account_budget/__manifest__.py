@@ -20,9 +20,9 @@
 #
 #############################################################################
 {
-    'name': 'Odoo 15 Budget Management',
-    'version': '15.0.1.0.0',
-    'summary': """ Budget Management for Odoo 15 Community Edition. """,
+    'name': 'Odoo 18 Budget Management',
+    'version': '18.0.1.0.0',
+    'summary': """ Budget Management for Odoo 18 Community Edition. """,
     'description': """
         
         
@@ -46,8 +46,8 @@
      for the selected Budgets, of the Analytic Accounts.
      3. The last one is available from the Analytic Chart of Accounts. It gives
      the spreading, for the selected Analytic Accounts of Budgets. 
-     Odoo 15 Budget Management,Odoo 15, Odoo 15 Budget, Odoo 15 Accounting, 
-     Odoo 15 Account,Budget Management, Budget
+     Odoo 18 Budget Management,Odoo 18, Odoo 18 Budget, Odoo 18 Accounting, 
+     Odoo 18 Account,Budget Management, Budget
         
         Updated by roottbar for better functionality.
     

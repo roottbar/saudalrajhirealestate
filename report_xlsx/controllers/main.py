@@ -16,7 +16,7 @@ from odoo.http import (
 from odoo.tools import html_escape
 from odoo.tools.safe_eval import safe_eval, time
 
-from odoo.addons.web.controllers.main import ReportController as BaseReportController
+from odoo.addons.web.controllers.report import ReportController as BaseReportController
 
 _logger = logging.getLogger(__name__)
 

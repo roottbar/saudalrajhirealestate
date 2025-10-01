@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Dynamic Portal',
-    'version': '15.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': """ Dynamic Portal """,
     'description': '''Dynamic Portal
         
-        Enhanced by roottbar for Odoo 15.0
+        Enhanced by roottbar for Odoo 18.0
     ''',
     'category': 'web',
     'author': 'Mahmoud Abd-Elaziz',
