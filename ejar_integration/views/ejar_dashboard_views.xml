@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Ejar Dashboard Action -->
+    <record id="action_ejar_dashboard" model="ir.actions.client">
+        <field name="name">Ejar Dashboard</field>
+        <field name="tag">ejar_dashboard</field>
+    </record>
+
+    <!-- Ejar Statistics Action -->
+    <record id="action_ejar_statistics" model="ir.actions.act_window">
+        <field name="name">Ejar Statistics</field>
+        <field name="res_model">ejar.statistics</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Property Statistics Pivot View -->
+    <record id="view_ejar_property_statistics_pivot" model="ir.ui.view">
+        <field name="name">ejar.property.statistics.pivot</field>
+        <field name="model">ejar.property</field>
+        <field name="arch" type="xml">
+            <pivot string="Property Statistics">
+                <field name="property_type" type="row"/>
+                <field name="city" type="row"/>
+                <field name="status" type="col"/>
+                <field name="rental_price" type="measure"/>
+                <field name="area" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Property Statistics Graph View -->
+    <record id="view_ejar_property_statistics_graph" model="ir.ui.view">
+        <field name="name">ejar.property.statistics.graph</field>
+        <field name="model">ejar.property</field>
+        <field name="arch" type="xml">
+            <graph string="Property Statistics" type="bar">
+                <field name="property_type" type="row"/>
+                <field name="rental_price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Contract Statistics Pivot View -->
+    <record id="view_ejar_contract_statistics_pivot" model="ir.ui.view">
+        <field name="name">ejar.contract.statistics.pivot</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <pivot string="Contract Statistics">
+                <field name="status" type="row"/>
+                <field name="start_date" type="col" interval="month"/>
+                <field name="monthly_rent" type="measure"/>
+                <field name="annual_rent" type="measure"/>
+                <field name="duration_months" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Contract Statistics Graph View -->
+    <record id="view_ejar_contract_statistics_graph" model="ir.ui.view">
+        <field name="name">ejar.contract.statistics.graph</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <graph string="Contract Statistics" type="line">
+                <field name="start_date" type="row" interval="month"/>
+                <field name="monthly_rent" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Sync Performance Pivot View -->
+    <record id="view_ejar_sync_performance_pivot" model="ir.ui.view">
+        <field name="name">ejar.sync.performance.pivot</field>
+        <field name="model">ejar.sync.log</field>
+        <field name="arch" type="xml">
+            <pivot string="Sync Performance">
+                <field name="status" type="row"/>
+                <field name="model_name" type="row"/>
+                <field name="sync_date" type="col" interval="day"/>
+                <field name="duration" type="measure"/>
+                <field name="retry_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Sync Performance Graph View -->
+    <record id="view_ejar_sync_performance_graph" model="ir.ui.view">
+        <field name="name">ejar.sync.performance.graph</field>
+        <field name="model">ejar.sync.log</field>
+        <field name="arch" type="xml">
+            <graph string="Sync Performance" type="line">
+                <field name="sync_date" type="row" interval="hour"/>
+                <field name="duration" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Property Statistics Action -->
+    <record id="action_ejar_property_statistics" model="ir.actions.act_window">
+        <field name="name">Property Statistics</field>
+        <field name="res_model">ejar.property</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id" ref="view_ejar_property_statistics_pivot"/>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Contract Statistics Action -->
+    <record id="action_ejar_contract_statistics" model="ir.actions.act_window">
+        <field name="name">Contract Statistics</field>
+        <field name="res_model">ejar.contract</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id" ref="view_ejar_contract_statistics_pivot"/>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Sync Performance Action -->
+    <record id="action_ejar_sync_performance" model="ir.actions.act_window">
+        <field name="name">Sync Performance</field>
+        <field name="res_model">ejar.sync.log</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_id" ref="view_ejar_sync_performance_pivot"/>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Dashboard Menu Items -->
+    <menuitem id="menu_ejar_dashboard" name="Dashboard" parent="menu_ejar_main" 
+              action="action_ejar_dashboard" sequence="5"/>
+    
+    <!-- Reports Menu -->
+    <menuitem id="menu_ejar_reports" name="Reports" parent="menu_ejar_main" sequence="80"/>
+    <menuitem id="menu_ejar_property_statistics" name="Property Statistics" parent="menu_ejar_reports" 
+              action="action_ejar_property_statistics" sequence="10"/>
+    <menuitem id="menu_ejar_contract_statistics" name="Contract Statistics" parent="menu_ejar_reports" 
+              action="action_ejar_contract_statistics" sequence="20"/>
+    <menuitem id="menu_ejar_sync_performance" name="Sync Performance" parent="menu_ejar_reports" 
+              action="action_ejar_sync_performance" sequence="30"/>
+</odoo>
