@@ -126,7 +126,7 @@ notebook>=7.0.0
 
 # Performance Monitoring
 py-spy>=0.3.14
-cProfile2>=1.0.0
+# cProfile2>=1.0.0  # Package doesn't exist, using built-in cProfile instead
 
 # Additional IDE Support
 python-dotenv>=1.0.0

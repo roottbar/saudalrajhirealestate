@@ -11,30 +11,32 @@ from odoo import api, fields, models
 from odoo.osv import expression
 
 
-class AccountAccountTemplate(models.Model):
-	_inherit = "account.account.template"
-	
-	parent_id = fields.Many2one('account.account.template','Parent Account', ondelete="set null")
-	
-	@api.model
-	def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
-		context = self._context or {}
-		# updated to search the code too
-		new_args = []
-		if args:
-			for arg in args:
-				if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
-					new_args.append('|')
-					new_args.append(arg)
-					new_args.append(['code', arg[1], arg[2]])
-				else:
-					new_args.append(arg)
-		# one Customer informed an issue that the same args is updated to company causing error
-		# So to avoid that args was copied to new variable and it solved the issue.
-		if not context.get('show_parent_account',False):
-			new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
-		return super(AccountAccountTemplate, self)._search(new_args, offset=offset,
-						limit=limit, order=order, count=count, access_rights_uid=access_rights_uid)
+# account.account.template model has been removed in Odoo 18
+# Chart of accounts templates are now handled differently
+# class AccountAccountTemplate(models.Model):
+#	_inherit = "account.account.template"
+#	
+#	parent_id = fields.Many2one('account.account.template','Parent Account', ondelete="set null")
+#	
+#	@api.model
+#	def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+#		context = self._context or {}
+#		# updated to search the code too
+#		new_args = []
+#		if args:
+#			for arg in args:
+#				if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
+#					new_args.append('|')
+#					new_args.append(arg)
+#					new_args.append(['code', arg[1], arg[2]])
+#				else:
+#					new_args.append(arg)
+#		# one Customer informed an issue that the same args is updated to company causing error
+#		# So to avoid that args was copied to new variable and it solved the issue.
+#		if not context.get('show_parent_account',False):
+#			new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
+#		return super(AccountAccountTemplate, self)._search(new_args, offset=offset,
+#						limit=limit, order=order, count=count, access_rights_uid=access_rights_uid)
 
 
 class AccountAccountType(models.Model):
