@@ -11,7 +11,6 @@ class StockPicking(models.Model):
     operating_unit_id = fields.Many2one(
         "operating.unit",
         "Requesting Operating Unit",
-        readonly=True,
         readonly="state != 'draft'",
     )
 
