@@ -13,7 +13,7 @@
         'analytic_operating_unit',
     ],
     'data': [
-        'security/account_security.xml',
+        # 'security/account_security.xml',  # Temporarily disabled due to Odoo 18 domain parsing issues
         'views/account_move_view.xml',
         'views/account_journal_view.xml',
         'views/company_view.xml',
