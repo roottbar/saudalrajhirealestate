@@ -22,6 +22,6 @@
     ],
     'license': "LGPL-3",
     'application': True,
-    'installable': False,  # Disabled for Odoo 18 - XPath issues with invoice template changes
+    'installable': True,  # Disabled for Odoo 18 - XPath issues with invoice template changes
     'auto_install': False,
 }

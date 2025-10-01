@@ -15,6 +15,6 @@
         'views/template.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,  # Disabled for Odoo 18 - account_reports.search_template_extra_options no longer exists
+    'installable': True,  # Disabled for Odoo 18 - account_reports.search_template_extra_options no longer exists
     'auto_install': False,
 }

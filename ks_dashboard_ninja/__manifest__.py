@@ -23,7 +23,7 @@
         'views/ks_import_dashboard_view.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }
 

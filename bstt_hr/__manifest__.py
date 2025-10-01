@@ -32,6 +32,6 @@
         'reports/start_work_report_templates.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }

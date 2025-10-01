@@ -36,7 +36,7 @@
         'reports/reports.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,   # لو حابب تخليه يشتغل لازم تكون True
+    'installable': True,   # لو حابب تخليه يشتغل لازم تكون True
     'auto_install': False,
 }
 

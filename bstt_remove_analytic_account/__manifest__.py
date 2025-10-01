@@ -15,6 +15,6 @@
         'data/action_server.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }

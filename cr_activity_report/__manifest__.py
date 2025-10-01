@@ -18,6 +18,6 @@
         'report/activity_template.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }

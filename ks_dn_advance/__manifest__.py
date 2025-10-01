@@ -16,7 +16,7 @@
         'views/ks_dashboard_form_view_inherit.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }
 

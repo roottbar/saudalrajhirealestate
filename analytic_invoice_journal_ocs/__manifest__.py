@@ -18,6 +18,6 @@
     ],
     'license': "LGPL-3",
     'application': True,
-    'installable': False,  # Disabled for Odoo 18 - test failures due to method compatibility issues
+    'installable': True,  # Disabled for Odoo 18 - test failures due to method compatibility issues
     'auto_install': False,
 }
