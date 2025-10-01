@@ -39,10 +39,12 @@ from odoo.osv import expression
 #						limit=limit, order=order, count=count, access_rights_uid=access_rights_uid)
 
 
-class AccountAccountType(models.Model):
-	_inherit = "account.account.type"
-	
-	type = fields.Selection(selection_add=[('view', 'View')], ondelete={'view': 'cascade'})
+# account.account.type model has been removed in Odoo 18
+# Account types are now handled differently
+# class AccountAccountType(models.Model):
+#	_inherit = "account.account.type"
+#	
+#	type = fields.Selection(selection_add=[('view', 'View')], ondelete={'view': 'cascade'})
 
 
 class AccountAccount(models.Model):

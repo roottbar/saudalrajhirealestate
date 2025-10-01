@@ -84,7 +84,7 @@ flake8>=6.0.0
 isort>=5.12.0
 mypy>=1.5.0
 pylint>=2.17.0
-autopep8>=2.0.0
+autopep8>=2.0.4,<2.1.0
 
 # Type Checking & Static Analysis
 pyright>=1.1.0
