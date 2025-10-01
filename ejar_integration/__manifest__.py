@@ -28,10 +28,6 @@
     # Dependencies
     'depends': [
         'base',
-        'renting',
-        'sale_renting', 
-        'sale_operating_unit',
-        'analytic',
         'account_asset',
         'product',
         'einv_sa',
