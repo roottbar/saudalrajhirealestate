@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 {
-
-Added Google Map view on contacts
-
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-
     'name': "Contacts Maps",
     'version': "18.0.1.0.0",
     'summary': "Enhanced Contacts Maps module",
-    'description': "Enhanced Contacts Maps module for Odoo 18.0 by roottbar",
+    'description': """
+        Added Google Map view on contacts
+        
+        Updated by roottbar for better functionality.
+        Enhanced by roottbar.
+    """,
     'category': "Tools",
     'author': "Yopi Angi",
     'maintainer': "roottbar",
@@ -27,6 +23,6 @@ Added Google Map view on contacts
         'views/res_partner.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,
+    'installable': True,
     'auto_install': False,
 }
