@@ -2,9 +2,8 @@
 # License AGPL-3
 from lxml import etree
 from odoo import fields, models, _
-from odoo.addons.base.models.ir_ui_view import (
-    transfer_field_to_modifiers,
-)
+# transfer_field_to_modifiers is no longer available in Odoo 18
+# We'll implement the functionality directly
 
 
 class IrUiView(models.Model):
@@ -164,4 +163,11 @@ class IrUiView(models.Model):
 
             field_info = name_manager.field_info.get(node.get('name'))
             if field_info:
-                transfer_field_to_modifiers(field_info, node_info['modifiers'])
+                # Direct implementation of transfer_field_to_modifiers for Odoo 18
+                modifiers = node_info['modifiers']
+                if field_info.get('readonly'):
+                    modifiers['readonly'] = field_info['readonly']
+                if field_info.get('required'):
+                    modifiers['required'] = field_info['required']
+                if field_info.get('invisible'):
+                    modifiers['invisible'] = field_info['invisible']

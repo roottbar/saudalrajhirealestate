@@ -23,18 +23,33 @@
 from lxml import etree
 
 from odoo import api, fields, models, _
-from odoo.addons.base.models.ir_ui_view import (
-transfer_field_to_modifiers, transfer_node_to_modifiers, transfer_modifiers_to_node,
-)
+# These functions are no longer available in Odoo 18
+# We'll implement the functionality directly
 
 
 def setup_modifiers(node, field=None, context=None, in_tree_view=False):
     modifiers = {}
     if field is not None:
-        transfer_field_to_modifiers(field, modifiers)
-    transfer_node_to_modifiers(
-        node, modifiers, context=context)
-    transfer_modifiers_to_node(modifiers, node)
+        # Direct implementation of transfer_field_to_modifiers for Odoo 18
+        if hasattr(field, 'readonly') and field.readonly:
+            modifiers['readonly'] = True
+        if hasattr(field, 'required') and field.required:
+            modifiers['required'] = True
+        if hasattr(field, 'invisible') and field.invisible:
+            modifiers['invisible'] = True
+    
+    # Direct implementation of transfer_node_to_modifiers for Odoo 18
+    if node.get('invisible'):
+        modifiers['invisible'] = node.get('invisible')
+    if node.get('readonly'):
+        modifiers['readonly'] = node.get('readonly')
+    if node.get('required'):
+        modifiers['required'] = node.get('required')
+    
+    # Direct implementation of transfer_modifiers_to_node for Odoo 18
+    for key, value in modifiers.items():
+        if value:
+            node.set(key, str(value))
 
 
 class AssetModify(models.TransientModel):
