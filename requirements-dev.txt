@@ -1,0 +1,184 @@
+# Saudi Al-Rajhi Real Estate - Development Dependencies
+# Enhanced Python development tools for Cursor IDE
+# Created by: roottbar
+# Date: 2025-01-30
+
+# ===================================================
+# CORE DEVELOPMENT TOOLS
+# ===================================================
+# Language Server Protocol
+python-lsp-server[all]>=1.9.0
+jedi>=0.19.0
+rope>=1.9.0
+pylsp-mypy>=1.0.0
+python-lsp-black>=1.3.0
+python-lsp-isort>=1.2.0
+python-lsp-ruff>=1.0.0
+jedi-language-server>=0.40.0
+
+# ===================================================
+# CODE FORMATTING & LINTING
+# ===================================================
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+mypy>=1.5.0
+pylint>=2.17.0
+autopep8>=2.0.0
+pyright>=1.1.0
+pyre-check>=0.9.0
+ruff>=0.0.280
+
+# ===================================================
+# TESTING FRAMEWORKS
+# ===================================================
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+pytest-odoo>=3.0.0
+pytest-xdist>=3.3.0
+pytest-html>=3.2.0
+pytest-sugar>=0.9.7
+coverage>=7.3.0
+pytest-benchmark>=4.0.0
+
+# ===================================================
+# DEBUGGING & PROFILING
+# ===================================================
+pdbpp>=0.10.3
+memory-profiler>=0.61.0
+line-profiler>=4.1.0
+py-spy>=0.3.14
+psutil>=5.9.0
+pyinstrument>=4.5.0
+scalene>=1.5.0
+
+# ===================================================
+# CODE QUALITY & SECURITY
+# ===================================================
+bandit>=1.7.5
+safety>=2.3.0
+vulture>=2.9.0
+radon>=6.0.0
+semgrep>=1.40.0
+sourcery>=1.0.0
+
+# ===================================================
+# DOCUMENTATION GENERATION
+# ===================================================
+sphinx>=7.1.0
+sphinx-rtd-theme>=1.3.0
+mkdocs>=1.5.0
+mkdocs-material>=9.2.0
+mkdocs-mermaid2-plugin>=1.1.0
+mkdocstrings[python]>=0.22.0
+
+# ===================================================
+# VIRTUAL ENVIRONMENT MANAGEMENT
+# ===================================================
+virtualenv>=20.24.0
+pipenv>=2023.9.0
+poetry>=1.6.0
+pip-tools>=7.3.0
+
+# ===================================================
+# DEVELOPMENT TOOLS
+# ===================================================
+ipython>=8.15.0
+jupyter>=1.0.0
+notebook>=7.0.0
+jupyterlab>=4.0.0
+jupyterlab-git>=0.41.0
+jupyterlab-lsp>=4.0.0
+
+# ===================================================
+# PERFORMANCE MONITORING
+# ===================================================
+py-spy>=0.3.14
+cProfile2>=1.0.0
+py-cpuinfo>=9.0.0
+pympler>=0.9.0
+
+# ===================================================
+# ADDITIONAL IDE SUPPORT
+# ===================================================
+python-dotenv>=1.0.0
+click>=8.1.0
+rich>=13.5.0
+typer>=0.9.0
+pydantic>=2.4.0
+pydantic-settings>=2.0.0
+
+# ===================================================
+# PRE-COMMIT HOOKS
+# ===================================================
+pre-commit>=3.4.0
+pre-commit-hooks>=4.4.0
+
+# ===================================================
+# CURSOR IDE SPECIFIC ENHANCEMENTS
+# ===================================================
+# Enhanced IntelliSense
+astroid>=2.15.0
+parso>=0.8.0
+
+# Real-time collaboration
+websockets>=11.0.0
+aiohttp>=3.8.0
+
+# Code navigation and analysis
+tree-sitter>=0.20.0
+tree-sitter-python>=0.20.0
+
+# ===================================================
+# ODOO DEVELOPMENT SPECIFIC
+# ===================================================
+# Odoo testing utilities
+odoo-test-helper>=1.0.0
+
+# Database testing
+factory-boy>=3.3.0
+faker>=19.0.0
+
+# API testing
+httpx>=0.25.0
+responses>=0.23.0
+
+# ===================================================
+# ADDITIONAL UTILITIES
+# ===================================================
+# File watching
+watchdog>=3.0.0
+
+# Configuration management
+pyyaml>=6.0.0
+toml>=0.10.0
+configparser>=5.3.0
+
+# Logging
+loguru>=0.7.0
+structlog>=23.1.0
+
+# Data validation
+cerberus>=1.3.0
+marshmallow>=3.20.0
+
+# ===================================================
+# DEVELOPMENT WORKFLOW
+# ===================================================
+# Git integration
+GitPython>=3.1.0
+
+# Issue tracking
+jira>=3.5.0
+
+# Continuous integration
+tox>=4.6.0
+nox>=2023.4.0
+
+# ===================================================
+# NOTES
+# ===================================================
+# Install with: pip install -r requirements-dev.txt
+# For production: Do not install these dependencies
+# These are only for development and testing purposes

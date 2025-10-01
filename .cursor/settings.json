@@ -1,0 +1,207 @@
+{
+  "python.defaultInterpreterPath": "python",
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  
+  // Enhanced Python Language Server
+  "python.languageServer": "Pylsp",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.banditEnabled": true,
+  
+  // Code Formatting
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--line-length=88"],
+  "python.sortImports.args": ["--profile", "black"],
+  
+  // Auto-save and formatting
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.fixAll": true
+  },
+  
+  // File associations
+  "files.associations": {
+    "*.xml": "xml",
+    "*.rng": "xml",
+    "*.xsd": "xml",
+    "*.odoo": "xml",
+    "*.py": "python",
+    "*.js": "javascript",
+    "*.css": "css",
+    "*.scss": "scss",
+    "*.html": "html",
+    "*.json": "json",
+    "*.yaml": "yaml",
+    "*.yml": "yaml"
+  },
+  
+  // XML support for Odoo
+  "xml.validation.enabled": true,
+  "xml.format.enabled": true,
+  "emmet.includeLanguages": {
+    "xml": "html"
+  },
+  
+  // Git configuration
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.autoStash": true,
+  
+  // Search and file exclusions
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/.coverage": true,
+    "**/htmlcov": true,
+    "**/.tox": true,
+    "**/venv": true,
+    "**/env": true,
+    "**/.venv": true,
+    "**/.env": true
+  },
+  
+  "search.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/node_modules": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/.coverage": true,
+    "**/htmlcov": true,
+    "**/.tox": true,
+    "**/venv": true,
+    "**/env": true,
+    "**/.venv": true,
+    "**/.env": true
+  },
+  
+  // Cursor AI specific settings
+  "cursor.cpp.disabledLanguages": [],
+  "cursor.general.enableCodeActions": true,
+  "cursor.general.enableCodeLens": true,
+  "cursor.general.enableHover": true,
+  "cursor.general.enableCompletion": true,
+  "cursor.general.enableDiagnostics": true,
+  
+  // Python specific AI settings
+  "cursor.python.enableAutoImport": true,
+  "cursor.python.enableTypeHints": true,
+  "cursor.python.enableDocstringGeneration": true,
+  "cursor.python.enableRefactoring": true,
+  
+  // Performance settings
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.stubPath": "./typings",
+  
+  // Terminal settings
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "args": ["-NoLogo"]
+    },
+    "Command Prompt": {
+      "path": "C:\\Windows\\System32\\cmd.exe"
+    },
+    "Git Bash": {
+      "path": "C:\\Program Files\\Git\\bin\\bash.exe"
+    }
+  },
+  
+  // Workspace specific settings
+  "python.analysis.extraPaths": [
+    "./",
+    "./addons",
+    "./custom_addons"
+  ],
+  
+  // Odoo specific settings
+  "python.analysis.include": [
+    "**/*.py"
+  ],
+  "python.analysis.exclude": [
+    "**/__pycache__/**",
+    "**/node_modules/**",
+    "**/.git/**"
+  ],
+  
+  // Debugging configuration
+  "python.debugging.console": "integratedTerminal",
+  "python.debugging.justMyCode": false,
+  
+  // Testing configuration
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  
+  // IntelliSense settings
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.indexing": true,
+  "python.analysis.packageIndexDepths": [
+    {
+      "name": "odoo",
+      "depth": 10
+    },
+    {
+      "name": "saudalrajhirealestate",
+      "depth": 5
+    }
+  ],
+  
+  // Code completion
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  
+  // Bracket pair colorization
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  
+  // Minimap
+  "editor.minimap.enabled": true,
+  "editor.minimap.showSlider": "always",
+  
+  // Word wrap
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 88,
+  
+  // Indentation
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  
+  // Cursor behavior
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+  
+  // Theme and appearance
+  "workbench.colorTheme": "GitHub Light Default",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.productIconTheme": "material-product-icons",
+  
+  // Extensions
+  "extensions.autoUpdate": true,
+  "extensions.autoCheckUpdates": true,
+  
+  // Telemetry
+  "telemetry.telemetryLevel": "off",
+  "redhat.telemetry.enabled": false,
+  
+  // Security
+  "security.workspace.trust.untrustedFiles": "prompt",
+  "security.workspace.trust.startupPrompt": "once"
+}

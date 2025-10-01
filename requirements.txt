@@ -71,6 +71,69 @@ urllib3>=1.26.0
 certifi>=2022.0.0
 
 # ===================================================
+# CURSOR IDE & PYTHON DEVELOPMENT ENHANCEMENT
+# ===================================================
+# Language Server Protocol for Python
+python-lsp-server[all]>=1.9.0
+jedi>=0.19.0
+rope>=1.9.0
+
+# Code Formatting & Linting
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+mypy>=1.5.0
+pylint>=2.17.0
+autopep8>=2.0.0
+
+# Type Checking & Static Analysis
+pyright>=1.1.0
+pyre-check>=0.9.0
+
+# Testing Frameworks
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+pytest-odoo>=3.0.0
+coverage>=7.3.0
+
+# Debugging & Profiling
+pdbpp>=0.10.3
+memory-profiler>=0.61.0
+line-profiler>=4.1.0
+py-spy>=0.3.14
+psutil>=5.9.0
+
+# Code Quality & Security
+bandit>=1.7.5
+safety>=2.3.0
+vulture>=2.9.0
+radon>=6.0.0
+
+# Documentation Generation
+sphinx>=7.1.0
+mkdocs>=1.5.0
+mkdocs-material>=9.2.0
+
+# Virtual Environment Management
+virtualenv>=20.24.0
+pipenv>=2023.9.0
+
+# Development Tools
+ipython>=8.15.0
+jupyter>=1.0.0
+notebook>=7.0.0
+
+# Performance Monitoring
+py-spy>=0.3.14
+cProfile2>=1.0.0
+
+# Additional IDE Support
+python-dotenv>=1.0.0
+click>=8.1.0
+rich>=13.5.0
+
+# ===================================================
 # DEVELOPMENT & TESTING (OPTIONAL)
 # ===================================================
 # Uncomment if needed for development

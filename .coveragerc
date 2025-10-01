@@ -1,0 +1,46 @@
+[run]
+source = .
+omit = 
+    */tests/*
+    */test_*
+    */__pycache__/*
+    */venv/*
+    */env/*
+    */migrations/*
+    */node_modules/*
+    */build/*
+    */dist/*
+    */.*
+    setup.py
+    setup_cursor_python.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+    class .*\bProtocol\):
+    @(abc\.)?abstractmethod
+    # Don't complain about missing debug-only code:
+    def __repr__
+    if self\.debug
+    # Don't complain if tests don't hit defensive assertion code:
+    raise AssertionError
+    raise NotImplementedError
+    # Don't complain if non-runnable code isn't run:
+    if 0:
+    if __name__ == .__main__.:
+    # Don't complain about abstract methods, they aren't run:
+    @(abc\.)?abstractmethod
+
+[html]
+directory = htmlcov
+title = Saudi Al-Rajhi Real Estate - Coverage Report
+
+[xml]
+output = coverage.xml
