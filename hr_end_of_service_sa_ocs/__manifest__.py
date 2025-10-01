@@ -1,29 +1,23 @@
 # -*- coding: utf-8 -*-
 {
-        
+    'name': "HR End of Service Saudi Arabia",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced HR End of Service Saudi Arabia module",
+    'description': """
         هذا الموديول يوفر:
         * حساب تصفية نهاية الخدمة حسب قانون العمل السعودي
         * حساب تصفية الإجازة السنوية (22 يوم من الراتب الشهري)
         * منع التصفية المتكررة للموظف الواحد
         * تقارير PDF وExcel للتصفيات
         * إدارة كاملة لعمليات نهاية الخدمة
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
 
-    'author': 'Othmancs',
-    'maintainer': 'roottbar',
-    'website': 'https://www.Othmancs.com',
-    'name': "HR End of Service Saudi Arabia",
-    'version': "18.0.1.0.0",
-    'summary': "Enhanced HR End of Service Saudi Arabia module",
-    'description': "Enhanced HR End of Service Saudi Arabia module for Odoo 18.0 by roottbar",
-    'category': "Human Resources",
+        Updated by roottbar for better functionality.
+        Enhanced by roottbar.
+    """,
     'author': "Othmancs",
     'maintainer': "roottbar",
+    'website': "https://www.Othmancs.com",
+    'category': "Human Resources",
     'depends': [
         'base',
         'hr',
@@ -42,6 +36,6 @@
         'reports/reports.xml',
     ],
     'license': "LGPL-3",
-    'installable': False,
+    'installable': True,   # لو حابب تخليه يشتغل لازم تكون True
     'auto_install': False,
 }
