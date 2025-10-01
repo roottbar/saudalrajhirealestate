@@ -1,0 +1,45 @@
+name: Sync with Odoo.sh
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  sync-to-odoo:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.ODOO_SSH_PRIVATE_KEY }}
+    
+    - name: Add Odoo.sh to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H git.odoo.sh >> ~/.ssh/known_hosts
+    
+    - name: Sync to Odoo.sh
+      run: |
+        # إضافة Odoo.sh كـ remote إذا لم يكن موجوداً
+        if ! git remote | grep -q odoo; then
+          git remote add odoo ${{ secrets.ODOO_REPO_URL }}
+        fi
+        
+        # دفع التغييرات إلى Odoo.sh
+        git push odoo ${{ github.ref_name }}:${{ github.ref_name }} --force
+    
+    - name: Notify success
+      if: success()
+      run: echo "✅ تم مزامنة الكود بنجاح مع Odoo.sh"
+    
+    - name: Notify failure
+      if: failure()
+      run: echo "❌ فشل في مزامنة الكود مع Odoo.sh"
