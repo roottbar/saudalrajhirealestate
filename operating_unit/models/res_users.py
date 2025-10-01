@@ -12,7 +12,7 @@ class ResUsers(models.Model):
     @api.model
     def operating_unit_default_get(self, uid2=False):
         if not uid2:
-            uid2 = self._uid
+            uid2 = self.env.uid
         user = self.env["res.users"].browse(uid2)
         return user.default_operating_unit_id
 
