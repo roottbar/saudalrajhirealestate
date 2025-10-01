@@ -43,7 +43,7 @@ class OperatingUnit(models.Model):
     ]
 
     @api.model
-def _name_search(self, name="", args=None, operator="ilike", limit=100):
+    def _name_search(self, name="", args=None, operator="ilike", limit=100):
         # Make a search with default criteria
         names1 = super()._name_search(
             name=name, args=args, operator=operator, limit=limit
