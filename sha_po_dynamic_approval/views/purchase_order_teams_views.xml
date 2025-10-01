@@ -3,11 +3,11 @@
         <field name="name">purchase.order.teams.tree.views</field>
         <field name="model">purchase.order.teams</field>
         <field name="arch" type="xml">
-            <tree delete="false">
+            <list delete="false">
                 <field name="short_code"/>
                 <field name="name"/>
                 <field name="team_lead_id"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="purchase_order_teams_form_view" model="ir.ui.view">
@@ -31,13 +31,13 @@
                     <notebook>
                         <page string="Members">
                             <field name="team_member" mode="tree">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="purchase_team_id" invisible="1"/>
                                     <field name="partner_id" options="{'no_create_edit': True, 'no_create': True}"/>
                                     <field name="role"/>
                                     <field name="min_amount"/>
                                     <field name="max_amount"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -48,7 +48,7 @@
     <record id="purchase_order_teams_action" model="ir.actions.act_window">
         <field name="name">Purchase Order Approval Teams</field>
         <field name="res_model">purchase.order.teams</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <menuitem parent="purchase.menu_purchase_config" id="menu_purchase_order_teams" name="PO Approval Teams"
               action="purchase_order_teams_action" groups="purchase.group_purchase_manager"/>

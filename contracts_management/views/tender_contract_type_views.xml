@@ -5,10 +5,10 @@
             <field name="name">view.tender.contract.type.tree</field>
             <field name="model">tender.contract.type</field>
             <field name="arch" type="xml">
-                <tree string="Tender Contract Types">
+                <list string="Tender Contract Types">
                     <field name="name"/>
                     <field name="code" optional="show"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -34,7 +34,7 @@
         <record id="action_tender_contract_type" model="ir.actions.act_window">
             <field name="name">Types</field>
             <field name="res_model">tender.contract.type</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
     </data>
 </odoo>

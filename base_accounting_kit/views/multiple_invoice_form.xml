@@ -20,10 +20,10 @@
                 <group attrs="{'invisible': [('type', 'not in',['sale', 'purchase'])]}">
                     <div>
                         <field name="multiple_invoice_ids" widget="one2many" nolabel="1">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="sequence" widget="handle"/>
                                 <field name="copy_name" style="width: 75"/>
-                            </tree>
+                            </list>
                          </field>
                     </div>
                 </group>

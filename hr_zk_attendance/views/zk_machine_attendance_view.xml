@@ -45,14 +45,14 @@
         <field name="name">zk.report.daily.attendance.tree</field>
         <field name="model">zk.report.daily.attendance</field>
         <field name="arch" type="xml" >
-            <tree string="Attendance" create="false" delete="false" >
+            <list string="Attendance" create="false" delete="false" >
                 <field name="punching_day"/>
                 <field name="name"/>
                 <field name="punch_type"/>
                 <field name="attendance_type"/>
                 <field name="punching_time"/>
                 <field name="address_id"/>
-            </tree>
+            </list>
         </field>
     </record>
 

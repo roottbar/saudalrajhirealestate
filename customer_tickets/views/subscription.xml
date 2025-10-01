@@ -16,13 +16,13 @@
             <field name="name">subscription.info.view.tree</field>
             <field name="model">subscription.info</field>
             <field name="arch" type="xml">
-                <tree string="Subscriptions">
+                <list string="Subscriptions">
                     <field name="subscription_code"/>
                     <field name="package_status"/>
                     <field name="address" invisible="1"/>
                     <field name="db_name" invisible="1"/>
                     <field name="user_name" invisible="1"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -76,14 +76,14 @@
                         <notebook>
                             <page string="Plan">
                                 <field name="plan_ids" readonly="1" force_save="1">
-                                    <tree edit="0" create="0">
+                                    <list edit="0" create="0">
                                         <field name="name"/>
                                         <field name="numbers"/>
                                         <!-- <field name="consumed" readonly="1" force_save="1"/> -->
                                         <field name="available" widget="boolean_toggle"/>
                                         <field name="active" invisible="1"/>
                                         <field name="plus_id" invisible="1"/>
-                                    </tree>
+                                    </list>
                                     <form>
                                         <group>
                                             <field name="name" readonly="1"/>
@@ -98,7 +98,7 @@
                             </page>
                             <page string="Activity Notification" name="activity_notification">
                                 <field name="activity_state_ids">
-                                    <tree editable="bottom">
+                                    <list editable="bottom">
                                         <field name="state" attrs="{'required':[('send', '=', True)]}"/>
                                         <field name="user_ids" widget="many2many_tags"
                                                attrs="{'required':[('send', '=', True)]}"/>
@@ -106,7 +106,7 @@
                                         <field name="body" attrs="{'required':[('send', '=', True)]}"/>
                                         <field name="activity_type_id" attrs="{'required':[('send', '=', True)]}"/>
                                         <field name="send"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -122,7 +122,7 @@
         <record id="subscription_info_action" model="ir.actions.act_window">
             <field name="name">Subscription</field>
             <field name="res_model">subscription.info</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="search_view_id" ref="subscription_info_search"/>
         </record>
         <record id="subscription_code_form" model="ir.ui.view">
@@ -147,7 +147,7 @@
         <record id="subscription_activation" model="ir.actions.act_window">
             <field name="name">Activate Subscription</field>
             <field name="res_model">subscription.code</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="view_id" ref="subscription_code_form"/>
             <field name="context">{'create': False}</field>
             <field name="target">new</field>

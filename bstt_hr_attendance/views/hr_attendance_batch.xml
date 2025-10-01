@@ -21,13 +21,13 @@
         <field name="name">hr.attendance.batch.tree</field>
         <field name="model">hr.attendance.batch</field>
         <field name="arch" type="xml">
-            <tree string="Attendances Batches" sample="1">
+            <list string="Attendances Batches" sample="1">
                 <field name="name"/>
                 <field name="check_in"/>
                 <field name="department_id"/>
                 <field name="state"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -87,14 +87,14 @@
                     <notebook>
                         <page string="Attendances">
                             <field name="attendance_ids" context="{'default_check_in_date': check_in}">
-                                <tree string="Attendances" editable="bottom">
+                                <list string="Attendances" editable="bottom">
                                     <field name="check_in_date"/>
                                     <field name="employee_id"/>
                                     <field name="check_in"/>
                                     <field name="check_out"/>
                                     <field name="worked_hours" widget="float_time"/>
                                     <field name="notes"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
 
@@ -107,7 +107,7 @@
     <record id="hr_attendance_action_attendances" model="ir.actions.act_window">
         <field name="name">Attendances Batches</field>
         <field name="res_model">hr.attendance.batch</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="hr_attendance_batch_filter"/>
     </record>
 

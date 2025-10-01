@@ -8,7 +8,7 @@
 <!--        <field name="model">investigation</field>-->
 <!--        <field name="arch" type="xml">-->
 <!--            <tree>-->
-<!--            </tree>-->
+<!--            </list>-->
 <!--        </field>-->
 <!--    </record>-->
 
@@ -46,7 +46,7 @@
         <field name="name">Investigation</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">investigation</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
         <menuitem id="menu_investigation"

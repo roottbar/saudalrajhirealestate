@@ -16,7 +16,7 @@
             <xpath expr="//page[@name='hr_settings']" position="after">
                 <page name="elements" string="Elements">
                     <field name="element_line_ids">
-                        <tree editable ="bottom">
+                        <list editable ="bottom">
                             <field name="element_id"/>
                             <field name="type"/>
                             <field name="recurring"/>
@@ -29,7 +29,7 @@
                             <field name="credit_account_id"/>
 
 
-                        </tree>
+                        </list>
                     </field>
                 </page>
 

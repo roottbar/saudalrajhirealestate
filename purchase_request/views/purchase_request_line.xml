@@ -6,7 +6,7 @@
             <field name="name">Purchase Request Line</field>
             <field name="model">purchase.request.line</field>
             <field name="arch" type="xml">
-                <tree create="0" edit="0" delete="0">
+                <list create="0" edit="0" delete="0">
                     <field name="sequence" widget="handle"/>
                     <field name="purchase_request_id"/>
                     <field name="product_id"/>
@@ -22,7 +22,7 @@
                     <field name="taxes_id" widget="many2many_tags" optional="show"/>
                     <field name="price_tax" optional="hide"/>
                     <field name="price_total" optional="show"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -144,7 +144,7 @@
             <field name="name">Purchase Request Lines</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">purchase.request.line</field>
-            <field name="view_mode">tree,calendar,pivot,graph</field>
+            <field name="view_mode">list,calendar,pivot,graph</field>
             <field name="domain">[('display_type', '=', False), ('state', '=', 'approved'), ('purchase_order_line', '=',
                 False) ]
             </field>

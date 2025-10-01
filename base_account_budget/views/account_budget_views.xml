@@ -15,17 +15,17 @@
         <field name="name">account.budget.post.tree</field>
         <field name="model">account.budget.post</field>
         <field name="arch" type="xml">
-            <tree string="Budgetary Position">
+            <list string="Budgetary Position">
                 <field name="name"/>
                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="open_budget_post_form" model="ir.actions.act_window">
         <field name="name">Budgetary Positions</field>
         <field name="res_model">account.budget.post</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="view_id" ref="view_budget_post_tree"/>
         <field name="search_view_id" ref="view_budget_post_search"/>
     </record>
@@ -49,7 +49,7 @@
                                 <tree>
                                     <field name="code"/>
                                     <field name="name"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -102,7 +102,7 @@
                             <field name="budget_line"
                                    context="{'default_date_from': date_from,'default_date_to': date_to}" colspan="4"
                                    nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
-                                <tree string="Budget Lines">
+                                <list string="Budget Lines">
                                     <field name="general_budget_id"/>
                                     <field name="analytic_account_id" groups="analytic.group_analytic_accounting"
                                            required="1"/>
@@ -113,7 +113,7 @@
                                     <field name="practical_amount" sum="Practical Amount" widget="monetary"/>
                                     <field name="theoretical_amount" sum="Theoretical Amount" widget="monetary"/>
                                     <field name="percentage"/>
-                                </tree>
+                                </list>
                                 <form string="Budget Lines">
                                     <group>
                                         <group>
@@ -151,14 +151,14 @@
         <field name="name">budget.view.tree</field>
         <field name="model">budget.budget</field>
         <field name="arch" type="xml">
-            <tree decoration-info="state == 'draft'" decoration-muted="state in ('done','cancel')" string="Budget">
+            <list decoration-info="state == 'draft'" decoration-muted="state in ('done','cancel')" string="Budget">
                 <field name="name" colspan="1"/>
                 <field name="date_from"/>
                 <field name="date_to"/>
                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                 <field name="creating_user_id"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -212,7 +212,7 @@
     <record model="ir.actions.act_window" id="act_budget_view">
         <field name="name">Budgets</field>
         <field name="res_model">budget.budget</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="view_id" ref="budget_budget_view_tree"/>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
@@ -253,7 +253,7 @@
         <field name="name">budget.line.tree</field>
         <field name="model">budget.lines</field>
         <field name="arch" type="xml">
-            <tree string="Budget Lines">
+            <list string="Budget Lines">
                 <field name="budget_id" invisible="1"/>
                 <field name="general_budget_id"/>
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
@@ -264,7 +264,7 @@
                 <field name="practical_amount" widget="monetary"/>
                 <field name="theoretical_amount" widget="monetary"/>
                 <field name="percentage"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.ui.view" id="view_budget_line_form">
@@ -294,7 +294,7 @@
     <record model="ir.actions.act_window" id="act_budget_lines_view">
         <field name="name">Budgets</field>
         <field name="res_model">budget.lines</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_budget_line_tree"/>
     </record>
 

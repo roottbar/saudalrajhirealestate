@@ -57,7 +57,7 @@
                         <notebook>
                             <page string="Requisitions Lines">
                                 <field name="requisition_line_ids" attrs="{'readonly': [('state', 'in', ['cancel','receive'])]}">
-                                    <tree editable="bottom">
+                                    <list editable="bottom">
                                         <field name="requisition_type" groups="material_purchase_requisitions.group_purchase_requisition_user,purchase.group_purchase_user,material_purchase_requisitions.group_purchase_requisition_manager,material_purchase_requisitions.group_purchase_requisition_department"/>
                                         <field name="product_id"/>
                                         <field name="description"/>
@@ -65,7 +65,7 @@
                                         <field name="qty"/>
                                         <field name="uom"/>
                                         <field name="partner_id" groups="material_purchase_requisitions.group_purchase_requisition_user,purchase.group_purchase_user,material_purchase_requisitions.group_purchase_requisition_manager,material_purchase_requisitions.group_purchase_requisition_department" attrs="{'readonly': [('requisition_type', '!=', 'purchase')]}" widget="many2many_tags"/>
-                                    </tree>
+                                    </list>
                                 </field>
                                 <group>
                                     <field name="reason" attrs="{'readonly': [['state', 'in', ['reject','cancel','receive']]]}" placeholder="Add Reason for Internal Requistion ...."/>
@@ -124,7 +124,7 @@
                     <field name="date_end"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -174,7 +174,7 @@
             <field name="name">Purchase Requisitions</field>
             <field name="res_model">material.purchase.requisition</field>
             <!--<field name="view_type">form</field>-->
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         
         <menuitem id="menu_purchase_requisition" name="Requisitions" groups="base.group_user"  web_icon="material_purchase_requisitions,static/description/icon.png"/>

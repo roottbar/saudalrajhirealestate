@@ -28,13 +28,13 @@
                         <notebook>
                             <page name="mapping_ids" string="Mapping">
                                 <field name="mapping_ids" context="{'default_model_id': model_id}">
-                                    <tree editable="bottom">
+                                    <list editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="model_id" invisible="1"/>
                                         <field name="field_id" required="1"
                                                options="{'no_create_edit': True,'no_create':True,'no_open':True}"/>
                                         <field name="label" force_save="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -51,7 +51,7 @@
                     <field name="name"/>
                     <field name="model_id"/>
                     <field name="type"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -60,7 +60,7 @@
             <field name="name">Report Template</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">xlsx.report.template</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 

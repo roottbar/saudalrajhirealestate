@@ -9,7 +9,7 @@
                     <page string="Hide Specific Menu"  attrs="{'invisible': [('is_admin','=', True)]}">
                         <tree>
                             <field name="hide_menu_ids"/>
-                        </tree>
+                        </list>
                     </page>
                 </xpath>
                 <field name="name" position="after">
@@ -27,7 +27,7 @@
                     <page string="Restrict users" name="restrict_users">
                         <tree>
                             <field name="restrict_user_ids"/>
-                        </tree>
+                        </list>
                     </page>
                 </xpath>
             </field>

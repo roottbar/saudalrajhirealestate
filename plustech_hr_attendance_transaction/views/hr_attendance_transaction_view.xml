@@ -4,7 +4,7 @@
         <field name="name">attendance.transaction.tree.view</field>
         <field name="model">attendance.transaction</field>
         <field name="arch" type="xml">
-             <tree create="0" string="Attendance Transaction">
+             <list create="0" string="Attendance Transaction">
                                     <field name="employee_id"/>
                                     <field name="date"/>
                                     <field name="day" string="Day"/>
@@ -52,7 +52,7 @@
                                            sum="Total"/>
                                     <field name="status"/>
 
-             </tree>
+             </list>
         </field>
     </record>
 

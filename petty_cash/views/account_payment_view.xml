@@ -5,7 +5,7 @@
             <field name="name">view.feeding.petty.cash.tree</field>
             <field name="model">account.payment</field>
             <field name="arch" type="xml">
-                <tree edit="false" create="false" sample="1">
+                <list edit="false" create="false" sample="1">
                     <field name="date"/>
                     <field name="name"/>
                     <field name="journal_id"/>
@@ -16,7 +16,7 @@
                     <field name="state" widget="badge" decoration-info="state == 'draft'"
                            decoration-success="state == 'posted'"/>
                     <field name="currency_id" groups="base.group_multi_currency"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -24,7 +24,7 @@
             <field name="name">view.feeding.petty.cash.tree</field>
             <field name="model">account.payment</field>
             <field name="arch" type="xml">
-                <tree edit="false" sample="1">
+                <list edit="false" sample="1">
                     <header>
                         <button name="action_post" type="object" string="Confirm"/>
                     </header>
@@ -38,7 +38,7 @@
                     <field name="state" widget="badge" decoration-info="state == 'draft'"
                            decoration-success="state == 'posted'"/>
                     <field name="currency_id" groups="base.group_multi_currency"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record id="view_feeding_petty_cash_form" model="ir.ui.view">
@@ -187,7 +187,7 @@
         <record id="action_feeding_petty_cash" model="ir.actions.act_window">
             <field name="name">Feeding Petty Cash</field>
             <field name="res_model">account.payment</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{'default_is_internal_transfer': True,'feeding_petty_cash':True}</field>
             <field name="domain">[('is_internal_transfer', '=', True)]</field>
             <field name="view_ids" eval="[(5, 0, 0),

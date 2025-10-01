@@ -90,7 +90,7 @@
 
                     <page name="contract_invoices" string="الفواتير">
                         <field name="order_contract_invoice" widget="section_and_note_one2many">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="sequence" widget="handle"/>
                                 <field name="name"/>
                                 <field name="amount" sum="Total Amount"/>
@@ -101,7 +101,7 @@
                                 <!--                                widget="toggle_button"-->
                                 <button name="create_invoices" type="object" string="Create Invoice" class="btn-success"
                                         attrs="{'invisible':[('status','=', 'invoiced')]}"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                     <page name="property_stats" string="حالة الوحدات" attrs="{'invisible':[('rental_status','not in', ['pickup','return'])]}">
@@ -211,7 +211,7 @@
                             <tree>
                                 <field name="sequence" widget="handle"/>
                                 <field name="sale_order_line_id"/>
-                            </tree>
+                            </list>
 
                         </field>
                     </page>

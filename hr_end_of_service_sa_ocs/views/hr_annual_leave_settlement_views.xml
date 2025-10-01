@@ -7,7 +7,7 @@
             <field name="name">hr.annual.leave.settlement.tree</field>
             <field name="model">hr.annual.leave.settlement</field>
             <field name="arch" type="xml">
-                <tree string="تصفيات الإجازة السنوية" decoration-info="state=='draft'" decoration-success="state=='approved'" decoration-warning="state=='confirmed'" decoration-danger="state=='cancelled'">
+                <list string="تصفيات الإجازة السنوية" decoration-info="state=='draft'" decoration-success="state=='approved'" decoration-warning="state=='confirmed'" decoration-danger="state=='cancelled'">
                     <field name="employee_id"/>
                     <field name="calculation_date"/>
                     <field name="settlement_type"/>
@@ -21,7 +21,7 @@
                     <field name="net_amount" sum="صافي المبلغ"/>
                     <field name="state" widget="badge"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                </tree>
+                </list>
             </field>
         </record>
         
@@ -218,7 +218,7 @@
         <record id="action_hr_annual_leave_settlement" model="ir.actions.act_window">
             <field name="name">تصفيات الإجازة السنوية</field>
             <field name="res_model">hr.annual.leave.settlement</field>
-            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_mode">list,kanban,form</field>
             <field name="search_view_id" ref="view_hr_annual_leave_settlement_search"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

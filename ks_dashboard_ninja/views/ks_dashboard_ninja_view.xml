@@ -45,16 +45,16 @@
                                         <field name="ks_model_id"/>
                                         <field name="ks_domain"/>
                                         <field name="ks_is_active"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page name="custom_defined_filters" string="Custom Filters">
                                 <field name="ks_dashboard_custom_filters_ids">
-                                    <tree editable="bottom">
+                                    <list editable="bottom">
                                         <field name="name" required="1"/>
                                         <field name="ks_model_id" required="1"/>
                                         <field name="ks_domain_field_id" required="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page name="advance_setting" string="Advance Settings">
@@ -82,7 +82,7 @@
             <field name="name">ks_dashboard_ninja View</field>
             <field name="model">ks_dashboard_ninja.board</field>
             <field name="arch" type="xml">
-                <tree import="0" string="My Dashboard">
+                <list import="0" string="My Dashboard">
                     <field name="ks_dashboard_state" invisible="1"/>
                     <field name="id" invisible="1"/>
 
@@ -105,7 +105,7 @@
                            attrs="{'readonly':[('ks_date_filter_selection','!=','l_custom')], 'required':[('ks_date_filter_selection','=','l_custom')]}"/>
                     <field name="ks_dashboard_group_access" widget="many2many_tags"/>
                     <button name="ks_view_items_view" string="View Items" type="object" class="btn-primary"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -169,13 +169,13 @@
             <field name="name">Dashboard Template Tree View</field>
             <field name="model">ks_dashboard_ninja.board_template</field>
             <field name="arch" type="xml">
-                <tree string="Dashboard Template" editable="top">
+                <list string="Dashboard Template" editable="top">
                     <field name="name"/>
                     <field name="ks_template_type" invisible="1"/>
                     <field name="ks_dashboard_board_id" attrs="{'readonly':[('ks_template_type','!=','ks_custom')],
                         'required':[('ks_template_type','=','ks_custom')]}"
                            options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -183,11 +183,11 @@
             <field name="name">Dashboard Layout Tree View</field>
             <field name="model">ks_dashboard_ninja.child_board</field>
             <field name="arch" type="xml">
-                <tree string="Dashboard Layout" editable="top" create="0">
+                <list string="Dashboard Layout" editable="top" create="0">
                     <field name="name"/>
                     <field name="ks_dashboard_ninja_id" string="Dashboard"/>
                     <field name="company_id" string="Company"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -204,7 +204,7 @@
         <record model="ir.actions.act_window" id="ks_dashboard_ninja.board_form_tree_action_window">
             <field name="name">Dashboard Manager</field>
             <field name="res_model">ks_dashboard_ninja.board</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{'form_view_ref':'ks_dashboard_ninja.board_form',
                 'tree_view_ref':'ks_dashboard_ninja.board_tree'}
             </field>
@@ -213,7 +213,7 @@
         <record model="ir.actions.act_window" id="ks_dashboard_ninja.template_tree_action_window">
             <field name="name">Dashboard Template</field>
             <field name="res_model">ks_dashboard_ninja.board_template</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{'default_ks_template_type':'ks_custom'}
             </field>
         </record>
@@ -221,7 +221,7 @@
         <record model="ir.actions.act_window" id="ks_dashboard_ninja.layout_tree_action_window">
             <field name="name">Dashboard layout</field>
             <field name="res_model">ks_dashboard_ninja.child_board</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('board_type', '!=', 'default')]</field>
             <field name="context">{'group_by':'ks_dashboard_menu_name'}
             </field>

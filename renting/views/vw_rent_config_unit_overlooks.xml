@@ -6,10 +6,10 @@
             <field name="name">rent.config.unit.overlooks.tree</field>
             <field name="model">rent.config.unit.overlooks</field>
             <field name="arch" type="xml">
-                <tree string="Unit Views">
+                <list string="Unit Views">
                     <field name="unit_overlook_name"/>
                     <field name="unit_overlook_description"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="rent_config_unit_overlooks_form">

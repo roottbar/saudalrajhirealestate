@@ -159,11 +159,11 @@
                             </group>
                             <group colspan="4">
                                 <field name="ins_fam_ids">
-                                    <tree editable="bottom" create="false" delete="false">
+                                    <list editable="bottom" create="false" delete="false">
                                         <field name="member_name" readonly="1"/>
                                         <field name="relation_id" readeonly="1"/>
                                         <field name="insurance_amount"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </group>
                         </group>
@@ -192,13 +192,13 @@
                     </group>
                     <group name="fam_ids" colspan="4">
                         <field name="fam_ids" force_save="1">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="member_name" required="1"/>
                                 <field name="relation_id" required="1"/>
                                 <field name="member_contact"/>
                                 <field name="member_identification_id"/>
                                 <field name="birth_date"/>
-                            </tree>
+                            </list>
                         </field>
                     </group>
                 </xpath>

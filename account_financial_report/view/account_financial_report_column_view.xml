@@ -29,7 +29,7 @@
         <field name="model">account.financial.report.column</field>
         <field name="type">tree</field>
         <field name="arch" type="xml">
-            <tree editable="bottom" create="false" delete="false">
+            <list editable="bottom" create="false" delete="false">
                 <field name="sequence" widget="handle" />
                 <field name="name" readonly="1" />
                 <field name="expression_label" readonly="1" optional="hide" />
@@ -40,7 +40,7 @@
                     attrs="{'invisible': [('field_type', '!=', 'string')]}"
                     optional="show"
                 />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

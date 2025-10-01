@@ -5,7 +5,7 @@
         <field name="name">ejar.property.tree</field>
         <field name="model">ejar.property</field>
         <field name="arch" type="xml">
-            <tree string="Ejar Properties" decoration-success="status=='available'" 
+            <list string="Ejar Properties" decoration-success="status=='available'" 
                   decoration-warning="status=='maintenance'" decoration-danger="status=='unavailable'">
                 <field name="name"/>
                 <field name="property_type"/>
@@ -21,7 +21,7 @@
                 <field name="landlord_id"/>
                 <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
                         icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
-            </tree>
+            </list>
         </field>
     </record>
 

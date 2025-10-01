@@ -26,14 +26,14 @@
                     <notebook>
                         <page string="Rules">
                             <field name="rule_lines">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="sequence"/>
                                     <field name="penalty_percent"/>
                                     <field name="late_minutes_deduction"/>
                                     <field name="send_warning_email"/>
                                     <field name="mail_template_id" context="{'default_model':'late.rule'}"
                                            attrs="{'readonly': [('send_warning_email','=',False)],'required': [('send_warning_email','=',True)]}"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -52,7 +52,7 @@
                 <field name="from_minute" widget="float_time"/>
                 <field name="to_minute" widget="float_time"/>
                 <field name="sequence_range"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -72,7 +72,7 @@
     <record id="action_late_rule" model="ir.actions.act_window">
         <field name="name">Lating Rules</field>
         <field name="res_model">late.rule</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
                 Click to create a new Rule.

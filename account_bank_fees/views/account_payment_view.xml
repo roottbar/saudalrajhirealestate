@@ -44,7 +44,7 @@
                             <group/>
                         </group>
                         <field name="payment_bank_fees_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="account_id" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="name" optional="show"/>
                                 <field name="type"/>
@@ -55,7 +55,7 @@
                                 <field name="amount_tax" optional="hide" sum="Total Amount Tax"/>
                                 <field name="amount_total" optional="hide" sum="Total Amount"/>
                                 <field name="currency_id" invisible="1"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </notebook>

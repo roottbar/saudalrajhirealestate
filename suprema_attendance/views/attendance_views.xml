@@ -2,7 +2,7 @@
     <record id="action_suprema_attendance" model="ir.actions.act_window">
         <field name="name">Suprema Attendance Logs</field>
         <field name="res_model">suprema.attendance.log</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="view_suprema_attendance_tree" model="ir.ui.view">
@@ -15,7 +15,7 @@
                 <field name="punch_time"/>
                 <field name="status"/>
                 <field name="is_processed"/>
-            </tree>
+            </list>
         </field>
     </record>
 

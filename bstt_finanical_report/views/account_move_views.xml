@@ -41,7 +41,7 @@
             <field name="domain">[('display_type', 'not in', ('line_section', 'line_note'))]</field>
             <field name="view_id" ref="view_move_line_tree_insurance_account"/>
             <field name="search_view_id" ref="view_account_move_line_filter_with_insurance_account"/>
-            <field name="view_mode">tree,pivot,graph</field>
+            <field name="view_mode">list,pivot,graph</field>
         </record>
 
         <menuitem id="menu_action_account_moves_ensurance"

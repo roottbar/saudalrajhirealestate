@@ -36,7 +36,7 @@
         <record id="action_resume_analysis_report_view" model="ir.actions.act_window">
             <field name="name">Resume Analysis Reports</field>
             <field name="res_model">hr.resume.analysis</field>
-            <field name="view_mode">tree,form,pivot,graph</field>
+            <field name="view_mode">list,form,pivot,graph</field>
             <field name="domain">[('state', '=', 'completed')]</field>
             <field name="context">{
                 'search_default_group_job_position': 1,

@@ -38,26 +38,26 @@
                         
                         <separator string="تصفيات نهاية الخدمة السابقة"/>
                         <field name="end_of_service_ids" readonly="1">
-                            <tree string="تصفيات نهاية الخدمة" decoration-info="state=='draft'" decoration-success="state=='approved'" decoration-warning="state=='confirmed'">
+                            <list string="تصفيات نهاية الخدمة" decoration-info="state=='draft'" decoration-success="state=='approved'" decoration-warning="state=='confirmed'">
                                 <field name="calculation_date"/>
                                 <field name="termination_type"/>
                                 <field name="service_years"/>
                                 <field name="end_of_service_benefit"/>
                                 <field name="net_amount"/>
                                 <field name="state" widget="badge"/>
-                            </tree>
+                            </list>
                         </field>
                         
                         <separator string="تصفيات الإجازة السنوية"/>
                         <field name="annual_leave_settlement_ids" readonly="1">
-                            <tree string="تصفيات الإجازة السنوية" decoration-info="state=='draft'" decoration-success="state=='approved'" decoration-warning="state=='confirmed'">
+                            <list string="تصفيات الإجازة السنوية" decoration-info="state=='draft'" decoration-success="state=='approved'" decoration-warning="state=='confirmed'">
                                 <field name="calculation_date"/>
                                 <field name="settlement_type"/>
                                 <field name="remaining_leave_days"/>
                                 <field name="settlement_amount"/>
                                 <field name="net_amount"/>
                                 <field name="state" widget="badge"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </notebook>

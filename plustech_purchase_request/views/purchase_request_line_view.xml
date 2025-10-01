@@ -6,8 +6,7 @@
         <field name="name">purchase.request.line.tree</field>
         <field name="model">purchase.request.line</field>
         <field name="arch" type="xml">
-            <tree
-                name="Purchase Request Lines"
+            <list name="Purchase Request Lines"
                 create="false"
                 decoration-muted="cancelled == True"
                 decoration-info="request_state in ('draft', 'to_approve')"
@@ -58,7 +57,7 @@
                 <field name="qty_in_progress" invisible="1" />
                 <field name="qty_done" invisible="1" />
                 <field name="qty_cancelled" invisible="1" />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="plustech_purchase_request_line_form" model="ir.ui.view">
@@ -186,7 +185,7 @@
                         </page>
                         <page name="allocations" string="Allocations">
                             <field name="plustech_purchase_request_allocation_ids">
-                                <tree decoration-muted="purchase_state == 'cancel'">
+                                <list decoration-muted="purchase_state == 'cancel'">
                                     <field name="purchase_line_id" />
                                     <field name="stock_move_id" />
                                     <field name="product_id" />
@@ -195,7 +194,7 @@
                                     <field name="open_product_qty" />
                                     <field name="product_uom_id" />
                                     <field name="purchase_state" invisible="1" />
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -370,7 +369,7 @@
         <field name="name">Purchase Request Lines</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">purchase.request.line</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="plustech_purchase_request_line_search" />
     </record>
     <record
@@ -499,7 +498,7 @@
         <field name="name">purchase.order.line.tree</field>
         <field name="model">purchase.order.line</field>
         <field name="arch" type="xml">
-            <tree name="Purchase Order Lines" create="true">
+            <list name="Purchase Order Lines" create="true">
                 <field name="order_id" />
                 <field name="name" />
                 <field name="partner_id" string="Vendor" />
@@ -510,7 +509,7 @@
                 <field name="price_subtotal" widget="monetary" />
                 <field name="date_planned" widget="date" />
                 <field name="plustech_purchase_request_lines" attrs="{'invisible': True}" />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="purchase_order_line_search_sub" model="ir.ui.view">

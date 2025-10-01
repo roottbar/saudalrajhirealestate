@@ -27,7 +27,7 @@
         <field name="name">analytic.account.report.tree</field>
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
-            <tree string="تقارير مراكز التكلفة">
+            <list string="تقارير مراكز التكلفة">
                 <field name="name" string="الاسم"/>
                 <field name="state" widget="statusbar"/>
                 <field name="company_ids" widget="many2many_tags" string="الشركات" groups="base.group_multi_company"/>
@@ -38,7 +38,7 @@
                 <field name="total_expenses" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
                 <field name="total_revenues" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
                 <field name="total_debts" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -99,7 +99,7 @@
     <record id="action_analytic_account_report" model="ir.actions.act_window">
         <field name="name">تقارير مراكز التكلفة</field>
         <field name="res_model">analytic.account.report</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_analytic_account_report_tree"/>
         <field name="search_view_id" ref="view_analytic_account_report_search"/>
         <field name="help" type="html">

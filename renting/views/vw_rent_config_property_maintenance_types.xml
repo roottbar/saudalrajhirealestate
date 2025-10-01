@@ -6,10 +6,10 @@
             <field name="name">rent.config.property.maintenance.types.tree</field>
             <field name="model">rent.config.property.maintenance.types</field>
             <field name="arch" type="xml">
-                <tree string="Property Maintenance Types">
+                <list string="Property Maintenance Types">
                     <field name="property_maintenance_type_name"/>
                     <field name="property_maintenance_type_description"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="rent_config_property_maintenance_types_form">

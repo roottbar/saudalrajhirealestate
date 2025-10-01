@@ -6,7 +6,7 @@
             <tree>
                 <field name="name"/>
                 <field name="code"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -35,7 +35,7 @@
     <record model="ir.actions.act_window" id="res_religion_action">
         <field name="name">Religion</field>
         <field name="res_model">res.religion</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem name="Religion"

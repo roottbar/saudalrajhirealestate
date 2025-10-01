@@ -16,14 +16,14 @@
             <field name="name">rent.property.tree</field>
             <field name="model">rent.property</field>
             <field name="arch" type="xml">
-                <tree string="Property">
+                <list string="Property">
                     <field name="property_name"/>
                     <field name="ref_analytic_account" string="رقم العقار"/>
                     <field name="free_units"/>
                     <field name="busy_units"/>
                     <field name="rent_config_property_type_id"/>
                     <field name="rent_config_property_purpose_id"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="rent_property_form">
@@ -100,23 +100,23 @@
                             </page>
                             <page string="Property Units">
                                 <field name="unit_ids" context="{'default_property_id':'property_id'}">
-                                    <tree string="Units">
+                                    <list string="Units">
                                         <field name="name"/>
                                         <field name="unit_price"/>
                                         <field name="unit_price_unit"/>
                                         <field name="unit_state"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="حارس العقار">
                                 <field name="security_tab">
-                                    <tree editable="botttom">
+                                    <list editable="botttom">
                                         <field name="security_name"/>
                                         <field name="security_salary"/>
                                         <field name="security_address"/>
                                         <field name="security_national_id"/>
                                         <field name="security_id_image"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="خدمات المرافق">

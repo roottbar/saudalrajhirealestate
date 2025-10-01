@@ -80,21 +80,21 @@
         <field name="name">hr.attendance.exception.request.tree</field>
         <field name="model">hr.attendance.exception</field>
         <field name="arch" type="xml">
-            <tree name="Attendance Exception Request">
+            <list name="Attendance Exception Request">
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name='department_id'/>
                 <field name='request_date'/>
                 <field name="exception_type"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record model="ir.actions.act_window" id="action_attendance_exception_request">
         <field name="name">Attendance Exception Request</field>
         <field name="res_model">hr.attendance.exception</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="attendance_exception_request_menu"

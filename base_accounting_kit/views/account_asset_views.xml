@@ -98,12 +98,12 @@
         <field name="name">account.asset.category.tree</field>
         <field name="model">account.asset.category</field>
         <field name="arch" type="xml">
-            <tree string="Asset category">
+            <list string="Asset category">
                 <field name="name"/>
                 <field name="journal_id"/>
                 <field name="method"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -168,7 +168,7 @@
                     <notebook colspan="4">
                         <page string="Depreciation Board">
                             <field name="depreciation_line_ids" mode="tree" options="{'reload_whole_on_button': true}">
-                                <tree string="Depreciation Lines" decoration-info="(move_check == False)" create="false">
+                                <list string="Depreciation Lines" decoration-info="(move_check == False)" create="false">
                                     <field name="depreciation_date"/>
                                     <field name="depreciated_value" readonly="1"/>
                                     <field name="amount" widget="monetary" string="Depreciation"/>
@@ -176,7 +176,7 @@
                                     <field name="move_check" widget="deprec_lines_toggler" attrs="{'invisible': [('parent_state', '!=', 'open')]}"/>
                                     <field name="move_posted_check" invisible="1"/>
                                     <field name="parent_state" invisible="1"/>
-                                </tree>
+                                </list>
                                 <form string="Depreciation Lines">
                                     <group>
                                         <group>
@@ -261,7 +261,7 @@
         <field name="name">account.asset.asset.purchase.tree</field>
         <field name="model">account.asset.asset</field>
         <field name="arch" type="xml">
-            <tree string="Assets" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')">
+            <list string="Assets" decoration-info="(state == 'draft')" decoration-muted="(state == 'close')">
                 <field name="name"/>
                 <field name="category_id"/>
                 <field name="date"/>
@@ -271,7 +271,7 @@
                 <field name="currency_id" groups="base.group_multi_currency"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -299,7 +299,7 @@
     <record model="ir.actions.act_window" id="action_account_asset_asset_form">
         <field name="name">Assets</field>
         <field name="res_model">account.asset.asset</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="view_id" ref="view_account_asset_asset_purchase_tree"/>
         <field name="domain">[('category_id.type', '=', 'purchase')]</field>
     </record>
@@ -315,7 +315,7 @@
         <field name="name">Asset Types</field>
         <field name="res_model">account.asset.category</field>
         <field name="domain">[('type', '=', 'purchase')]</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="context">{'default_type': 'purchase'}</field>
     </record>
 

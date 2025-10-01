@@ -11,7 +11,7 @@
                 <field name='issues'/>
                 <field name="court"/>
                 <field name="hearing_time"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -58,7 +58,7 @@
         <field name="name">Hearing</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hearing</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_hearing"

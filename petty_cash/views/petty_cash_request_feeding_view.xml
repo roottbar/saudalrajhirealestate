@@ -15,7 +15,7 @@
                     <field name="actual_amount" optional="hide"/>
                     <field name="account_id" optional="hide"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -125,7 +125,7 @@
         <record id="action_petty_cash_request_feeding" model="ir.actions.act_window">
             <field name="name">Requests Feeding</field>
             <field name="res_model">petty.cash.request.feeding</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Click to create Request Feeding.</p>
             </field>

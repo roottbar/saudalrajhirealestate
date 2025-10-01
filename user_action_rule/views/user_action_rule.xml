@@ -41,10 +41,10 @@
         <field name="name">view.user.action.rule.tree</field>
         <field name="model">user.action.rule</field>
         <field name="arch" type="xml">
-            <tree string="User Action Rule">
+            <list string="User Action Rule">
                 <field name="name"/>
                 <field name="code" optional="hide"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="view_user_action_rule_form" model="ir.ui.view">
@@ -81,10 +81,10 @@
                                             <field name="manager_id"/>
                                             <field name="next_state"/>
                                             <field name="sequence"/>
-                                        </tree>
+                                        </list>
                                     </field>
                                     <button name="action_manager_sequence" type="object" icon="fa-list" width="0.1"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -101,7 +101,7 @@
     <record id="action_user_action_rule" model="ir.actions.act_window">
         <field name="name">Approvals</field>
         <field name="res_model">user.action.rule</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Approval Rules -->
@@ -126,13 +126,13 @@
         <field name="name">view.user.action.line.rule.tree</field>
         <field name="model">user.action.line.rule</field>
         <field name="arch" type="xml">
-            <tree string="User Action Line Rule">
+            <list string="User Action Line Rule">
                 <field name="name"/>
                 <field name="object_id"/>
                 <field name="field_id" optional="show"/>
                 <field name="min_value" optional="show"/>
                 <field name="max_value" optional="show"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="view_user_line_rule_form" model="ir.ui.view">
@@ -171,7 +171,7 @@
     <record id="action_user_line_rule" model="ir.actions.act_window">
         <field name="name">Approval Rules</field>
         <field name="res_model">user.action.line.rule</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Field Approvals -->
@@ -195,12 +195,12 @@
         <field name="name">view.user.action.field.rule.tree</field>
         <field name="model">user.action.field.rule</field>
         <field name="arch" type="xml">
-            <tree string="User Action Field Rule">
+            <list string="User Action Field Rule">
                 <field name="name"/>
                 <field name="object_id"/>
                 <field name="field_id" optional="show"/>
                 <field name="max_value" optional="show"/>
-            </tree>
+            </list>
         </field>
     </record>
     <record id="view_user_field_rule_form" model="ir.ui.view">
@@ -238,7 +238,7 @@
     <record id="action_user_field_rule" model="ir.actions.act_window">
         <field name="name">Field Approvals</field>
         <field name="res_model">user.action.field.rule</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_action_user_rule_main" name="Approvals" parent="base.menu_users" sequence="10"/>

@@ -37,7 +37,7 @@
                 <field name="currency_id" groups="base.group_multi_currency" />
                 <field name="target_move" />
                 <field name="pivot_date" />
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.ui.view" id="mis_report_instance_view_form">
@@ -137,14 +137,14 @@
                                     attrs="{'required': [('comparison_mode', '=', True)]}"
                                     context="{'default_report_instance_id': id}"
                                 >
-                                    <tree decoration-danger="not valid">
+                                    <list decoration-danger="not valid">
                                         <field name="sequence" widget="handle" />
                                         <field name="name" />
                                         <field name="source" />
                                         <field name="date_from" />
                                         <field name="date_to" />
                                         <field name="valid" invisible="1" />
-                                    </tree>
+                                    </list>
                                 </field>
                             </group>
                         </page>
@@ -203,7 +203,7 @@
         <field name="name">MIS Reports</field>
         <field name="view_id" ref="mis_report_instance_view_tree" />
         <field name="res_model">mis.report.instance</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('temporary', '=', False)]</field>
     </record>
     <menuitem
@@ -272,7 +272,7 @@
         <field name="name">Last Reports Generated</field>
         <field name="view_id" ref="mis_report_instance_view_tree" />
         <field name="res_model">mis.report.instance</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('temporary', '=', True)]</field>
     </record>
     <menuitem
@@ -320,14 +320,14 @@
                             nolabel="1"
                             colspan="2"
                         >
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="sign" />
                                 <field
                                     name="period_to_sum_id"
                                     domain="[('report_instance_id', '=', parent.report_instance_id), ('id', '!=', parent.id)]"
                                     options="{'no_create': True, 'no_open': True}"
                                 />
-                            </tree>
+                            </list>
                         </field>
                         <field
                             name="source_sumcol_accdet"

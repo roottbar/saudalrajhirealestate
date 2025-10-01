@@ -6,10 +6,10 @@
             <field name="name">rent.config.property.types.tree</field>
             <field name="model">rent.config.property.types</field>
             <field name="arch" type="xml">
-                <tree string="Property Types">
+                <list string="Property Types">
                     <field name="property_type_name"/>
                     <field name="property_type_description"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.ui.view" id="rent_config_property_types_form">

@@ -59,9 +59,9 @@
 			<field name="name">purchase.team.tree</field>
 			<field name="model">purchase.team</field>
 			<field name="arch" type="xml">
-				<tree string="Purchase Team">
+				<list string="Purchase Team">
 					<field name="name"/>
-				</tree>
+				</list>
 			</field>
 			</record>
 
@@ -78,7 +78,7 @@
 			<record model="ir.actions.act_window" id="action_purchase_team">
 			<field name="name">Purchase Team</field>
 			<field name="res_model">purchase.team</field>
-			<field name="view_mode">tree,form</field>
+			<field name="view_mode">list,form</field>
 			</record>
 
 			<menuitem action="action_purchase_team" id="menu_action_purchase_team_id" parent="purchase.menu_purchase_config" groups='purchase_team_app.group_purchase_team'/>

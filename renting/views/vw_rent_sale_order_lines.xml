@@ -25,7 +25,7 @@
             <field name="name">sale.order.line</field>
             <field name="model">sale.order.line</field>
             <field name="arch" type="xml">
-                <tree string="_tree">
+                <list string="_tree">
                     <field name="property_address_area" string="الفرع"/>
                     <field name="property_address_build2" string="المجمع"/>
                     <field name="property_number" string="العقار"/>
@@ -41,14 +41,14 @@
                     <field name="fromdate" string="تاريخ الاستلام   "/>
                     <field name="todate" string="تاريخ التسليم  "/>
                     <!--                    <field name="apartment_insurance"/>-->
-                </tree>
+                </list>
             </field>
         </record>
         <record model="ir.actions.act_window" id="rent_sale_order_lines">
             <field name="name">الوحدات المؤجرة</field>
             <field name="res_model">sale.order.line</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="search_view_id" ref="rent_sale_order_search_view"/>
             <field name="view_id" ref="rent_sale_order_tree_view"/>
         </record>

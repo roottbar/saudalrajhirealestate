@@ -31,7 +31,7 @@
             <xpath expr="//page[@name='bank_account']" position="after">
                 <page string="Bank Fees" name="account_bank_fees" attrs="{'invisible': [('type','!=','bank')]}">
                     <field name="account_bank_fees_ids">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="account_id"
                                    options="{'no_open': True, 'no_create': True}"/>
                             <field name="name" optional="show"/>
@@ -39,7 +39,7 @@
                             <field name="amount"/>
                             <field name="taxes_ids" widget="many2many_tags"
                                    options="{'no_create': True, 'no_open': True}" optional="hide"/>
-                        </tree>
+                        </list>
                     </field>
                 </page>
             </xpath>

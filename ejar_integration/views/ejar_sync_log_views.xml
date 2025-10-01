@@ -5,7 +5,7 @@
         <field name="name">ejar.sync.log.tree</field>
         <field name="model">ejar.sync.log</field>
         <field name="arch" type="xml">
-            <tree string="Ejar Sync Logs" decoration-success="status=='success'" 
+            <list string="Ejar Sync Logs" decoration-success="status=='success'" 
                   decoration-warning="status=='pending'" decoration-danger="status=='failed'"
                   decoration-info="status=='in_progress'">
                 <field name="sync_date"/>
@@ -19,7 +19,7 @@
                         icon="fa-refresh" attrs="{'invisible': [('status', '!=', 'failed')]}"/>
                 <button name="action_view_details" type="object" string="Details" 
                         icon="fa-info-circle"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -205,7 +205,7 @@
     <record id="action_ejar_sync_log" model="ir.actions.act_window">
         <field name="name">Ejar Sync Logs</field>
         <field name="res_model">ejar.sync.log</field>
-        <field name="view_mode">tree,form,calendar,pivot,graph</field>
+        <field name="view_mode">list,form,calendar,pivot,graph</field>
         <field name="context">{}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -222,7 +222,7 @@
     <record id="action_ejar_sync_log_failed" model="ir.actions.act_window">
         <field name="name">Failed Sync Logs</field>
         <field name="res_model">ejar.sync.log</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('status', '=', 'failed')]</field>
         <field name="context">{'default_status': 'failed'}</field>
     </record>
@@ -231,7 +231,7 @@
     <record id="action_ejar_sync_log_recent" model="ir.actions.act_window">
         <field name="name">Recent Sync Logs</field>
         <field name="res_model">ejar.sync.log</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('sync_date', '&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d 00:00:00'))]</field>
         <field name="context">{}</field>
     </record>

@@ -16,7 +16,7 @@
                 <field name='prosecut'/>
                 <field name="fee"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -110,7 +110,7 @@
         <field name="name">Issues</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">issues</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first issue !

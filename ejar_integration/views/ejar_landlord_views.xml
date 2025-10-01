@@ -5,7 +5,7 @@
         <field name="name">ejar.landlord.tree</field>
         <field name="model">ejar.landlord</field>
         <field name="arch" type="xml">
-            <tree string="Ejar Landlords" decoration-success="verification_status=='verified'" 
+            <list string="Ejar Landlords" decoration-success="verification_status=='verified'" 
                   decoration-warning="verification_status=='pending'" decoration-danger="verification_status=='rejected'"
                   decoration-muted="verification_status=='not_verified'">
                 <field name="name"/>
@@ -19,7 +19,7 @@
                         icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
                 <button name="action_verify" type="object" string="Verify" 
                         icon="fa-check" attrs="{'invisible': [('verification_status', '=', 'verified')]}"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -151,7 +151,7 @@
                                     <field name="rental_price"/>
                                     <field name="status"/>
                                     <field name="ejar_synced"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         
@@ -165,7 +165,7 @@
                                     <field name="end_date"/>
                                     <field name="monthly_rent"/>
                                     <field name="status"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         
@@ -194,7 +194,7 @@
                                     <field name="upload_date"/>
                                     <field name="status"/>
                                     <field name="verified"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         

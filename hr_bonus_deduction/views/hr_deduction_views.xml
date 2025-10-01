@@ -23,14 +23,14 @@
             <field name="name">view.hr.deduction.tree</field>
             <field name="model">hr.deduction</field>
             <field name="arch" type="xml">
-                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'"
+                <list decoration-info="state == 'draft'" decoration-muted="state == 'cancel'"
                       string="Hr Deduction Tree">
                     <field name="name"/>
                     <field name="employee_id"/>
                     <field name="applied_date"/>
                     <field name="amount"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -110,7 +110,7 @@
         <record id="action_hr_deduction" model="ir.actions.act_window">
             <field name="name">Deductions</field>
             <field name="res_model">hr.deduction</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="search_view_id" ref="view_hr_deduction_filter"/>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">click to define new Deduction</p>

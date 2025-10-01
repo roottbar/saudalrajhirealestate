@@ -5,7 +5,7 @@
         <field name="name">ejar.contract.tree</field>
         <field name="model">ejar.contract</field>
         <field name="arch" type="xml">
-            <tree string="Ejar Contracts" decoration-success="status=='active'" 
+            <list string="Ejar Contracts" decoration-success="status=='active'" 
                   decoration-warning="status=='draft'" decoration-danger="status=='terminated'"
                   decoration-muted="status=='expired'">
                 <field name="name"/>
@@ -21,7 +21,7 @@
                         icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
                 <button name="action_activate" type="object" string="Activate" 
                         icon="fa-play" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -129,7 +129,7 @@
                                     <field name="payment_method"/>
                                     <field name="status"/>
                                     <field name="reference"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         
@@ -140,7 +140,7 @@
                                     <field name="document_type"/>
                                     <field name="upload_date"/>
                                     <field name="status"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         
@@ -263,7 +263,7 @@
     <record id="action_ejar_contract" model="ir.actions.act_window">
         <field name="name">Ejar Contracts</field>
         <field name="res_model">ejar.contract</field>
-        <field name="view_mode">tree,form,calendar,pivot,graph</field>
+        <field name="view_mode">list,form,calendar,pivot,graph</field>
         <field name="context">{}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -280,7 +280,7 @@
     <record id="action_ejar_contract_active" model="ir.actions.act_window">
         <field name="name">Active Contracts</field>
         <field name="res_model">ejar.contract</field>
-        <field name="view_mode">tree,form,calendar</field>
+        <field name="view_mode">list,form,calendar</field>
         <field name="domain">[('status', '=', 'active')]</field>
         <field name="context">{'default_status': 'active'}</field>
     </record>
@@ -289,7 +289,7 @@
     <record id="action_ejar_contract_expiring" model="ir.actions.act_window">
         <field name="name">Expiring Contracts</field>
         <field name="res_model">ejar.contract</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('end_date', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d')), ('status', '=', 'active')]</field>
         <field name="context">{}</field>
     </record>

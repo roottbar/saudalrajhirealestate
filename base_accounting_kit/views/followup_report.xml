@@ -72,14 +72,14 @@
             <field name="name">customer.statements.tree</field>
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
-                <tree string="Follow-up Reports Tree View" create="false" import="false" delete="false">
+                <list string="Follow-up Reports Tree View" create="false" import="false" delete="false">
                     <field name="currency_id" invisible="1"/>
                     <field name="name"/>
                     <field name="total_due" widget="monetary" options="{'currency_field': 'currency_id'}" sum="Total"/>
                     <field name="total_overdue" widget="monetary" options="{'currency_field': 'currency_id'}"
                            sum="Total"/>
                     <field name="followup_status"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -108,7 +108,7 @@
         <record id="action_view_list_customer_statements" model="ir.actions.act_window">
             <field name="name">Follow-up Reports</field>
             <field name="res_model">res.partner</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('customer_statements_tree_view')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('customer_statements_form_view')})]"/>

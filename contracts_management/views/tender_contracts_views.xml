@@ -40,7 +40,7 @@
             <field name="name">view.tender.contract.tree</field>
             <field name="model">tender.contract</field>
             <field name="arch" type="xml">
-                <tree string="Tender Contracts">
+                <list string="Tender Contracts">
                     <field name="name"/>
                     <field name="tender_project_id" optional="show"
                            groups="contracts_management.group_show_tender_project"/>
@@ -57,7 +57,7 @@
                     <field name="amount_tax" sum="Total Tax" optional="show"/>
                     <field name="amount_total" sum="Total" optional="show"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -189,7 +189,7 @@
                         <notebook>
                             <page name="manpower" string="Manpower">
                                 <field name="manpower_lines" attrs="{'readonly':[('state','in',['open','closed'])]}">
-                                    <tree string="Manpower">
+                                    <list string="Manpower">
                                         <field name="service_type_id" optional="show"/>
                                         <field name="service_product_id" optional="hide"/>
                                         <field name="name" optional="show"/>
@@ -207,7 +207,7 @@
                                         <field name="discount" optional="show"/>
                                         <field name="branch_id" optional="hide"/>
                                         <field name="total_price_unit" invisible="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
                                 <group class="oe_subtotal_footer oe_right">
                                     <field name="amount_untaxed_manpower"/>
@@ -221,7 +221,7 @@
                             <page name="equipments_tools" string="Equipments  &amp; Tools">
                                 <field name="equipments_lines" widget="section_and_note_one2many"
                                        attrs="{'readonly':[('state','in',['open','closed'])]}">
-                                    <tree string="Equipments  &amp; Tools" editable="bottom">
+                                    <list string="Equipments  &amp; Tools" editable="bottom">
                                         <control>
                                             <create name="add_line_control" string="Add a line"/>
                                             <create name="add_section_control" string="Add a section"
@@ -247,7 +247,7 @@
                                                optional="hide"/>
                                         <field name="display_type" force_save="1" invisible="1"/>
                                         <field name="total_price_unit" invisible="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
                                 <group class="oe_subtotal_footer oe_right">
                                     <field name="amount_untaxed_equipments"/>
@@ -259,7 +259,7 @@
                             <page name="specialty_services_request" string="Specialty">
                                 <field name="specialty_services_lines" widget="section_and_note_one2many"
                                        attrs="{'readonly':[('state','in',['open','closed'])]}">
-                                    <tree string="Specialty Services Request" editable="bottom">
+                                    <list string="Specialty Services Request" editable="bottom">
                                         <control>
                                             <create name="add_line_control" string="Add a line"/>
                                             <create name="add_section_control" string="Add a section"
@@ -285,7 +285,7 @@
                                                optional="hide"/>
                                         <field name="display_type" force_save="1" invisible="1"/>
                                         <field name="total_price_unit" invisible="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
                                 <group class="oe_subtotal_footer oe_right">
                                     <field name="amount_untaxed_specialty_services"/>
@@ -378,7 +378,7 @@
         <record id="action_tender_contracts" model="ir.actions.act_window">
             <field name="name">Contracts</field>
             <field name="res_model">tender.contract</field>
-            <field name="view_mode">tree,form,calendar,pivot,graph,activity</field>
+            <field name="view_mode">list,form,calendar,pivot,graph,activity</field>
             <field name="search_view_id" ref="contracts_management.view_tender_contract_filter"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -390,7 +390,7 @@
         <record id="action_all_tender_contracts_project" model="ir.actions.act_window">
             <field name="name">Contracts</field>
             <field name="res_model">tender.contract</field>
-            <field name="view_mode">tree,form,calendar,pivot,graph,activity</field>
+            <field name="view_mode">list,form,calendar,pivot,graph,activity</field>
             <field name="context">{'search_default_tender_project_id': [active_id], 'default_tender_project_id':
                 active_id}
             </field>

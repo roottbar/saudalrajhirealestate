@@ -3,7 +3,7 @@
         <field name="name">Purchase Requests</field>
         <field name="model">purchase.request</field>
         <field name="arch" type="xml">
-            <tree string="Purchase Request">
+            <list string="Purchase Request">
                 <field name="name" optional="show"/>
                 <field name="date" optional="show"/>
                 <field name="request_by" optional="show"/>
@@ -13,7 +13,7 @@
                 <field name="amount_tax" sum="Total Taxes" optional="show"/>
                 <field name="amount_total" sum="Total" optional="show"/>
                 <field name="state" optional="show"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -83,7 +83,7 @@
                         <page string="Products" name="products">
                             <field name="line_ids" attrs="{'readonly': [('state', '!=', 'draft')]}"
                                    widget="section_and_note_one2many">
-                                <tree string="Purchase Request Lines" editable="bottom">
+                                <list string="Purchase Request Lines" editable="bottom">
                                     <control>
                                         <create name="add_product_control" string="Add a product"/>
                                         <create name="add_section_control" string="Add a section"
@@ -115,7 +115,7 @@
                                            attrs="{'column_invisible': [('parent.state', 'not in', ('approved', 'done'))]}"
                                            optional="hide"/>
 
-                                </tree>
+                                </list>
                             </field>
                             <group class="oe_subtotal_footer oe_right"
                                    attrs="{'invisible': [('state', 'not in', ('approved', 'done'))]}">
@@ -206,7 +206,7 @@
         <field name="name">Purchase Requests</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">purchase.request</field>
-        <field name="view_mode">tree,form,calendar,pivot,graph,activity</field>
+        <field name="view_mode">list,form,calendar,pivot,graph,activity</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
                 ADD New Purchase Request

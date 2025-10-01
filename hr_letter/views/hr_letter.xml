@@ -9,7 +9,7 @@
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="applied_to"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -64,7 +64,7 @@
     <record id="hr_letter_action" model="ir.actions.act_window">
         <field name="res_model">hr.letter</field>
         <field name="name">HR Letter</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="hr_letter_menu" name="HR Letter" parent="hr.menu_hr_root" action="hr_letter_action"

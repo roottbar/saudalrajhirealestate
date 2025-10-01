@@ -11,7 +11,7 @@
                     <field name="iqama_expiry_date"/>
 
 
-                </tree>
+                </list>
             </field>
         </record>
 

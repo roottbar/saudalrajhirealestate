@@ -7,7 +7,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-        </tree>
+        </list>
       </field>
     </record>
 

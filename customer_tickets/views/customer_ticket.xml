@@ -106,7 +106,7 @@
             <field name="name">customer.tickets.view.tree</field>
             <field name="model">customer.tickets</field>
             <field name="arch" type="xml">
-                <tree string="Tickets" js_class="sale_list_dashboard"
+                <list string="Tickets" js_class="sale_list_dashboard"
                       decoration-danger="state in ('reject')"
                       decoration-muted="state in ('submit')"
                       decoration-info="state in ('in_progress')"
@@ -126,7 +126,7 @@
                     <field name="ticket_solve_date" optional="hide"/>
                     <field name="company_id" optional="show" readonly="1" groups="base.group_multi_company"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -200,7 +200,7 @@
         <record id="customer_tickets_action" model="ir.actions.act_window">
             <field name="name">Submit Ticket</field>
             <field name="res_model">customer.tickets</field>
-            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_mode">list,kanban,form</field>
             <field name="search_view_id" ref="customer_tickets_search"/>
             <field name="groups_id" eval="[(4,ref('customer_tickets.ticket_user_group'))]"/>
 

@@ -30,7 +30,7 @@
                             <field name="partner_id" readonly="1"/>
                             <field name="role" readonly="1"/>
                             <field name="state" readonly="1"/>
-                        </tree>
+                        </list>
                     </field>
                 </page>
             </xpath>

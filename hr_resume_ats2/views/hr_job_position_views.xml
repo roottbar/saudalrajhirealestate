@@ -101,7 +101,7 @@
                                         <field name="analysis_date"/>
                                         <field name="state" widget="badge"/>
                                         <field name="user_id"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -120,7 +120,7 @@
             <field name="name">hr.job.position.tree</field>
             <field name="model">hr.job.position</field>
             <field name="arch" type="xml">
-                <tree string="Job Positions" decoration-success="state=='published'" 
+                <list string="Job Positions" decoration-success="state=='published'" 
                       decoration-muted="state=='closed'" decoration-info="state=='draft'">
                     <field name="name"/>
                     <field name="code"/>
@@ -137,7 +137,7 @@
                            decoration-muted="state=='closed'"/>
                     <field name="active" invisible="1"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                </tree>
+                </list>
             </field>
         </record>
         

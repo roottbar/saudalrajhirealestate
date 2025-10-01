@@ -165,8 +165,7 @@
                     <notebook>
                         <page string="Products">
                             <field name="line_ids">
-                                <tree
-                                    decoration-muted="cancelled == True"
+                                <list decoration-muted="cancelled == True"
                                     editable="bottom"
                                 >
                                     <field name="product_id" />
@@ -216,7 +215,7 @@
                                         width="0.1"
                                         options='{"warn": true}'
                                     />
-                                </tree>
+                                </list>
                             </field>
                             <group class="oe_subtotal_footer oe_right">
                                 <div class="oe_subtotal_footer_separator oe_inline">
@@ -246,8 +245,7 @@
         <field name="name">purchase.request.tree</field>
         <field name="model">purchase.request</field>
         <field name="arch" type="xml">
-            <tree
-                decoration-bf="message_needaction==True"
+            <list decoration-bf="message_needaction==True"
                 decoration-info="state in ('draft','to_approve')"
                 decoration-muted="state in ('rejected')"
                 name="Purchase Request"
@@ -273,7 +271,7 @@
                     decoration-warning="state == 'to_approve'"
                     decoration-danger="state == 'rejected'"
                 />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="view_plustech_purchase_request_search" model="ir.ui.view">
@@ -378,7 +376,7 @@
         <field name="name">Purchase Requests</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">purchase.request</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{"search_default_requested_by":uid}</field>
         <field name="search_view_id" ref="view_plustech_purchase_request_search" />
         <field name="help" type="html">

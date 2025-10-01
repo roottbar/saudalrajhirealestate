@@ -59,7 +59,7 @@
                     <field name="amount_total" string="Amount" sum="Total Amount"/>
                     <field name="state"/>
                     <field name="partner_ids" invisible="1"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -137,7 +137,7 @@
 
                                 <field name="petty_cash_line_ids"
                                        attrs="{'invisible':['|',('state','=','draft'),('template_type','=','with product')],'readonly':[('state','in',['review','closed'])]}">
-                                    <tree string="Petty Cash Lines">
+                                    <list string="Petty Cash Lines">
                                         <field name="reference"/>
                                         <field name="date"/>
                                         <field name="description"/>
@@ -166,12 +166,12 @@
                                         <field name="file" widget="binary" filename="file_name"
                                                style="white-space: nowrap;"/>
                                         <field name="company_id" invisible="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
 
                                 <field name="petty_cash_line_ids2" context="{'with_product':1}"
                                        attrs="{'invisible':['|',('state','=','draft'),('template_type','!=','with product')],'readonly':[('state','in',['review','closed'])]}">
-                                    <tree string="Petty Cash Lines">
+                                    <list string="Petty Cash Lines">
                                         <field name="reference"/>
                                         <field name="date"/>
                                         <field name="description"/>
@@ -202,7 +202,7 @@
                                         <field name="file" widget="binary" filename="file_name"
                                                style="white-space: nowrap;"/>
                                         <field name="company_id" invisible="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
 
                                 <group class="oe_subtotal_footer oe_right">
@@ -218,7 +218,7 @@
                                   attrs="{'invisible':['|',('state','=','draft'),('dynamic_journal','=',False)]}">
                                 <field name="dynamic_move_line_ids" context="{'force_petty_cash':True}"
                                        attrs="{'readonly':[('state','in',['review','closed'])]}">
-                                    <tree string="Journal Items" editable="bottom" create="false" delete="false"
+                                    <list string="Journal Items" editable="bottom" create="false" delete="false"
                                           readonly="1">
                                         <field name="account_id" readonly="1"/>
                                         <field name="partner_id" readonly="1"/>
@@ -238,7 +238,7 @@
                                         <field name="debit" sum="Total Debit" readonly="1"/>
                                         <field name="credit" sum="Total Credit" readonly="1"/>
                                         <field name="company_id" invisible="1"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Transfers">
@@ -248,7 +248,7 @@
                                         <field name="manager"/>
                                         <field name="create_uid"/>
                                         <field name="create_date"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>
@@ -315,7 +315,7 @@
         <record id="action_petty_cash" model="ir.actions.act_window">
             <field name="name">Petty Cash</field>
             <field name="res_model">petty.cash</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="search_view_id" ref="view_petty_cash_filter"/>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">click to define new Petty Cash</p>
@@ -325,7 +325,7 @@
         <record id="action_petty_cash_for_review" model="ir.actions.act_window">
             <field name="name">Petty Cash For Review</field>
             <field name="res_model">petty.cash</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('state','=','review')]</field>
             <field name="search_view_id" ref="view_petty_cash_filter"/>
             <field name="help" type="html">

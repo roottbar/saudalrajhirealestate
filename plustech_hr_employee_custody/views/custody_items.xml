@@ -61,7 +61,7 @@
             <field name="model">product.product</field>
             <field eval="50" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Product Variants">
+                <list string="Product Variants">
                     <field name="default_code"/>
                     <field name="name"/>
                     <field name="product_template_attribute_value_ids" widget="many2many_tags"
@@ -69,7 +69,7 @@
                     <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom"/>
                     <field name="barcode"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                </tree>
+                </list>
             </field>
         </record>
 

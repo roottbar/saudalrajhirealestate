@@ -64,7 +64,7 @@
                                 <field name="new_user_id"/>
                                 <field name="create_uid"/>
                                 <field name="create_date"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>

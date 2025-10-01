@@ -33,7 +33,7 @@
                     <field name="account_receivable_id" optional="show"/>
                     <field name="apply_to_customer" optional="hide"/>
                     <field name="apply_to_vendor" optional="hide"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -64,7 +64,7 @@
         <record id="action_partner_accounting_category" model="ir.actions.act_window">
             <field name="name">Partner Categories</field>
             <field name="res_model">res.partner.account.category</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="view_ids" eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('accounting_category_partner.view_res_partner_account_category_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('accounting_category_partner.view_res_partner_account_category_form')})]"/>
@@ -82,7 +82,7 @@
                     <field name="name"/>
                     <field name="account_payable_id" optional="show"/>
                     <field name="account_receivable_id" optional="show"/>
-                </tree>
+                </list>
             </field>
         </record>
 

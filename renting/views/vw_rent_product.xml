@@ -6,7 +6,7 @@
             <field name="name">2الوحدات المؤجرة</field>
             <field name="model">product.template</field>
             <field name="arch" type="xml">
-                <tree string="product_rented_tree">
+                <list string="product_rented_tree">
                     <field name="operating_unit_id"/>
                     <field name="property_address_build"/>
                     <field name="property_id" string="العقار"/>
@@ -42,7 +42,7 @@
                     <field name="contract_admin_fees"/>
                     <field name="contract_service_fees"/>
                     <field name="insurance_value"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record id="item_rented_action" model="ir.actions.act_window">

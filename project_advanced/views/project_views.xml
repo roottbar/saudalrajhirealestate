@@ -28,10 +28,10 @@
                 <xpath expr="//notebook" position="inside">
                     <page name="stages" string="Stages">
                         <field name="type_ids">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="name"/>
                                 <field name="sequence"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>

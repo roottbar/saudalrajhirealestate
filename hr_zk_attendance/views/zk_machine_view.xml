@@ -36,19 +36,19 @@
         <field name="name">zk.machine.tree</field>
         <field name="model">zk.machine</field>
         <field name="arch" type="xml">
-            <tree string="Biometric Machine">
+            <list string="Biometric Machine">
                 <field name="name"/>
                 <field name="port_no"/>
                 <field name="address_id"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="zk_machine_action" model="ir.actions.act_window">
         <field name="name">Attendances</field>
         <field name="res_model">zk.machine</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="hr_employee_inherit_form_view" model="ir.ui.view">

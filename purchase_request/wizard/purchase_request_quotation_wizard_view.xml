@@ -25,14 +25,14 @@
                 <notebook>
                     <page string="Products">
                         <field name="lines">
-                            <tree editable="bottom" create="0" delete="0">
+                            <list editable="bottom" create="0" delete="0">
                                 <field name="product_id"/>
                                 <field name="product_qty"/>
                                 <field name="uom_id"/>
                                 <field name="price_unit" invisible="not context.get('create_purchase_order')"
                                        sum="Total"/>
                                 <field name="purchase_request_line" force_save="1" invisible="1"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </notebook>

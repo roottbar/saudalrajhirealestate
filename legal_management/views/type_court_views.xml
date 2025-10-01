@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name='type_court'/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -34,7 +34,7 @@
         <field name="name">Type of court</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">type.court</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_configuration_master"

@@ -5,7 +5,7 @@
             <field name="name">Property</field>
             <field name="res_model">rent.property</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Renting" id="renting.menu_root"
                   parent="sale_renting.rental_menu_root"
@@ -19,7 +19,7 @@
             <field name="name">Property Types</field>
             <field name="res_model">rent.config.property.types</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Property Types" id="rent_config_property_types_menu"
                   parent="sale_renting.menu_rental_config"
@@ -31,7 +31,7 @@
             <field name="name">Property Purposes</field>
             <field name="res_model">rent.config.property.purposes</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Property Purposes" id="rent_config_property_purposes_menu"
                   parent="sale_renting.menu_rental_config"
@@ -43,7 +43,7 @@
             <field name="name">Property Maintenance Types</field>
             <field name="res_model">rent.config.property.maintenance.types</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Property Maintenance Types" id="rent_config_property_maintenance_types_menu"
                   parent="sale_renting.menu_rental_config"
@@ -55,7 +55,7 @@
             <field name="name">Property Maintenance Statuses</field>
             <field name="res_model">rent.config.property.maintenance.statuses</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Property Maintenance Statuses" id="rent_config_property_maintenance_statuses_menu"
                   parent="sale_renting.menu_rental_config"
@@ -67,7 +67,7 @@
             <field name="name">Unit Finishes</field>
             <field name="res_model">rent.config.unit.finishes</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Unit Finishes" id="rent_config_unit_finishes_menu"
                   parent="sale_renting.menu_rental_config"
@@ -79,7 +79,7 @@
             <field name="name">Unit Overlooks</field>
             <field name="res_model">rent.config.unit.overlooks</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Unit Overlooks" id="config_unit_overlooks_menu"
                   parent="sale_renting.menu_rental_config"
@@ -91,7 +91,7 @@
             <field name="name">Unit Types</field>
             <field name="res_model">rent.config.unit.types</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Unit Types" id="config_unit_types_menu"
                   parent="sale_renting.menu_rental_config"
@@ -103,7 +103,7 @@
             <field name="name">Unit Purposes</field>
             <field name="res_model">rent.config.unit.purposes</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Unit Purposes" id="config_unit_purposes_menu"
                   parent="sale_renting.menu_rental_config"
@@ -115,7 +115,7 @@
             <field name="name">Unit Maintenance Types</field>
             <field name="res_model">rent.config.unit.maintenance.types</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Unit Maintenance Types" id="rent_config_unit_maintenance_types_menu"
                   parent="sale_renting.menu_rental_config"
@@ -128,7 +128,7 @@
             <field name="res_model">rent.config.unit.maintenance.statuses</field>
             <field name="type">ir.actions.act_window</field>
             <field name="name">Maintenance Report</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
         </record>
         <menuitem name="Unit Maintenance Statuses" id="rent_config_unit_maintenance_statuses_menu"
                   parent="sale_renting.menu_rental_config"

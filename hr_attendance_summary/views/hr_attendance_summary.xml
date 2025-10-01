@@ -43,7 +43,7 @@
                                 <tree>
                                     <field name="check_in"/>
                                     <field name="check_out"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Late Rules">
@@ -56,7 +56,7 @@
                                     <field name="late_minutes_deduction"/>
                                     <field name="late_minutes"/>
                                     <field name="late_value"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -69,7 +69,7 @@
         <field name="name">hr.attendance.summary.tree</field>
         <field name="model">hr.attendance.summary</field>
         <field name="arch" type="xml">
-            <tree create="0" decoration-info="state == 'weekend'" decoration-success="state == 'holiday'"
+            <list create="0" decoration-info="state == 'weekend'" decoration-success="state == 'holiday'"
                   decoration-danger="state == 'absence'">
                 <field name="employee_id"/>
                 <field name="weekday"/>
@@ -80,7 +80,7 @@
                 <field name="exception"/>
                 <field name="payslip_paid"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -113,7 +113,7 @@
     <record id="action_hr_attendance_summary" model="ir.actions.act_window">
         <field name="name">Attendances Summary</field>
         <field name="res_model">hr.attendance.summary</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
                 Click to create a new Record.

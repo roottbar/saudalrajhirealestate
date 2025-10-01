@@ -14,7 +14,7 @@
             <field name="name">zk_machine_attendance.log.tree.view</field>
             <field name="model">zk_hr_attendance.log</field>
             <field name="arch" type="xml">
-                <tree create="0" edit="0" delete="0">
+                <list create="0" edit="0" delete="0">
                     <field name="name" width="20%"/>
                     <field name="machine_employee_id" width="15%"/>
                     <field name="device_serialnumber" width="20%"/>
@@ -22,7 +22,7 @@
                     <field name="operation" width="15%" optional="hide"/>
                     <field name="operation_type"/>
                     <field name="state" width="15%"/>
-                </tree>
+                </list>
             </field>
         </record>
 
