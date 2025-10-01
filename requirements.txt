@@ -94,7 +94,7 @@ pyre-check>=0.9.0
 pytest>=7.4.0
 pytest-cov>=4.1.0
 pytest-mock>=3.11.0
-pytest-odoo>=3.0.0
+pytest-odoo>=2.1.3
 coverage>=7.3.0
 
 # Debugging & Profiling
@@ -138,7 +138,7 @@ rich>=13.5.0
 # ===================================================
 # Uncomment if needed for development
 # pytest>=7.0.0
-# pytest-odoo>=3.0.0
+# pytest-odoo>=2.1.3
 # coverage>=6.0.0
 
 # ===================================================
