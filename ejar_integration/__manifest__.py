@@ -20,7 +20,7 @@
         - Automated renewal processes
         - Comprehensive reporting and analytics
     """,
-    'author': "Ibrahim Abdullatif",
+    'author': "Othmancs",
     'website': "https://www.ejar.sa/",
     'category': 'Real Estate',
     'license': 'LGPL-3',
@@ -33,7 +33,6 @@
         'sale_operating_unit',
         'analytic',
         'account_asset',
-        'l10n_gcc_invoice',
         'product',
         'einv_sa',
         'contacts',
