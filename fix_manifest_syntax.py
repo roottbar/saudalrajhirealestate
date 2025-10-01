@@ -1,170 +1,151 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Fix Manifest Syntax Issues
-Author: roottbar
+Fix manifest syntax errors in Odoo modules
+Created by: roottbar
 Date: 2025-01-30
-Description: Fix syntax errors in __manifest__.py files
 """
 
 import os
 import re
-from pathlib import Path
+import glob
 
-class ManifestSyntaxFixer:
-    def __init__(self, base_path):
-        self.base_path = Path(base_path)
-        self.fixed_files = []
-        self.errors = []
-
-    def fix_string_literals(self, content):
-        """Fix unterminated string literals in manifest content"""
-        lines = content.split('\n')
-        fixed_lines = []
+def fix_manifest_file(file_path):
+    """Fix syntax errors in manifest file"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
         
-        for i, line in enumerate(lines):
-            # Fix unterminated strings in summary and description
-            if "'summary':" in line and line.count('"') == 1:
-                # Find the closing quote on subsequent lines
-                if line.strip().endswith('"'):
-                    fixed_lines.append(line)
-                else:
-                    # Look for the content and close the string properly
-                    content_match = re.search(r"'summary':\s*\"(.*)$", line)
-                    if content_match:
-                        content_text = content_match.group(1).strip()
-                        if content_text:
-                            fixed_lines.append(f"    'summary': \"{content_text}\",")
-                        else:
-                            # Look at next lines for content
-                            j = i + 1
-                            summary_content = []
-                            while j < len(lines) and not lines[j].strip().endswith('",'):
-                                if lines[j].strip():
-                                    summary_content.append(lines[j].strip())
-                                j += 1
-                            
-                            if j < len(lines) and lines[j].strip().endswith('",'):
-                                summary_content.append(lines[j].strip().rstrip('",'))
-                            
-                            # Join the content and create proper string
-                            full_summary = ' '.join(summary_content).strip()
-                            if full_summary:
-                                fixed_lines.append(f"    'summary': \"{full_summary}\",")
-                            else:
-                                fixed_lines.append(f"    'summary': \"Enhanced Module\",")
-                            
-                            # Skip the processed lines
-                            i = j
-                            continue
-                    else:
-                        fixed_lines.append(line)
+        # Check if file has syntax issues
+        if '""",' in content and 'description' not in content[:200]:
+            print(f"Fixing syntax in: {file_path}")
             
-            elif "'description':" in line and line.count('"') == 1:
-                # Similar fix for description
-                content_match = re.search(r"'description':\s*\"(.*)$", line)
-                if content_match:
-                    content_text = content_match.group(1).strip()
-                    if content_text:
-                        fixed_lines.append(f"    'description': \"{content_text}\",")
-                    else:
-                        # Look at next lines for content
-                        j = i + 1
-                        desc_content = []
-                        while j < len(lines) and not (lines[j].strip().endswith('",') or lines[j].strip().endswith('",')):
-                            if lines[j].strip():
-                                desc_content.append(lines[j].strip())
-                            j += 1
-                        
-                        if j < len(lines) and (lines[j].strip().endswith('",') or lines[j].strip().endswith('",')):
-                            desc_content.append(lines[j].strip().rstrip('",').rstrip('",'))
-                        
-                        # Join the content and create proper string
-                        full_desc = ' '.join(desc_content).strip()
-                        if full_desc:
-                            # Clean up the description
-                            full_desc = re.sub(r'\s+', ' ', full_desc)
-                            fixed_lines.append(f"    'description': \"{full_desc}\",")
-                        else:
-                            fixed_lines.append(f"    'description': \"Enhanced Module for Odoo 18.0\",")
-                        
-                        # Skip the processed lines
-                        i = j
-                        continue
-                else:
-                    fixed_lines.append(line)
+            # Extract the Arabic description text
+            arabic_text = ""
+            lines = content.split('\n')
+            in_description = False
+            description_lines = []
+            
+            for line in lines:
+                if 'هذا التقرير يقوم بحساب:' in line or 'This module provides' in line:
+                    in_description = True
+                if in_description and line.strip() and not line.strip().startswith("'") and not line.strip().startswith('"'):
+                    description_lines.append(line)
+                elif in_description and (line.strip().startswith("'") or line.strip().startswith('"')):
+                    break
+            
+            # Clean up the description
+            description_text = '\n'.join(description_lines).strip()
+            
+            # Create a proper manifest structure
+            if 'analytic_account_ocs' in file_path:
+                fixed_content = f'''# -*- coding: utf-8 -*-
+{{
+    'name': "تقرير مراكز التكلفة",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced تقرير مراكز التكلفة module",
+    'description': """
+{description_text}
+    """,
+    'author': 'othmancs',
+    'maintainer': 'roottbar',
+    'website': 'https://www.tbarholdingocs.com',
+    'category': 'Accounting',
+    'depends': [
+        'base',
+        'account',
+        'analytic',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/analytic_account_report_views.xml',
+    ],
+    'license': "LGPL-3",
+    'application': True,
+    'installable': True,
+    'auto_install': False,
+}}'''
+            elif 'plustech_hr_employee_custody' in file_path:
+                fixed_content = f'''# -*- coding: utf-8 -*-
+{{
+    'name': "Plus Tech Employee Custody Management",
+    'version': "18.0.1.0.0",
+    'summary': "Complete employee custody and asset management solution",
+    'description': """
+{description_text}
+    """,
+    'author': "Plus Technology Team",
+    'maintainer': "roottbar",
+    'category': "Human Resources/Custody",
+    'depends': [
+        'base',
+        'plustech_hr_employee',
+        'account_asset',
+    ],
+    'data': [
+        'security/custody_security.xml',
+        'security/ir.model.access.csv',
+        'data/request_sequance.xml',
+        'data/cron.xml',
+        'data/template.xml',
+        'views/employee_custody.xml',
+        'views/custody_items.xml',
+        'views/account_asset.xml',
+        'views/hr_employee.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
+}}'''
             else:
-                fixed_lines.append(line)
-        
-        return '\n'.join(fixed_lines)
-
-    def fix_manifest_file(self, manifest_path):
-        """Fix a single manifest file"""
-        try:
-            with open(manifest_path, 'r', encoding='utf-8') as f:
-                content = f.read()
+                # Generic fix for other files
+                fixed_content = content
+                # Remove stray """", patterns
+                fixed_content = re.sub(r'^\s*""",\s*$', '', fixed_content, flags=re.MULTILINE)
+                # Fix duplicate keys
+                fixed_content = re.sub(r"'category':\s*'[^']*',\s*'category':\s*'[^']*'", "'category': 'Accounting'", fixed_content)
+                fixed_content = re.sub(r"'author':\s*'[^']*',\s*'author':\s*'[^']*'", "'author': 'roottbar'", fixed_content)
             
-            # Fix string literals
-            fixed_content = self.fix_string_literals(content)
+            with open(file_path, 'w', encoding='utf-8') as f:
+                f.write(fixed_content)
             
-            # Test if the fixed content is valid Python
-            try:
-                compile(fixed_content, str(manifest_path), 'exec')
-                
-                # Write the fixed content back
-                with open(manifest_path, 'w', encoding='utf-8') as f:
-                    f.write(fixed_content)
-                
-                self.fixed_files.append(str(manifest_path))
-                return True
-                
-            except SyntaxError as e:
-                self.errors.append(f"Syntax error in {manifest_path}: {e}")
-                return False
-                
-        except Exception as e:
-            self.errors.append(f"Error processing {manifest_path}: {e}")
+            print(f"Fixed: {file_path}")
+            return True
+        else:
+            print(f"No issues found in: {file_path}")
             return False
+            
+    except Exception as e:
+        print(f"Error fixing {file_path}: {e}")
+        return False
 
-    def run_fix(self):
-        """Run the syntax fix process"""
-        print("🔧 Starting Manifest Syntax Fix")
-        print("=" * 50)
-        
-        # Find all manifest files
-        manifest_files = list(self.base_path.glob('**/__manifest__.py'))
-        
-        print(f"Found {len(manifest_files)} manifest files to check")
-        print()
-        
-        success_count = 0
-        
-        for manifest_path in manifest_files:
-            module_name = manifest_path.parent.name
-            print(f"Checking: {module_name}")
-            
-            if self.fix_manifest_file(manifest_path):
-                success_count += 1
-                print(f"  ✅ Fixed")
-            else:
-                print(f"  ❌ Error")
-            
-        print()
-        print("=" * 50)
-        print("📊 SYNTAX FIX REPORT")
-        print("=" * 50)
-        
-        print(f"Total files: {len(manifest_files)}")
-        print(f"Successfully fixed: {success_count}")
-        print(f"Errors: {len(manifest_files) - success_count}")
-        
-        if self.errors:
-            print("\n❌ ERRORS:")
-            for error in self.errors:
-                print(f"  {error}")
-        
-        print(f"\n🎉 Syntax fix completed!")
+def main():
+    """Fix all manifest files with syntax errors"""
+    print("Fixing manifest syntax errors...")
+    
+    # Get the list of problematic files from the grep results
+    problematic_files = [
+        'analytic_account_ocs/__manifest__.py',
+        'analytic_account_ocs2/__manifest__.py', 
+        'analytic_account_ocs_3/__manifest__.py',
+        'plustech_hr_employee_custody/__manifest__.py',
+        'web_google_maps/__manifest__.py',
+        'purchase_decimal_precision/__manifest__.py',
+        'hr_end_of_service_sa_ocs/__manifest__.py',
+        'hr_resume_ats2/__manifest__.py',
+        'hr_resume_ats/__manifest__.py',
+        'google_marker_icon_picker/__manifest__.py',
+        'contacts_maps/__manifest__.py'
+    ]
+    
+    fixed_count = 0
+    for file_path in problematic_files:
+        full_path = os.path.join('.', file_path)
+        if os.path.exists(full_path):
+            if fix_manifest_file(full_path):
+                fixed_count += 1
+    
+    print(f"Fixed {fixed_count} manifest files")
 
 if __name__ == "__main__":
-    fixer = ManifestSyntaxFixer(".")
-    fixer.run_fix()
+    main()

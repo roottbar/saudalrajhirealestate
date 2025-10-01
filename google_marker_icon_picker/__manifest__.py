@@ -3,7 +3,7 @@
 - New widget `google_marker_picker` allowing user to assign marker's color
   manually. To apply the selecter marker on map, you can tell map view by
   adding attribute color='[field_name]'
-""",
+
     "depends": ["web_google_maps"],
     "assets": {
         "web.assets_backend": [

@@ -24,7 +24,7 @@
     
         
         Enhanced by roottbar.
-    """,
+
     'author': 'Your Company',
     'maintainer': 'roottbar',
     'website': 'https://www.yourcompany.com',

@@ -13,7 +13,7 @@
     
         
         Enhanced by roottbar.
-    """,
+
     'author': 'Othmancs',
     'maintainer': 'roottbar',
     'website': 'https://www.Othmancs.com',

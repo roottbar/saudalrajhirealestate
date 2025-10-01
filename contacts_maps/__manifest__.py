@@ -8,7 +8,7 @@ Added Google Map view on contacts
     
         
         Enhanced by roottbar.
-    """,
+
     'name': "Contacts Maps",
     'version': "18.0.1.0.0",
     'summary': "Enhanced Contacts Maps module",

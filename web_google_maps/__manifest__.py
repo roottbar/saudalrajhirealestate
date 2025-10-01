@@ -11,7 +11,7 @@ form view, provide autocomplete feature when typing address of partner
     
         
         Enhanced by roottbar.
-    """,
+
     'depends': ['base_setup', 'base_geolocalize'],
     'website': '',
     'name': "Web Google Maps",
