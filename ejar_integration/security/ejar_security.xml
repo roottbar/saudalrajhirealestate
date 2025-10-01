@@ -48,7 +48,7 @@
     <record id="ejar_contract_rule_user" model="ir.rule">
         <field name="name">Ejar Contract: User Access</field>
         <field name="model_id" ref="model_ejar_contract"/>
-        <field name="domain_force">['|', '|', ('tenant_id.user_id', '=', user.id), ('landlord_id.user_id', '=', user.id), ('broker_id.user_id', '=', user.id)]</field>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('message_partner_ids', 'in', [user.partner_id.id])]</field>
         <field name="groups" eval="[(4, ref('group_ejar_user'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
@@ -67,7 +67,33 @@
         <field name="perm_unlink" eval="True"/>
     </record>
 
-    <!-- Record Rules for Ejar Tenant -->
+    <!-- Record Rules for Ejar Config -->
+    <record id="ejar_config_rule_user" model="ir.rule">
+        <field name="name">Ejar Config: User Access</field>
+        <field name="model_id" ref="model_ejar_config"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ejar_config_rule_manager" model="ir.rule">
+        <field name="name">Ejar Config: Manager Access</field>
+        <field name="model_id" ref="model_ejar_config"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- 
+    DISABLED MODELS - Rules commented out to match models/__init__.py
+    
+    Record Rules for Ejar Tenant
     <record id="ejar_tenant_rule_user" model="ir.rule">
         <field name="name">Ejar Tenant: User Access</field>
         <field name="model_id" ref="model_ejar_tenant"/>
@@ -90,7 +116,7 @@
         <field name="perm_unlink" eval="True"/>
     </record>
 
-    <!-- Record Rules for Ejar Landlord -->
+    Record Rules for Ejar Landlord
     <record id="ejar_landlord_rule_user" model="ir.rule">
         <field name="name">Ejar Landlord: User Access</field>
         <field name="model_id" ref="model_ejar_landlord"/>
@@ -113,11 +139,34 @@
         <field name="perm_unlink" eval="True"/>
     </record>
 
-    <!-- Record Rules for Ejar Sync Log -->
+    Record Rules for Ejar Broker
+    <record id="ejar_broker_rule_user" model="ir.rule">
+        <field name="name">Ejar Broker: User Access</field>
+        <field name="model_id" ref="model_ejar_broker"/>
+        <field name="domain_force">['|', ('user_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ejar_broker_rule_manager" model="ir.rule">
+        <field name="name">Ejar Broker: Manager Access</field>
+        <field name="model_id" ref="model_ejar_broker"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    Record Rules for Ejar Sync Log
     <record id="ejar_sync_log_rule_user" model="ir.rule">
         <field name="name">Ejar Sync Log: User Access</field>
         <field name="model_id" ref="model_ejar_sync_log"/>
-        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('user_id', '=', user.id)]</field>
         <field name="groups" eval="[(4, ref('group_ejar_user'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
@@ -136,51 +185,74 @@
         <field name="perm_unlink" eval="True"/>
     </record>
 
-    <!-- Record Rules for Sensitive Data -->
-    <record id="ejar_config_rule_admin_only" model="ir.rule">
-        <field name="name">Ejar Config: Admin Only</field>
-        <field name="model_id" ref="model_ejar_config"/>
+    Record Rules for Ejar Notification
+    <record id="ejar_notification_rule_user" model="ir.rule">
+        <field name="name">Ejar Notification: User Access</field>
+        <field name="model_id" ref="model_ejar_notification"/>
+        <field name="domain_force">['|', ('recipient_id', '=', user.partner_id.id), ('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ejar_notification_rule_manager" model="ir.rule">
+        <field name="name">Ejar Notification: Manager Access</field>
+        <field name="model_id" ref="model_ejar_notification"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_ejar_admin'))]"/>
+        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
     </record>
 
-    <record id="ejar_api_connector_rule_admin_only" model="ir.rule">
-        <field name="name">Ejar API Connector: Admin Only</field>
+    Record Rules for Ejar Compliance
+    <record id="ejar_compliance_rule_user" model="ir.rule">
+        <field name="name">Ejar Compliance: User Access</field>
+        <field name="model_id" ref="model_ejar_compliance"/>
+        <field name="domain_force">['|', ('create_uid', '=', user.id), ('responsible_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ejar_compliance_rule_manager" model="ir.rule">
+        <field name="name">Ejar Compliance: Manager Access</field>
+        <field name="model_id" ref="model_ejar_compliance"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    Record Rules for Ejar API Connector
+    <record id="ejar_api_connector_rule_user" model="ir.rule">
+        <field name="name">Ejar API Connector: User Access</field>
         <field name="model_id" ref="model_ejar_api_connector"/>
         <field name="domain_force">[(1, '=', 1)]</field>
-        <field name="groups" eval="[(4, ref('group_ejar_admin'))]"/>
+        <field name="groups" eval="[(4, ref('group_ejar_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="ejar_api_connector_rule_manager" model="ir.rule">
+        <field name="name">Ejar API Connector: Manager Access</field>
+        <field name="model_id" ref="model_ejar_api_connector"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
-        <field name="perm_unlink" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
     </record>
+    -->
 
-    <!-- Field Level Security -->
-    <record id="field_ejar_property_ejar_id" model="ir.model.fields">
-        <field name="name">ejar_id</field>
-        <field name="model">ejar.property</field>
-        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
-    </record>
-
-    <record id="field_ejar_contract_ejar_id" model="ir.model.fields">
-        <field name="name">ejar_id</field>
-        <field name="model">ejar.contract</field>
-        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
-    </record>
-
-    <record id="field_ejar_tenant_national_id" model="ir.model.fields">
-        <field name="name">national_id</field>
-        <field name="model">ejar.tenant</field>
-        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
-    </record>
-
-    <record id="field_ejar_landlord_national_id" model="ir.model.fields">
-        <field name="name">national_id</field>
-        <field name="model">ejar.landlord</field>
-        <field name="groups" eval="[(4, ref('group_ejar_manager'))]"/>
-    </record>
 </odoo>
