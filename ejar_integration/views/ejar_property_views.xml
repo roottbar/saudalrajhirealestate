@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Ejar Property Tree View -->
+    <record id="view_ejar_property_tree" model="ir.ui.view">
+        <field name="name">ejar.property.tree</field>
+        <field name="model">ejar.property</field>
+        <field name="arch" type="xml">
+            <tree string="Ejar Properties" decoration-success="status=='available'" 
+                  decoration-warning="status=='maintenance'" decoration-danger="status=='unavailable'">
+                <field name="name"/>
+                <field name="property_type"/>
+                <field name="property_subtype"/>
+                <field name="area"/>
+                <field name="bedrooms"/>
+                <field name="bathrooms"/>
+                <field name="monthly_rent"/>
+                <field name="city"/>
+                <field name="district"/>
+                <field name="status"/>
+                <field name="ejar_synced"/>
+                <field name="landlord_id"/>
+                <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
+                        icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Ejar Property Form View -->
+    <record id="view_ejar_property_form" model="ir.ui.view">
+        <field name="name">ejar.property.form</field>
+        <field name="model">ejar.property</field>
+        <field name="arch" type="xml">
+            <form string="Ejar Property">
+                <header>
+                    <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
+                            class="btn-primary" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                    <button name="action_set_available" type="object" string="Set Available" 
+                            class="btn-success" attrs="{'invisible': [('status', '=', 'available')]}"/>
+                    <button name="action_set_rented" type="object" string="Set Rented" 
+                            class="btn-warning" attrs="{'invisible': [('status', '=', 'rented')]}"/>
+                    <button name="action_set_maintenance" type="object" string="Set Maintenance" 
+                            class="btn-info" attrs="{'invisible': [('status', '=', 'maintenance')]}"/>
+                    <field name="status" widget="statusbar" statusbar_visible="available,rented,maintenance,unavailable"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_contracts" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="contract_count" widget="statbutton" string="Contracts"/>
+                        </button>
+                        <button name="action_view_ejar_property" type="object" class="oe_stat_button" 
+                                icon="fa-external-link" attrs="{'invisible': [('ejar_synced', '=', False)]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">View in</span>
+                                <span class="o_stat_text">Ejar</span>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Name"/>
+                        </h1>
+                        <div class="o_row">
+                            <field name="ejar_property_id" readonly="1" attrs="{'invisible': [('ejar_property_id', '=', False)]}"/>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group name="basic_info" string="Basic Information">
+                            <field name="property_type" required="1"/>
+                            <field name="property_subtype" required="1"/>
+                            <field name="area" required="1"/>
+                            <field name="built_area"/>
+                            <field name="bedrooms"/>
+                            <field name="bathrooms"/>
+                            <field name="parking_spaces"/>
+                        </group>
+                        <group name="rental_info" string="Rental Information">
+                            <field name="monthly_rent" required="1"/>
+                            <field name="annual_rent" readonly="1"/>
+                            <field name="security_deposit"/>
+                            <field name="broker_commission_rate"/>
+                            <field name="broker_commission" readonly="1"/>
+                            <field name="payment_frequency"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group name="location" string="Location">
+                            <field name="address" required="1"/>
+                            <field name="city" required="1"/>
+                            <field name="district"/>
+                            <field name="building_number"/>
+                            <field name="floor_number"/>
+                            <field name="apartment_number"/>
+                            <field name="postal_code"/>
+                        </group>
+                        <group name="coordinates" string="Coordinates">
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group name="property_details" string="Property Details">
+                            <field name="total_floors"/>
+                            <field name="construction_year"/>
+                            <field name="property_age" readonly="1"/>
+                            <field name="property_condition"/>
+                            <field name="furnishing_status"/>
+                        </group>
+                        <group name="ownership" string="Ownership">
+                            <field name="landlord_id" required="1"/>
+                            <field name="broker_id"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Features &amp; Amenities" name="features">
+                            <group>
+                                <group name="features" string="Features">
+                                    <field name="has_balcony"/>
+                                    <field name="has_garden"/>
+                                    <field name="has_pool"/>
+                                    <field name="has_gym"/>
+                                    <field name="has_elevator"/>
+                                    <field name="has_security"/>
+                                    <field name="has_parking"/>
+                                    <field name="has_storage"/>
+                                </group>
+                                <group name="utilities" string="Utilities">
+                                    <field name="electricity_included"/>
+                                    <field name="water_included"/>
+                                    <field name="gas_included"/>
+                                    <field name="internet_included"/>
+                                    <field name="maintenance_included"/>
+                                </group>
+                            </group>
+                            <separator string="Additional Features"/>
+                            <field name="additional_features" placeholder="List any additional features..."/>
+                        </page>
+                        
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Detailed property description..."/>
+                        </page>
+                        
+                        <page string="Ejar Integration" name="ejar_integration">
+                            <group>
+                                <group name="sync_status" string="Sync Status">
+                                    <field name="ejar_synced" readonly="1"/>
+                                    <field name="ejar_sync_date" readonly="1"/>
+                                    <field name="auto_sync"/>
+                                    <field name="last_sync_error" readonly="1" attrs="{'invisible': [('last_sync_error', '=', False)]}"/>
+                                </group>
+                                <group name="ejar_info" string="Ejar Information">
+                                    <field name="ejar_property_id" readonly="1"/>
+                                    <field name="ejar_status" readonly="1"/>
+                                    <field name="ejar_created_date" readonly="1"/>
+                                    <field name="ejar_updated_date" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Ejar Property Search View -->
+    <record id="view_ejar_property_search" model="ir.ui.view">
+        <field name="name">ejar.property.search</field>
+        <field name="model">ejar.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name" string="Property Name"/>
+                <field name="property_type"/>
+                <field name="city"/>
+                <field name="district"/>
+                <field name="landlord_id"/>
+                <field name="broker_id"/>
+                
+                <filter string="Available" name="available" domain="[('status', '=', 'available')]"/>
+                <filter string="Rented" name="rented" domain="[('status', '=', 'rented')]"/>
+                <filter string="Maintenance" name="maintenance" domain="[('status', '=', 'maintenance')]"/>
+                <filter string="Unavailable" name="unavailable" domain="[('status', '=', 'unavailable')]"/>
+                
+                <separator/>
+                <filter string="Synced to Ejar" name="synced" domain="[('ejar_synced', '=', True)]"/>
+                <filter string="Not Synced" name="not_synced" domain="[('ejar_synced', '=', False)]"/>
+                <filter string="Auto Sync Enabled" name="auto_sync" domain="[('auto_sync', '=', True)]"/>
+                
+                <separator/>
+                <filter string="Apartments" name="apartments" domain="[('property_type', '=', 'apartment')]"/>
+                <filter string="Villas" name="villas" domain="[('property_type', '=', 'villa')]"/>
+                <filter string="Offices" name="offices" domain="[('property_type', '=', 'office')]"/>
+                <filter string="Shops" name="shops" domain="[('property_type', '=', 'shop')]"/>
+                
+                <separator/>
+                <filter string="Furnished" name="furnished" domain="[('furnishing_status', '=', 'furnished')]"/>
+                <filter string="Semi Furnished" name="semi_furnished" domain="[('furnishing_status', '=', 'semi_furnished')]"/>
+                <filter string="Unfurnished" name="unfurnished" domain="[('furnishing_status', '=', 'unfurnished')]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Property Type" name="group_property_type" context="{'group_by': 'property_type'}"/>
+                    <filter string="City" name="group_city" context="{'group_by': 'city'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Landlord" name="group_landlord" context="{'group_by': 'landlord_id'}"/>
+                    <filter string="Broker" name="group_broker" context="{'group_by': 'broker_id'}"/>
+                    <filter string="Sync Status" name="group_sync" context="{'group_by': 'ejar_synced'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Ejar Property Kanban View -->
+    <record id="view_ejar_property_kanban" model="ir.ui.view">
+        <field name="name">ejar.property.kanban</field>
+        <field name="model">ejar.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="property_type"/>
+                <field name="area"/>
+                <field name="monthly_rent"/>
+                <field name="city"/>
+                <field name="status"/>
+                <field name="ejar_synced"/>
+                <field name="landlord_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('ejar.property', 'image_128', record.id.raw_value)" alt="Property"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <br/>
+                                        <span class="o_kanban_record_subtitle">
+                                            <field name="property_type"/> - <field name="city"/>
+                                        </span>
+                                    </div>
+                                    <div class="o_kanban_manage_button_section">
+                                        <a class="o_kanban_manage_toggle_button" href="#">
+                                            <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="o_kanban_tags_section">
+                                        <span class="badge badge-pill" t-if="record.ejar_synced.raw_value">
+                                            <i class="fa fa-check"/> Synced
+                                        </span>
+                                        <span class="badge badge-pill badge-warning" t-if="!record.ejar_synced.raw_value">
+                                            <i class="fa fa-exclamation"/> Not Synced
+                                        </span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <span><field name="area"/> m²</span>
+                                        </div>
+                                        <div class="col-6 text-right">
+                                            <span><field name="monthly_rent"/> SAR</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="landlord_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <button name="action_sync_to_ejar" type="object" 
+                                                class="btn btn-primary btn-sm" 
+                                                t-if="!record.ejar_synced.raw_value">
+                                            Sync
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_manage_button_section" dropdown="true">
+                                <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a t-if="widget.editable" role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    <div role="separator" class="dropdown-divider"/>
+                                    <a role="menuitem" name="action_view_contracts" type="object" class="dropdown-item">View Contracts</a>
+                                    <a role="menuitem" name="action_sync_to_ejar" type="object" class="dropdown-item" 
+                                       t-if="!record.ejar_synced.raw_value">Sync to Ejar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Ejar Property Action -->
+    <record id="action_ejar_property" model="ir.actions.act_window">
+        <field name="name">Ejar Properties</field>
+        <field name="res_model">ejar.property</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Ejar property!
+            </p>
+            <p>
+                Properties are the foundation of your rental business. Add property details,
+                sync with Ejar platform, and start managing your rentals efficiently.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_ejar_main" name="Ejar Integration" sequence="10"/>
+    <menuitem id="menu_ejar_properties" name="Properties" parent="menu_ejar_main" 
+              action="action_ejar_property" sequence="10"/>
+</odoo>

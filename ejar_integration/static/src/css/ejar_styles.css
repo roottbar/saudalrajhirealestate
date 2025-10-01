@@ -1,0 +1,411 @@
+/* Ejar Integration Module Styles */
+
+/* Main Container Styles */
+.ejar-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dashboard Styles */
+.ejar-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.ejar-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ejar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.ejar-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.ejar-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    font-size: 24px;
+    color: white;
+}
+
+.ejar-card-icon.property {
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+}
+
+.ejar-card-icon.contract {
+    background: linear-gradient(135deg, #10b981, #047857);
+}
+
+.ejar-card-icon.tenant {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.ejar-card-icon.sync {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.ejar-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.ejar-card-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 4px 0 0 0;
+}
+
+.ejar-metric {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 16px 0 8px 0;
+}
+
+.ejar-metric-label {
+    font-size: 14px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Status Badges */
+.ejar-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ejar-status.active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.ejar-status.inactive {
+    background-color: #fef2f2;
+    color: #991b1b;
+}
+
+.ejar-status.pending {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.ejar-status.synced {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.ejar-status.failed {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* Form Styles */
+.ejar-form-section {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    border: 1px solid #e5e7eb;
+}
+
+.ejar-form-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.ejar-field-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+/* Button Styles */
+.ejar-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ejar-btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    color: white;
+}
+
+.ejar-btn-primary:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-1px);
+}
+
+.ejar-btn-success {
+    background: linear-gradient(135deg, #10b981, #047857);
+    color: white;
+}
+
+.ejar-btn-success:hover {
+    background: linear-gradient(135deg, #059669, #065f46);
+    transform: translateY(-1px);
+}
+
+.ejar-btn-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+.ejar-btn-warning:hover {
+    background: linear-gradient(135deg, #e5a00b, #c2710c);
+    transform: translateY(-1px);
+}
+
+.ejar-btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.ejar-btn-danger:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-1px);
+}
+
+/* Table Styles */
+.ejar-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ejar-table th {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.ejar-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.ejar-table tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Progress Bar */
+.ejar-progress {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.ejar-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #1e40af);
+    transition: width 0.3s ease;
+}
+
+/* Notification Styles */
+.ejar-notification {
+    padding: 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+}
+
+.ejar-notification.success {
+    background-color: #dcfce7;
+    border-left: 4px solid #10b981;
+    color: #065f46;
+}
+
+.ejar-notification.error {
+    background-color: #fee2e2;
+    border-left: 4px solid #ef4444;
+    color: #991b1b;
+}
+
+.ejar-notification.warning {
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    color: #92400e;
+}
+
+.ejar-notification.info {
+    background-color: #dbeafe;
+    border-left: 4px solid #3b82f6;
+    color: #1e40af;
+}
+
+/* Arabic Text Support */
+.ejar-rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+.ejar-arabic {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ejar-dashboard {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+    
+    .ejar-field-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .ejar-card {
+        padding: 16px;
+    }
+}
+
+/* Loading Spinner */
+.ejar-spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Sync Status Indicators */
+.ejar-sync-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.ejar-sync-indicator.syncing {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.ejar-sync-indicator.syncing::before {
+    content: "⟳";
+    margin-right: 4px;
+    animation: spin 1s linear infinite;
+}
+
+.ejar-sync-indicator.success::before {
+    content: "✓";
+    margin-right: 4px;
+    color: #10b981;
+}
+
+.ejar-sync-indicator.error::before {
+    content: "✗";
+    margin-right: 4px;
+    color: #ef4444;
+}
+
+/* Property Card Specific Styles */
+.ejar-property-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.ejar-property-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #1e40af);
+}
+
+/* Contract Timeline */
+.ejar-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.ejar-timeline::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+}
+
+.ejar-timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.ejar-timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #3b82f6;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
