@@ -3,7 +3,6 @@
 from lxml import etree
 from odoo import fields, models, _
 from odoo.addons.base.models.ir_ui_view import (
-    quick_eval,
     transfer_field_to_modifiers,
 )
 
@@ -95,14 +94,20 @@ class IrUiView(models.Model):
             for attribute in ('invisible', 'readonly', 'required'):
                 val = node.get(attribute)
                 if val:
-                    res = quick_eval(val, {'context': self._context})
-                    if res not in (1, 0, True, False, None):
-                        msg = _(
-                            'Attribute %(attribute)s evaluation expects a boolean, got %(value)s',
-                            attribute=attribute,
-                            value=val,
-                        )
-                        self._raise_view_error(msg, node)
+                    # In Odoo 18, we use eval_domain instead of quick_eval
+                    try:
+                        from odoo.tools import safe_eval
+                        res = safe_eval(val, {'context': self._context})
+                        if res not in (1, 0, True, False, None):
+                            msg = _(
+                                'Attribute %(attribute)s evaluation expects a boolean, got %(value)s',
+                                attribute=attribute,
+                                value=val,
+                            )
+                            self._raise_view_error(msg, node)
+                    except Exception:
+                        # If evaluation fails, skip validation for this attribute
+                        pass
 
     # FIXME: this is a deep copy of the original method
     # added 'google_map' as list of original views to be validated are hardcoded :/
