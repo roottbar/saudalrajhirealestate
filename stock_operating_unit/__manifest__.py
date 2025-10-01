@@ -1,20 +1,23 @@
-# © 2019 ForgeFlow S.L.
-# © 2019 Serpent Consulting Services Pvt. Ltd.
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
-
+# -*- coding: utf-8 -*-
 {
-    "name": "Stock with Operating Units",
-    "summary": "Adds the concept of operating unit (OU) in stock management",
-    "version": "14.0.1.0.2",
-    "category": "Generic Modules/Sales & Purchases",
-    "author": "ForgeFlow, "
-    "Serpent Consulting Services Pvt. Ltd., "
-    "Odoo Community Association (OCA)",
-    "license": "LGPL-3",
-    "website": "https://github.com/OCA/operating-unit",
-    "depends": ["stock", "operating_unit"],
-    "data": ["security/stock_security.xml", "data/stock_data.xml", "view/stock.xml"],
-    "demo": ["demo/stock_demo.xml"],
-    "installable": True,
-    "post_init_hook": "update_operating_unit_location",
+    'name': "Stock with Operating Units",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Stock with Operating Units module",
+    'description': "Enhanced Stock with Operating Units module for Odoo 18.0 by roottbar",
+    'category': "Generic Modules/Sales & Purchases",
+    'author': "ForgeFlow, Serpent Consulting Services Pvt. Ltd., Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'stock',
+        'operating_unit',
+    ],
+    'data': [
+        'security/stock_security.xml',
+        'data/stock_data.xml',
+        'view/stock.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

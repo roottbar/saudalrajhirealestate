@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Rent Customize",
-    'summary': """Sale Renting Customization""",
-    'category': 'Sales Management',
-    'version': '15.0.1.0',
-    'depends': ['sale_renting', 'renting', 'web_google_maps'],
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Rent Customize module",
+    'description': "Enhanced Rent Customize module for Odoo 18.0 by roottbar",
+    'category': "Sales Management",
+    'author': "roottbar",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale_renting',
+        'renting',
+        'web_google_maps',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -17,5 +25,8 @@
         'views/move.xml',
         'report/contract.xml',
         'report/transfer.xml',
-    ]
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

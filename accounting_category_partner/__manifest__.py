@@ -1,38 +1,23 @@
 # -*- coding: utf-8 -*-
-# Odoo 18.0 Compatible - Updated by roottbar
 {
     'name': "Partner Accounting Categories",
-
-    'summary': """
-        Partner Accounting Categories""",
-
-    'description': """
-        
-        
-        Partner Accounting Categories
-        
-        Partner accounting categories used when creating customers or vendors 
-        to select payable & receivable accounts automatically.
-        
-        Enhanced by roottbar for Odoo 15.0
-    
-        
-        Enhanced by roottbar.
-    """,
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Partner Accounting Categories module",
+    'description': "Enhanced Partner Accounting Categories module for Odoo 18.0 by roottbar",
+    'category': "hidden",
     'author': "Crevisoft",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-    'category': 'hidden',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['account'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/res_partner_account_category_views.xml',
         'views/res_partner_views.xml',
-        'views/res_config_view.xml'
+        'views/res_config_view.xml',
     ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

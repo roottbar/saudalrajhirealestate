@@ -1,31 +1,20 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Remove Analytic Account From Journal Entries",
-    "version": "15.0.0.1",
-    "category": "stock",
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-       Remove Analytic Account From Journal Entries
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Remove Analytic Account From Journal Entries module",
+    'description': "Enhanced Remove Analytic Account From Journal Entries module for Odoo 18.0 by roottbar",
+    'category': "stock",
     'author': "BSTT company",
-    'maintainer': 'roottbar',
-    'email': "info@bstt.com.sa ",
-    'website': "https://bstt.com.sa",
-    'category': 'stock',
-    'version': '15.0.1.0',
-    'license': 'AGPL-3',
-    'depends': ['account'],
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+    ],
     'data': [
         'data/action_server.xml',
     ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

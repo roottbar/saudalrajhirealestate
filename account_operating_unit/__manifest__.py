@@ -1,25 +1,26 @@
-# © 2019 ForgeFlow S.L.
-# © 2019 Serpent Consulting Services Pvt. Ltd.
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# -*- coding: utf-8 -*-
 {
-    "name": "Accounting with Operating Units",
-    "summary": "Introduces Operating Unit (OU) in invoices and "
-    "Accounting Entries with clearing account",
-    "version": "14.0.1.0.0",
-    "author": "ForgeFlow, "
-    "Serpent Consulting Services Pvt. Ltd.,"
-    "WilldooIT Pty Ltd,"
-    "Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/operating-unit",
-    "category": "Accounting & Finance",
-    "depends": ["account", "analytic_operating_unit"],
-    "license": "LGPL-3",
-    "data": [
-        "security/account_security.xml",
-        "views/account_move_view.xml",
-        "views/account_journal_view.xml",
-        "views/company_view.xml",
-        "views/account_payment_view.xml",
-        "views/account_invoice_report_view.xml",
+    'name': "Accounting with Operating Units",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Accounting with Operating Units module",
+    'description': "Enhanced Accounting with Operating Units module for Odoo 18.0 by roottbar",
+    'category': "Accounting & Finance",
+    'author': "ForgeFlow, Serpent Consulting Services Pvt. Ltd.,WilldooIT Pty Ltd,Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+        'analytic_operating_unit',
     ],
+    'data': [
+        'security/account_security.xml',
+        'views/account_move_view.xml',
+        'views/account_journal_view.xml',
+        'views/company_view.xml',
+        'views/account_payment_view.xml',
+        'views/account_invoice_report_view.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

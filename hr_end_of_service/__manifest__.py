@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 {
     'name': "HR End Of Service",
-    'summary': """HR End Of Service""",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced HR End Of Service module",
+    'description': "Enhanced HR End Of Service module for Odoo 18.0 by roottbar",
+    'category': "Human Resources",
     'author': "Crevisoft Corporate",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    'category': 'Human Resources',
-    'version': '15.0.1.0',
-    'installable': False,  # Requires hr_payroll (Enterprise module)
-
-    'depends': ['hr_payroll', 'hr_holidays'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr_payroll',
+        'hr_holidays',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -22,6 +21,9 @@
         'wizard/reject_reason_wizard_view.xml',
         'views/hr_end_service_views.xml',
         'views/hr_payslip.xml',
-        'views/hr_holiday.xml'
-    ]
+        'views/hr_holiday.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

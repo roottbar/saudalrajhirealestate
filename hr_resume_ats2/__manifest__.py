@@ -1,46 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'HR Resume ATS Analysis',
-    'version': '15.0.1.0.0',
-    'category': 'Human Resources',
-    'summary': 'Resume Analysis using ATS System with AI Evaluation',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        HR Resume ATS Analysis
-        ======================
-        
-        This module provides:
-        * Resume upload and analysis using ATS (Applicant Tracking System)
-        * AI-powered resume evaluation based on job positions
-        * Comprehensive scoring and feedback system
-        * Job position matching and recommendations
-        * Detailed reports and analytics
-        
-        Features:
-        ---------
-        * Upload resume files (PDF, DOC, DOCX)
-        * Select job positions for targeted analysis
-        * AI-based resume scoring and evaluation
-        * ATS compatibility checking
-        * Skills matching and gap analysis
-        * Experience evaluation
-        * Education verification
-        * Keyword optimization suggestions
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'author': 'Your Company',
-    'maintainer': 'roottbar',
-    'website': 'https://www.yourcompany.com',
-    'license': 'LGPL-3',
+    'name': "HR Resume ATS Analysis",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced HR Resume ATS Analysis module",
+    'description': "Enhanced HR Resume ATS Analysis module for Odoo 18.0 by roottbar",
+    'category': "Human Resources",
+    'author': "Your Company",
+    'maintainer': "roottbar",
     'depends': [
         'base',
         'hr',
@@ -59,17 +25,7 @@
         'views/hr_resume_ats_menus.xml',
         'reports/resume_analysis_report.xml',
     ],
-    'external_dependencies': {
-        'python': [
-            'PyPDF2',
-            'python-docx',
-            'nltk',
-            'textstat',
-            'requests',
-        ],
-    },
-    'installable': True,
+    'license': "LGPL-3",
+    'installable': False,
     'auto_install': False,
-    'application': True,
-    'sequence': 95,
 }

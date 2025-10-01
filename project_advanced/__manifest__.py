@@ -1,39 +1,20 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Project Advanced",
-
-    'summary': """
-        Template stages for projects""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        Template stages for projects
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Project Advanced module",
+    'description': "Enhanced Project Advanced module for Odoo 18.0 by roottbar",
+    'category': "hidden",
     'author': "Crevisoft",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'hidden',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['project_forecast', 'project_enterprise', 'hr_contract', 'hr_timesheet', 'web_dashboard'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'project_forecast',
+        'project_enterprise',
+        'hr_contract',
+        'hr_timesheet',
+        'web_dashboard',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -45,6 +26,9 @@
         'views/project_task_type.xml',
         'views/res_config_settings.xml',
         'wizard/change_allow_user_task_view.xml',
-        'wizard/task_assign_history_wizard_view.xml'
+        'wizard/task_assign_history_wizard_view.xml',
     ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

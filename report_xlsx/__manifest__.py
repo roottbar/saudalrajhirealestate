@@ -1,21 +1,18 @@
-# Copyright 2015 ACSONE SA/NV (<http://acsone.eu>)
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+# -*- coding: utf-8 -*-
 {
-    "name": "Base report xlsx",
-    "summary": "Base module to create xlsx report",
-    "author": "ACSONE SA/NV," "Creu Blanca," "Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/reporting-engine",
-    "category": "Reporting",
-    "version": "15.0.1.0.0",
-    "development_status": "Mature",
-    "license": "AGPL-3",
-    "external_dependencies": {"python": ["xlsxwriter", "xlrd"]},
-    "depends": ["base", "web"],
-    "demo": ["demo/report.xml"],
-    "installable": True,
-    "assets": {
-        "web.assets_backend": [
-            "report_xlsx/static/src/js/report/action_manager_report.esm.js",
-        ],
-    },
+    'name': "Base report xlsx",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Base report xlsx module",
+    'description': "Enhanced Base report xlsx module for Odoo 18.0 by roottbar",
+    'category': "Reporting",
+    'author': "ACSONE SA/NV,Creu Blanca,Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'web',
+    ],
+    'data': [],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

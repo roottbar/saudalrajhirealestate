@@ -1,38 +1,26 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'Cost Center Reports',
-    'version': '15.0.1.0.0',
-    'summary': 'Generate reports for cost centers including expenses, revenues, collections and debts',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        This module generates detailed reports for cost centers including:
-        - Expenses by cost center
-        - Revenues by cost center
-        - Collections
-        - Debts
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'category': 'Accounting',
-    'author': 'Othmancs',
-    'maintainer': 'roottbar',
-    'website': 'https://www.tbarholdingcs.com',
-    'license': 'AGPL-3',
-    'depends': ['base', 'report', 'account', 'analytic'],
+    'name': "Cost Center Reports",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Cost Center Reports module",
+    'description': "Enhanced Cost Center Reports module for Odoo 18.0 by roottbar",
+    'category': "Accounting",
+    'author': "Othmancs",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'report',
+        'account',
+        'analytic',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/cost_center_report_views.xml',
         'reports/cost_center_report.xml',
         'reports/cost_center_report_template.xml',
     ],
-    'installable': True,
+    'license': "LGPL-3",
     'application': True,
+    'installable': True,
     'auto_install': False,
 }

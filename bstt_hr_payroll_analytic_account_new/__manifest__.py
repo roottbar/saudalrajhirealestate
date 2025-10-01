@@ -1,33 +1,20 @@
 # -*- coding: utf-8 -*-
 {
     'name': "BSTT HR Payroll Analytic Account",
-    "version" : "15.0.0.1",
-    "category" : "HR",
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-       HR Payroll Analytic Account BSTT
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced BSTT HR Payroll Analytic Account module",
+    'description': "Enhanced BSTT HR Payroll Analytic Account module for Odoo 18.0 by roottbar",
+    'category': "accounting",
     'author': "BSTT company",
-    'maintainer': 'roottbar',
-    'email': "info@bstt.com.sa ",
-    'website': "https://bstt.com.sa",
-    'category': 'accounting',
-    'version': '15.0.1.0',
-    'license': 'AGPL-3',
-    'installable': False,  # Requires hr_payroll_account (Enterprise module)
-    'images': ['static/description/logo.png'],
-    'depends': ['hr_payroll_account'],
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr_payroll_account',
+    ],
     'data': [
         'views/hr_payroll_analytic_account_view.xml',
     ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

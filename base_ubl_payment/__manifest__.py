@@ -1,14 +1,19 @@
-# © 2016-2017 Akretion (Alexis de Lattre <alexis.delattre@akretion.com>)
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
+# -*- coding: utf-8 -*-
 {
-    "name": "Base UBL Payment",
-    "version": "14.0.1.0.0",
-    "category": "Hidden",
-    "license": "AGPL-3",
-    "summary": "Payment-related code for Universal Business Language (UBL)",
-    "author": "Akretion,Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/edi",
-    "depends": ["account_payment_unece", "base_ubl"],
-    "installable": True,
+    'name': "Base UBL Payment",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Base UBL Payment module",
+    'description': "Enhanced Base UBL Payment module for Odoo 18.0 by roottbar",
+    'category': "Hidden",
+    'author': "Akretion,Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account_payment_unece',
+        'base_ubl',
+    ],
+    'data': [],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

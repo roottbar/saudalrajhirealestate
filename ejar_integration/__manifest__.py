@@ -2,46 +2,15 @@
 {
     'name': "Ejar Platform Integration",
     'version': "18.0.1.0.0",
-    'summary': """
-        Integration with Saudi Arabia's Ejar Platform for Real Estate Rental Management
-    """,
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        This module provides comprehensive integration with the Ejar platform (https://www.ejar.sa/),
-        the official Saudi Arabian electronic platform for real estate rental sector regulation.
-        
-        Key Features:
-        - Synchronization with Ejar platform contracts
-        - Automated contract registration and documentation
-        - Real-time status updates and notifications
-        - Compliance with Saudi rental regulations
-        - Integration with existing renting module
-        - Support for residential and commercial contracts
-        - Electronic contract management
-        - Automated renewal processes
-        - Comprehensive reporting and analytics
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
+    'summary': "Enhanced Ejar Platform Integration module",
+    'description': "Enhanced Ejar Platform Integration module for Odoo 18.0 by roottbar",
+    'category': "Real Estate",
     'author': "Ibrahim Abdullatif",
-    'maintainer': 'roottbar',
-    'website': "https://www.ejar.sa/",
-    'category': 'Real Estate',
-    'license': 'LGPL-3',
-    
-    # Dependencies
+    'maintainer': "roottbar",
     'depends': [
         'base',
         'renting',
-        'sale_renting', 
+        'sale_renting',
         'sale_operating_unit',
         'analytic',
         'account_asset',
@@ -50,19 +19,12 @@
         'einv_sa',
         'contacts',
         'mail',
-        'portal'
+        'portal',
     ],
-    
-    # Data files
     'data': [
-        # Security
         'security/ejar_security.xml',
         'security/ir.model.access.csv',
-        
-        # Data
         'data/ejar_data.xml',
-        
-        # Views
         'views/ejar_menu.xml',
         'views/ejar_property_views.xml',
         'views/ejar_contract_views.xml',
@@ -71,25 +33,8 @@
         'views/ejar_sync_log_views.xml',
         'views/ejar_dashboard_views.xml',
     ],
-    
-    # Demo data
-    'demo': [],
-    
-    # Assets
-    'assets': {
-        'web.assets_backend': [
-            'ejar_integration/static/src/css/ejar_styles.css',
-            'ejar_integration/static/src/js/ejar_dashboard.js',
-        ],
-    },
-    
-    # Installation
+    'license': "LGPL-3",
+    'application': True,
     'installable': True,
     'auto_install': False,
-    'application': True,
-    
-    # External dependencies
-    'external_dependencies': {
-        'python': ['requests', 'cryptography', 'pyjwt'],
-    },
 }

@@ -1,49 +1,20 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Base Dynamic Reports",
-
-    'summary': """
-        Base Dynamic Reports""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        Base Dynamic Reports
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Base Dynamic Reports module",
+    'description': "Enhanced Base Dynamic Reports module for Odoo 18.0 by roottbar",
+    'category': "Uncategorized",
     'author': "Crevisoft",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base'],
-
-    # always loaded
-    'data': [
-        # 'views/templates.xml',
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
     ],
-    'web.assets_backend':[
-        '/static/src/css/search_menus.css',
-        '/static/src/js/dynamic_relation_filters.js',
-        '/static/src/js/dynamic_report_widgets.js',
-        '/static/src/js/basic_dynamic_report.js',
-    ],
+    'data': [],
     'qweb': [
         'static/src/xml/*.xml',
-    ]
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

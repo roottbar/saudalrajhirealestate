@@ -1,9 +1,18 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'Legal Management ',
-    'sequence': -101,
-
-    'depends': ['mail','sale'],
-    'data':[
+    'name': "Legal Management ",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Legal Management  module",
+    'description': "Enhanced Legal Management  module for Odoo 18.0 by roottbar",
+    'category': "Tools",
+    'author': "roottbar",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'mail',
+        'sale',
+    ],
+    'data': [
         'security/ir.model.access.csv',
         'data/sequence_data.xml',
         'data/cron_scheduler.xml',
@@ -24,5 +33,7 @@
         'report/issues_details.xml',
         'report/report_issues_view.xml',
     ],
-
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

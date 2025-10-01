@@ -1,24 +1,21 @@
-# Copyright 2013-17 Agile Business Group (<http://www.agilebg.com>)
-# Copyright 2016 AvanzOSC (<http://www.avanzosc.es>)
-# Copyright 2016 Pedro M. Baeza <pedro.baeza@tecnativa.com>
-# Copyright 2017 Jacques-Etienne Baudoux <je@bcim.be>
-# Copyright 2021 Tecnativa - João Marques
-# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
-
+# -*- coding: utf-8 -*-
 {
-    "name": "Stock Picking Invoice Link",
-    "version": "15.0.1.0.0",
-    "development_status": "Production/Stable",
-    "category": "Warehouse Management",
-    "summary": "Adds link between pickings and invoices",
-    "author": "Agile Business Group, "
-    "Tecnativa, "
-    "BCIM sprl, "
-    "Softdil S.L, "
-    "Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/stock-logistics-workflow",
-    "license": "AGPL-3",
-    "depends": ["sale_stock"],
-    "data": ["views/stock_view.xml", "views/account_invoice_view.xml"],
-    "installable": True,
+    'name': "Stock Picking Invoice Link",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Stock Picking Invoice Link module",
+    'description': "Enhanced Stock Picking Invoice Link module for Odoo 18.0 by roottbar",
+    'category': "Warehouse Management",
+    'author': "Agile Business Group, Tecnativa, BCIM sprl, Softdil S.L, Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale_stock',
+    ],
+    'data': [
+        'views/stock_view.xml',
+        'views/account_invoice_view.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

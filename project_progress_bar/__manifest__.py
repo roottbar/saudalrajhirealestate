@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Project Progress Bar',
-    'version': '15.0.1.0.0',
-    'summary': 'Project Progress Bar',
-    'description': '''
-        Project Progress Bar
-        
-        Enhanced by roottbar for Odoo 15.0
-    ''',
-    'category': 'Project',
-    'author': 'Cybrosys Techno Solutions',
-    'maintainer': 'roottbar',
-    'website': 'https://www.cybrosys.com',
-    'depends': ['base', 'project'],
+    'name': "Project Progress Bar",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Project Progress Bar module",
+    'description': "Enhanced Project Progress Bar module for Odoo 18.0 by roottbar",
+    'category': "Project",
+    'author': "Cybrosys Techno Solutions",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'project',
+    ],
     'data': [],
-    'installable': True,
+    'license': "LGPL-3",
+    'installable': False,
     'auto_install': False,
-    'application': False,
 }

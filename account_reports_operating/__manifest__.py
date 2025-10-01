@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Accounting Reports Operating",
-    'summary': """Account Reportsl Operating""",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Accounting Reports Operating module",
+    'description': "Enhanced Accounting Reports Operating module for Odoo 18.0 by roottbar",
+    'category': "Accounting/Accounting",
     'author': "Crevisoft Corporate",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-    'category': 'Accounting/Accounting',
-    'version': '15.0.1.0',
-
-    'depends': ['account_reports', 'operating_unit'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account_reports',
+        'operating_unit',
+    ],
     'data': [
-        # 'wizard/account_report_print_journal_view.xml',
-        'views/report_financial.xml'
-    ]
+        'views/report_financial.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

@@ -1,43 +1,16 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Geidea Terminal Integration",
-
-    'summary': """
-        This module provides integration between, Odoo POS Module and Saudi Geidea POS Terminal without the need to use POSBox.
-    """,
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        This module provides integration between, Odoo POS Module and Saudi Geidea POS Terminal without the need to use POSBox.
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Geidea Terminal Integration module",
+    'description': "Enhanced Geidea Terminal Integration module for Odoo 18.0 by roottbar",
+    'category': "Point Of Sale",
     'author': "Barameg",
-    'maintainer': 'roottbar',
-    'website': "https://barameg.co",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Point Of Sale',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base', 'point_of_sale'],
-    'images': [
-        'static/src/img/1.png',
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'point_of_sale',
     ],
-
-    # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/pos_payment_method.xml',
@@ -48,11 +21,7 @@
         'actions/geidea_terminals.xml',
         'actions/geidea_terminals.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
-    'price': 300.00,
-    'currency': 'EUR',
-
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

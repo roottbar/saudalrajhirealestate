@@ -1,31 +1,20 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'Product Search by Default Code',
-    'version': '15.0.1.0.0',
-    'summary': 'Enhance product search by default_code',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        This module adds search functionality for products using default_code.
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'author': 'Your Name',
-    'maintainer': 'roottbar',
-    'website': 'https://www.yourwebsite.com',
-    'category': 'Inventory/Inventory',
-    'depends': ['product'],
+    'name': "Product Search by Default Code",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Product Search by Default Code module",
+    'description': "Enhanced Product Search by Default Code module for Odoo 18.0 by roottbar",
+    'category': "Inventory/Inventory",
+    'author': "Your Name",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'product',
+    ],
     'data': [
         'views/product_view.xml',
     ],
-    'installable': True,
-    'application': False,
+    'license': "LGPL-3",
+    'installable': False,
     'auto_install': False,
-    'license': 'LGPL-3',
 }

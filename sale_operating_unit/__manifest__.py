@@ -1,23 +1,23 @@
-# © 2019 Eficent Business and IT Consulting Services S.L.
-# - Jordi Ballester Alomar
-# © 2019 Serpent Consulting Services Pvt. Ltd. - Sudhir Arya
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
+# -*- coding: utf-8 -*-
 {
-    "name": "Operating Unit in Sales",
-    "version": "14.0.1.0.1",
-    "summary": "An operating unit (OU) is an organizational entity part of a "
-               "company",
-    "author": "Eficent, "
-              "Serpent Consulting Services Pvt. Ltd.,"
-              "Odoo Community Association (OCA)",
-    "license": "LGPL-3",
-    "website": "https://github.com/OCA/operating-unit",
-    "category": "Sales Management",
-    "depends": ["sale", "sales_team_operating_unit"],
-    "data": [
-        "security/sale_security.xml",
-        "views/sale_view.xml",
-        "views/sale_report_view.xml",
+    'name': "Operating Unit in Sales",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Operating Unit in Sales module",
+    'description': "Enhanced Operating Unit in Sales module for Odoo 18.0 by roottbar",
+    'category': "Sales Management",
+    'author': "Eficent, Serpent Consulting Services Pvt. Ltd.,Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale',
+        'sales_team_operating_unit',
     ],
-    'installable': True
+    'data': [
+        'security/sale_security.xml',
+        'views/sale_view.xml',
+        'views/sale_report_view.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

@@ -1,44 +1,23 @@
 # -*- coding: utf-8 -*-
-# Part of Creyox Technologies
 {
-    'name': 'Generate Excel & PDF Report of Activity for Specific Users',
-    "author": "Creyox Technologies",
-    "website": "https://www.creyox.com",
-    "support": "support@creyox.com",
-    'category': 'Sales,Mail',
-    'summary': 'Generate PDF & Excel report of user activitys based on due date, type and range.',
-    'license': 'LGPL-3',
-    'version': '18.0',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-
-Generate Excel & PDF Report For Activity Of Users will allow to
-generate the PDF and Excel Report of user activity on bases of
-activity type like Email, Call, etc, Due date and 
-Range like less-then, grater-then, equal-to the due date added.
-
-
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'depends': ["base", "sale"],
-    'data': [
-        "security/ir.model.access.csv",
-        "wizard/activity_report_wizard_views.xml",
-        "report/activity_report.xml",
-        "report/activity_template.xml",
+    'name': "Generate Excel & PDF Report of Activity for Specific Users",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Generate Excel & PDF Report of Activity for Specific Users module",
+    'description': "Enhanced Generate Excel & PDF Report of Activity for Specific Users module for Odoo 18.0 by roottbar",
+    'category': "Sales,Mail",
+    'author': "Creyox Technologies",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale',
     ],
-    'installable': True,
+    'data': [
+        'security/ir.model.access.csv',
+        'wizard/activity_report_wizard_views.xml',
+        'report/activity_report.xml',
+        'report/activity_template.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
     'auto_install': False,
-    'application': True,
-    "images": ["static/description/banner.png", ],
-    "price": 0,
-    "currency": "USD"
 }

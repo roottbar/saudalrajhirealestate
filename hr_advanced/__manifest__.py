@@ -1,47 +1,17 @@
 # -*- coding: utf-8 -*-
 {
     'name': "HR Advanced",
-
-    'summary': """
-        HR Advanced""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-HR Advanced
-===================
-It consist of:
-
-# 
-1) Allowances 
-2) Number and Age Employee
-3) Employee Access Own Profile
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced HR Advanced module",
+    'description': "Enhanced HR Advanced module for Odoo 18.0 by roottbar",
+    'category': "Human Resources",
     'author': "Crevisoft Corporate",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'Human Resources',
-    'version': '15.0.1.0',
-    'installable': False,  # Requires hr_payroll (Enterprise module)
-
-    # any module necessary for this one to work correctly
-    'depends': ['hr_payroll','hr_holidays'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr_payroll',
+        'hr_holidays',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -55,6 +25,8 @@ It consist of:
         'views/employee_docs.xml',
         'views/employee_docs_expiry.xml',
         'views/request_menu.xml',
-
-    ]
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

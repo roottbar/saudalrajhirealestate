@@ -1,20 +1,22 @@
-# Copyright 2019 Open Source Integrators
-# License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
-
+# -*- coding: utf-8 -*-
 {
-    "name": "Stock Request Picking Type",
-    "summary": "Add Stock Requests to the Inventory App",
-    "version": "14.0.1.0.0",
-    "license": "LGPL-3",
-    "website": "https://github.com/OCA/stock-logistics-warehouse",
-    "author": "Open Source Integrators, Odoo Community Association (OCA)",
-    "category": "Warehouse",
-    "depends": ["stock_request"],
-    "data": [
-        "data/stock_picking_type.xml",
-        "views/stock_request_order_views.xml",
-        "views/stock_picking_views.xml",
+    'name': "Stock Request Picking Type",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Stock Request Picking Type module",
+    'description': "Enhanced Stock Request Picking Type module for Odoo 18.0 by roottbar",
+    'category': "Warehouse",
+    'author': "Open Source Integrators, Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'stock_request',
     ],
-    "development_status": "Beta",
-    "maintainers": ["max3903"],
+    'data': [
+        'data/stock_picking_type.xml',
+        'views/stock_request_order_views.xml',
+        'views/stock_picking_views.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

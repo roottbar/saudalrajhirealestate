@@ -1,57 +1,27 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Petty Cash",
-
-    'summary': """
-        Petty Cash""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        Petty Cash
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Petty Cash module",
+    'description': "Enhanced Petty Cash module for Odoo 18.0 by roottbar",
+    'category': "Uncategorized",
     'author': "Crevisoft",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['board', 'stock', 'account_accountant', 'project', 'account_check_printing', 'attachment_indexation',
-                'accounting_category_partner', 'base_dynamic_reports'],
-    'assets': {
-        'web.assets_qweb': [
-            'petty_cash/static/src/xml/*.xml',
-        ],
-        'web.assets_common': [
-            'petty_cash/static/src/css/style_petty_cash.css',
-        ],
-        'web.assets_backend': [
-            'petty_cash/static/src/js/petty_cash_line_import_action.js',
-            'petty_cash/static/src/js/fields/custom_basic_fields.js',
-            'petty_cash/static/src/js/dynamic_report_petty_cash_lines.js',
-            'petty_cash/static/src/js/dynamic_report_request_feeding.js',
-        ],
-    },
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'board',
+        'stock',
+        'account_accountant',
+        'project',
+        'account_check_printing',
+        'attachment_indexation',
+        'accounting_category_partner',
+        'base_dynamic_reports',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
-
         'wizard/approved_rejected_request_feeding_view.xml',
         'wizard/approved_cancel_petty_cash_request_view.xml',
         'wizard/petty_cash_request_line_view.xml',
@@ -83,4 +53,7 @@
         'report/request_feeding_report.xml',
         'report/report_payment_voucher.xml',
     ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

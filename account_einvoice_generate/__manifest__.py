@@ -1,17 +1,20 @@
-# Copyright 2018-2021 Akretion France (http://www.akretion.com)
-# @author: Alexis de Lattre <alexis.delattre@akretion.com>
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
+# -*- coding: utf-8 -*-
 {
-    "name": "Account e-invoice Generate",
-    "version": "14.0.1.0.0",
-    "category": "Accounting & Finance",
-    "license": "AGPL-3",
-    "summary": "Technical module to generate PDF invoices with " "embedded XML file",
-    "author": "Akretion,Onestein,Odoo Community Association (OCA)",
-    "maintainers": ["alexis-via"],
-    "website": "https://github.com/OCA/edi",
-    "depends": ["account"],
-    "data": ["views/res_config_settings.xml"],
-    "installable": True,
+    'name': "Account e-invoice Generate",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Account e-invoice Generate module",
+    'description': "Enhanced Account e-invoice Generate module for Odoo 18.0 by roottbar",
+    'category': "Accounting & Finance",
+    'author': "Akretion,Onestein,Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+    ],
+    'data': [
+        'views/res_config_settings.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

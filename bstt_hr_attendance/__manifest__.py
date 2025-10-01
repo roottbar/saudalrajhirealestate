@@ -1,36 +1,23 @@
 # -*- coding: utf-8 -*-
 {
     'name': "BSTT HR Attendance ",
-    "version" : "15.0.0.1",
-    "category" : "hr",
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-       Electronic BSTT HR Attendance
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced BSTT HR Attendance  module",
+    'description': "Enhanced BSTT HR Attendance  module for Odoo 18.0 by roottbar",
+    'category': "hr",
     'author': "BSTT company",
-    'maintainer': 'roottbar',
-    'email': "info@bstt.com.sa ",
-    'website': "https://bstt.com.sa",
-    'category': 'hr',
-    'version': '15.0.1.0',
-    'license': 'AGPL-3',
-    'images': ['static/description/logo.png'],
-    'depends': ['hr_attendance'],
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr_attendance',
+    ],
     'data': [
         'security/hr_attendance_security.xml',
         'security/ir.model.access.csv',
         'views/hr_attendance.xml',
         'views/hr_attendance_batch.xml',
-
     ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }
