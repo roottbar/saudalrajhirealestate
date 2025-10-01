@@ -124,23 +124,23 @@ class StockRequest(models.Model):
     )
     order_id = fields.Many2one("stock.request.order", readonly=True)
     warehouse_id = fields.Many2one(
-        readonly="state != 'draft'", readonly=True
+        readonly="state != 'draft'"
     )
     location_id = fields.Many2one(
-        readonly="state != 'draft'", readonly=True
+        readonly="state != 'draft'"
     )
-    product_id = fields.Many2one(readonly="state != 'draft'", readonly=True)
+    product_id = fields.Many2one(readonly="state != 'draft'")
     product_uom_id = fields.Many2one(
-        readonly="state != 'draft'", readonly=True
+        readonly="state != 'draft'"
     )
     product_uom_qty = fields.Float(
-        readonly="state != 'draft'", readonly=True
+        readonly="state != 'draft'"
     )
     procurement_group_id = fields.Many2one(
-        readonly="state != 'draft'", readonly=True
+        readonly="state != 'draft'"
     )
-    company_id = fields.Many2one(readonly="state != 'draft'", readonly=True)
-    route_id = fields.Many2one(readonly="state != 'draft'", readonly=True)
+    company_id = fields.Many2one(readonly="state != 'draft'")
+    route_id = fields.Many2one(readonly="state != 'draft'")
 
     _sql_constraints = [
         ("name_uniq", "unique(name, company_id)", "Stock Request name must be unique")

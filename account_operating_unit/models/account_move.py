@@ -83,7 +83,6 @@ class AccountMove(models.Model):
         default=_default_operating_unit_id,
         domain="[('user_ids', '=', uid)]",
         help="This operating unit will be defaulted in the move lines.",
-        readonly=True,
         readonly="state != 'draft'",
     )
 

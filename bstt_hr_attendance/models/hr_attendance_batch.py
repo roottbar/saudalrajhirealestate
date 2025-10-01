@@ -16,7 +16,7 @@ class HrAttendanceBatch(models.Model):
     _description = 'Attendance Batches'
     _order = 'check_in desc, id desc'
 
-    name = fields.Char(required=True, readonly=True, readonly="state != 'draft'")
+    name = fields.Char(required=True, readonly="state != 'draft'")
     attendance_ids = fields.One2many('hr.attendance.batch.line', 'attendance_batch_id', string='Attendances',
                                      readonly=True,
                                      readonly="state != 'draft'")

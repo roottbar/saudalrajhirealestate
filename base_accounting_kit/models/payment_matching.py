@@ -944,7 +944,7 @@ class AccountBankStatement(models.Model):
     accounting_date = fields.Date(string="Accounting Date",
                                   help="If set, the accounting entries created during the bank statement reconciliation process will be created at this date.\n"
                                        "This is useful if the accounting period in which the entries should normally be booked is already closed.",
-                                  readonly="state != 'open'", readonly=True)
+                                  readonly="state != 'open'")
 
     def action_bank_reconcile_bank_statements(self):
         self.ensure_one()
