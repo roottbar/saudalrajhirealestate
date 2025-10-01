@@ -11,7 +11,7 @@
                             type="action"
                             string="Change allowed users tasks"
                             context="{'default_project_id':active_id,}"
-                            class="oe_highlight"
+                            class="btn-primary"
                             invisible="'|','|',('privacy_visibility' ,'=','employees'), ('allowed_user_ids' ,'=',["
                             groups="project.group_project_manager"
                     />

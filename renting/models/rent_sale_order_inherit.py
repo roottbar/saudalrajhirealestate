@@ -32,7 +32,7 @@ class RentSaleOrder(models.Model):
     amount_remain = fields.Float(string='اجمالي المتبقي', compute='_get_remain')
     invoice_number = fields.Integer(string='Number Of Invoices')
     order_line = fields.One2many('sale.order.line', 'order_id', string='Order Lines',
-                                 states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True,
+                                 readonly="state in ('cancel', 'done')", copy=True,
                                  auto_join=True)
 
     order_property_state = fields.One2many('rent.sale.state', 'sale_order_id', string='الحالة')
@@ -569,7 +569,7 @@ class RentSaleOrderLine(models.Model):
 #     amount_remain = fields.Float(string='اجمالي المتبقي', compute='_get_remain')
 #     invoice_number = fields.Integer(string='Number Of Invoices')
 #     order_line = fields.One2many('sale.order.line', 'order_id', string='Order Lines',
-#                                  states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True,
+#                                  readonly="state in ('cancel', 'done')", copy=True,
 #                                  auto_join=True)
 
 #     order_property_state = fields.One2many('rent.sale.state', 'sale_order_id', string='الحالة')
@@ -1036,3 +1036,4 @@ class RentSaleOrderLine(models.Model):
 #     #     for line in self:
 #     #         # By default, an order line is considered late only if it has one hour of delay
 #     #         line.is_late = line.return_date and line.return_date < now
+

@@ -12,9 +12,9 @@
             <form string="Asset category">
                 <sheet>
                     <group>
-                        <div class="oe_title">
-                            <label for="name" string="Asset Type" class="oe_edit_only" invisible="('type','!=','purchase')"/>
-                            <label for="name" string="Deferred Revenue Type" class="oe_edit_only" invisible="('type','==','purchase')"/>
+                        <div class="o_title">
+                            <label for="name" string="Asset Type" class="o_edit_only" invisible="('type','!=','purchase')"/>
+                            <label for="name" string="Deferred Revenue Type" class="o_edit_only" invisible="('type','==','purchase')"/>
                             <h1>
                                 <field name="name" placeholder="e.g. Computers"/>
                             </h1>
@@ -47,7 +47,7 @@
                             <field name="method_number" string="Number of Entries" required="('method_time','=','number')" invisible="('method_time','!=','number'),'&amp;',('type','=', False)"/>
                             <label for="method_period" string="One Entry Every"/>
                             <div>
-                                <field name="method_period" nolabel="1" invisible="('type','=', False)" class="oe_inline"/>
+                                <field name="method_period" nolabel="1" invisible="('type','=', False)" class="o_inline"/>
                                 months
                             </div>
                             <field name="method_end" required="('method_time','=','end')" invisible="('method_time','!=','end')"/>
@@ -129,21 +129,21 @@
         <field name="arch" type="xml">
             <form string="Asset">
                 <header>
-                    <button name="validate"  string="Confirm" type="object" class="oe_highlight"/>
+                    <button name="validate"  string="Confirm" type="object" class="btn-primary"/>
                     <button type="object" name="compute_depreciation_board" string="Compute Depreciation" />
-                    <button name="set_to_close"  string="Sell or Dispose" type="object" class="oe_highlight"/>
+                    <button name="set_to_close"  string="Sell or Dispose" type="object" class="btn-primary"/>
                     <button name="set_to_draft" string="Set to Draft" type="object" invisible="'|', ('entry_count', '!=', 0), ('state', '!=', 'open')"/>
                     <button name="%(action_asset_modify)d"  string="Modify Depreciation" type="action"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,open"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="open_entries"  type="object" icon="fa-pencil">
+                    <div class="o_button_box" name="button_box">
+                        <button class="o_stat_button" name="open_entries"  type="object" icon="fa-pencil">
                             <field string="Items" name="entry_count" widget="statinfo" />
                         </button>
                     </div>
-                    <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
+                    <div class="o_title">
+                        <label for="name" class="o_edit_only"/>
                         <h1>
                             <field name="name" placeholder="e.g. Laptop iBook"/>
                         </h1>
@@ -212,7 +212,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>

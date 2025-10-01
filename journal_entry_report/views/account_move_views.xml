@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="before">
-                    <button name="print_journal_entry" string="Print Journal Entry" type="object" class="oe_highlight"/>
+                    <button name="print_journal_entry" string="Print Journal Entry" type="object" class="btn-primary"/>
                 </xpath>
             </field>
         </record>

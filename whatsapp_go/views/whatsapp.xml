@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='access_rights']" position="after">
                     <page name="go4whatsapp" string="Go4Whatsapp">
-                        <button name="open_whatsapp_login_form" string="Login Go4Whatsapp" type="object" class="oe_highlight"/>
+                        <button name="open_whatsapp_login_form" string="Login Go4Whatsapp" type="object" class="btn-primary"/>
                     </page>
                 </xpath>
             </field>
@@ -27,10 +27,10 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="open_otp_verify_form" string="Login" type="object" class="oe_highlight"/>
+                        <button name="open_otp_verify_form" string="Login" type="object" class="btn-primary"/>
                         or
                         <!-- <a href="https://app.go4whatsup.com/registration"> <i class="text-muted">Don't have an account ? Sign Up</i></a> -->
-                        <button name="action_open_registration" string="Don't have an account? Sign Up" type="object" class="oe_link"/>
+                        <button name="action_open_registration" string="Don't have an account? Sign Up" type="object" class="btn-link"/>
                     </footer>
                 </form>
             </field>
@@ -49,9 +49,9 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="set_user_access_token" string="Submit" type="object" class="oe_highlight"/>
+                        <button name="set_user_access_token" string="Submit" type="object" class="btn-primary"/>
                         or
-                        <button name="cancel" string="Cancel" special="cancel" class="oe_link"/>
+                        <button name="cancel" string="Cancel" special="cancel" class="btn-link"/>
                     </footer>
                 </form>
             </field>

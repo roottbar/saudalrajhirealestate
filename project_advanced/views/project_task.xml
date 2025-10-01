@@ -21,9 +21,9 @@
                 <xpath expr="//field[@name='date_deadline']" position="before">
                     <label for="start_date"/>
                     <div class="o_row">
-                        <field name="start_date" class="oe_inline"/>
+                        <field name="start_date" class="o_inline"/>
                         <button name="calc_expect_start_date" type="object" string="Expect"
-                                icon="fa-arrow-right" class="oe_link oe_inline"/>
+                                icon="fa-arrow-right" class="btn-link o_inline"/>
                     </div>
                 </xpath>
 
@@ -51,7 +51,7 @@
                     <button name="project_advanced.task_assign_history_wizard"
                             type="action"
                             string="Assign to"
-                            class="oe_highlight"
+                            class="btn-primary"
                             groups="project_advanced.group_change_assign_user_tasks"
                     />
                 </xpath>

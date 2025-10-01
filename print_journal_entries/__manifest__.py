@@ -16,6 +16,6 @@
         'report/report_journal_entries_view.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }

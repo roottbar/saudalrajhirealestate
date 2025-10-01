@@ -12,8 +12,8 @@
                         <field name="analytic_account_ids" widget="many2many_tags"/>
                     </group>
                     <footer>
-                        <button name="action_generate_report" string="Generate Report" type="object" class="oe_highlight"/>
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button name="action_generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </sheet>
             </form>

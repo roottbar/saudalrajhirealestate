@@ -30,22 +30,22 @@
             <field name="arch" type="xml">
                 <form string="تصفية نهاية الخدمة">
                     <header>
-                        <button name="action_confirm" string="تأكيد" type="object"  class="oe_highlight"/>
-                        <button name="action_approve" string="اعتماد" type="object"  class="oe_highlight" groups="hr.group_hr_manager"/>
-                        <button name="action_set_to_paid" string="تعيين كمدفوع" type="object"  class="oe_highlight" groups="hr.group_hr_manager"/>
+                        <button name="action_confirm" string="تأكيد" type="object"  class="btn-primary"/>
+                        <button name="action_approve" string="اعتماد" type="object"  class="btn-primary" groups="hr.group_hr_manager"/>
+                        <button name="action_set_to_paid" string="تعيين كمدفوع" type="object"  class="btn-primary" groups="hr.group_hr_manager"/>
                         <button name="action_cancel" string="إلغاء" type="object"  confirm="هل أنت متأكد من إلغاء هذه التصفية؟"/>
                         <button name="action_reset_to_draft" string="إعادة تعيين كمسودة" type="object" />
-                        <button name="action_print_settlement" string="طباعة" type="object"  class="oe_highlight"/>
+                        <button name="action_print_settlement" string="طباعة" type="object"  class="btn-primary"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approved,paid"/>
                     </header>
                     <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button name="action_view_payslips" type="object" class="oe_stat_button" icon="fa-money" invisible="('payslip_count', '=', 0)">
+                        <div class="o_button_box" name="button_box">
+                            <button name="action_view_payslips" type="object" class="o_stat_button" icon="fa-money" invisible="('payslip_count', '=', 0)">
                                 <field name="payslip_count" widget="statinfo" string="قسائم الراتب"/>
                             </button>
                         </div>
                         
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1>
                                 <field name="display_name" readonly="1"/>
                             </h1>
@@ -77,14 +77,14 @@
                                         <field name="housing_allowance"/>
                                         <field name="transport_allowance"/>
                                         <field name="other_allowances"/>
-                                        <field name="total_salary" readonly="1" class="oe_subtotal_footer_separator"/>
+                                        <field name="total_salary" readonly="1" class="o_subtotal_footer_separator"/>
                                     </group>
                                     <group name="benefits" string="المكافآت والاستحقاقات">
                                         <field name="end_of_service_benefit" readonly="1"/>
                                         <field name="remaining_vacation_days"/>
                                         <field name="vacation_amount" readonly="1"/>
                                         <field name="other_benefits"/>
-                                        <field name="gross_amount" readonly="1" class="oe_subtotal_footer_separator"/>
+                                        <field name="gross_amount" readonly="1" class="o_subtotal_footer_separator"/>
                                     </group>
                                 </group>
                             </page>
@@ -95,10 +95,10 @@
                                         <field name="loan_deduction"/>
                                         <field name="advance_deduction"/>
                                         <field name="other_deductions"/>
-                                        <field name="total_deductions" readonly="1" class="oe_subtotal_footer_separator"/>
+                                        <field name="total_deductions" readonly="1" class="o_subtotal_footer_separator"/>
                                     </group>
                                     <group name="net_group" string="صافي المبلغ">
-                                        <field name="net_amount" readonly="1" class="oe_subtotal_footer_separator"/>
+                                        <field name="net_amount" readonly="1" class="o_subtotal_footer_separator"/>
                                         <field name="currency_id" invisible="1"/>
                                     </group>
                                 </group>
@@ -122,7 +122,7 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>

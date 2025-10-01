@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <form string="معالج إنشاء تصفية نهاية الخدمة">
                     <sheet>
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1>إنشاء تصفية نهاية الخدمة</h1>
                             <p>قم بتعبئة البيانات التالية لإنشاء تصفية نهاية خدمة جديدة</p>
                         </div>
@@ -36,7 +36,7 @@
                     </sheet>
                     
                     <footer>
-                        <button name="action_create_settlements" string="إنشاء التصفية" type="object" class="oe_highlight"/>
+                        <button name="action_create_settlements" string="إنشاء التصفية" type="object" class="btn-primary"/>
                         <button string="إلغاء" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -50,7 +50,7 @@
             <field name="arch" type="xml">
                 <form string="معالج إنشاء تصفية الإجازة السنوية">
                     <sheet>
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1>إنشاء تصفية الإجازة السنوية</h1>
                             <p>قم بتعبئة البيانات التالية لإنشاء تصفية إجازة سنوية جديدة</p>
                         </div>
@@ -102,7 +102,7 @@
                     </sheet>
                     
                     <footer>
-                        <button name="action_create_settlements" string="إنشاء التصفية" type="object" class="oe_highlight"/>
+                        <button name="action_create_settlements" string="إنشاء التصفية" type="object" class="btn-primary"/>
                         <button string="إلغاء" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

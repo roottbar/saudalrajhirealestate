@@ -20,14 +20,14 @@
                         
                         string="Request approval"
                         type="object"
-                        class="oe_highlight"
+                        class="btn-primary"
                     />
                     <button
                         name="button_approved"
                         
                         string="Approve"
                         type="object"
-                        class="oe_highlight"
+                        class="btn-primary"
                         groups="plustech_purchase_request.group_plustech_purchase_request_manager"
                     />
                     <button
@@ -41,7 +41,7 @@
                         
                         string="Done"
                         type="object"
-                        class="oe_highlight"
+                        class="btn-primary"
                         groups="plustech_purchase_request.group_plustech_purchase_request_manager"
                     />
                     <button
@@ -59,11 +59,11 @@
                     />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <div class="o_button_box" name="button_box">
                         <button
                             type="object"
                             name="action_view_plustech_purchase_request_line"
-                            class="oe_stat_button"
+                            class="o_stat_button"
                             invisible="('line_count', '=', 0)"
                             icon="fa-list"
                         >
@@ -72,7 +72,7 @@
                         <button
                             type="object"
                             name="action_view_purchase_order"
-                            class="oe_stat_button"
+                            class="o_stat_button"
                             invisible="('purchase_count', '=', 0)"
                             icon="fa-shopping-cart"
                         >
@@ -85,7 +85,7 @@
                         <button
                             type="object"
                             name="action_view_stock_picking"
-                            class="oe_stat_button"
+                            class="o_stat_button"
                             invisible="('move_count', '=', 0)"
                             groups="stock.group_stock_manager"
                             icon="fa-truck"
@@ -96,20 +96,20 @@
                                 string="Pickings"
                             />
                         </button>
-                        <button type="object" name="action_open_agreement" class="oe_stat_button" icon="fa-shopping-cart">
+                        <button type="object" name="action_open_agreement" class="o_stat_button" icon="fa-shopping-cart">
                             <field name="agreement_count" widget="statinfo" string="Agreements"/>
                         </button>
 
                     </div>
-                    <div class="oe_edit_only">
-                        <label for="name" class="oe_inline" />
+                    <div class="o_edit_only">
+                        <label for="name" class="o_inline" />
                     </div>
                     <h1>
                         <field name="is_editable"  />
                         <field name="is_name_editable" invisible="1" />
                         <field
                             name="name"
-                            class="oe_inline"
+                            class="o_inline"
                             readonly="('is_name_editable','=', False)"
                         />
                     </h1>
@@ -127,7 +127,7 @@
                         <group>
                             <field
                                 name="origin"
-                                class="oe_inline"
+                                class="o_inline"
                                 readonly="('is_editable','=', False)"
                             />
                             <field
@@ -217,14 +217,14 @@
                                     />
                                 </list>
                             </field>
-                            <group class="oe_subtotal_footer oe_right">
-                                <div class="oe_subtotal_footer_separator oe_inline">
+                            <group class="o_subtotal_footer oe_right">
+                                <div class="o_subtotal_footer_separator o_inline">
                                     <label for="estimated_cost" />
                                 </div>
                                 <field
                                     name="estimated_cost"
                                     nolabel="1"
-                                    class="oe_subtotal_footer_separator"
+                                    class="o_subtotal_footer_separator"
                                     widget="monetary"
                                     options="{'currency_field': 'currency_id'}"
                                 />
@@ -233,7 +233,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers" />
                     <field name="activity_ids" widget="mail_activity" />
                     <field name="message_ids" widget="mail_thread" />

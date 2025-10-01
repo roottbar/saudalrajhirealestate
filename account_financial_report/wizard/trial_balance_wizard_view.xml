@@ -84,13 +84,13 @@
                             <div class="o_row">
                                 <field
                                     name="account_code_from"
-                                    class="oe_inline"
+                                    class="o_inline"
                                     options="{'no_create': True}"
                                 />
-                                <span class="oe_inline">To</span>
+                                <span class="o_inline">To</span>
                                 <field
                                     name="account_code_to"
-                                    class="oe_inline"
+                                    class="o_inline"
                                     options="{'no_create': True}"
                                 />
                             </div>
@@ -127,7 +127,7 @@
                             string="View"
                             type="object"
                             default_focus="1"
-                            class="oe_highlight"
+                            class="btn-primary"
                         />
                         or
                         <button
@@ -142,12 +142,12 @@
                             type="object"
                         />
                         or
-                        <button string="Cancel" class="oe_link" special="cancel" />
+                        <button string="Cancel" class="btn-link" special="cancel" />
                     </div>
                     <div
                         invisible="('not_only_one_unaffected_earnings_account', '=', False)"
                     >
-                        <button string="Cancel" class="oe_link" special="cancel" />
+                        <button string="Cancel" class="btn-link" special="cancel" />
                     </div>
                 </footer>
             </form>

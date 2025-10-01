@@ -12,7 +12,7 @@
                 <button
                     type="object"
                     name="action_show_picking"
-                    class="oe_stat_button"
+                    class="o_stat_button"
                     icon="fa-truck"
                     invisible="('picking_count', '=', 0)"
                     groups="stock.group_stock_user"

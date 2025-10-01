@@ -7,17 +7,17 @@
             <field name="arch" type="xml">
                 <form string="Vendor Petty Cash">
                     <sheet>
-                        <div class="oe_button_box" name="button_box"/>
+                        <div class="o_button_box" name="button_box"/>
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
                                 invisible="('active', '=', True)"/>
-                        <field name="image_1920" widget='image' class="oe_avatar"
+                        <field name="image_1920" widget='image' class="o_avatar"
                                options='{"preview_image": "image_128"}'/>
-                        <div class="oe_title">
+                        <div class="o_title">
                             <field name="is_company" invisible="1"/>
                             <field name="commercial_partner_id" invisible="1"/>
                             <field name="active" invisible="1"/>
                             <field name="company_type" widget="radio"
-                                   class="oe_edit_only"
+                                   class="o_edit_only"
                                    options="{'horizontal': true}"/>
                             <h1>
                                 <field name="name" default_focus="1" placeholder="Name" required="1"/>
@@ -31,7 +31,7 @@
                                        invisible="'|', '&amp;', ('is_company','=', True),('parent_id', '=', False),('company_name', '!=', False),('company_name', '!=', '')"/>
                                 <field name="company_name"
                                        invisible="'|', '|', ('company_name', '=', False), ('company_name', '=', ''), ('is_company', '=', True)"/>
-                                <button name="create_company" type="object" class="oe_edit_only btn-link"
+                                <button name="create_company" type="object" class="o_edit_only btn-link"
                                         invisible="'|', '|', ('is_company','=', True), ('company_name', '=', ''), ('company_name', '=', False)">
                                     <span class="fa fa-plus-square"/>
                                     Create company

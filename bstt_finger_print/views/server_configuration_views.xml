@@ -22,12 +22,12 @@
                 <form string="Server Details">
                     <header>
                         <button name="action_confirm" type="object" string="Confirm" 
-                                class="oe_highlight"/>
+                                class="btn-primary"/>
                         <button name="action_cancel" type="object" string="Cancel" />
                         <button name="action_draft" type="object" string="Set to Draft" />
 
-                        <button name="test_connect" string="Test Connection" type="object" class="oe_highlight"/>
-                        <button name="action_connect" string="Fetch" type="object" class="oe_highlight"/>
+                        <button name="test_connect" string="Test Connection" type="object" class="btn-primary"/>
+                        <button name="action_connect" string="Fetch" type="object" class="btn-primary"/>
 
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
                     </header>
@@ -78,7 +78,7 @@
                         <!--                            </page>-->
                         <!--                        </notebook>-->
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids"/>
                         <field name="activity_ids"/>
                         <field name="message_ids"/>

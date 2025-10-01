@@ -35,7 +35,7 @@
                                 <div>
                                     <field
                                         name="default_show_aging_buckets"
-                                        class="oe_inline"
+                                        class="o_inline"
                                     />
                                     <label
                                         for="default_show_aging_buckets"
@@ -45,7 +45,7 @@
                                 <div>
                                     <field
                                         name="default_filter_partners_non_due"
-                                        class="oe_inline"
+                                        class="o_inline"
                                     />
                                     <label
                                         for="default_filter_partners_non_due"
@@ -55,7 +55,7 @@
                                 <div>
                                     <field
                                         name="default_filter_negative_balances"
-                                        class="oe_inline"
+                                        class="o_inline"
                                     />
                                     <label
                                         for="default_filter_negative_balances"

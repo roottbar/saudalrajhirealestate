@@ -944,7 +944,7 @@ class AccountBankStatement(models.Model):
     accounting_date = fields.Date(string="Accounting Date",
                                   help="If set, the accounting entries created during the bank statement reconciliation process will be created at this date.\n"
                                        "This is useful if the accounting period in which the entries should normally be booked is already closed.",
-                                  states={'open': [('readonly', False)]}, readonly=True)
+                                  readonly="state != 'open'", readonly=True)
 
     def action_bank_reconcile_bank_statements(self):
         self.ensure_one()
@@ -1178,3 +1178,4 @@ class ResCompany(models.Model):
     account_bank_reconciliation_start = fields.Date(string="Bank Reconciliation Threshold", help="""The bank reconciliation widget won't ask to reconcile payments older than this date.
                                                                                                            This is useful if you install accounting after having used invoicing for some time and
                                                                                                            don't want to reconcile all the past payments with bank statements.""")
+

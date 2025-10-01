@@ -16,7 +16,7 @@
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="%(act_hr_employee_letter_list)d"
                         type="action"
-                        class="oe_stat_button"
+                        class="o_stat_button"
                         icon="fa-list">
                     <field name="hr_letters_count" widget="statinfo" string="HR Letter"/>
                 </button>

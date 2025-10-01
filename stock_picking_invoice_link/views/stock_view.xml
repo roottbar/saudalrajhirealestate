@@ -11,7 +11,7 @@
                 <button
                     type="object"
                     name="action_view_invoice"
-                    class="oe_stat_button"
+                    class="o_stat_button"
                     icon="fa-pencil-square-o"
                     invisible="('invoice_count', '=', 0)"
                 >
@@ -37,7 +37,7 @@
                         name="invoice_line_ids"
                         nolabel="1"
                         groups="account.group_account_invoice"
-                        widget="one2many_list"
+                        widget="one2many"
                     />
                 </group>
             </group>
@@ -58,7 +58,7 @@
                         name="invoice_line_ids"
                         nolabel="1"
                         groups="account.group_account_invoice"
-                        widget="one2many_list"
+                        widget="one2many"
                     />
                 </group>
             </group>

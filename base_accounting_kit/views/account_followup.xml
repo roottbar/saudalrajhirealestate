@@ -17,10 +17,10 @@
             <field name="model">followup.line</field>
             <field name="arch" type="xml">
                 <form string="Follow-up Steps">
-                    <label for="name" class="oe_edit_only"/>
+                    <label for="name" class="o_edit_only"/>
                     <h1><field name="name"/></h1>
-                    <div class="oe_inline">
-                        After <field name="delay" class="oe_inline"/> days overdue, do the following actions:
+                    <div class="o_inline">
+                        After <field name="delay" class="o_inline"/> days overdue, do the following actions:
                     </div>
                 </form>
             </field>
@@ -33,7 +33,7 @@
                 <form string="Follow-up">
                     <h1><field name="name"/></h1>
                     <label for="company_id" groups="base.group_multi_company"/>
-                    <field name="company_id" options="{'no_create': True}" class="oe_inline" groups="base.group_multi_company"/>
+                    <field name="company_id" options="{'no_create': True}" class="o_inline" groups="base.group_multi_company"/>
                     <p class="oe_grey">
                         To remind customers of paying their invoices, you can
                         define different actions depending on how severely

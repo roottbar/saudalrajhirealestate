@@ -17,11 +17,11 @@
 
                     <footer>
                         <button name="action_rejected" string="Save" type="object"
-                                invisible="('approved_request_feeding','=',True)" class="oe_highlight"/>
+                                invisible="('approved_request_feeding','=',True)" class="btn-primary"/>
                         <button name="action_fm_approved" string="Save" type="object"
-                                invisible="('approved_request_feeding','=',False)" class="oe_highlight"/>
+                                invisible="('approved_request_feeding','=',False)" class="btn-primary"/>
                         or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </form>
             </field>

@@ -37,7 +37,7 @@
                     <field name="status" widget="statusbar" statusbar_visible="pending,in_progress,success,failed"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
+                    <div class="o_title">
                         <h1>
                             <field name="operation"/> - <field name="model_name"/>
                         </h1>
@@ -100,7 +100,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>

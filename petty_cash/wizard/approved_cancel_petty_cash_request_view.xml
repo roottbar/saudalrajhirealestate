@@ -15,11 +15,11 @@
 
                     <footer>
                         <button name="action_fm_approved" string="Save" type="object"
-                                invisible="('approved_petty_cash_request','=',False)" class="oe_highlight"/>
+                                invisible="('approved_petty_cash_request','=',False)" class="btn-primary"/>
                         <button name="action_cancel" string="Save" type="object"
-                                invisible="('approved_petty_cash_request','=',True)" class="oe_highlight"/>
+                                invisible="('approved_petty_cash_request','=',True)" class="btn-primary"/>
                         or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </form>
             </field>

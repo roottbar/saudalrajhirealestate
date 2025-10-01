@@ -12,9 +12,9 @@
 
                             <label for="date_from" string="Period"/>
                             <div>
-                                <field name="date_from" class="oe_inline"/>
+                                <field name="date_from" class="o_inline"/>
                                 -
-                                <field name="date_to" class="oe_inline"/>
+                                <field name="date_to" class="o_inline"/>
                             </div>
                         </group>
                         <group>
@@ -28,8 +28,8 @@
                         </page>
                     </notebook>
                     <footer>
-                        <button name="action_update" string="Update" type="object" class="oe_highlight"/>
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button name="action_update" string="Update" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </sheet>
             </form>

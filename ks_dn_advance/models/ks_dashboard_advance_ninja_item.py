@@ -209,7 +209,7 @@ class KsDashboardNinjaItemAdvance(models.Model):
                     try:
                         type_code = []
                         # conn = sql_db.db_connect(self.env.cr.dbname)
-                        new_env = self.pool.cursor()
+                        new_env = self.env.cr
                         if rec.ks_is_date_ranges:
                             start_date = rec.ks_query_start_date
                             end_date = rec.ks_query_end_date
@@ -290,7 +290,7 @@ class KsDashboardNinjaItemAdvance(models.Model):
             type_code = []
             # new_cr = self.pool.cursor()
             # conn = sql_db.db_connect(self.env.cr.dbname)
-            new_env = self.pool.cursor()
+            new_env = self.env.cr
             if self.ks_is_date_ranges:
                 ks_start_date = 'ks_start_date'
                 ks_end_date = 'ks_end_date'
@@ -511,3 +511,4 @@ class KsDashboardNinjaItemAdvance(models.Model):
         list_view_data = self.get_list_view_record(orderby, sort_order, ks_domain, ksoffset=initial_count - 1,
                                                    initial_count=initial_count)
         return list_view_data
+

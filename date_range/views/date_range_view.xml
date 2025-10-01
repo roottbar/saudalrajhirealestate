@@ -83,16 +83,16 @@
                                 <label for="duration_count" />
                                 <div>
                                     <field
-                                        class="oe_inline"
+                                        class="o_inline"
                                         name="duration_count"
                                     />&amp;nbsp;
-                                    <field class="oe_inline" name="unit_of_time" />
+                                    <field class="o_inline" name="unit_of_time" />
                                 </div>
                                 <label for="name_prefix" />
                                 <div>
                                     <field
                                         name="name_prefix"
-                                        class="oe_inline"
+                                        class="o_inline"
                                         required="('unit_of_time', '!=', False), ('name_expr', '=', False)"
                                     /> or enter a complex expression below
                                 </div>
@@ -111,11 +111,11 @@
                                 <label for="autogeneration_count" string="Create" />
                                 <div>
                                     <field
-                                        class="oe_inline"
+                                        class="o_inline"
                                         name="autogeneration_count"
                                     />&amp;nbsp;
                                     <field
-                                        class="oe_inline"
+                                        class="o_inline"
                                         name="autogeneration_unit"
                                     /> in advance
                                 </div>

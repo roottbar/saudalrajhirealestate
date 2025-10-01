@@ -16,10 +16,10 @@ class HrAttendanceBatch(models.Model):
     _description = 'Attendance Batches'
     _order = 'check_in desc, id desc'
 
-    name = fields.Char(required=True, readonly=True, states={'draft': [('readonly', False)]})
+    name = fields.Char(required=True, readonly=True, readonly="state != 'draft'")
     attendance_ids = fields.One2many('hr.attendance.batch.line', 'attendance_batch_id', string='Attendances',
                                      readonly=True,
-                                     states={'draft': [('readonly', False)]})
+                                     readonly="state != 'draft'")
     state = fields.Selection([
         ('draft', 'New'),
         ('verify', 'Confirmed'),
@@ -135,3 +135,4 @@ class HrAttendanceBatch(models.Model):
 
     def action_draft(self):
         self.write({'state': 'draft'})
+

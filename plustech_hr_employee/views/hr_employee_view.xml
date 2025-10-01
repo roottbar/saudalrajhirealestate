@@ -29,7 +29,7 @@
                 <field name="department_id" position="before">
                     <field name="job_id"/>
                 </field>
-                <xpath expr="//div[hasclass('oe_title')]/h1[1]" position="after">
+                <xpath expr="//div[hasclass('o_title')]/h1[1]" position="after">
                     <h1>
                         <field name="english_name" placeholder="Employee's name in english"/>
                     </h1>
@@ -68,7 +68,7 @@
                         <field name="id_expiry_date" groups="hr.group_hr_user"
                                invisible="('identification_id', 'in', [None,False"/>
                         <field name="id_attachment_id" groups="hr.group_hr_user" widget="many2many_binary"
-                               class="oe_inline" invisible="('identification_id', 'in', [None,False"/>
+                               class="o_inline" invisible="('identification_id', 'in', [None,False"/>
                         <field name="membership_number"/>
                         <field name="membership_name"  invisible="('membership_number', 'in', [None,False"/>
                         <field name="membership_type"  invisible="('membership_number', 'in', [None,False"/>
@@ -82,7 +82,7 @@
                         <field name="passport_expiry_date" groups="hr.group_hr_user"
                                invisible="('passport_id', 'in', [None,False"/>
                         <field name="passport_attachment_id" groups="hr.group_hr_user" widget="many2many_binary"
-                               class="oe_inline" invisible="('passport_id', 'in', [None,False"/>
+                               class="o_inline" invisible="('passport_id', 'in', [None,False"/>
                     </group>
                 </xpath>
                   <field name="gender" position="after">

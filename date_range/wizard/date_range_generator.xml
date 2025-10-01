@@ -17,21 +17,21 @@
                             <label for="duration_count" />
                             <div>
                                 <field
-                                    class="oe_inline"
+                                    class="o_inline"
                                     name="duration_count"
                                 />&amp;nbsp;
-                                <field class="oe_inline" name="unit_of_time" />
+                                <field class="o_inline" name="unit_of_time" />
                             </div>
                             <field name="date_start" />
                             <label for="date_end" string="Until" />
                             <div>
                                 <field
-                                    class="oe_inline"
+                                    class="o_inline"
                                     name="date_end"
                                     required="('count', '=', 0)"
                                 />,
                                 or generate <field
-                                    class="oe_inline"
+                                    class="o_inline"
                                     name="count"
                                     required="('date_end', '=', False)"
                                 /> entries.
@@ -40,7 +40,7 @@
                             <div>
                                 <field
                                     name="name_prefix"
-                                    class="oe_inline"
+                                    class="o_inline"
                                     required="('unit_of_time', '!=', False), ('name_expr', '=', False)"
                                 /> or enter a complex expression below
                             </div>

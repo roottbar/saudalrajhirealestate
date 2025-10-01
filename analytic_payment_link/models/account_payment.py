@@ -8,13 +8,13 @@ class AccountPayment(models.Model):
         'account.analytic.account',
         string='الحساب التحليلي',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        readonly="state != 'draft'"
     )
     analytic_tag_ids = fields.Many2many(
         'account.analytic.tag',
         string='الوسوم التحليلية',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        readonly="state != 'draft'"
     )
 
     def _prepare_move_line_default_vals(self, write_off_line_vals=None):

@@ -17,11 +17,11 @@
                     </group>
                     <footer class="ms-0" style="display: flex; justify-content: left; align-items: left;">
                         <div style="display: flex; justify-content: center; align-items: center;">
-                            <button name="generate_template_report" string="PDF" type="object" class="oe_highlight"/>
+                            <button name="generate_template_report" string="PDF" type="object" class="btn-primary"/>
                             <span style="vertical-align: middle; margin: 0 5px;">or</span>
-                            <button name="generate_excel_report" string="Excel" type="object" class="oe_highlight"/>
+                            <button name="generate_excel_report" string="Excel" type="object" class="btn-primary"/>
                             <span style="margin: 0 5px;">or</span>
-                            <button special="cancel" string="Cancel" type="object" class="oe_highlight"/>
+                            <button special="cancel" string="Cancel" type="object" class="btn-primary"/>
                         </div>
                     </footer>
                 </form>

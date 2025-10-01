@@ -63,10 +63,10 @@
         <field name="arch" type="xml">
             <form string="Hr End Of Service">
                 <header>
-                    <button name="action_reject_reason" type="object" string="Reject" class="oe_highlight"
+                    <button name="action_reject_reason" type="object" string="Reject" class="btn-primary"
                             />
-                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" />
-                    <button name="action_approve" type="object" string="Approve" class="oe_highlight"
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary" />
+                    <button name="action_approve" type="object" string="Approve" class="btn-primary"
                             />
                     <button name="action_reset_to_draft" type="object" confirm="Reset to draft ?"
                             string="Reset to draft"
@@ -75,14 +75,14 @@
                 </header>
                 <sheet>
                     <field name="eos_setting_type" invisible="1"/>
-                    <div class="oe_button_box" name="button_box">
-                        <button type="object" name="action_open_payslip" class="oe_stat_button" icon="fa-money"
+                    <div class="o_button_box" name="button_box">
+                        <button type="object" name="action_open_payslip" class="o_stat_button" icon="fa-money"
                                 invisible="'|', ('state','!=','approved'), ('eos_setting_type', '=', 'journal')"
                                 string="Payslip"/>
 
                     </div>
 
-                    <div class="oe_title">
+                    <div class="o_title">
                         <h1>
                             <field name="name"/>
                         </h1>
@@ -137,7 +137,7 @@
                                />
                     </group>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
@@ -179,7 +179,7 @@
                         <field name="rule_structure_id"  />
                     </group>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>

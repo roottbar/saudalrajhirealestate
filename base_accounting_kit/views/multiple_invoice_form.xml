@@ -13,7 +13,7 @@
                 </group>
                 <group invisible="('type', 'not in',['sale', 'purchase'">
                     <div class="mt8">
-                        <button name="%(base_accounting_kit.action_multiple_invoice_layout_configurator)d" string="Configure Copy Layout" type="action" class="oe_link" icon="fa-arrow-right"/>
+                        <button name="%(base_accounting_kit.action_multiple_invoice_layout_configurator)d" string="Configure Copy Layout" type="action" class="btn-link" icon="fa-arrow-right"/>
                     </div>
                 </group>
 

@@ -8,7 +8,7 @@
       <field name="inherit_id" ref="sale.view_order_form"/>
       <field name="arch" type="xml">
         <button name="action_quotation_send" position="after">
-          <button name="send_pdf_for_whatsapp" id="send_by_whatsapp" string="Send by Whatsapp" type="object" class="oe_highlight"/>
+          <button name="send_pdf_for_whatsapp" id="send_by_whatsapp" string="Send by Whatsapp" type="object" class="btn-primary"/>
         </button>
 
         
@@ -21,7 +21,7 @@
       <field name="inherit_id" ref="account.view_move_form"/>
       <field name="arch" type="xml">
           <xpath expr="//header" position="inside">
-            <button name="send_pdf_for_whatsapp"  string="Send by Whatsapp" type="object" class="oe_highlight"/>
+            <button name="send_pdf_for_whatsapp"  string="Send by Whatsapp" type="object" class="btn-primary"/>
           </xpath>
 
           <xpath expr="//field[@name='invoice_date']" position="after">

@@ -10,9 +10,9 @@
                            context="{'form_view_ref': 'petty_cash.view_vendor_petty_cash_form','default_supplier_rank': 1,'vendor_petty_cash':True}"/>
 
                     <footer>
-                        <button name="execute" string="Save" type="object" class="oe_highlight"/>
+                        <button name="execute" string="Save" type="object" class="btn-primary"/>
                         or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </form>
             </field>

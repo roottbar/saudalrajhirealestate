@@ -6,13 +6,13 @@
         <field name="arch" type="xml">
             <form string="Biometric Device">
                 <header>
-                    <button name="clear_attendance" type="object" string="Clear Data" class="oe_highlight"
+                    <button name="clear_attendance" type="object" string="Clear Data" class="btn-primary"
                                 icon="fa-remove " confirm="Are you sure you want to do this?"/>
-                    <button name="download_attendance" type="object" string="Download Data" class="oe_highlight"
+                    <button name="download_attendance" type="object" string="Download Data" class="btn-primary"
                             icon="fa-download " confirm="Are you sure you want to do this?" />
                 </header>
                 <sheet>
-                    <div class="oe_title">
+                    <div class="o_title">
                         <label for="name" />
                         <h1>
                             <field name="name" placeholder="Machine IP"/>

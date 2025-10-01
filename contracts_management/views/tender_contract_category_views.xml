@@ -29,7 +29,7 @@
             <field name="arch" type="xml">
                 <form string="Tender Contract Categories">
                     <sheet>
-                        <div class="oe_title pr-0">
+                        <div class="o_title pr-0">
                             <h1 class="d-flex flex-row justify-content-between">
                                 <field name="name" class="text-truncate" placeholder="Category Name..."/>
                             </h1>

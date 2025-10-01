@@ -29,38 +29,38 @@
                         <field name="petty_cash_id" invisible="1"/>
                         <field name="show_button" invisible="1"/>
 
-                        <button name="action_send" type="object"  string="Send" class="oe_highlight"/>
+                        <button name="action_send" type="object"  string="Send" class="btn-primary"/>
                         <button name="action_project_manager_approve" type="object" string="PM Approved"
-                                class="oe_highlight"
+                                class="btn-primary"
                                 invisible="'|',('state','!=','in progress'),('allow_pm_approve','=',False)"/>
 
                         <button name="action_gm_approve" type="object"  
-                                string="GM Approved" class="oe_highlight" groups="petty_cash.group_petty_cash_manager,petty_cash.group_petty_general_m_approved"
+                                string="GM Approved" class="btn-primary" groups="petty_cash.group_petty_cash_manager,petty_cash.group_petty_general_m_approved"
                         />
 
 
                         <button name="%(action_approved_petty_cash_request)d" type="action" string="FM Approved"
-                                class="oe_highlight" />
+                                class="btn-primary" />
 
                         <button name="%(action_cancel_petty_cash_request)d" type="action" 
-                                string="Cancel" class="oe_highlight" groups="petty_cash.group_petty_cash_manager"/>
+                                string="Cancel" class="btn-primary" groups="petty_cash.group_petty_cash_manager"/>
                         <button name="create_payment_voucher" type="object" string="Payment Voucher"
-                                class="oe_highlight"
+                                class="btn-primary"
                                 invisible="'|','|','|',('show_button','=',False),('payment_voucher_id', '!=', False),('petty_cash_id', '!=', False),('state', '!=', 'f_m_approved')"/>
-                        <button name="assign_petty_cash" type="object" string="Petty Cash" class="oe_highlight"
+                        <button name="assign_petty_cash" type="object" string="Petty Cash" class="btn-primary"
                                 invisible="'|','|','|',('show_button','=',False),('payment_voucher_id', '!=', False),('petty_cash_id', '!=', False),('state', '!=', 'f_m_approved')"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,send,in progress,p_m_approved,gm_approved,f_m_approved,cancel"/>
                     </header>
                     <sheet>
-                        <div class="oe_button_box">
-                            <button name="open_payment_voucher" class="oe_stat_button" icon="fa-bars" type="object"
+                        <div class="o_button_box">
+                            <button name="open_payment_voucher" class="o_stat_button" icon="fa-bars" type="object"
                                     string="Payment Voucher"
                                     invisible="('payment_voucher_id', '=', False)"/>
-                            <button name="open_petty_cash" class="oe_stat_button" icon="fa-money" type="object"
+                            <button name="open_petty_cash" class="o_stat_button" icon="fa-money" type="object"
                                     string="Petty Cash" invisible="('petty_cash_id', '=', False)"/>
                         </div>
-                        <div class="oe_title" invisible="('state', '=', 'draft')">
+                        <div class="o_title" invisible="('state', '=', 'draft')">
                             <h1>
                                 <field name="name"/>
                             </h1>
@@ -95,7 +95,7 @@
                             <field name="attachment" readonly="('state', '!=', 'draft')"/>
                         </group>
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>

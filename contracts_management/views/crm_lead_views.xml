@@ -7,11 +7,11 @@
             <field name="inherit_id" ref="crm.crm_lead_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button name="generate_tender_lead" type="object" string="Generate Lead" class="oe_highlight"
+                    <button name="generate_tender_lead" type="object" string="Generate Lead" class="btn-primary"
                             invisible="('tender_lead_id','!=',False)"/>
                 </xpath>
                 <xpath expr="//div[@name='button_box']" position="inside">
-                    <button class="oe_stat_button" type="object" name="get_tender_lead" icon="fa-star" string="Lead"
+                    <button class="o_stat_button" type="object" name="get_tender_lead" icon="fa-star" string="Lead"
                             invisible="('tender_lead_id','=',False)"/>
                 </xpath>
                 <xpath expr="//field[@name='user_id']" position="before">

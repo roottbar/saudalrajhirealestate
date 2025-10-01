@@ -35,7 +35,7 @@
 					<group string="Type a query" colspan="4">
 						<field name="name" nolabel="1" placeholder="SELECT * FROM res_partner"/>
 					</group>
-					<button name="execute" type="object" string="Execute" class="oe_highlight"/>
+					<button name="execute" type="object" string="Execute" class="btn-primary"/>
 
 					<div style="overflow:visible !important;">
 						<group>
@@ -54,7 +54,7 @@
 						<field name="raw_output" invisible="('show_raw_output','=',False)"/>
 					</group>
 
-					<div class="oe_chatter">
+					<div class="o_chatter">
 						<field name="message_follower_ids" widget="mail_followers"/>
 						<field name="activity_ids" widget="mail_activity"/>
 						<field name="message_ids" widget="mail_thread"/>

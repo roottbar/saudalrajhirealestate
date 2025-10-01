@@ -65,7 +65,7 @@
                     <label for="fromdate" string="مدة العقد"/>
                     <div class="d-flex">
                         <field name="fromdate"/>
-                        <span class="o_form_label mx-3 oe_edit_only">الي</span>
+                        <span class="o_form_label mx-3 o_edit_only">الي</span>
                         <field name="todate"/>
                     </div>
                 </xpath>
@@ -217,7 +217,7 @@
                     </page>
                 </xpath>
               <!--   <xpath expr="//field[@name='amount_total']" position="after">
-                    <field name="amount_remain" class="oe_subtotal_footer_separator" widget="monetary"
+                    <field name="amount_remain" class="o_subtotal_footer_separator" widget="monetary"
                            options="{'currency_field': 'currency_id'}"/>
 
                 </xpath> -->

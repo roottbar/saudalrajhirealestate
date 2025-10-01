@@ -23,7 +23,7 @@
             <field name="inherit_id" ref="account.view_account_payment_form" />
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='button_open_statements']" position="after">
-                     <button class="oe_stat_button" name="open_payment_matching_screen"
+                     <button class="o_stat_button" name="open_payment_matching_screen"
                                     string="Payment Matching" type="object"
                                     groups="account.group_account_user"
                                     invisible="'|', ('is_reconciled', '=', True), ('state', '!=', 'posted')"

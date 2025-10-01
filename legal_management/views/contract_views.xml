@@ -29,7 +29,7 @@
                         <group>
                             <label for="beginning_contract" string="Period"/>
                         <div>
-                            <field name="beginning_contract" class="oe_inline"/> - <field name="end_contract" class="oe_inline"/>
+                            <field name="beginning_contract" class="o_inline"/> - <field name="end_contract" class="o_inline"/>
                         </div>
                             <field name="duration"/>
                         </group>
@@ -41,7 +41,7 @@
                     </notebook>
                 </sheet>
 
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" groups="base.group_user"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>

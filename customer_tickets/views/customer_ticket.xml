@@ -136,20 +136,20 @@
             <field name="arch" type="xml">
                 <form string="Customer Ticket">
                     <header>
-                        <button name="action_submit" class="oe_highlight" string="Submit Ticket" 
+                        <button name="action_submit" class="btn-primary" string="Submit Ticket" 
                                 type="object"/>
                         <!--                        <button name="action_in_progress" string="In Progress"  type="object"/>-->
                         <button name="action_escalation" string="Escalation" class="btn-danger"
                                 invisible="('state', 'in',  ['draft', 'waiting', 'solved'"  type="object"/>
                         <button name="action_solve" string="Mark as Solved"  type="object"/>
 <!--                        <button name="action_reset_to_progess" string="in porgress"  type="object"/>-->
-                        <button name="open_feedback" class="oe_highlight" string="Feedback" 
+                        <button name="open_feedback" class="btn-primary" string="Feedback" 
                                 type="object"/>
                         <field name="state" widget="statusbar"/>
                         <field name="escalation" invisible="1"/>
                     </header>
                     <sheet>
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1>
                                 <field name="name"/>
                             </h1>
@@ -186,7 +186,7 @@
                         <!--                            <field name="feedback" placeholder="Write Your Feedback" nolabel="1"/>-->
                         <!--                        </group>-->
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" groups="base.group_user"
                                options="{'post_refresh': 'recipients'}"/>
                         <field name="activity_ids"/>

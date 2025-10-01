@@ -29,7 +29,7 @@
 
                  <header>
 
-                     <button name="action_invoice" string="Create Invoice" type="object" class="oe_highlight"/>
+                     <button name="action_invoice" string="Create Invoice" type="object" class="btn-primary"/>
 
                      <field name="state" widget="statusbar" nolabel="1" options="{'clickable':'1'}"
                            statusbar_visible="unforeseen,finished"/>
@@ -39,14 +39,14 @@
                     <widget name="web_ribbon" title="Close" bg_color="bg-danger"
                             invisible="('implement','=',False)"/>
 
-                    <div class='oe_button_box' name="button_box">
-                    <button name="action_appeal" type="object" class="oe_stat_button" icon="fa-bookmark-o">
+                    <div class='o_button_box' name="button_box">
+                    <button name="action_appeal" type="object" class="o_stat_button" icon="fa-bookmark-o">
                         <div class="o_stat_info">
                             <field name="appeal_count" class="o_stat_value"/>
                             <span class="o_stat_text">Appeals</span>
                         </div>
                     </button>
-                        <button name="action_hearing" type="object" class="oe_stat_button" icon="fa-list">
+                        <button name="action_hearing" type="object" class="o_stat_button" icon="fa-list">
                             <div class="o_stat_info">
                                 <field name="hearing_count" class="o_stat_value"/>
                                 <span class="o_stat_text">Hearings</span>
@@ -97,7 +97,7 @@
 <!--                       <field name="numbercall">-1</field>-->
 <!--                       <field name="doall" eval="False"/>-->
 
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" groups="base.group_user"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>

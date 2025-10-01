@@ -132,7 +132,7 @@ class HrLoan(models.Model):
     loan_lines = fields.One2many('hr.loan.line', 'loan_id', string="Loan Line", index=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True, help="Company",
                                  default=lambda self: self.env.user.company_id,
-                                 states={'draft': [('readonly', False)]})
+                                 readonly="state != 'draft'")
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, help="Currency",
                                   default=lambda self: self.env.user.company_id.currency_id)
     job_position = fields.Many2one('hr.job', related="employee_id.job_id", readonly=True, string="Job Position",
@@ -383,3 +383,4 @@ class HrEmployee(models.Model):
         self.loan_count = self.env['hr.loan'].search_count([('employee_id', '=', self.id)])
 
     loan_count = fields.Integer(string="Loan Count", compute='_compute_employee_loans')
+

@@ -13,26 +13,26 @@
                             <h2>Fees Products Configuration</h2>
                             <div class="row mt8">
                                 <label string="التأمين" for="insurance_value" class="col-lg-3 o_light_label"/>
-                                <field name="insurance_value" class="oe_inline" options="{'no_create_edit': True}"/>
+                                <field name="insurance_value" class="o_inline" options="{'no_create_edit': True}"/>
                             </div>
                             <div class="row mt8">
                                 <label string="رسوم ادارية" for="contract_admin_fees" class="col-lg-3 o_light_label"/>
-                                <field name="contract_admin_fees" class="oe_inline"
+                                <field name="contract_admin_fees" class="o_inline"
                                    options="{'no_create_edit': True}"/>
                             </div>
                             <div class="row mt8">
                                 <label string="رسوم الخدمات" for="contract_service_fees" class="col-lg-3 o_light_label"/>
-                                <field name="contract_service_fees" class="oe_inline"
+                                <field name="contract_service_fees" class="o_inline"
                                    options="{'no_create_edit': True}"/>
                             </div>
                             <div class="row mt8">
                                 <label string="رسوم ادارية خاضعة" for="contract_admin_sub_fees" class="col-lg-3 o_light_label"/>
-                                <field name="contract_admin_sub_fees" class="oe_inline"
+                                <field name="contract_admin_sub_fees" class="o_inline"
                                    options="{'no_create_edit': True}"/>
                             </div>
                             <div class="row mt8">
                                 <label string="رسوم الخدمات خاضعة" for="contract_admin_sub_fees" class="col-lg-3 o_light_label"/>
-                                <field name="contract_service_sub_fees" class="oe_inline"
+                                <field name="contract_service_sub_fees" class="o_inline"
                                    options="{'no_create_edit': True}"/>
                             </div>
                         </div>

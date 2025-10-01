@@ -4,7 +4,7 @@
 import logging
 
 from odoo import models
-from odoo.tools.translate import translate
+from odoo.tools import translate
 
 from odoo.addons.report_xlsx_helper.report.report_xlsx_format import (
     FORMATS,

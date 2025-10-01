@@ -70,33 +70,33 @@
                 <form string="Petty Cash">
                     <header>
                         <button name="action_open" type="object"  string="Open"
-                                class="oe_highlight"/>
+                                class="btn-primary"/>
                         <button name="action_close" type="object"  string="Close"
-                                class="oe_highlight"/>
+                                class="btn-primary"/>
                         <button name="action_post" type="object"  string="Post"
-                                class="oe_highlight" groups="petty_cash.group_petty_cash_manager"/>
+                                class="btn-primary" groups="petty_cash.group_petty_cash_manager"/>
                         <button name="%(petty_cash.action_petty_cash_transfer)d" type="action" 
-                                string="Transfer" class="oe_highlight"/>
+                                string="Transfer" class="btn-primary"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,in progress,review,closed"/>
                     </header>
 
                     <sheet>
-                        <div class="oe_button_box">
-                            <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck"
+                        <div class="o_button_box">
+                            <button type="object" name="action_view_picking" class="o_stat_button" icon="fa-truck"
                                     invisible="('picking_ids','=',["
                                     groups="petty_cash.group_petty_cash_manager">
                                 <field name="picking_count" widget="statinfo" string="Shipments"/>
                                 <field name="picking_ids" invisible="1"/>
                             </button>
 
-                            <button type="object" name="open_journal_entries" class="oe_stat_button" icon="fa-bars"
+                            <button type="object" name="open_journal_entries" class="o_stat_button" icon="fa-bars"
                                     invisible="('state','!=','closed')"
                                     groups="petty_cash.group_petty_cash_manager">
                                 <field name="moves_count" widget="statinfo" string="Journal Entries"/>
                             </button>
                         </div>
 
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1>
                                 <field name="name"/>
                             </h1>
@@ -132,7 +132,7 @@
                             <page string="Petty Cash Lines">
                                 <group>
                                     <button name="%(action_petty_cash_line_import)d" type="action" 
-                                            string="Import Excel" class="oe_highlight oe_right"/>
+                                            string="Import Excel" class="btn-primary oe_right"/>
                                 </group>
 
                                 <field name="petty_cash_line_ids"
@@ -205,11 +205,11 @@
                                     </list>
                                 </field>
 
-                                <group class="oe_subtotal_footer oe_right">
+                                <group class="o_subtotal_footer oe_right">
                                     <field name="last_balance" invisible="1"/>
                                     <field name="amount_untaxed"/>
                                     <field name="amount_tax"/>
-                                    <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                                    <field name="amount_total" class="o_subtotal_footer_separator"/>
                                 </group>
 
                                 <field name="note" placeholder="Internal note..."/>
@@ -253,7 +253,7 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>

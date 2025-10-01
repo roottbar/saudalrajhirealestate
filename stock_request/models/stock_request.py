@@ -39,7 +39,7 @@ class StockRequest(models.Model):
             res = self._get_expected_date()
         return res
 
-    name = fields.Char(states={"draft": [("readonly", False)]})
+    name = fields.Char(readonly="state != 'draft'")
     state = fields.Selection(
         selection=_get_request_states,
         string="Status",
@@ -62,7 +62,7 @@ class StockRequest(models.Model):
         index=True,
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        readonly="state != 'draft'",
         help="Date when you expect to receive the goods.",
     )
     picking_policy = fields.Selection(
@@ -73,7 +73,7 @@ class StockRequest(models.Model):
         string="Shipping Policy",
         required=True,
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        readonly="state != 'draft'",
         default="direct",
     )
     move_ids = fields.One2many(
@@ -124,23 +124,23 @@ class StockRequest(models.Model):
     )
     order_id = fields.Many2one("stock.request.order", readonly=True)
     warehouse_id = fields.Many2one(
-        states={"draft": [("readonly", False)]}, readonly=True
+        readonly="state != 'draft'", readonly=True
     )
     location_id = fields.Many2one(
-        states={"draft": [("readonly", False)]}, readonly=True
+        readonly="state != 'draft'", readonly=True
     )
-    product_id = fields.Many2one(states={"draft": [("readonly", False)]}, readonly=True)
+    product_id = fields.Many2one(readonly="state != 'draft'", readonly=True)
     product_uom_id = fields.Many2one(
-        states={"draft": [("readonly", False)]}, readonly=True
+        readonly="state != 'draft'", readonly=True
     )
     product_uom_qty = fields.Float(
-        states={"draft": [("readonly", False)]}, readonly=True
+        readonly="state != 'draft'", readonly=True
     )
     procurement_group_id = fields.Many2one(
-        states={"draft": [("readonly", False)]}, readonly=True
+        readonly="state != 'draft'", readonly=True
     )
-    company_id = fields.Many2one(states={"draft": [("readonly", False)]}, readonly=True)
-    route_id = fields.Many2one(states={"draft": [("readonly", False)]}, readonly=True)
+    company_id = fields.Many2one(readonly="state != 'draft'", readonly=True)
+    route_id = fields.Many2one(readonly="state != 'draft'", readonly=True)
 
     _sql_constraints = [
         ("name_uniq", "unique(name, company_id)", "Stock Request name must be unique")
@@ -377,3 +377,4 @@ class StockRequest(models.Model):
         if self.filtered(lambda r: r.state != "draft"):
             raise UserError(_("Only requests on draft state can be unlinked"))
         return super(StockRequest, self).unlink()
+

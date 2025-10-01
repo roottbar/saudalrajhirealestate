@@ -10,7 +10,7 @@
                 <button name="action_process_invoice_months" 
                         string="Process Invoice Months" 
                         type="object" 
-                        class="oe_highlight"/>
+                        class="btn-primary"/>
             </xpath>
         </field>
     </record>

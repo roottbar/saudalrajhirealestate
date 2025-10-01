@@ -7,24 +7,24 @@
             <field name="arch" type="xml">
                 <form string="">
                     <header>
-                        <button string="Submit" name="action_submit"  type="object" class="oe_highlight"/>
+                        <button string="Submit" name="action_submit"  type="object" class="btn-primary"/>
                         <button string="Line Manage Approve" name="action_l_m_approve" type="object"
-                                class="oe_highlight"
+                                class="btn-primary"
                                 invisible="'|',('is_manager', '=', False),('state', '!=', 'submit')"/>
                         <button string="Hr Approve" name="action_hrm"  type="object"
-                                class="oe_highlight"
+                                class="btn-primary"
                                 groups="plustech_hr_employee_custody.employee_custody_hr_approval"/>
                         <button string="Delivered" name="action_delivered"  type="object"
-                                class="oe_highlight"
+                                class="btn-primary"
                                 groups="plustech_hr_employee_custody.employee_custody_delivery_approval"/>
                         <button string="Return" name="action_returned"  type="object"
-                                class="oe_highlight"
+                                class="btn-primary"
                                 groups="plustech_hr_employee_custody.employee_custody_return_approval"/>
 
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1 class="mt0">
                                 <field name="name" readonly="True"/>
                             </h1>
@@ -67,7 +67,7 @@
                                         <field name="rejected" widget="boolean_toggle"
                                                />
                                         <button string="" icon="fa-retweet" style="font-size: 1.5rem;"
-                                                name="action_renew" type="object" class="oe_highlight"
+                                                name="action_renew" type="object" class="btn-primary"
                                                 />
 
                                     </list>
@@ -104,7 +104,7 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>
@@ -154,7 +154,7 @@
                     </sheet>
                     <footer>
                         <button string="Cancel" class="btn btn-default" special="cancel"/>
-                        <button name="action_submit" string="Submit" type="object" class="oe_highlight"/>
+                        <button name="action_submit" string="Submit" type="object" class="btn-primary"/>
                     </footer>
                 </form>
             </field>

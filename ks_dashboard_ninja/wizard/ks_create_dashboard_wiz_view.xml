@@ -57,7 +57,7 @@
 
                 <footer>
                     <button class="btn-primary" name="ks_create_record" type="object" string="Save"/>
-                    <button string="Cancel" class="oe_link" special="cancel"/>
+                    <button string="Cancel" class="btn-link" special="cancel"/>
                 </footer>
             </form>
         </field>

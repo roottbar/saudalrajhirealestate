@@ -21,8 +21,7 @@ class SaleOrder(models.Model):
         string='Operating Unit',
         default=_default_operating_unit,
         readonly=True,
-        states={'draft': [('readonly', False)],
-                'sent': [('readonly', False)]}
+        readonly="state not in ('draft', 'sent')"
     )
 
     @api.onchange('team_id')
@@ -66,3 +65,4 @@ class SaleOrderLine(models.Model):
 
     operating_unit_id = fields.Many2one(related='order_id.operating_unit_id',
                                         string='Operating Unit')
+

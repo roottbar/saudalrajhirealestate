@@ -29,7 +29,7 @@
                     <label for="fromdate" string="مدة العقد"/>
                     <div class="d-flex">
                         <field name="fromdate"/>
-                        <span class="o_form_label mx-3 oe_edit_only">الي</span>
+                        <span class="o_form_label mx-3 o_edit_only">الي</span>
                         <field name="todate"/>
                     </div>
                 </xpath>

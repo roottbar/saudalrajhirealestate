@@ -18,9 +18,9 @@
                     </group>
 
                     <footer>
-                        <button name="action_transfer" string="Save" type="object" class="oe_highlight"/>
+                        <button name="action_transfer" string="Save" type="object" class="btn-primary"/>
                         or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </form>
             </field>

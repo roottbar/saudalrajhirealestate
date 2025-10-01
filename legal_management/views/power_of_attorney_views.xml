@@ -30,7 +30,7 @@
 
                             <label for="beginning_power" string="Date"/>
                         <div>
-                            <field name="beginning_power" class="oe_inline"/> - <field name="end_power" class="oe_inline"/>
+                            <field name="beginning_power" class="o_inline"/> - <field name="end_power" class="o_inline"/>
                         </div>
                             <field name="duration"/>
 
@@ -43,7 +43,7 @@
                     </notebook>
                 </sheet>
 
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" groups="base.group_user"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>

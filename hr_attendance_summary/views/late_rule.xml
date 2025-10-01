@@ -16,9 +16,9 @@
                             <field name="sequence"/>
                             <label for="from_minute" string="Period"/>
                             <div>
-                                <field name="from_minute" widget="float_time" class="oe_inline"/>
+                                <field name="from_minute" widget="float_time" class="o_inline"/>
                                 -
-                                <field name="to_minute" widget="float_time" class="oe_inline"/>
+                                <field name="to_minute" widget="float_time" class="o_inline"/>
                             </div>
                         </group>
                     </group>

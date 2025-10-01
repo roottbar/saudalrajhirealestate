@@ -18,11 +18,11 @@
                          </group>
                          <group col="6">
                                 <label for="bucket_5" string="Ageing Bucket" groups="base.group_system"/>
-                                <field name="bucket_1" class="oe_inline" nolabel="1" groups="base.group_system"/>
-                                <field name="bucket_2" class="oe_inline" nolabel="1" groups="base.group_system"/>
-                                <field name="bucket_3" class="oe_inline" nolabel="1" groups="base.group_system"/>
-                                <field name="bucket_4" class="oe_inline" nolabel="1" groups="base.group_system"/>
-                                <field name="bucket_5" class="oe_inline" nolabel="1" groups="base.group_system"/>
+                                <field name="bucket_1" class="o_inline" nolabel="1" groups="base.group_system"/>
+                                <field name="bucket_2" class="o_inline" nolabel="1" groups="base.group_system"/>
+                                <field name="bucket_3" class="o_inline" nolabel="1" groups="base.group_system"/>
+                                <field name="bucket_4" class="o_inline" nolabel="1" groups="base.group_system"/>
+                                <field name="bucket_5" class="o_inline" nolabel="1" groups="base.group_system"/>
                          </group>
                      </group>
                  </xpath>

@@ -48,7 +48,7 @@
             <form string="MIS Report Instance">
                 <sheet>
                     <field name="temporary" invisible="1" />
-                    <div class="oe_read_only oe_right oe_button_box" name="buttons">
+                    <div class="oe_read_only oe_right o_button_box" name="buttons">
                         <button
                             type="object"
                             name="preview"
@@ -82,8 +82,8 @@
                             invisible="('temporary', '=', False)"
                         />
                     </div>
-                    <div class="oe_title">
-                        <div class="oe_edit_only">
+                    <div class="o_title">
+                        <div class="o_edit_only">
                             <label for="name" />
                         </div>
                         <h1>
@@ -263,7 +263,7 @@
                         icon="fa-download"
                     />
                     or
-                    <button string="Cancel" class="oe_link" special="cancel" />
+                    <button string="Cancel" class="btn-link" special="cancel" />
                 </footer>
             </sheet>
         </field>

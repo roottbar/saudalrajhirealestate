@@ -84,7 +84,7 @@ class AccountMove(models.Model):
         domain="[('user_ids', '=', uid)]",
         help="This operating unit will be defaulted in the move lines.",
         readonly=True,
-        states={"draft": [("readonly", False)]},
+        readonly="state != 'draft'",
     )
 
     @api.onchange("invoice_line_ids")
@@ -255,3 +255,4 @@ class AccountMove(models.Model):
                     )
                 )
         return True
+

@@ -27,30 +27,30 @@
                     <field name="is_responsible_approve" invisible="1"/>
                     <field name="is_employee_manager" invisible="1"/>
                     <field name="is_hr_manager" invisible="1"/>
-                    <button name="compute_installment" type="object" string="Compute Installment" class="oe_highlight"
+                    <button name="compute_installment" type="object" string="Compute Installment" class="btn-primary"
                             invisible="('state','in',('approve', 'refuse'))"/>
-                    <button name="action_submit" type="object" string="Submit"  class="oe_highlight"/>
+                    <button name="action_submit" type="object" string="Submit"  class="btn-primary"/>
                     <button name="action_cancel" type="object" string="Cancel" />
                     <button name="action_reset_to_draft" type="object" string="Reset To Draft" />
 <!--                    <button name="action_approve" type="object" string="Approve"-->
-<!--                            class="oe_highlight" invisible="'|', ('state','!=', 'waiting_approval_1'), ('is_responsible_approve','!=', True)"/>-->
+<!--                            class="btn-primary" invisible="'|', ('state','!=', 'waiting_approval_1'), ('is_responsible_approve','!=', True)"/>-->
                     <button name="action_refuse" type="object" string="Refuse" 
-                            class="oe_highlight" groups="hr.group_hr_manager,hr.group_hr_user"/>
+                            class="btn-primary" groups="hr.group_hr_manager,hr.group_hr_user"/>
                         <button name="action_employee_manager" type="object" string="موافقة مدير الموظف"
                                 invisible="'|', ('state','!=', 'employee_manager'), ('is_employee_manager','!=', True)"
-                                class="oe_highlight"/>
+                                class="btn-primary"/>
                         <button name="action_hr_manager" type="object" string="موافقة مدير الموارد البشرية"
-                                invisible="'|', ('state','!=', 'hr_manager'), ('is_hr_manager','!=', True)" class="oe_highlight"/>
+                                invisible="'|', ('state','!=', 'hr_manager'), ('is_hr_manager','!=', True)" class="btn-primary"/>
                         <button name="action_approve" type="object" string="موافقة المدير التنفيذي"
-                                 groups="bstt_hr.group_executive_manager" class="oe_highlight"/>
+                                 groups="bstt_hr.group_executive_manager" class="btn-primary"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,employee_manager,hr_manager,executive_manager,approve,refuse,cancel"/>
 
                 </header>
 
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <div class="o_button_box" name="button_box">
                     </div>
-                    <div class="oe_title">
+                    <div class="o_title">
                         <h1>
                             <field name="name" readonly="1"/>
                         </h1>
@@ -83,19 +83,19 @@
                                     <field name="paid" readonly="1" widget="upgrade_boolean"/>
                                 </list>
                             </field>
-                            <group class="oe_subtotal_footer oe_right" colspan="2">
+                            <group class="o_subtotal_footer oe_right" colspan="2">
                                 <field name="total_amount" widget="monetary"
                                        options="{'currency_field': 'currency_id'}"/>
                                 <field name="total_paid_amount" widget="monetary"
                                        options="{'currency_field': 'currency_id'}"/>
-                                <field name="balance_amount" class="oe_subtotal_footer_separator" widget="monetary"
+                                <field name="balance_amount" class="o_subtotal_footer_separator" widget="monetary"
                                        options="{'currency_field': 'currency_id'}"/>
                             </group>
                             <div class="oe_clear"/>
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
@@ -182,7 +182,7 @@
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="%(act_hr_employee_loan_request)d"
                         type="action"
-                        class="oe_stat_button"
+                        class="o_stat_button"
                         icon="fa-calendar"
                         groups="hr.group_hr_manager,hr.group_hr_user">
                     <field name="loan_count" widget="statinfo" string="Loans"/>
@@ -210,7 +210,7 @@
                         <field name="rule_structure_id" required="1"/>
                     </group>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>

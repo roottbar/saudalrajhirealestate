@@ -21,7 +21,7 @@ class RentAccountMoveInherit(models.Model):
     invoice_line_ids = fields.One2many('account.move.line', 'move_id', string='Invoice lines',
                                        copy=False, readonly=True,
                                        domain=[('exclude_from_invoice_tab', '=', False), ('rent_fees', '=', False)],
-                                       states={'draft': [('readonly', False)]})
+                                       readonly="state != 'draft'")
     rent_sale_line_id= fields.Many2one(comodel_name='rent.sale.invoices')
     # def action_post(self):
     #     # update method_number in deferred earning with contract period
@@ -72,3 +72,4 @@ class RentAccountMoveLineInherit(models.Model):
     _inherit = 'account.move.line'
 
     rent_fees = fields.Boolean(default=False)
+

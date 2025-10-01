@@ -12,7 +12,7 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="send2plus" class="oe_highlight" type="object" string="Send Feedback"/>
+                        <button name="send2plus" class="btn-primary" type="object" string="Send Feedback"/>
                     </footer>
                 </form>
             </field>

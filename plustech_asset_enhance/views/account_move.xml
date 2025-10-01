@@ -10,10 +10,10 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_post'][2]" position="replace">
                     <button name="get_temp_sale_order_id" type="object" invisible="1" string="Get Rent ID"/>
-                    <button name="action_review" type="object" class="oe_highlight"
+                    <button name="action_review" type="object" class="btn-primary"
                             groups="plustech_asset_enhance.review_account_group"
                             invisible="('state', '!=', 'draft')" string="Review"/>
-                    <button name="action_post" string="Confirm" class="oe_highlight" type="object"
+                    <button name="action_post" string="Confirm" class="btn-primary" type="object"
                             groups="account.group_account_invoice" data-hotkey="v"
                             invisible="'|', '|', '|',
                                  ('state', '!=', 'review'),
@@ -22,7 +22,7 @@
                                  ('display_inactive_currency_warning','=',True)"/>
                 </xpath>
                 <xpath expr="//button[@name='action_post']" position="replace">
-                        <button name="action_post" string="Post" class="oe_highlight" type="object"
+                        <button name="action_post" string="Post" class="btn-primary" type="object"
                                 groups="account.group_account_invoice" data-hotkey="v"
                                 invisible="'|', '|',
                                  ('state', '!=', 'review'),

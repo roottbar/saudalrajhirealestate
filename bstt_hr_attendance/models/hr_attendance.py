@@ -6,7 +6,7 @@ from odoo.tools import format_datetime
 from odoo.tools import format_time
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.osv import expression
+
 from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
 
 

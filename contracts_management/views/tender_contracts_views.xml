@@ -70,47 +70,47 @@
                         <field name="auto_generated_reference" invisible="1"/>
                         <field name="has_invoices_service" invisible="1"/>
                         <field name="create_invoice" invisible="1"/>
-                        <button name="generate_reference" type="object" string="Generate Reference" class="oe_highlight"
+                        <button name="generate_reference" type="object" string="Generate Reference" class="btn-primary"
                                 invisible="'|','|',('id','=',False),('auto_generated_reference','=',True),('state','!=','open')"/>
                         <button name="action_open" type="object"  string="Open"
-                                class="oe_highlight"/>
-                        <button name="action_close" type="object" string="Close" class="oe_highlight"
+                                class="btn-primary"/>
+                        <button name="action_close" type="object" string="Close" class="btn-primary"
                                 invisible="'|',('create_invoice','!=',False),('state','!=','in progress')"/>
-                        <button name="action_close" type="object" string="Close" class="oe_highlight"
+                        <button name="action_close" type="object" string="Close" class="btn-primary"
                                 invisible="'|',('create_invoice','=',False),('state','!=','in progress')"
                                 confirm="Some services haven't invoice, this action will create invoice. Are you still sure you want to process ?"/>
-                        <button name="action_create_invoice" string="Create Invoice" type="object" class="oe_highlight"
+                        <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary"
                                 invisible="'|',('create_invoice','=',False),('state','!=','in progress')"/>
-                        <button name="print_customer_invoice" string="Print Invoice" type="object" class="oe_highlight"
+                        <button name="print_customer_invoice" string="Print Invoice" type="object" class="btn-primary"
                                 invisible="('has_invoices_service','=',False)"/>
                         <field name="state" widget="statusbar" statusbar_visible="open,in progress,closed"/>
                     </header>
                     <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" name="get_documents" type="object"
+                        <div class="o_button_box" name="button_box">
+                            <button class="o_stat_button" name="get_documents" type="object"
                                     icon="fa-file-text-o">
                                 <field string="Documents" name="documents_count" widget="statinfo"/>
                             </button>
-                            <button class="oe_stat_button" type="object" name="get_workers" icon="fa-users"
+                            <button class="o_stat_button" type="object" name="get_workers" icon="fa-users"
                                     string="Workers"
                                     invisible="'|',('state','=','open'),('worker_ids','=',["/>
-                            <button class="oe_stat_button" type="object" name="get_tasks" icon="fa-tasks"
+                            <button class="o_stat_button" type="object" name="get_tasks" icon="fa-tasks"
                                     string="Tasks"
                                     invisible="'|',('state','=','open'),('project_id','=',False)"/>
-                            <button class="oe_stat_button" name="get_timesheets" type="object"
+                            <button class="o_stat_button" name="get_timesheets" type="object"
                                     icon="fa-calendar" string="Timesheets"
                                     invisible="'|',('state','=','open'),('project_id','=',False)"/>
-                            <button class="oe_stat_button" type="object" name="get_cost_analytic_account" icon="fa-usd"
+                            <button class="o_stat_button" type="object" name="get_cost_analytic_account" icon="fa-usd"
                                     string="Cost/Revenue" invisible="('state','=','open')"/>
-                            <button class="oe_stat_button" type="object" name="get_invoices" icon="fa-pencil-square-o"
+                            <button class="o_stat_button" type="object" name="get_invoices" icon="fa-pencil-square-o"
                                     string="Invoices" invisible="('state','=','open')"/>
-                            <button class="oe_stat_button" type="object" name="get_purchases" icon="fa-shopping-cart"
+                            <button class="o_stat_button" type="object" name="get_purchases" icon="fa-shopping-cart"
                                     string="Purchases" invisible="('state','=','open')"/>
-                            <button class="oe_stat_button" type="object" name="get_sales" icon="fa-usd" string="Sales"
+                            <button class="o_stat_button" type="object" name="get_sales" icon="fa-usd" string="Sales"
                                     invisible="('state','=','open')"/>
-                            <button class="oe_stat_button" type="object" name="get_payments" icon="fa-money"
+                            <button class="o_stat_button" type="object" name="get_payments" icon="fa-money"
                                     string="Payments" invisible="('state','=','open')"/>
-                            <button class="oe_stat_button" type="object" name="get_moves" icon="fa-truck"
+                            <button class="o_stat_button" type="object" name="get_moves" icon="fa-truck"
                                     string="Movements" invisible="('state','=','open')"/>
                         </div>
                         <widget name="web_ribbon" title="Open" bg_color="bg-danger"
@@ -119,7 +119,7 @@
                                 invisible="('state','!=','in progress')"/>
                         <widget name="web_ribbon" title="closed" invisible="('state','!=','closed')"/>
 
-                        <div class="oe_title pr-0">
+                        <div class="o_title pr-0">
                             <h1 class="d-flex flex-row justify-content-between">
                                 <field name="name" class="text-truncate" placeholder="Contract Name..."
                                        readonly="('state','!=','open')"/>
@@ -143,9 +143,9 @@
                                 <div class="o_row" groups="analytic.group_analytic_accounting">
                                     <field name="analytic_account_id" options="{'no_open':True,'no_create':True}"
                                            required="('id','!=',False),('auto_generated_analytic_account','=',True)" readonly="('state','!=','open')"
-                                           class="oe_inline"/>
+                                           class="o_inline"/>
                                     <button string="Generate" type="object" name="generate_analytic_account"
-                                            class="oe_link oe_inline"
+                                            class="btn-link o_inline"
                                             invisible="'|',('state','!=','open'),('auto_generated_analytic_account','=',True)"/>
                                 </div>
                                 <field name="analytic_tag_ids" readonly="('state','!=','open')"
@@ -161,9 +161,9 @@
                                 <div class="o_row">
                                     <field name="project_id" options="{'no_open':True,'no_create':True}"
                                            required="('id','!=',False),('auto_generated_project','=',True)" readonly="('state','!=','open')"
-                                           class="oe_inline"/>
+                                           class="o_inline"/>
                                     <button string="Generate" type="object" name="generate_project"
-                                            class="oe_link oe_inline"
+                                            class="btn-link o_inline"
                                             invisible="'|',('state','!=','open'),('auto_generated_project','=',True)"/>
                                     <field name="auto_generated_project" invisible="1"/>
                                 </div>
@@ -209,14 +209,14 @@
                                         <field name="total_price_unit" invisible="1"/>
                                     </list>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right">
+                                <group class="o_subtotal_footer oe_right">
                                     <field name="amount_untaxed_manpower"/>
                                     <field name="amount_discount_manpower"/>
                                     <field name="amount_tax_manpower"/>
-                                    <field name="amount_total_manpower" class="oe_subtotal_footer_separator"/>
+                                    <field name="amount_total_manpower" class="o_subtotal_footer_separator"/>
                                 </group>
 
-                                <field name="notes" placeholder="Internal Notes..." class="oe_inline" nolabel="1"/>
+                                <field name="notes" placeholder="Internal Notes..." class="o_inline" nolabel="1"/>
                             </page>
                             <page name="equipments_tools" string="Equipments  &amp; Tools">
                                 <field name="equipments_lines" widget="section_and_note_one2many"
@@ -249,11 +249,11 @@
                                         <field name="total_price_unit" invisible="1"/>
                                     </list>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right">
+                                <group class="o_subtotal_footer oe_right">
                                     <field name="amount_untaxed_equipments"/>
                                     <field name="amount_discount_equipments"/>
                                     <field name="amount_tax_equipments"/>
-                                    <field name="amount_total_equipments" class="oe_subtotal_footer_separator"/>
+                                    <field name="amount_total_equipments" class="o_subtotal_footer_separator"/>
                                 </group>
                             </page>
                             <page name="specialty_services_request" string="Specialty">
@@ -287,12 +287,12 @@
                                         <field name="total_price_unit" invisible="1"/>
                                     </list>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right">
+                                <group class="o_subtotal_footer oe_right">
                                     <field name="amount_untaxed_specialty_services"/>
                                     <field name="amount_discount_specialty_services"/>
                                     <field name="amount_tax_specialty_services"/>
                                     <field name="amount_total_specialty_services"
-                                           class="oe_subtotal_footer_separator"/>
+                                           class="o_subtotal_footer_separator"/>
                                 </group>
                             </page>
                             <page name="workers" string="Workers">
@@ -301,7 +301,7 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>

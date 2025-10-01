@@ -39,12 +39,12 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <div class="o_button_box" name="button_box">
                         <field name="picking_ids" invisible="1" />
                         <button
                             type="object"
                             name="action_view_transfer"
-                            class="oe_stat_button"
+                            class="o_stat_button"
                             icon="fa-truck"
                             invisible="('picking_count', '=', 0)"
                             groups="stock.group_stock_user"
@@ -58,7 +58,7 @@
                         <button
                             type="object"
                             name="action_view_stock_requests"
-                            class="oe_stat_button"
+                            class="o_stat_button"
                             icon="fa-chain"
                             invisible="('state', '=', 'draft')"
                             groups="stock.group_stock_user"
@@ -70,7 +70,7 @@
                             />
                         </button>
                     </div>
-                    <div class="oe_title">
+                    <div class="o_title">
                         <label for="name" string="Stock Request" />
                         <h1>
                             <field name="name" readonly="1" />
@@ -147,7 +147,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers" />
                     <field name="activity_ids" widget="mail_activity" />
                     <field name="message_ids" widget="mail_thread" />

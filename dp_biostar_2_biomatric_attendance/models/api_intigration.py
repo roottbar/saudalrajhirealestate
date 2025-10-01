@@ -1,7 +1,7 @@
 import base64
 from odoo import api, fields, models, _
 from collections import defaultdict
-from odoo.addons.base.models.res_partner import _tz_get
+from odoo.addons.base.models.res_partner import tz_get as _tz_get
 import pytz
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError, ValidationError

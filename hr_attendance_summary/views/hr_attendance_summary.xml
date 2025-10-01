@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <form create="0">
                 <header>
-                    <button name="compute_status" string="Calculate" class="oe_highlight" type="object"/>
+                    <button name="compute_status" string="Calculate" class="btn-primary" type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="attendance,absence,weekend,holiday"/>
                 </header>
                 <sheet>

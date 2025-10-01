@@ -87,11 +87,11 @@
                     <button name="action_generate_excel_report"
                             string="تقرير مراكز التكلفة (Excel)"
                             type="object"
-                            class="oe_highlight"/>
+                            class="btn-primary"/>
                     <button name="action_generate_pdf_report" 
                             string="تقرير مراكز التكلفة (PDF)" 
                             type="object" 
-                            class="oe_highlight"/>
+                            class="btn-primary"/>
                     <button name="action_view_analytic_lines" 
                             string="عرض حركات مراكز التكلفة" 
                             type="object"/>

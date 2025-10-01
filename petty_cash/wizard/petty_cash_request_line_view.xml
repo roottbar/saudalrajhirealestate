@@ -20,9 +20,9 @@
                     </group>
 
                     <footer>
-                        <button name="create_petty_cash_line" string="Save" type="object" class="oe_highlight"/>
+                        <button name="create_petty_cash_line" string="Save" type="object" class="btn-primary"/>
                         or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </form>
             </field>

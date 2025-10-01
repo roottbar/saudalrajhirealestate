@@ -43,14 +43,14 @@
                     <field name="status" widget="statusbar" statusbar_visible="draft,active,expired,terminated"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-money">
+                    <div class="o_button_box" name="button_box">
+                        <button name="action_view_payments" type="object" class="o_stat_button" icon="fa-money">
                             <field name="payment_count" widget="statbutton" string="Payments"/>
                         </button>
-                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                        <button name="action_view_invoices" type="object" class="o_stat_button" icon="fa-file-text-o">
                             <field name="invoice_count" widget="statbutton" string="Invoices"/>
                         </button>
-                        <button name="action_view_ejar_contract" type="object" class="oe_stat_button" 
+                        <button name="action_view_ejar_contract" type="object" class="o_stat_button" 
                                 icon="fa-external-link" invisible="('ejar_synced', '=', False)">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">View in</span>
@@ -59,7 +59,7 @@
                         </button>
                     </div>
                     
-                    <div class="oe_title">
+                    <div class="o_title">
                         <h1>
                             <field name="name" placeholder="Contract Reference"/>
                         </h1>
@@ -162,7 +162,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>

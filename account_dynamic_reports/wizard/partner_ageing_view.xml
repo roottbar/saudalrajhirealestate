@@ -22,11 +22,11 @@
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                     </group>
                     <group col="5">
-                        <field name="bucket_1" class="oe_inline" nolabel="1"/>
-                        <field name="bucket_2" class="oe_inline" nolabel="1"/>
-                        <field name="bucket_3" class="oe_inline" nolabel="1"/>
-                        <field name="bucket_4" class="oe_inline" nolabel="1"/>
-                        <field name="bucket_5" class="oe_inline" nolabel="1"/>
+                        <field name="bucket_1" class="o_inline" nolabel="1"/>
+                        <field name="bucket_2" class="o_inline" nolabel="1"/>
+                        <field name="bucket_3" class="o_inline" nolabel="1"/>
+                        <field name="bucket_4" class="o_inline" nolabel="1"/>
+                        <field name="bucket_5" class="o_inline" nolabel="1"/>
                     </group>
                     <footer>
                         <button name="action_pdf" type="object" string="PDF" class="btn-primary"/>

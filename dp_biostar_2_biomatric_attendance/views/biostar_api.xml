@@ -10,23 +10,23 @@
                     <field name="state" widget="statusbar"
                            statusbar_visible="not_connected,connected"/>
                     <button name="authenticate" type="object"
-                            class="oe_highlight"
+                            class="btn-primary"
 							string="Authenticate"
 							help="This will upload settings from software to device"/>
-                    <button name="sync_devices" type="object" class="oe_highlight" string="Get all Devices"/>
-                    <button name="sync_device_types" type="object" class="oe_highlight" string="Get Device Types"/>
-                    <button name="sync_schedule" type="object" class="oe_highlight" string="Get Schedule"/>
-                    <button name="sync_attendance" type="object" class="oe_highlight" string="Get Time and Attendance"/>
+                    <button name="sync_devices" type="object" class="btn-primary" string="Get all Devices"/>
+                    <button name="sync_device_types" type="object" class="btn-primary" string="Get Device Types"/>
+                    <button name="sync_schedule" type="object" class="btn-primary" string="Get Schedule"/>
+                    <button name="sync_attendance" type="object" class="btn-primary" string="Get Time and Attendance"/>
                 </header>
                 <sheet>
-                    <!-- <div class="oe_button_box" name="button_box">
-                        <button name="test_device_connection" class="oe_stat_button"
+                    <!-- <div class="o_button_box" name="button_box">
+                        <button name="test_device_connection" class="o_stat_button"
                                 icon="fa-plug" type="object" string="Test Connection"/>
 
                     </div> -->
 
-                    <div class="oe_title" name="title">
-                        <label for="name" class="oe_edit_only"/>
+                    <div class="o_title" name="title">
+                        <label for="name" class="o_edit_only"/>
                         <h1>
                             <field name="name" placeholder="Device Reference"/>
                         </h1>

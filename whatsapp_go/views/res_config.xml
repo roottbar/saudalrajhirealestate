@@ -13,25 +13,25 @@
                 <div class="row mt16 o_settings_container">
                   <div class="col-xs-12 col-md-6 o_setting_box">
                     <label for="go4whatsapp_url" string="Go4Whatsapp URL"/>
-                    <field name="go4whatsapp_url"  class="oe_inline"/>
+                    <field name="go4whatsapp_url"  class="o_inline"/>
                   </div>
                 </div>
                 <div class="row mt16 o_settings_container">
                   <div class="col-xs-12 col-md-6 o_setting_box">
                     <label for="template_id" />
-                    <field name="template_id"  class="oe_inline"/>
+                    <field name="template_id"  class="o_inline"/>
                   </div>
                 </div>
                 <div class="row mt16 o_settings_container">
                   <div class="col-xs-12 col-md-6 o_setting_box">
                     <label for="org_id" />
-                    <field name="org_id"  class="oe_inline"/>
+                    <field name="org_id"  class="o_inline"/>
                   </div>
                 </div>
                <div class="row mt16 o_settings_container">
                   <div class="col-xs-12 col-md-6 o_setting_box">
                     <label for="Subscription_expire_date" />
-                    <field name="Subscription_expire_date"  class="oe_inline"/>
+                    <field name="Subscription_expire_date"  class="o_inline"/>
                   </div>
                 </div>
               </setting>

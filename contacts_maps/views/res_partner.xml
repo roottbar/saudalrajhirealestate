@@ -55,7 +55,7 @@
             <div name="button_box" position="inside">
                 <button name="%(contacts_maps.action_view_res_partner_google_map)d" 
                     type="action" 
-                    class="oe_stat_button" 
+                    class="o_stat_button" 
                     icon="fa-map-marker" string="Google Map" 
                     invisible="'|',('partner_latitude', '=', 0.0), ('partner_longitude', '=', 0.0)"/>
             </div>

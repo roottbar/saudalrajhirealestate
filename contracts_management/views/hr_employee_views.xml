@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
-                    <button class="oe_stat_button" type="object" name="get_tender_contracts" icon="fa-book"
+                    <button class="o_stat_button" type="object" name="get_tender_contracts" icon="fa-book"
                             invisible="('tender_contracts_count','=',0)"
                             groups="contracts_management.group_contracts_management_manager">
                         <field name="tender_contracts_count" widget="statinfo" string="Facilities"/>

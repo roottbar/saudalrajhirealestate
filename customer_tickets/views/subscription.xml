@@ -39,15 +39,15 @@
                                 invisible="('package_status', '!=', 'expired')"/>
                         <widget style="margin-top:22px" name="web_ribbon" title="Running" bg_color="bg-success"
                                 invisible="('package_status', '!=', 'running')"/>
-                        <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" string="Tickets" name="action_open_tickets" type="object"
+                        <div class="o_button_box" name="button_box">
+                            <button class="o_stat_button" string="Tickets" name="action_open_tickets" type="object"
                                     icon="fa-ticket">
                                 <field name="tickets_count"/>
                                 <field name="ticket_ids" invisible="1"/>
                             </button>
                         </div>
 
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1>
                                 <field name="plan_name" placeholder="......"/>
                             </h1>
@@ -111,7 +111,7 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>
@@ -137,7 +137,7 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button string="Activate" name="activate_subscription" type="object" class="oe_highlight"
+                        <button string="Activate" name="activate_subscription" type="object" class="btn-primary"
                                 data-hotkey="q"/>
                         <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
                     </footer>

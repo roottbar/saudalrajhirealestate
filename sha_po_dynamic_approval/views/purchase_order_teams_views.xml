@@ -16,7 +16,7 @@
         <field name="arch" type="xml">
             <form string="Account" delete="false">
                 <sheet>
-                    <div class="oe_title">
+                    <div class="o_title">
                         <h1>
                             <field name="name" placeholder="Enter Approval Team Name"/>
                         </h1>

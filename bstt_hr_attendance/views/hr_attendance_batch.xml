@@ -37,18 +37,18 @@
         <field name="arch" type="xml">
             <form string="Attendances Batches">
                 <header>
-                    <button name="action_send" type="object" string="Send"  class="oe_highlight"/>
+                    <button name="action_send" type="object" string="Send"  class="btn-primary"/>
                     <button name="action_validate" type="object" string="Validate" 
-                            class="oe_highlight"/>
+                            class="btn-primary"/>
                     <!--                    <button string="Set to Draft" name="action_draft" type="object" />-->
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <div class="o_button_box" name="button_box">
                         <button name="%(bstt_hr_attendance.act_attendance_list)d"
                                 type="action"
                                 context="{'search_default_batch_id': active_id}"
-                                class="oe_stat_button"
+                                class="o_stat_button"
                                 icon="fa-list"
                                 string="Attendees"
                                 >
@@ -64,12 +64,12 @@
                         <group>
                             <label for="check_in" string="Check In"/>
                             <div class="o_row">
-                                <field name="check_in" class="oe_inline"/>
-                                <field name="check_in_to" class="oe_inline"  invisible="('is_hr_manager', '=', False)"/>
+                                <field name="check_in" class="o_inline"/>
+                                <field name="check_in_to" class="o_inline"  invisible="('is_hr_manager', '=', False)"/>
                             </div>
                             <label for="worked_hours" string="Worked Hours" invisible="1"/>
                             <div class="o_row">
-                                <field name="worked_hours" class="oe_inline" invisible="1"/>
+                                <field name="worked_hours" class="o_inline" invisible="1"/>
                             </div>
                         </group>
                         <group>

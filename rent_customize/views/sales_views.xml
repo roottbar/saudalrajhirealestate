@@ -51,7 +51,7 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="refund" type="object" string="Refund" class="oe_highlight"/>
+                        <button name="refund" type="object" string="Refund" class="btn-primary"/>
                     </footer>
                 </form>
             </field>
@@ -80,8 +80,8 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="do_transfer" type="object" string="Transfer" class="oe_highlight"/>
-                        <button name="do_transfer_and_print" type="object" string="Transfer and print" class="oe_highlight"/>
+                        <button name="do_transfer" type="object" string="Transfer" class="btn-primary"/>
+                        <button name="do_transfer_and_print" type="object" string="Transfer and print" class="btn-primary"/>
                     </footer>
                 </form>
             </field>
@@ -119,11 +119,11 @@
                     <field name="no_of_invoiced" invisible="1"/>
                     <button name="action_cancel" type="object" string="Cancel"
                             invisible="'|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination'"/>
-                    <button name="action_termination" type="object" string="Termination" class="oe_highlight"
+                    <button name="action_termination" type="object" string="Termination" class="btn-primary"
                             />
-                    <button name="action_refund_insurance" type="object" string="Refund Insurance" class="oe_highlight"
+                    <button name="action_refund_insurance" type="object" string="Refund Insurance" class="btn-primary"
                             invisible="'|', ('refund_insurance', '=', True), ('state', '!=', 'termination')"/>
-                    <button name="renew_contract" type="object" string="Renew" class="oe_highlight"
+                    <button name="renew_contract" type="object" string="Renew" class="btn-primary"
                             invisible="('state', 'not in', ['occupied', 'termination'"/>
                     <field name="no_of_invoiced" invisible="1"/>
                     <field name="has_late_lines" invisible="1"/>
@@ -139,14 +139,14 @@
                 <xpath expr="//field[@name='state']" position="replace">
                     <field name="state" widget="statusbar" statusbar_visible="draft,sale,occupied,termination"/>
                 </xpath>
-                <div class="oe_button_box" position="inside">
+                <div class="o_button_box" position="inside">
                     <field name="transferred_id" invisible="1" />
                     <field name="new_rental_id" invisible="1" />
-                    <button class="oe_stat_button" invisible="('new_rental_id', '=', False)"
+                    <button class="o_stat_button" invisible="('new_rental_id', '=', False)"
                             name="action_view_transfer" type="object" icon="fa-building-o">
                         New Rental
                     </button>
-                    <button class="oe_stat_button" invisible="('transferred_id', '=', False)"
+                    <button class="o_stat_button" invisible="('transferred_id', '=', False)"
                             name="action_view_transferred" type="object" icon="fa-building-o">
                         Transferred from
                     </button>

@@ -39,14 +39,14 @@
                     <field name="verification_status" widget="statusbar" statusbar_visible="not_verified,pending,verified,rejected"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_contracts" type="object" class="oe_stat_button" icon="fa-file-text">
+                    <div class="o_button_box" name="button_box">
+                        <button name="action_view_contracts" type="object" class="o_stat_button" icon="fa-file-text">
                             <field name="contract_count" widget="statbutton" string="Contracts"/>
                         </button>
-                        <button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-money">
+                        <button name="action_view_payments" type="object" class="o_stat_button" icon="fa-money">
                             <field name="payment_count" widget="statbutton" string="Payments"/>
                         </button>
-                        <button name="action_view_ejar_profile" type="object" class="oe_stat_button" 
+                        <button name="action_view_ejar_profile" type="object" class="o_stat_button" 
                                 icon="fa-external-link" invisible="('ejar_synced', '=', False)">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">View in</span>
@@ -55,9 +55,9 @@
                         </button>
                     </div>
                     
-                    <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image_medium', 'size': [90, 90]}"/>
+                    <field name="image" widget="image" class="o_avatar" options="{'preview_image': 'image_medium', 'size': [90, 90]}"/>
                     
-                    <div class="oe_title">
+                    <div class="o_title">
                         <h1>
                             <field name="name" placeholder="Tenant Name"/>
                         </h1>
@@ -208,7 +208,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>

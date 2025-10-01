@@ -112,8 +112,8 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,in progress,done,cancel"/>
                     </header>
                     <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button class="oe_stat_button" type="object" name="get_tender_contract" icon="fa-book"
+                        <div class="o_button_box" name="button_box">
+                            <button class="o_stat_button" type="object" name="get_tender_contract" icon="fa-book"
                                     string="Contract"
                                     invisible="'|',('state','!=','done'),('tender_contracts_count','=',0)"/>
                         </div>
@@ -126,7 +126,7 @@
                         <widget name="web_ribbon" title="Cancelled" bg_color="bg-secondary"
                                 invisible="('state','!=','cancel')"/>
 
-                        <div class="oe_title">
+                        <div class="o_title">
                             <h1 class="d-inline-flex">
                                 <field name="name"/>
                                 <field name="version_number"
@@ -191,14 +191,14 @@
                                         <field name="total_price_unit" invisible="1"/>
                                     </list>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right">
+                                <group class="o_subtotal_footer oe_right">
                                     <field name="amount_untaxed_manpower"/>
                                     <field name="amount_discount_manpower"/>
                                     <field name="amount_tax_manpower"/>
-                                    <field name="amount_total_manpower" class="oe_subtotal_footer_separator"/>
+                                    <field name="amount_total_manpower" class="o_subtotal_footer_separator"/>
                                 </group>
 
-                                <field name="notes" placeholder="Internal Notes..." class="oe_inline" nolabel="1"/>
+                                <field name="notes" placeholder="Internal Notes..." class="o_inline" nolabel="1"/>
                             </page>
                             <page name="equipments_tools" string="Equipments  &amp; Tools">
                                 <field name="equipments_lines" widget="section_and_note_one2many"
@@ -231,11 +231,11 @@
                                         <field name="total_price_unit" invisible="1"/>
                                     </list>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right">
+                                <group class="o_subtotal_footer oe_right">
                                     <field name="amount_untaxed_equipments"/>
                                     <field name="amount_discount_equipments"/>
                                     <field name="amount_tax_equipments"/>
-                                    <field name="amount_total_equipments" class="oe_subtotal_footer_separator"/>
+                                    <field name="amount_total_equipments" class="o_subtotal_footer_separator"/>
                                 </group>
                             </page>
                             <page name="specialty_services_request" string="Specialty">
@@ -269,12 +269,12 @@
                                         <field name="total_price_unit" invisible="1"/>
                                     </list>
                                 </field>
-                                <group class="oe_subtotal_footer oe_right">
+                                <group class="o_subtotal_footer oe_right">
                                     <field name="amount_untaxed_specialty_services"/>
                                     <field name="amount_discount_specialty_services"/>
                                     <field name="amount_tax_specialty_services"/>
                                     <field name="amount_total_specialty_services"
-                                           class="oe_subtotal_footer_separator"/>
+                                           class="o_subtotal_footer_separator"/>
                                 </group>
                             </page>
 
@@ -359,7 +359,7 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <div class="oe_chatter">
+                    <div class="o_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>

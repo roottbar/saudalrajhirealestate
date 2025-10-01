@@ -131,12 +131,12 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <div class="o_button_box" name="button_box">
                         <field name="picking_ids" invisible="1" />
                         <button
                             type="object"
                             name="action_view_transfer"
-                            class="oe_stat_button"
+                            class="o_stat_button"
                             icon="fa-truck"
                             invisible="('picking_count', '=', 0)"
                             groups="stock.group_stock_user"
@@ -148,7 +148,7 @@
                             />
                         </button>
                     </div>
-                    <div class="oe_title">
+                    <div class="o_title">
                         <label for="name" string="Stock Request" />
                         <h1>
                             <field name="name" readonly="1" />
@@ -195,10 +195,10 @@
                         <group name="quantities">
                             <label for="product_uom_qty" />
                             <div>
-                                <field name="product_uom_qty" class="oe_inline" />
+                                <field name="product_uom_qty" class="o_inline" />
                                 <field
                                     name="product_uom_id"
-                                    class="oe_inline"
+                                    class="o_inline"
                                     options="{'no_open': True, 'no_create': True}"
                                     groups="uom.group_uom"
                                 />
@@ -221,7 +221,7 @@
                         <!--Empty notebook to inherit pages from other related modules-->
                     </notebook>
                 </sheet>
-                <div class="oe_chatter">
+                <div class="o_chatter">
                     <field name="message_follower_ids" widget="mail_followers" />
                     <field name="activity_ids" widget="mail_activity" />
                     <field name="message_ids" widget="mail_thread" />

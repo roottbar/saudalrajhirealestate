@@ -39,17 +39,17 @@
                         </page>
                     </notebook>
                     <footer>
-                        <button name="action_preview_attendance_report" type="object" string="Preview Report" class="oe_highlight"
+                        <button name="action_preview_attendance_report" type="object" string="Preview Report" class="btn-primary"
                                 icon="fa-eye"/>
                         <button name="export_attendance_xlsx" string="Export" type="object"
-                                class="oe_highlight"
+                                class="btn-primary"
                                 invisible="('is_printed','=',True)"/>
 
                         <button name="action_back" string="Back" class="btn btn-default"
                                 type='object'
                                 invisible="('is_printed','!=',True)"/>
                         <!--                                invisible="('is_printed','!=',True)"/>-->
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
                     </footer>
                 </form>
             </field>

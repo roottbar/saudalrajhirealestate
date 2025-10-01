@@ -15,7 +15,7 @@
                             </group>
                         </group>
                         <footer>
-                            <button name="show_report" type="object" string="Show Report" class="oe_highlight"/>
+                            <button name="show_report" type="object" string="Show Report" class="btn-primary"/>
                         </footer>
                     </sheet>
                 </form>
