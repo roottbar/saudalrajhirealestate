@@ -16,8 +16,8 @@ class PurchaseRequest(models.Model):
                        tracking=True)
     request_by = fields.Many2one("res.users", string="Request By", copy=False, default=lambda self: self.env.user.id,
                                  tracking=True, required=True)
-    department_id = fields.Many2one(related='request_by.employee_id.department_id', readonly=False, related_sudo=False,
-                                    store=True)
+    department_id = fields.Many2one('hr.department', string='Department', compute='_compute_department_id', 
+                                    store=True, readonly=False)
     allow_approve = fields.Boolean(string="Allow Approve", copy=False, compute="_compute_allow_users")
     check_products = fields.Boolean(string="Chick Purchased", copy=False, compute="_compute_check_products")
     ref = fields.Char(string="Reference", copy=False, tracking=True)
@@ -74,6 +74,16 @@ class PurchaseRequest(models.Model):
                     check_products = True
 
             request.check_products = check_products
+
+    @api.depends('request_by')
+    def _compute_department_id(self):
+        for request in self:
+            if request.request_by and request.request_by.employee_ids:
+                # Get the first employee record for the user
+                employee = request.request_by.employee_ids[0]
+                request.department_id = employee.department_id
+            else:
+                request.department_id = False
 
     def _compute_purchase_order_count(self):
         for purchase_request in self:
