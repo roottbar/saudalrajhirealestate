@@ -120,7 +120,7 @@ virtualenv>=20.24.0
 pipenv>=2023.9.0
 
 # Development Tools
-ipython>=8.15.0
+ipython>=8.0,<9.0  # Pin to compatible version for Python 3.11
 jupyter>=1.0.0
 notebook>=7.0.0
 
