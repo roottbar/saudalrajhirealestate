@@ -28,7 +28,7 @@
     'version': '15.0.1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['purchase_stock', 'user_action_rule'],
+    'depends': ['purchase_stock', 'user_action_rule', 'hr'],
 
     # always loaded
     'data': [
