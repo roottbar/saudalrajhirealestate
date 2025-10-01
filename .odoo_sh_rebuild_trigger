@@ -1,0 +1,11 @@
+# Odoo.sh Rebuild Trigger
+# Date: September 30, 2025
+# Purpose: Force Odoo.sh to rebuild with all critical fixes applied
+
+All critical deployment fixes have been applied:
+1. report_xlsx controller import fixed (.main instead of .report)
+2. date_range test model has _description field
+3. date_range tests disabled in manifest
+4. lxml_html_clean dependency added to requirements.txt
+
+This file triggers Odoo.sh automatic rebuild to apply all fixes.

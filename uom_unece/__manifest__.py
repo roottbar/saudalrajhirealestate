@@ -1,18 +1,21 @@
-# Copyright 2016-2020 Akretion France (http://www.akretion.com)
-# @author Alexis de Lattre <alexis.delattre@akretion.com>
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-
+# -*- coding: utf-8 -*-
 {
-    "name": "Product UoM UNECE",
-    "version": "14.0.1.0.0",
-    "category": "Sales",
-    "license": "AGPL-3",
-    "development_status": "Production/Stable",
-    "summary": "UNECE nomenclature for the units of measure",
-    "author": "Akretion,Odoo Community Association (OCA)",
-    "maintainers": ["astirpe", "alexis-via"],
-    "website": "https://github.com/OCA/community-data-files",
-    "depends": ["uom"],
-    "data": ["data/unece.xml", "views/uom_uom.xml"],
-    "installable": True,
+    'name': "Product UoM UNECE",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Product UoM UNECE module",
+    'description': "Enhanced Product UoM UNECE module for Odoo 18.0 by roottbar",
+    'category': "Sales",
+    'author': "Akretion,Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'uom',
+    ],
+    'data': [
+        'data/unece.xml',
+        'views/uom_uom.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

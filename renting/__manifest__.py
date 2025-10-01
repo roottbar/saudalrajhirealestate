@@ -1,36 +1,23 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Rent Customization",
-    "version": "15.0.0.7",  # Updated for 2025 improvements
-    'summary': """
-       Operational Addons""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        Long description of module's purpose
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Rent Customization module",
+    'description': "Enhanced Rent Customization module for Odoo 18.0 by roottbar",
+    'category': "Tools",
     'author': "Ibrahim Abdullatif",
-    'maintainer': 'roottbar',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base', 'sale_renting', 'sale_operating_unit', 'analytic', 'account_asset', 'l10n_gcc_invoice',
-                'product'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale_renting',
+        'sale_operating_unit',
+        'analytic',
+        'account_asset',
+        'l10n_gcc_invoice',
+        'product',
+    ],
     'data': [
         'views/vw_menu_items.xml',
-        # 'views/assets.xml',
         'views/vw_rent_account_move_inherit.xml',
         'views/vw_rent_config_property_types.xml',
         'views/vw_rent_config_property_purposes.xml',
@@ -54,14 +41,14 @@
         'views/vw_rent_sale_order_lines.xml',
         'views/vw_rent_units_report_wizard.xml',
         'views/vw_product_configuration.xml',
-        # 'report/base_layout.xml',
         'report/reports.xml',
         'report/rent_units_report_template.xml',
         'data/demo_products.xml',
         'security/renting_security.xml',
         'security/ir.model.access.csv',
     ],
+    'license': "LGPL-3",
     'application': True,
-    "installable": True,
-    "auto_install": False,
+    'installable': True,
+    'auto_install': False,
 }

@@ -1,27 +1,25 @@
-# Copyright 2014 Akretion - Alexis de Lattre <alexis.delattre@akretion.com>
-# Copyright 2014 Tecnativa - Pedro M. Baeza
-# Copyright 2018 Tecnativa - Carlos Dauden
-# Copyright 2021 Tecnativa - Víctor Martínez
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-
+# -*- coding: utf-8 -*-
 {
-    "name": "Account Payment Partner",
-    "version": "14.0.1.6.0",
-    "category": "Banking addons",
-    "license": "AGPL-3",
-    "summary": "Adds payment mode on partners and invoices",
-    "author": "Akretion, Tecnativa, Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/bank-payment",
-    "development_status": "Mature",
-    "depends": ["account_payment_mode"],
-    "data": [
-        "views/res_partner_view.xml",
-        "views/account_move_view.xml",
-        "views/account_move_line.xml",
-        "views/account_payment_mode.xml",
-        "views/report_invoice.xml",
-        "reports/account_invoice_report_view.xml",
+    'name': "Account Payment Partner",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Account Payment Partner module",
+    'description': "Enhanced Account Payment Partner module for Odoo 18.0 by roottbar",
+    'category': "Banking addons",
+    'author': "Akretion, Tecnativa, Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account_payment_mode',
     ],
-    "demo": ["demo/partner_demo.xml"],
-    "installable": True,
+    'data': [
+        'views/res_partner_view.xml',
+        'views/account_move_view.xml',
+        'views/account_move_line.xml',
+        'views/account_payment_mode.xml',
+        'views/report_invoice.xml',
+        'reports/account_invoice_report_view.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

@@ -1,40 +1,21 @@
 # -*- coding: utf-8 -*-
-
 {
-    'name': 'Print Journal Entries Report in Odoo',
-    'version': '15.0.1.0',
-    'category': 'Account',
-    'summary': 'Allow to print pdf report of Journal Entries.',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-    Allow to print pdf report of Journal Entries.
-    journal entry
-    print journal entry 
-    journal entries
-    print journal entry reports
-    account journal entry reports
-    journal reports
-    account entry reports
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'depends': ['base', 'account'],
-    'data': [
-            'report/report_journal_entries.xml',
-            'report/report_journal_entries_view.xml',
+    'name': "Print Journal Entries Report in Odoo",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Print Journal Entries Report in Odoo module",
+    'description': "Enhanced Print Journal Entries Report in Odoo module for Odoo 18.0 by roottbar",
+    'category': "Account",
+    'author': "roottbar",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
     ],
-    'assets': {
-        'web.report_assets_common': [
-            '/print_journal_entries/static/src/css/style.css',
-        ],
-    },
+    'data': [
+        'report/report_journal_entries.xml',
+        'report/report_journal_entries_view.xml',
+    ],
+    'license': "LGPL-3",
     'installable': True,
     'auto_install': False,
 }

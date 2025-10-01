@@ -1,33 +1,21 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'User Activity Log',
-    'version': '18.0.1.0.0',
-    'summary': 'Track and log user activities in the system',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        This module tracks and logs all user activities including create, write, unlink operations
-        with date, time, user and model information.
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'author': 'Othmancs',
-    'maintainer': 'roottbar',
-    'website': 'https://www.Tbarholding.com',
-    'category': 'Tools',
-    'depends': ['base'],
+    'name': "User Activity Log",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced User Activity Log module",
+    'description': "Enhanced User Activity Log module for Odoo 18.0 by roottbar",
+    'category': "Tools",
+    'author': "Othmancs",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/user_log_views.xml',
         'views/user_log_menu.xml',
     ],
-    'installable': True,
-    'application': True,
-    'license': 'LGPL-3',
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

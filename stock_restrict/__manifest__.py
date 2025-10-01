@@ -1,29 +1,21 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Inventory User Restrict',
-    'summary': """Restricts User access to warehouses and Operations""",
-    'version': '18.0.1.0.0',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        Restricts User access to warehouses and Operations
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
+    'name': "Inventory User Restrict",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Inventory User Restrict module",
+    'description': "Enhanced Inventory User Restrict module for Odoo 18.0 by roottbar",
+    'category': "Hidden",
     'author': "Crevisoft",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-    'category': 'Hidden',
-    'depends': ['stock'],
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'stock',
+    ],
     'data': [
         'security/security.xml',
-        'views/res_users_views.xml'
+        'views/res_users_views.xml',
     ],
-    'installable': True,
+    'license': "LGPL-3",
+    'installable': False,
     'auto_install': False,
 }

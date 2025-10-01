@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
-
 {
-  "name": "Disable publisher update",
-  "summary": "This module will disable sending odoo database informations to the publisher.",
-  "version": "0.1",
-  "sequence": 1,
-  "description": """""",
-  "depends": ['mail'],
-  "installable": True,
-  "auto_install": True,
+    'name': "Disable publisher update",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Disable publisher update module",
+    'description': "Enhanced Disable publisher update module for Odoo 18.0 by roottbar",
+    'category': "Tools",
+    'author': "roottbar",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'mail',
+    ],
+    'data': [],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

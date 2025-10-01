@@ -1,27 +1,24 @@
-# © 2004-2009 Tiny SPRL (<http://tiny.be>).
-# © 2014-2017 Tecnativa - Pedro M. Baeza
-# © 2016 ACSONE SA/NV (<http://acsone.eu>)
-# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
+# -*- coding: utf-8 -*-
 {
-    "name": "Purchase order lines with discounts",
-    "author": "Tiny, "
-    "Acysos S.L., "
-    "Tecnativa, "
-    "ACSONE SA/NV,"
-    "GRAP,"
-    "Odoo Community Association (OCA)",
-    "version": "18.0.1.0.0",
-    "category": "Purchase Management",
-    "website": "https://github.com/OCA/purchase-workflow",
-    "depends": ["purchase_stock"],
-    "data": [
-        "views/purchase_discount_view.xml",
-        "views/report_purchaseorder.xml",
-        "views/product_supplierinfo_view.xml",
-        "views/res_partner_view.xml",
-        "views/res_config_view.xml",
+    'name': "Purchase order lines with discounts",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Purchase order lines with discounts module",
+    'description': "Enhanced Purchase order lines with discounts module for Odoo 18.0 by roottbar",
+    'category': "Purchase Management",
+    'author': "Tiny, Acysos S.L., Tecnativa, ACSONE SA/NV,GRAP,Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'purchase_stock',
     ],
-    "license": "AGPL-3",
-    "installable": True,
-    "images": ["images/purchase_discount.png"],
+    'data': [
+        'views/purchase_discount_view.xml',
+        'views/report_purchaseorder.xml',
+        'views/product_supplierinfo_view.xml',
+        'views/res_partner_view.xml',
+        'views/res_config_view.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

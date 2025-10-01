@@ -1,40 +1,20 @@
 # -*- coding: utf-8 -*-
-# Odoo 18.0 Compatible - Updated by roottbar
 {
     'name': "Accounting Advanced",
-
-
-    'summary': """
-        Accounting Advanced""",
-
-    'description': """
-        
-        
-        Accounting Advanced Module
-        
-        This module provides advanced accounting features and enhancements.
-        
-        Enhanced by roottbar for Odoo 18.0
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Accounting Advanced module",
+    'description': "Enhanced Accounting Advanced module for Odoo 18.0 by roottbar",
+    'category': "Accounting/Accounting",
     'author': "Crevisoft Corporate",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Accounting/Accounting',
-    'version': '18.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['account'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+    ],
     'data': [
         'views/res_config_view.xml',
     ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
 }

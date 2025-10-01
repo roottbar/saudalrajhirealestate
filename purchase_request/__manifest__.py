@@ -1,36 +1,18 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Purchase Request",
-
-    'summary': """Purchase Request""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        Create Request for Quotations from Purchase Requests
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Purchase Request module",
+    'description': "Enhanced Purchase Request module for Odoo 18.0 by roottbar",
+    'category': "Inventory/Purchase",
     'author': "Crevisoft Corporate",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Inventory/Purchase',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['purchase_stock', 'user_action_rule'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'purchase_stock',
+        'user_action_rule',
+        'bstt_hr',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -43,6 +25,9 @@
         'views/purchase_request_line.xml',
         'views/res_config_settings.xml',
         'views/product_category_view.xml',
-        'views/menus.xml'
-    ]
+        'views/menus.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

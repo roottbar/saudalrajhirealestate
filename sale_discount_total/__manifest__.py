@@ -1,40 +1,20 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Sale Discount on Total Amount",
-
-    'summary': """
-        Discount on Total in Sale""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        Sale Discount for Total Amount
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Sale Discount on Total Amount module",
+    'description': "Enhanced Sale Discount on Total Amount module for Odoo 18.0 by roottbar",
+    'category': "Sales Management",
     'author': "Crevisoft Corporate",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Sales Management',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['sale'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale',
+    ],
     'data': [
-        'views/sales_views.xml'
-    ]
+        'views/sales_views.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

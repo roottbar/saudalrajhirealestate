@@ -1,48 +1,35 @@
-# Copyright 2014-2018 ACSONE SA/NV (<http://acsone.eu>)
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
-
+# -*- coding: utf-8 -*-
 {
-    "name": "MIS Builder",
-    "version": "18.0.1.0.0",
-    "category": "Reporting",
-    "summary": """
-        Build 'Management Information System' Reports and Dashboards
-    """,
-    "author": "ACSONE SA/NV, " "Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/mis-builder",
-    "depends": [
-        "account",
-        "board",
-        "report_xlsx",  # OCA/reporting-engine
-        "date_range",  # OCA/server-ux
+    'name': "MIS Builder",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced MIS Builder module",
+    'description': "Enhanced MIS Builder module for Odoo 18.0 by roottbar",
+    'category': "Reporting",
+    'author': "ACSONE SA/NV, Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+        'board',
+        'report_xlsx',
+        'date_range',
     ],
-    "data": [
-        "wizard/mis_builder_dashboard.xml",
-        "views/mis_report.xml",
-        "views/mis_report_instance.xml",
-        "views/mis_report_style.xml",
-        "datas/ir_cron.xml",
-        "security/ir.model.access.csv",
-        "security/mis_builder_security.xml",
-        "report/mis_report_instance_qweb.xml",
-        "report/mis_report_instance_xlsx.xml",
+    'data': [
+        'wizard/mis_builder_dashboard.xml',
+        'views/mis_report.xml',
+        'views/mis_report_instance.xml',
+        'views/mis_report_style.xml',
+        'datas/ir_cron.xml',
+        'security/ir.model.access.csv',
+        'security/mis_builder_security.xml',
+        'report/mis_report_instance_qweb.xml',
+        'report/mis_report_instance_xlsx.xml',
     ],
-    "assets": {
-        "web.assets_backend": [
-            "mis_builder/static/src/css/custom.css",
-            "mis_builder/static/src/js/mis_report_widget.js",
-        ],
-        "web.report_assets_common": [
-            "/mis_builder/static/src/css/report.css",
-        ],
-        "web.assets_qweb": [
-            "mis_builder/static/src/xml/mis_report_widget.xml",
-        ],
-    },
-    "qweb": ["static/src/xml/mis_report_widget.xml"],
-    "installable": True,
-    "application": True,
-    "license": "AGPL-3",
-    "development_status": "Production/Stable",
-    "maintainers": ["sbidoul"],
+    'qweb': [
+        'static/src/xml/mis_report_widget.xml',
+    ],
+    'license': "LGPL-3",
+    'application': True,
+    'installable': True,
+    'auto_install': False,
 }

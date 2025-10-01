@@ -1,27 +1,18 @@
 # -*- coding: utf-8 -*-
-
 {
-    'name': 'PlusTech HR Employee',
-    'version': '18.0.1.0.0',
-    'author': 'Plus Technology Team',
-    'maintainer': 'roottbar',
-    'company': 'Plus Technology',
-    'category': 'Human Resources/Employees',
-    'website': "www.plustech-it.com",
-    'description': """
-        
-        
-        Enhanced Module
-        
-        manage employees data
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'summary': """employees module localization""",
-    'depends': ['base', 'hr', 'resource', 'account'],
+    'name': "PlusTech HR Employee",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced PlusTech HR Employee module",
+    'description': "Enhanced PlusTech HR Employee module for Odoo 18.0 by roottbar",
+    'category': "Human Resources/Employees",
+    'author': "Plus Technology Team",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr',
+        'resource',
+        'account',
+    ],
     'data': [
         'security/ir.model.access.csv',
         'sequence/employee_sequence.xml',
@@ -34,11 +25,7 @@
         'data/server_action.xml',
         'data/mail_template.xml',
     ],
-    'sequence': 20,
-    'demo': [],
-    'images': [],
-    'installable': True,
+    'license': "LGPL-3",
+    'installable': False,
     'auto_install': False,
-    'application': False,
-    'license': 'LGPL-3',
 }

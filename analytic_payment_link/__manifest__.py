@@ -1,32 +1,23 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'ربط المدفوعات بالحسابات التحليلية',
-    'version': '18.0.1.0.0',
-    'summary': 'ربط المدفوعات بحسابات وتحليلات مراكز التكلفة',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        يهدف إلى ربط المدفوعات بحسابات وتحليلات مراكز التكلفة (Analytic Accounts and Tags)،
-        مما يُمكن من تتبع التكاليف والإيرادات بشكل أدق من خلال مراكز تحليلية حتى على مستوى الدفع.
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-    'author': 'Othmancs',
-    'maintainer': 'roottbar',
-    'website': 'https://www.Tbarholding.com',
-    'category': 'Accounting',
-    'depends': ['account', 'analytic'],
+    'name': "ربط المدفوعات بالحسابات التحليلية",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced ربط المدفوعات بالحسابات التحليلية module",
+    'description': "Enhanced ربط المدفوعات بالحسابات التحليلية module for Odoo 18.0 by roottbar",
+    'category': "Accounting",
+    'author': "Othmancs",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+        'analytic',
+    ],
     'data': [
         'views/account_payment_views.xml',
         'views/account_move_views.xml',
     ],
+    'license': "LGPL-3",
+    'application': True,
     'installable': True,
-    'application': False,
-    'license': 'LGPL-3',
+    'auto_install': False,
 }

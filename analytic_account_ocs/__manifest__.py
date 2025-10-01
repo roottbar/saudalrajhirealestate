@@ -1,15 +1,5 @@
+# -*- coding: utf-8 -*-
 {
-    'name': 'تقرير مراكز التكلفة',
-    'version': '18.0.1.0.0',
-    'summary': 'تقرير مفصل عن المصروفات والإيرادات والتحصيل والمديونية حسب مراكز التكلفة',
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        تقرير مراكز التكلفة
-        ==================
 
         هذا التقرير يقوم بحساب:
         - المصروفات حسب مراكز التكلفة
@@ -30,13 +20,23 @@
     'website': 'https://www.tbarholdingocs.com',
     'category': 'Accounting',
     'depends': ['base', 'account', 'analytic'],
+    'name': "تقرير مراكز التكلفة",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced تقرير مراكز التكلفة module",
+    'description': "Enhanced تقرير مراكز التكلفة module for Odoo 18.0 by roottbar",
+    'category': "Accounting",
+    'author': "othmancs",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+        'analytic',
+    ],
     'data': [
-        # 'security/ir.model.access.csv',
         'views/analytic_account_report_views.xml',
     ],
-    'demo': [],
-    'installable': True,
+    'license': "LGPL-3",
     'application': True,
+    'installable': True,
     'auto_install': False,
-    'license': 'LGPL-3',
 }

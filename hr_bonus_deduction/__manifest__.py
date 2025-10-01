@@ -1,39 +1,16 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Bonus and Deduction",
-
-    'summary': """
-        Bonus and Deduction to employees""",
-
-    'description': """
-        
-        
-        Enhanced Module
-        
-        
-        Add a bonus and deduction to employees in the payslip
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-    """,
-
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Bonus and Deduction module",
+    'description': "Enhanced Bonus and Deduction module for Odoo 18.0 by roottbar",
+    'category': "Human Resources",
     'author': "Crevisoft Corporate",
-    'maintainer': 'roottbar',
-    'website': "https://www.crevisoft.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'Human Resources',
-    'version': '15.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': ['hr_payroll'],
-
-    # always loaded
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr_payroll',
+    ],
     'data': [
         'data/data.xml',
         'data/ir_sequence.xml',
@@ -43,5 +20,8 @@
         'views/hr_deduction_views.xml',
         'views/res_config_views.xml',
         'views/hr_bonus_deduction_menu.xml',
-    ]
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }

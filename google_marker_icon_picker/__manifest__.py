@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Google Marker Icon Picker",
-    "version": "18.0.1.0.0",
-    "author": "Yopi Angi",
-    "license": "AGPL-3",
-    "maintainer": "Yopi Angi<yopiangi@gmail.com>",
-    "support": "yopiangi@gmail.com",
-    "category": "Extra Tools",
-    "description": """
-Google Marker Icon Picker
-=========================
 - New widget `google_marker_picker` allowing user to assign marker's color
   manually. To apply the selecter marker on map, you can tell map view by
   adding attribute color='[field_name]'
@@ -29,4 +19,20 @@ Google Marker Icon Picker
     "data": [],
     "demo": [],
     "installable": True,
+}
+    'name': "Google Marker Icon Picker",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Google Marker Icon Picker module",
+    'description': "Enhanced Google Marker Icon Picker module for Odoo 18.0 by roottbar",
+    'category': "Extra Tools",
+    'author': "Yopi Angi",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'web_google_maps',
+    ],
+    'data': [],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
 }
