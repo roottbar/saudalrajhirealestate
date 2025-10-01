@@ -29,9 +29,10 @@ class AccountReport(models.AbstractModel):
         return lines
 
 
-class AccountChartOfAccountReport(models.AbstractModel):
-    _inherit = "account.coa.report"
-
-    filter_level1 = False
-    filter_level2 = False
-    filter_level3 = False
+# account.coa.report model has been removed in Odoo 18
+# class AccountChartOfAccountReport(models.AbstractModel):
+#     _inherit = "account.coa.report"
+# 
+#     filter_level1 = False
+#     filter_level2 = False
+#     filter_level3 = False
