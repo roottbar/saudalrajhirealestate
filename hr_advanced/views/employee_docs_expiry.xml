@@ -5,7 +5,7 @@
             <field name="name">employee DOcuments.expire</field>
             <field name="model">hr.employee</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="iqama_no"/>
                     <field name="iqama_expiry_date"/>

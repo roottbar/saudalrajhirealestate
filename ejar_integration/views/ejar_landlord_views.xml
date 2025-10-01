@@ -144,7 +144,7 @@
                         
                         <page string="Properties" name="properties">
                             <field name="property_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="property_type"/>
                                     <field name="city"/>
@@ -157,7 +157,7 @@
                         
                         <page string="Contracts" name="contracts">
                             <field name="contract_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="property_id"/>
                                     <field name="tenant_id"/>
@@ -188,7 +188,7 @@
                         
                         <page string="Documents" name="documents">
                             <field name="document_ids">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="document_type"/>
                                     <field name="upload_date"/>

@@ -29,7 +29,7 @@
             <field name="name">Medical Insurance Type</field>
             <field name="model">hr.medical.insurance.type</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="code" optional="hide"/>
                     <field name="amount" optional="show"/>

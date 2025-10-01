@@ -112,7 +112,7 @@
                             
                             <page string="Experience Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
                                 <field name="experience_ids" nolabel="1">
-                                    <tree>
+                                    <list>
                                         <field name="job_title"/>
                                         <field name="company_name"/>
                                         <field name="start_date"/>
@@ -155,7 +155,7 @@
                             
                             <page string="Education Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
                                 <field name="education_ids" nolabel="1">
-                                    <tree>
+                                    <list>
                                         <field name="degree_name"/>
                                         <field name="field_of_study"/>
                                         <field name="institution_name"/>

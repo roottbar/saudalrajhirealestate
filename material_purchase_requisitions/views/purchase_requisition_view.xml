@@ -116,7 +116,7 @@
             <field name="name">material.purchase.requisition.view.tree</field>
             <field name="model">material.purchase.requisition</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="employee_id"/>
                     <field name="department_id"/>

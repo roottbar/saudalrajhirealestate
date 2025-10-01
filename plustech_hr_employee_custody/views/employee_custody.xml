@@ -117,7 +117,7 @@
             <field name="name">employee.custody.view.tree</field>
             <field name="model">employee.custody</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="employee_number"/>
                     <field name="employee_id"/>

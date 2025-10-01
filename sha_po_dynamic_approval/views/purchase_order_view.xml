@@ -25,7 +25,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Approve Route">
                     <field name="purchase_approve_line" mode="tree" readonly="1">
-                        <tree>
+                        <list>
                             <field name="purchase_id" invisible="1"/>
                             <field name="partner_id" readonly="1"/>
                             <field name="role" readonly="1"/>

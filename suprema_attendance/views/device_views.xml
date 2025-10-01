@@ -14,7 +14,7 @@
         <field name="name">suprema.device.tree</field>
         <field name="model">suprema.device</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="ip_address"/>
                 <field name="port"/>
@@ -51,7 +51,7 @@
                     <notebook>
                         <page string="Attendance Logs">
                             <field name="attendance_ids" context="{'default_device_id': id}">
-                                <tree>
+                                <list>
                                     <field name="employee_id"/>
                                     <field name="punch_time"/>
                                     <field name="status"/>

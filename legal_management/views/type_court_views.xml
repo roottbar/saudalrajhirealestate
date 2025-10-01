@@ -7,7 +7,7 @@
         <field name="name">type.court.tree</field>
         <field name="model">type.court</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name='type_court'/>
             </list>
         </field>

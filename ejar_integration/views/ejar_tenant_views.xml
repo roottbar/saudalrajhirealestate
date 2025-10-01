@@ -167,7 +167,7 @@
                         
                         <page string="Documents" name="documents">
                             <field name="document_ids">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="document_type"/>
                                     <field name="upload_date"/>
@@ -179,7 +179,7 @@
                         
                         <page string="Contracts" name="contracts">
                             <field name="contract_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="property_id"/>
                                     <field name="start_date"/>

@@ -4,7 +4,7 @@
         <field name="name">mis.report.view.tree</field>
         <field name="model">mis.report</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="description" />
             </list>
@@ -30,7 +30,7 @@
                                 colspan="2"
                                 context="{'default_report_id': id}"
                             >
-                                <tree>
+                                <list>
                                     <field name="sequence" widget="handle" />
                                     <field name="description" />
                                     <field name="name" />

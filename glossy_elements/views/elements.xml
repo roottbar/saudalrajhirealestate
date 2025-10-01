@@ -5,7 +5,7 @@
       <field name="name">glossy_elements list</field>
       <field name="model">element.element</field>
       <field name="arch" type="xml">
-        <tree>
+        <list>
           <field name="name"/>
           <field name="type"/>
           <field name="recurring"/>

@@ -5,7 +5,7 @@
         <field name="name">hr.letter.tree</field>
         <field name="model">hr.letter</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="applied_to"/>

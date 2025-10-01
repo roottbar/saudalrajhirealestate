@@ -63,7 +63,7 @@
         <field name="name">analytic.account.report.tree</field>
         <field name="model">analytic.account.report</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="company_ids" widget="many2many_tags" string="الشركات" groups="base.group_multi_company"/>
                 <field name="branch_id" string="الفرع"/>
                 <field name="group_id" string="مجموعة مراكز التكلفة"/>

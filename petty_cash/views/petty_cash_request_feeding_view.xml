@@ -5,7 +5,7 @@
             <field name="name">view.petty.cash.request.feeding.tree</field>
             <field name="model">petty.cash.request.feeding</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="date"/>
                     <field name="name"/>
                     <field name="user_rule_id"/>

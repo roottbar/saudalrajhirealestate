@@ -4,7 +4,7 @@
         <field name="name">custom.audit.log.tree</field>
         <field name="model">custom.audit.log</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="date"/>
                 <field name="user_id"/>
                 <field name="model"/>

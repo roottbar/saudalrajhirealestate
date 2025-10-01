@@ -123,7 +123,7 @@
                         
                         <page string="Payments" name="payments">
                             <field name="payment_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="payment_date"/>
                                     <field name="amount"/>
                                     <field name="payment_method"/>
@@ -135,7 +135,7 @@
                         
                         <page string="Documents" name="documents">
                             <field name="document_ids">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="document_type"/>
                                     <field name="upload_date"/>

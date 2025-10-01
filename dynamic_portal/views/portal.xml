@@ -106,7 +106,7 @@
             <field name="name">portal_view_tree</field>
             <field name="model">portal.portal</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="model_id"/>
@@ -163,7 +163,7 @@
             <field name="name">portal_line_tree</field>
             <field name="model">portal.view</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="model_id" invisible="1"/>
                     <field name="ttype" invisible="1"/>
                     <field name="relation" invisible="1"/>

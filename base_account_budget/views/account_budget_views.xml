@@ -46,7 +46,7 @@
                     <notebook>
                         <page string="Accounts">
                             <field name="account_ids">
-                                <tree>
+                                <list>
                                     <field name="code"/>
                                     <field name="name"/>
                                 </list>

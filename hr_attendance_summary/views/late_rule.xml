@@ -46,7 +46,7 @@
         <field name="name">late.rule.tree</field>
         <field name="model">late.rule</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="sequence"/>
                 <field name="type"/>
                 <field name="from_minute" widget="float_time"/>

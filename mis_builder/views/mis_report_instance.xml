@@ -16,7 +16,7 @@
         <field name="name">mis.report.instance.view.tree</field>
         <field name="model">mis.report.instance</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <button
                     type="object"
                     name="preview"

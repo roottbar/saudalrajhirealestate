@@ -65,7 +65,7 @@
                     <notebook>
                         <page string="Information">
                             <field name="action_rule_line_ids">
-                                <tree>
+                                <list>
                                     <field name="object_id" options="{'no_create': True, 'no_open': True}"/>
                                     <field name="model_name" invisible="1"/>
                                     <field name="filter_domain" optional="hide"/>

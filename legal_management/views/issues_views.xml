@@ -7,7 +7,7 @@
         <field name="name">issues.tree</field>
         <field name="model">issues</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name='case_no'/>
                 <field name='date_of_the_invitation'/>
                 <field name="court"/>

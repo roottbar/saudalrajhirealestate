@@ -5,7 +5,7 @@
       <field name="name">barameg_geidea_pos_geidea_terminals_list</field>
       <field name="model">geidea.terminals</field>
       <field name="arch" type="xml">
-        <tree>
+        <list>
           <field name="name"/>
         </list>
       </field>

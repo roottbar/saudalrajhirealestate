@@ -33,7 +33,7 @@
             <field name="name">employee Document list </field>
             <field name="model">employee.document</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="emp_id" />
                     <field name="doc_type" />

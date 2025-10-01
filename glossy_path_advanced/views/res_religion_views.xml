@@ -3,7 +3,7 @@
         <field name="name">res.religion Tree</field>
         <field name="model">res.religion</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="code"/>
             </list>

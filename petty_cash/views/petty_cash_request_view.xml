@@ -5,7 +5,7 @@
             <field name="name">view.petty.cash.request.tree</field>
             <field name="model">petty.cash.request</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="date"/>
                     <field name="name"/>
                     <field name="partner_id"/>

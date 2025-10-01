@@ -9,7 +9,7 @@
         <field name="name">suprema.attendance.tree</field>
         <field name="model">suprema.attendance.log</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="employee_id"/>
                 <field name="device_id"/>
                 <field name="punch_time"/>

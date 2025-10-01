@@ -28,7 +28,7 @@
         <field name="name">Age partner report configuration tree</field>
         <field name="model">account.age.report.configuration</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="company_id" />
             </list>

@@ -7,7 +7,7 @@
         <field name="name">implementation.tree</field>
         <field name="model">implementation</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="type_verdict"/>
                 <field name="issue" attrs="{'invisible': [('type_verdict','=','appeal')]}"/>
                 <field name="appeal" attrs="{'invisible': [('type_verdict','=','trial')]}"/>

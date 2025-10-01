@@ -40,7 +40,7 @@
         <field name="name">account.payment.mode.tree</field>
         <field name="model">account.payment.mode</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="payment_method_id" />
                 <field name="payment_type" />

@@ -208,7 +208,7 @@
                                     </page>
                                 </notebook>
                             </form>
-                            <tree>
+                            <list>
                                 <field name="sequence" widget="handle"/>
                                 <field name="sale_order_line_id"/>
                             </list>

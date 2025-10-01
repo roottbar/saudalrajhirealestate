@@ -7,7 +7,7 @@
         <field name="name">appeal.tree</field>
         <field name="model">appeal</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name='issues'/>
                 <field name="date_of_appeal"/>
                 <field name="judge"/>

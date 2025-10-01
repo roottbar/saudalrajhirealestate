@@ -5,7 +5,7 @@
             <field name="name">view.petty.cash.user.rule.tree</field>
             <field name="model">petty.cash.user.rule</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="code" optional="show"/>
                     <field name="user" optional="show"/>
@@ -48,7 +48,7 @@
                         <notebook>
                             <page name="analytic_accounts" string="Analytic Accounts">
                                 <field name="analytic_account_ids" options="{'no_open': True,'no_create':True}">
-                                    <tree>
+                                    <list>
                                         <field name="name" string="Name"/>
                                         <field name="code"/>
                                         <field name="partner_id"/>
@@ -58,7 +58,7 @@
 
                             <page name="accounts" string="Accounts">
                                 <field name="accounts" options="{'no_open': True,'no_create':True}">
-                                    <tree>
+                                    <list>
                                         <field name="code"/>
                                         <field name="name"/>
                                     </list>
@@ -67,7 +67,7 @@
 
                             <page name="products" string="Products">
                                 <field name="products" options="{'no_open': True,'no_create':True}">
-                                    <tree>
+                                    <list>
                                         <field name="default_code"/>
                                         <field name="barcode"/>
                                         <field name="name"/>
@@ -78,7 +78,7 @@
 
                             <page name="partners" string="Partners">
                                 <field name="partner_ids" options="{'no_open': True,'no_create':True}">
-                                    <tree>
+                                    <list>
                                         <field name="display_name" string="Name"/>
                                         <field name="phone"/>
                                         <field name="email"/>

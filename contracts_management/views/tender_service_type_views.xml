@@ -54,7 +54,7 @@
                         <notebook>
                             <page name="services" string="Services">
                                 <field name="products" options="{'no_create':True}">
-                                    <tree>
+                                    <list>
                                         <field name="default_code"/>
                                         <field name="barcode"/>
                                         <field name="name"/>

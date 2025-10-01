@@ -30,7 +30,7 @@ here. I hate the objects that don't have a view... -->
         <field name="name">account_payment_method.tree</field>
         <field name="model">account.payment.method</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="code" />

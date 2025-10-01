@@ -58,7 +58,7 @@
                 <xpath expr="//page[@name='extra_info']" position="after">
                     <page string="Assign History">
                         <field name="assign_history_ids" editable="bottom" string="Assign History">
-                            <tree>
+                            <list>
                                 <field name="description"/>
                                 <field name="old_user_id"/>
                                 <field name="new_user_id"/>

@@ -23,7 +23,7 @@
         <field name="name">employee.checklist.tree</field>
         <field name="model">employee.checklist</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="document_type"/>
             </list>

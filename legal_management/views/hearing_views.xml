@@ -7,7 +7,7 @@
         <field name="name">hearing.tree</field>
         <field name="model">hearing</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name='issues'/>
                 <field name="court"/>
                 <field name="hearing_time"/>

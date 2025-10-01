@@ -27,7 +27,7 @@
             <field name="name">view.res.partner.account.category.tree</field>
             <field name="model">res.partner.account.category</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="account_payable_id" optional="show"/>
                     <field name="account_receivable_id" optional="show"/>
@@ -78,7 +78,7 @@
             <field name="name">view.res.partner.account.category.tree2</field>
             <field name="model">res.partner.account.category</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="account_payable_id" optional="show"/>
                     <field name="account_receivable_id" optional="show"/>

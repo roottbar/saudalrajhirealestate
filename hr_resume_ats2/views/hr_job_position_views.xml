@@ -93,7 +93,7 @@
                             
                             <page string="Resume Analyses" attrs="{'invisible': [('resume_analysis_count', '=', 0)]}">
                                 <field name="resume_analysis_ids" nolabel="1" readonly="1">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
                                         <field name="candidate_name"/>
                                         <field name="candidate_email"/>

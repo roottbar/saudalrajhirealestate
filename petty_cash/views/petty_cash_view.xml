@@ -42,7 +42,7 @@
             <field name="name">view.petty.cash.tree</field>
             <field name="model">petty.cash</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="reference" optional="show"/>
                     <field name="start_date" string="Date"/>
@@ -243,7 +243,7 @@
                             </page>
                             <page string="Transfers">
                                 <field name="transfers" readonly="1">
-                                    <tree>
+                                    <list>
                                         <field name="description"/>
                                         <field name="manager"/>
                                         <field name="create_uid"/>
