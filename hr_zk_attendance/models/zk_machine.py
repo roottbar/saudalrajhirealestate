@@ -58,7 +58,8 @@ class ZkMachine(models.Model):
         try:
             conn = zk.connect()
             return conn
-        except:
+        except Exception as e:
+            _logger.error("Failed to connect to ZK device: %s", str(e))
             return False
     
     def clear_attendance(self):
@@ -114,8 +115,23 @@ class ZkMachine(models.Model):
     @api.model
     def cron_download(self):
         machines = self.env['zk.machine'].search([])
-        for machine in machines :
-            machine.download_attendance()
+        _logger.info("Starting attendance download for %d machines", len(machines))
+        
+        success_count = 0
+        error_count = 0
+        
+        for machine in machines:
+            try:
+                machine.download_attendance()
+                success_count += 1
+                _logger.info("Successfully processed machine %s:%s", machine.name, machine.port_no)
+            except Exception as e:
+                error_count += 1
+                _logger.error("Failed to process machine %s:%s - %s", machine.name, machine.port_no, str(e))
+                # Continue with other machines instead of stopping
+                continue
+        
+        _logger.info("Attendance download completed: %d successful, %d failed", success_count, error_count)
         
     def download_attendance(self):
         _logger.info("++++++++++++Cron Executed++++++++++++++++++++++")
@@ -124,24 +140,54 @@ class ZkMachine(models.Model):
         for info in self:
             machine_ip = info.name
             zk_port = info.port_no
-            timeout = 15
+            timeout = 30  # Increased timeout
+            
+            _logger.info("Attempting to connect to ZK machine at %s:%s", machine_ip, zk_port)
+            
             try:
                 zk = ZK(machine_ip, port=zk_port, timeout=timeout, password=0, force_udp=False, ommit_ping=False)
             except NameError:
+                _logger.error("Pyzk module not found")
                 raise UserError(_("Pyzk module not Found. Please install it with 'pip3 install pyzk'."))
-            conn = self.device_connect(zk)
+            except Exception as e:
+                _logger.error("Error initializing ZK connection: %s", str(e))
+                continue  # Skip this machine and continue with others
+                
+            # Try to connect with retry logic
+            conn = None
+            max_retries = 3
+            for attempt in range(max_retries):
+                conn = self.device_connect(zk)
+                if conn:
+                    break
+                _logger.warning("Connection attempt %d/%d failed for machine %s:%s", 
+                              attempt + 1, max_retries, machine_ip, zk_port)
+                if attempt < max_retries - 1:
+                    import time
+                    time.sleep(2)  # Wait 2 seconds before retry
+                    
             if conn:
                 # conn.disable_device() #Device Cannot be used during this time.
                 try:
                     user = conn.get_users()
-                except:
+                    _logger.info("Successfully retrieved %d users from machine %s:%s", 
+                               len(user) if user else 0, machine_ip, zk_port)
+                except Exception as e:
+                    _logger.error("Failed to get users from machine %s:%s: %s", machine_ip, zk_port, str(e))
                     user = False
+                    
                 try:
                     attendance = conn.get_attendance()
-                except:
+                    _logger.info("Successfully retrieved %d attendance records from machine %s:%s", 
+                               len(attendance) if attendance else 0, machine_ip, zk_port)
+                except Exception as e:
+                    _logger.error("Failed to get attendance from machine %s:%s: %s", machine_ip, zk_port, str(e))
                     attendance = False
                 if attendance:
+                    processed_count = 0
+                    error_count = 0
                     for each in attendance:
+                        try:
                         atten_time = each.timestamp
                         atten_time = datetime.strptime(atten_time.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S')
                         local_tz = pytz.timezone(
@@ -199,10 +245,28 @@ class ZkMachine(models.Model):
                                                         'check_in': atten_time})
                                 else:
                                     pass
+                            processed_count += 1
+                        except Exception as e:
+                            error_count += 1
+                            _logger.error("Error processing attendance record for user %s: %s", 
+                                        each.user_id if hasattr(each, 'user_id') else 'unknown', str(e))
+                            continue
+                    
+                    _logger.info("Processed %d attendance records successfully, %d errors for machine %s:%s", 
+                               processed_count, error_count, machine_ip, zk_port)
+                    
                     # zk.enableDevice()
-                    conn.disconnect
+                    try:
+                        conn.disconnect()
+                    except Exception as e:
+                        _logger.warning("Error disconnecting from machine %s:%s: %s", machine_ip, zk_port, str(e))
                     return True
                 else:
-                    raise UserError(_('Unable to get the attendance log, please try again later.'))
+                    _logger.warning("No attendance data found for machine %s:%s", machine_ip, zk_port)
+                    # Don't raise error, just log and continue with other machines
+                    continue
             else:
-                raise UserError(_('Unable to connect, please check the parameters and network connections.'))
+                _logger.error("Failed to connect to ZK machine %s:%s after %d attempts", 
+                            machine_ip, zk_port, max_retries)
+                # Don't raise error for individual machine failures in cron job
+                continue

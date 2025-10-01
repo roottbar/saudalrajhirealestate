@@ -76,6 +76,9 @@ class ServerConfigurations(models.Model):
 
     def connection(self):
         """ Test Connect to the PostgreSQL database server """
+        # Ensure we're working with a single record
+        self.ensure_one()
+        
         conn = None
         try:
             # connect to the PostgreSQL server
@@ -96,6 +99,8 @@ class ServerConfigurations(models.Model):
                 return conn
 
     def test_connect(self):
+        # Ensure we're working with a single record
+        self.ensure_one()
         conn = self.connection()
         if conn is not None:
             conn.close()
@@ -126,6 +131,9 @@ class ServerConfigurations(models.Model):
 
     def action_connect(self):
         """ Connect to the PostgreSQL database server and fetch Data"""
+        # Ensure we're working with a single record
+        self.ensure_one()
+        
         conn = self.connection()
         # create a cursor
         cur = conn.cursor()
