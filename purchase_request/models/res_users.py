@@ -26,4 +26,5 @@ class ResUsers(models.Model):
             }
             employee = self.env['hr.employee'].create(employee_vals)
             user.employee_id = employee.id
-        return user
+
+        return user 
