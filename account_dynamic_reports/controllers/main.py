@@ -16,9 +16,31 @@ from datetime import datetime
 
 # from docutils.languages import fa
 _logger = logging.getLogger(__name__)
-from odoo.addons.web.controllers.main import serialize_exception, content_disposition
+# serialize_exception and content_disposition are no longer available in Odoo 18
+# We'll implement them directly or remove them
 from odoo.tools.translate import _
 import base64
+
+
+def serialize_exception(func):
+    """Decorator to serialize exceptions for Odoo 18 compatibility"""
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            _logger.error("Exception in %s: %s", func.__name__, str(e))
+            return request.make_response(
+                json.dumps({'error': str(e)}),
+                headers=[('Content-Type', 'application/json')],
+                status=500
+            )
+    return wrapper
+
+
+def content_disposition(filename):
+    """Generate content disposition header for Odoo 18 compatibility"""
+    import urllib.parse
+    return f'attachment; filename="{urllib.parse.quote(filename)}"'
 
 
 class Binary(http.Controller):
