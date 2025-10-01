@@ -20,6 +20,6 @@
         'views/report_coa_hierarchy.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,  # Disabled for Odoo 18 - account.coa.report model no longer exists
     'auto_install': False,
 }
