@@ -6,7 +6,8 @@ from odoo import http
 from odoo.http import request
 from odoo.api import Environment
 from odoo import SUPERUSER_ID
-from odoo.addons.web.controllers.main import ensure_db
+# ensure_db is no longer available in Odoo 18
+# We'll handle database checking differently
 import datetime
 import json
 import logging
