@@ -1,30 +1,5 @@
 # -*- coding: utf-8 -*-
-{
-        
-        This module provides:
-        * Resume upload and analysis using ATS (Applicant Tracking System)
-        * AI-powered resume evaluation based on job positions
-        * Comprehensive scoring and feedback system
-        * Job position matching and recommendations
-        * Detailed reports and analytics
-        
-        Features:
-        ---------
-        * Upload resume files (PDF, DOC, DOCX)
-        * Select job positions for targeted analysis
-        * AI-based resume scoring and evaluation
-        * ATS compatibility checking
-        * Skills matching and gap analysis
-        * Experience evaluation
-        * Education verification
-        * Keyword optimization suggestions
-    
-        
-        Updated by roottbar for better functionality.
-    
-        
-        Enhanced by roottbar.
-
+{    
     'author': 'Your Company',
     'maintainer': 'roottbar',
     'website': 'https://www.yourcompany.com',
@@ -57,4 +32,5 @@
     'license': "LGPL-3",
     'installable': False,
     'auto_install': False,
+
 }
