@@ -9,9 +9,10 @@
 ##############################################################################
 
 from odoo import api, models
+from odoo.models import AbstractModel
 
 
-class AccountChartTemplate(models.Model):
+class AccountChartTemplate(AbstractModel):
     _inherit = "account.chart.template"
     
     def generate_account(self, tax_template_ref, acc_template_ref, code_digits, company):
