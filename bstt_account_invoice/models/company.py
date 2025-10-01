@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError, Warning
+from odoo.exceptions import UserError
+# Warning exception has been removed in Odoo 18
 import base64
 import qrcode
 from io import BytesIO
