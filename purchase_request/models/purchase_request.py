@@ -319,15 +319,15 @@ class PurchaseRequestLine(models.Model):
     price_subtotal = fields.Monetary(related='purchase_order_line.price_subtotal', string='Subtotal', store=True,
                                      readonly=True)
     price_total = fields.Monetary(related='purchase_order_line.price_total', string='Total', store=True, readonly=True)
-    price_tax = fields.Monetary(crelated='purchase_order_line.price_tax', string='Tax', store=True, readonly=True)
+    price_tax = fields.Monetary(related='purchase_order_line.price_tax', string='Tax', store=True, readonly=True)
 
     purchase_request_id = fields.Many2one('purchase.request', string='Purchase Request', index=True, required=True,
                                           ondelete='cascade')
     account_analytic_id = fields.Many2one('account.analytic.account', store=True, string='Analytic Account',
                                           check_company=True,
-                                          domion="['|',('company_id', '=', False),('company_id', '=', company_id)]")
+                                          domain="['|',('company_id', '=', False),('company_id', '=', company_id)]")
     analytic_tag_ids = fields.Many2many('account.analytic.tag', store=True, string='Analytic Tags', check_company=True,
-                                        domion="['|',('company_id', '=', False),('company_id', '=', company_id)]")
+                                        domain="['|',('company_id', '=', False),('company_id', '=', company_id)]")
     company_id = fields.Many2one('res.company', related='purchase_request_id.company_id', string='Company', store=True,
                                  readonly=True)
     currency_id = fields.Many2one(related='purchase_request_id.currency_id', store=True, string='Currency',
