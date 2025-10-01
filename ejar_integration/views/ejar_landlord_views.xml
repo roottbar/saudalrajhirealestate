@@ -16,9 +16,9 @@
                 <field name="verification_status"/>
                 <field name="ejar_synced"/>
                 <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
-                        icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                        icon="fa-refresh" invisible="('ejar_synced', '=', True)"/>
                 <button name="action_verify" type="object" string="Verify" 
-                        icon="fa-check" attrs="{'invisible': [('verification_status', '=', 'verified')]}"/>
+                        icon="fa-check" invisible="('verification_status', '=', 'verified')"/>
             </list>
         </field>
     </record>
@@ -31,11 +31,11 @@
             <form string="Ejar Landlord">
                 <header>
                     <button name="action_verify" type="object" string="Verify" 
-                            class="btn-primary" attrs="{'invisible': [('verification_status', '=', 'verified')]}"/>
+                            class="btn-primary" invisible="('verification_status', '=', 'verified')"/>
                     <button name="action_reject" type="object" string="Reject" 
-                            class="btn-danger" attrs="{'invisible': [('verification_status', 'in', ['rejected', 'verified'])]}"/>
+                            class="btn-danger" invisible="('verification_status', 'in', ['rejected', 'verified'"/>
                     <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
-                            class="btn-info" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                            class="btn-info" invisible="('ejar_synced', '=', True)"/>
                     <field name="verification_status" widget="statusbar" statusbar_visible="not_verified,pending,verified,rejected"/>
                 </header>
                 <sheet>
@@ -50,7 +50,7 @@
                             <field name="payment_count" widget="statbutton" string="Payments"/>
                         </button>
                         <button name="action_view_ejar_profile" type="object" class="oe_stat_button" 
-                                icon="fa-external-link" attrs="{'invisible': [('ejar_synced', '=', False)]}">
+                                icon="fa-external-link" invisible="('ejar_synced', '=', False)">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">View in</span>
                                 <span class="o_stat_text">Ejar</span>
@@ -65,7 +65,7 @@
                             <field name="name" placeholder="Landlord Name"/>
                         </h1>
                         <div class="o_row">
-                            <field name="ejar_landlord_id" readonly="1" attrs="{'invisible': [('ejar_landlord_id', '=', False)]}"/>
+                            <field name="ejar_landlord_id" readonly="1" invisible="('ejar_landlord_id', '=', False)"/>
                         </div>
                     </div>
 
@@ -204,7 +204,7 @@
                                     <field name="ejar_synced" readonly="1"/>
                                     <field name="ejar_sync_date" readonly="1"/>
                                     <field name="auto_sync"/>
-                                    <field name="last_sync_error" readonly="1" attrs="{'invisible': [('last_sync_error', '=', False)]}"/>
+                                    <field name="last_sync_error" readonly="1" invisible="('last_sync_error', '=', False)"/>
                                 </group>
                                 <group name="ejar_info" string="Ejar Information">
                                     <field name="ejar_landlord_id" readonly="1"/>

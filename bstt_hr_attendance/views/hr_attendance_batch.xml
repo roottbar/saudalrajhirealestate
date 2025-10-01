@@ -37,10 +37,10 @@
         <field name="arch" type="xml">
             <form string="Attendances Batches">
                 <header>
-                    <button name="action_send" type="object" string="Send" states="draft" class="oe_highlight"/>
-                    <button name="action_validate" type="object" string="Validate" states="verify"
+                    <button name="action_send" type="object" string="Send"  class="oe_highlight"/>
+                    <button name="action_validate" type="object" string="Validate" 
                             class="oe_highlight"/>
-                    <!--                    <button string="Set to Draft" name="action_draft" type="object" states="verify,close"/>-->
+                    <!--                    <button string="Set to Draft" name="action_draft" type="object" />-->
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -51,7 +51,7 @@
                                 class="oe_stat_button"
                                 icon="fa-list"
                                 string="Attendees"
-                                states="close">
+                                >
                         </button>
                     </div>
 
@@ -65,7 +65,7 @@
                             <label for="check_in" string="Check In"/>
                             <div class="o_row">
                                 <field name="check_in" class="oe_inline"/>
-                                <field name="check_in_to" class="oe_inline"  attrs="{'invisible': [('is_hr_manager', '=', False)]}"/>
+                                <field name="check_in_to" class="oe_inline"  invisible="('is_hr_manager', '=', False)"/>
                             </div>
                             <label for="worked_hours" string="Worked Hours" invisible="1"/>
                             <div class="o_row">
@@ -74,7 +74,7 @@
                         </group>
                         <group>
                             <field name="date_range" />
-                            <field name="department_id" attrs="{'required': [('is_hr_manager', '=', False)]}"/>
+                            <field name="department_id" required="('is_hr_manager', '=', False)"/>
                             <field name="dept_check"/>
                             <field name="category_ids" widget="many2many_tags"/>
                         </group>

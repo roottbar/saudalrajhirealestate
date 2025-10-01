@@ -11,13 +11,13 @@
                             <field name="journal_id" invisible="1"/>
                             <field name="multiple_invoice_type"/>
                             <field name="text_position"  widget="selection"
-                                   attrs="{'invisible': [('multiple_invoice_type', '!=', 'text')]}"/>
+                                   invisible="('multiple_invoice_type', '!=', 'text')"/>
                             <field name="body_text_position"  widget="radio"
-                                   attrs="{'invisible': ['|', ('multiple_invoice_type', '!=', 'text'),
-                                                                ('text_position', '!=', 'body')]}"/>
+                                   invisible="'|', ('multiple_invoice_type', '!=', 'text'),
+                                                                ('text_position', '!=', 'body')"/>
                             <field name="text_align"  widget="radio" string="Text Align"
-                                   attrs="{'invisible': ['|', ('multiple_invoice_type', '!=', 'text'),
-                                                                ('text_position', 'not in', ['header', 'footer'])]}"/>
+                                   invisible="'|', ('multiple_invoice_type', '!=', 'text'),
+                                                                ('text_position', 'not in', ['header', 'footer'"/>
                         </group>
                         <div>
                             <field name="preview" widget="iframe_wrapper" />

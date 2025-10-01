@@ -23,7 +23,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="short_code" placeholder="Enter Short Code For Team Name" attrs="{'readonly': [('short_code','=','DefaultPO')]}"/>
+                            <field name="short_code" placeholder="Enter Short Code For Team Name" readonly="('short_code','=','DefaultPO')"/>
                             <field name="team_lead_id" options="{'no_create_edit': True, 'no_create': True}"/>
                         </group>
                         <group/>

@@ -10,22 +10,22 @@
                 name="action_post"
                 type="object"
                 icon="fa-check"
-                states="draft" />
+                 />
         <button string="Register Payment"
                 name="action_register_payment"
                 type="object"
                 icon="fa-thumbs-up"
-                attrs="{'invisible':['|',('payment_state','not in',['not_paid','partial']),('state','!=','posted')]}"/>
+                invisible="'|',('payment_state','not in',['not_paid','partial'"/>
         <button string="Reset to Draft"
                 name="button_draft"
                 type="object"
                 icon="fa-times"
-                states="posted"/>
+                />
         <button string="Cancel"
                 name="button_cancel"
                 type="object"
                 icon="fa-times"
-                states="draft" />
+                 />
       </field>
     </field>
   </record>
@@ -40,22 +40,22 @@
                 name="action_post"
                 type="object"
                 icon="fa-check"
-                states="draft" />
+                 />
         <button string="Register Payment"
                 name="action_register_payment"
                 type="object"
                 icon="fa-thumbs-up"
-                attrs="{'invisible':['|',('payment_state','not in',['not_paid','partial']),('state','!=','posted')]}"/>
+                invisible="'|',('payment_state','not in',['not_paid','partial'"/>
         <button string="Reset to Draft"
                 name="button_draft"
                 type="object"
                 icon="fa-times"
-                states="posted"/>
+                />
         <button string="Cancel"
                 name="button_cancel"
                 type="object"
                 icon="fa-times"
-                states="draft" />
+                 />
       </field>
     </field>
   </record>

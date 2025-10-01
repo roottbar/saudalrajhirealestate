@@ -33,9 +33,9 @@
                                     <div class="row">
                                         <label for="hrm_id" string="Human Resource Manager"
                                                class="o_light_label col-lg-4 ml18"
-                                               attrs="{'invisible':[('hrm_notification','=',False)]}"/>
+                                               invisible="('hrm_notification','=',False)"/>
                                         <field name="hrm_id"
-                                               attrs="{'invisible':[('hrm_notification','=',False)],'required':[('hrm_notification','=',True)]}"
+                                               required="('hrm_notification','=',True)" invisible="('hrm_notification','=',False)"
                                                options="{'no_open':True}"/>
                                     </div>
                                 </div>

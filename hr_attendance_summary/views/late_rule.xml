@@ -32,7 +32,7 @@
                                     <field name="late_minutes_deduction"/>
                                     <field name="send_warning_email"/>
                                     <field name="mail_template_id" context="{'default_model':'late.rule'}"
-                                           attrs="{'readonly': [('send_warning_email','=',False)],'required': [('send_warning_email','=',True)]}"/>
+                                           required="('send_warning_email','=',True)" readonly="('send_warning_email','=',False)"/>
                                 </list>
                             </field>
                         </page>

@@ -77,76 +77,76 @@
                         <group name="info">
                             <field
                                 name="origin"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="requested_by"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="assigned_to"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="description"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="date_start"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="company_id"
                                 groups="base.group_multi_company"
                                 widget="selection"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
-                            <field name="is_editable" attrs="{'invisible': True}" />
+                            <field name="is_editable"  />
                         </group>
                         <group name="settings">
                             <field
                                 name="product_id"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="name"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <label for="product_qty" />
                             <div>
                                 <field
                                     name="product_qty"
                                     class="oe_inline"
-                                    attrs="{'readonly': [('is_editable','=', False)]}"
+                                    readonly="('is_editable','=', False)"
                                 />
                                 <field name="product_uom_category_id" invisible="1" />
                                 <field
                                     name="product_uom_id"
                                     groups="uom.group_uom"
                                     class="oe_inline"
-                                    attrs="{'readonly': [('is_editable','=', False)]}"
+                                    readonly="('is_editable','=', False)"
                                 />
                             </div>
                             <field
                                 name="analytic_account_id"
                                 groups="analytic.group_analytic_accounting"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="analytic_tag_ids"
                                 groups="analytic.group_analytic_accounting"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="date_required"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                             <field
                                 name="estimated_cost"
                                 widget="monetary"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
-                            <field name="currency_id" attrs="{'invisible': True}" />
+                            <field name="currency_id"  />
                             <field name="cancelled" />
                         </group>
                     </group>
@@ -156,7 +156,7 @@
                         <field
                             name="specifications"
                             nolabel="1"
-                            attrs="{'readonly': [('is_editable','=', False)]}"
+                            readonly="('is_editable','=', False)"
                         />
                     </group>
                     <group name="quantities" string="Tracking">
@@ -176,7 +176,7 @@
                             <field
                                 name="purchase_lines"
                                 mode="tree"
-                                attrs="{'readonly': [('purchase_state', 'in', ('cancel'))]}"
+                                readonly="('purchase_state', 'in', ('cancel'))"
                                 domain="[('product_id', '=', product_id)]"
                                 context="{'form_view_ref' : 'plustech_purchase_request.purchase_order_line_form2_sub',
                                              'tree_view_ref' : 'plustech_purchase_request.purchase_order_line_tree_sub',
@@ -243,7 +243,7 @@
                     help="At least a PO has been completed"
                 />
                 <field name="analytic_account_id" />
-                <field name="cancelled" attrs="{'invisible': True}" />
+                <field name="cancelled"  />
                 <filter
                     name="request_state_draft"
                     string="Draft"
@@ -397,64 +397,64 @@
             <form
                 string="Purchase Order Lines"
                 create="false"
-                attrs="{'readonly': True}"
+                
             >
                 <sheet>
                     <label
                         for="order_id"
-                        attrs="{'readonly': True}"
+                        
                         class="oe_edit_only"
                     />
                     <h1>
                         <field
                             name="order_id"
-                            attrs="{'readonly': True}"
+                            
                             class="oe_inline"
                         />
                         <label
                             for="date_order"
                             string=","
-                            attrs="{'readonly': True, 'invisible':[('date_order','=',False)]}"
+                            invisible="('date_order','=',False)"
                         />
                         <field
                             name="date_order"
-                            attrs="{'readonly': True}"
+                            
                             class="oe_inline"
                         />
                     </h1>
                     <label
                         for="partner_id"
-                        attrs="{'readonly': True}"
+                        
                         class="oe_edit_only"
                     />
                     <h2>
-                        <field name="partner_id" attrs="{'readonly': True}" />
+                        <field name="partner_id"  />
                     </h2>
                     <group>
                         <group>
-                            <field name="product_id" attrs="{'readonly': True}" />
-                            <label for="product_qty" attrs="{'readonly': True}" />
+                            <field name="product_id"  />
+                            <label for="product_qty"  />
                             <div>
                                 <field
                                     name="product_qty"
-                                    attrs="{'readonly': True}"
+                                    
                                     class="oe_inline"
                                 />
                                 <field
                                     name="product_uom"
-                                    attrs="{'readonly': True}"
+                                    
                                     groups="uom.group_uom"
                                     class="oe_inline"
                                 />
                                 <field
                                     name="product_uom_category_id"
-                                    attrs="{'invisible': True}"
+                                    
                                 />
                             </div>
                             <field
                                 name="price_unit"
                                 widget="monetary"
-                                attrs="{'readonly': True}"
+                                
                             />
                         </group>
                         <group>
@@ -462,34 +462,34 @@
                                 name="taxes_id"
                                 widget="many2many_tags"
                                 domain="[('type_tax_use', '=', 'purchase')]"
-                                attrs="{'readonly': True}"
+                                
                             />
                             <field
                                 name="date_planned"
                                 widget="date"
-                                attrs="{'readonly': True}"
+                                
                             />
                             <field
                                 name="company_id"
-                                attrs="{'readonly': True}"
+                                
                                 groups="base.group_multi_company"
                                 options="{'no_create': True}"
                             />
                             <field
                                 name="account_analytic_id"
-                                attrs="{'readonly': True}"
+                                
                                 colspan="4"
                                 groups="analytic.group_analytic_accounting"
                             />
                         </group>
                     </group>
-                    <field name="name" attrs="{'readonly': True}" />
+                    <field name="name"  />
                     <separator string="Manual Invoices" />
-                    <field name="invoice_lines" attrs="{'readonly': True}" />
+                    <field name="invoice_lines"  />
                     <separator string="Stock Moves" />
-                    <field name="move_ids" attrs="{'readonly': True}" />
+                    <field name="move_ids"  />
                     <separator string="Purchase Request Lines" />
-                    <field name="plustech_purchase_request_lines" attrs="{'readonly': True}" />
+                    <field name="plustech_purchase_request_lines"  />
                 </sheet>
             </form>
         </field>
@@ -508,7 +508,7 @@
                 <field name="product_uom" groups="uom.group_uom" />
                 <field name="price_subtotal" widget="monetary" />
                 <field name="date_planned" widget="date" />
-                <field name="plustech_purchase_request_lines" attrs="{'invisible': True}" />
+                <field name="plustech_purchase_request_lines"  />
             </list>
         </field>
     </record>
@@ -555,50 +555,50 @@
             <sheet>
                 <group name="main">
                     <group>
-                        <field name="is_editable" attrs="{'invisible': True}" />
+                        <field name="is_editable"  />
                         <field
                                 name="product_id"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                         <field
                                 name="name"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                         <label for="product_qty" />
                         <div class="o_row">
                             <field
                                     name="product_qty"
                                     class="oe_inline"
-                                    attrs="{'readonly': [('is_editable','=', False)]}"
+                                    readonly="('is_editable','=', False)"
                                 />
                             <field name="product_uom_category_id" invisible="1" />
                             <field
                                     name="product_uom_id"
                                     groups="uom.group_uom"
                                     class="oe_inline"
-                                    attrs="{'readonly': [('is_editable','=', False)]}"
+                                    readonly="('is_editable','=', False)"
                                 />
                         </div>
                         <field
                                 name="analytic_account_id"
                                 groups="analytic.group_analytic_accounting"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                         <field
                                 name="analytic_tag_ids"
                                 groups="analytic.group_analytic_accounting"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                         <field
                                 name="date_required"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
                         <field
                                 name="estimated_cost"
                                 widget="monetary"
-                                attrs="{'readonly': [('is_editable','=', False)]}"
+                                readonly="('is_editable','=', False)"
                             />
-                        <field name="currency_id" attrs="{'invisible': True}" />
+                        <field name="currency_id"  />
                         <field name="cancelled" widget="boolean" />
                     </group>
                 </group>
@@ -608,7 +608,7 @@
                     <field
                             name="specifications"
                             nolabel="1"
-                            attrs="{'readonly': [('is_editable','=', False)]}"
+                            readonly="('is_editable','=', False)"
                         />
                 </group>
                 <group name="quantities" string="Tracking">

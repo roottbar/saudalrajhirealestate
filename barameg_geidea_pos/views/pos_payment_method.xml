@@ -18,12 +18,12 @@
                                     <field
                                             name="GeideaPort"
                                             string="Geidea Port"
-                                            attrs="{'invisible':[('EnableGeidea','=',False)], 'required':[('EnableGeidea','!=',False)]}"/>
+                                            required="('EnableGeidea','!=',False)" invisible="('EnableGeidea','=',False)"/>
                                     <field
                                             name="GeideaTerminal"
                                             string="Geidea Terminal"
                                             context="{'form_view_ref':'barameg_geidea_pos_geidea_terminals_form','tree_view_ref':'barameg_geidea_pos_geidea_terminals_list'}"
-                                            attrs="{'invisible':[('EnableGeidea','=',False)], 'required':[('EnableGeidea','!=',False)]}"/>
+                                            required="('EnableGeidea','!=',False)" invisible="('EnableGeidea','=',False)"/>
                                 </group>
                             </group>
                         </page>

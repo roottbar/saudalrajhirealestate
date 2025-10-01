@@ -16,7 +16,7 @@
                 <field name="retry_count"/>
                 <field name="duration"/>
                 <button name="action_retry" type="object" string="Retry" 
-                        icon="fa-refresh" attrs="{'invisible': [('status', '!=', 'failed')]}"/>
+                        icon="fa-refresh" invisible="('status', '!=', 'failed')"/>
                 <button name="action_view_details" type="object" string="Details" 
                         icon="fa-info-circle"/>
             </list>
@@ -31,9 +31,9 @@
             <form string="Ejar Sync Log" create="false" edit="false">
                 <header>
                     <button name="action_retry" type="object" string="Retry Sync" 
-                            class="btn-primary" attrs="{'invisible': [('status', '!=', 'failed')]}"/>
+                            class="btn-primary" invisible="('status', '!=', 'failed')"/>
                     <button name="action_mark_resolved" type="object" string="Mark as Resolved" 
-                            class="btn-success" attrs="{'invisible': [('status', '!=', 'failed')]}"/>
+                            class="btn-success" invisible="('status', '!=', 'failed')"/>
                     <field name="status" widget="statusbar" statusbar_visible="pending,in_progress,success,failed"/>
                 </header>
                 <sheet>
@@ -59,7 +59,7 @@
                             <field name="duration" readonly="1"/>
                             <field name="retry_count" readonly="1"/>
                             <field name="max_retries" readonly="1"/>
-                            <field name="next_retry_date" readonly="1" attrs="{'invisible': [('status', '!=', 'failed')]}"/>
+                            <field name="next_retry_date" readonly="1" invisible="('status', '!=', 'failed')"/>
                         </group>
                     </group>
 
@@ -76,7 +76,7 @@
                             </group>
                         </page>
                         
-                        <page string="Error Details" name="error_details" attrs="{'invisible': [('error_message', '=', False)]}">
+                        <page string="Error Details" name="error_details" invisible="('error_message', '=', False)">
                             <group>
                                 <field name="error_message" readonly="1"/>
                                 <field name="error_code" readonly="1"/>

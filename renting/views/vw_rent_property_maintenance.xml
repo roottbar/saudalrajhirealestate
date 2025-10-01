@@ -23,13 +23,13 @@
                     <header>
                         <field name="state" widget="statusbar" clickable="True"/>
                         <button string="بدأ الصيانة" type="object" name="set_start"
-                                attrs="{'invisible': [('state', 'in', ['done','start','draft','invoice'])]}"/>
+                                invisible="('state', 'in', ['done','start','draft','invoice'"/>
                         <button string="تأكيد الطلب" type="object" name="set_confirm"
-                                attrs="{'invisible': [('state', 'in', ['done','start','invoice','confirm'])]}"/>
+                                invisible="('state', 'in', ['done','start','invoice','confirm'"/>
                         <button string="الفوترة" type="object" name="set_invoice"
-                                attrs="{'invisible': [('state', 'in', ['done','start','draft','invoice'])]}"/>
+                                invisible="('state', 'in', ['done','start','draft','invoice'"/>
                         <button string="انتهاء الصيانة" type="object" name="set_finish"
-                                attrs="{'invisible': [('state', 'not in', ['start'])]}"/>
+                                invisible="('state', 'not in', ['start'"/>
 
                     </header>
                     <sheet>

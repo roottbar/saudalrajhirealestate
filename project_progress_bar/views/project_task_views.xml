@@ -12,7 +12,7 @@
                 <field name="stage_is_progress" invisible="1"/>
                 <field name="progress_bar"
                        class="d-flex align-items-center ps-0 ps-lg-5"
-                       widget="progressbar" attrs="{'invisible': [('stage_is_progress', '=', False)]}"/>
+                       widget="progressbar" invisible="('stage_is_progress', '=', False)"/>
             </xpath>
         </field>
     </record>
@@ -26,7 +26,7 @@
             <xpath expr="//field[@name='user_ids']" position='after'>
                 <field name="stage_is_progress" invisible="1"/>
                 <field name="progress_bar" widget="progressbar"
-                       attrs="{'invisible': [('stage_is_progress', '=', False)]}"/>
+                       invisible="('stage_is_progress', '=', False)"/>
             </xpath>
         </field>
     </record>
@@ -40,7 +40,7 @@
             <xpath expr="//field[@name='tag_ids']" position='after'>
                 <field name="stage_is_progress" invisible="1"/>
                 <field name="progress_bar" widget="progressbar"
-                       attrs="{'invisible': [('stage_is_progress', '=', False)]}"/>
+                       invisible="('stage_is_progress', '=', False)"/>
             </xpath>
         </field>
     </record>

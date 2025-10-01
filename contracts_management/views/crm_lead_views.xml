@@ -8,11 +8,11 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="generate_tender_lead" type="object" string="Generate Lead" class="oe_highlight"
-                            attrs="{'invisible':[('tender_lead_id','!=',False)]}"/>
+                            invisible="('tender_lead_id','!=',False)"/>
                 </xpath>
                 <xpath expr="//div[@name='button_box']" position="inside">
                     <button class="oe_stat_button" type="object" name="get_tender_lead" icon="fa-star" string="Lead"
-                            attrs="{'invisible':[('tender_lead_id','=',False)]}"/>
+                            invisible="('tender_lead_id','=',False)"/>
                 </xpath>
                 <xpath expr="//field[@name='user_id']" position="before">
                     <field name="tender_lead_id" options="{'no_open':True,'no_create':True}"/>

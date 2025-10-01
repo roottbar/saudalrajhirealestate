@@ -30,17 +30,17 @@
             <field name="arch" type="xml">
                 <form string="تصفية نهاية الخدمة">
                     <header>
-                        <button name="action_confirm" string="تأكيد" type="object" states="draft" class="oe_highlight"/>
-                        <button name="action_approve" string="اعتماد" type="object" states="confirmed" class="oe_highlight" groups="hr.group_hr_manager"/>
-                        <button name="action_set_to_paid" string="تعيين كمدفوع" type="object" states="approved" class="oe_highlight" groups="hr.group_hr_manager"/>
-                        <button name="action_cancel" string="إلغاء" type="object" states="draft,confirmed" confirm="هل أنت متأكد من إلغاء هذه التصفية؟"/>
-                        <button name="action_reset_to_draft" string="إعادة تعيين كمسودة" type="object" states="cancelled"/>
-                        <button name="action_print_settlement" string="طباعة" type="object" states="confirmed,approved,paid" class="oe_highlight"/>
+                        <button name="action_confirm" string="تأكيد" type="object"  class="oe_highlight"/>
+                        <button name="action_approve" string="اعتماد" type="object"  class="oe_highlight" groups="hr.group_hr_manager"/>
+                        <button name="action_set_to_paid" string="تعيين كمدفوع" type="object"  class="oe_highlight" groups="hr.group_hr_manager"/>
+                        <button name="action_cancel" string="إلغاء" type="object"  confirm="هل أنت متأكد من إلغاء هذه التصفية؟"/>
+                        <button name="action_reset_to_draft" string="إعادة تعيين كمسودة" type="object" />
+                        <button name="action_print_settlement" string="طباعة" type="object"  class="oe_highlight"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,approved,paid"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="action_view_payslips" type="object" class="oe_stat_button" icon="fa-money" attrs="{'invisible': [('payslip_count', '=', 0)]}">
+                            <button name="action_view_payslips" type="object" class="oe_stat_button" icon="fa-money" invisible="('payslip_count', '=', 0)">
                                 <field name="payslip_count" widget="statinfo" string="قسائم الراتب"/>
                             </button>
                         </div>

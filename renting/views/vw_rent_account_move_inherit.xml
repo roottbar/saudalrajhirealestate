@@ -10,9 +10,9 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="rent_sale_line_id" invisible="0" />
                     <field name="property_name"
-                           attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"/>
+                           invisible="('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))"/>
                     <field name="unit_number"
-                           attrs="{'invisible': [('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"/>
+                           invisible="('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))"/>
                 </xpath>
               <!--   <xpath expr="// field [@ name = 'invoice_line_ids']"
                        position="before">

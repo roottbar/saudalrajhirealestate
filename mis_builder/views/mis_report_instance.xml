@@ -72,14 +72,14 @@
                             name="%(mis_report_instance_add_to_dashboard_action)d"
                             string="Add to dashboard"
                             icon="fa-plus"
-                            attrs="{'invisible': [('temporary', '=', True)]}"
+                            invisible="('temporary', '=', True)"
                         />
                         <button
                             type="object"
                             name="save_report"
                             string="Save"
                             icon="fa-save"
-                            attrs="{'invisible': [('temporary', '=', False)]}"
+                            invisible="('temporary', '=', False)"
                         />
                     </div>
                     <div class="oe_title">
@@ -103,17 +103,17 @@
                         <group>
                             <group
                                 name="simple_mode"
-                                attrs="{'invisible': [('comparison_mode', '=', True)]}"
+                                invisible="('comparison_mode', '=', True)"
                                 colspan="4"
                             >
                                 <field name="date_range_id" />
                                 <field
                                     name="date_from"
-                                    attrs="{'required': [('comparison_mode', '=', False)]}"
+                                    required="('comparison_mode', '=', False)"
                                 />
                                 <field
                                     name="date_to"
-                                    attrs="{'required': [('comparison_mode', '=', False)]}"
+                                    required="('comparison_mode', '=', False)"
                                 />
                             </group>
                         </group>
@@ -121,7 +121,7 @@
                     <notebook>
                         <page
                             string="Columns"
-                            attrs="{'invisible': [('comparison_mode', '=', False)]}"
+                            invisible="('comparison_mode', '=', False)"
                         >
                             <group>
                                 <group>
@@ -134,7 +134,7 @@
                                     name="period_ids"
                                     nolabel="1"
                                     colspan="4"
-                                    attrs="{'required': [('comparison_mode', '=', True)]}"
+                                    required="('comparison_mode', '=', True)"
                                     context="{'default_report_instance_id': id}"
                                 >
                                     <list decoration-danger="not valid">
@@ -158,13 +158,13 @@
                                 <field
                                     name="company_id"
                                     groups="base.group_multi_company"
-                                    attrs="{'required': [('multi_company', '=', False)], 'invisible': [('multi_company', '=', True)]}"
+                                    required="('multi_company', '=', False)" invisible="('multi_company', '=', True)"
                                 />
                                 <field
                                     name="company_ids"
                                     groups="base.group_multi_company"
                                     widget="many2many_tags"
-                                    attrs="{'invisible': [('multi_company', '=', False)]}"
+                                    invisible="('multi_company', '=', False)"
                                 />
                                 <field
                                     name="query_company_ids"
@@ -299,7 +299,7 @@
                     <field
                         name="report_instance_id"
                         invisible="1"
-                        attrs="{'required': [('id', '!=', False)]}"
+                        required="('id', '!=', False)"
                     />
                     <field name="report_id" invisible="1" />
                     <field name="id" invisible="1" />
@@ -311,12 +311,12 @@
                     <group col="2" colspan="2" name="source_data">
                         <field
                             name="source_aml_model_id"
-                            attrs="{'invisible': [('source', '!=', 'actuals_alt')], 'required': [('source', '==', 'actuals_alt')]}"
+                            required="('source', '==', 'actuals_alt')" invisible="('source', '!=', 'actuals_alt')"
                         />
                         <field name="source_aml_model_name" invisible="1" />
                         <field
                             name="source_sumcol_ids"
-                            attrs="{'invisible': [('source', '!=', 'sumcol')]}"
+                            invisible="('source', '!=', 'sumcol')"
                             nolabel="1"
                             colspan="2"
                         >
@@ -331,18 +331,18 @@
                         </field>
                         <field
                             name="source_sumcol_accdet"
-                            attrs="{'invisible': [('source', '!=', 'sumcol')]}"
+                            invisible="('source', '!=', 'sumcol')"
                         />
                         <field name="allowed_cmpcol_ids" invisible="1" />
                         <field
                             name="source_cmpcol_to_id"
-                            attrs="{'invisible': [('source', '!=', 'cmpcol')], 'required': [('source', '=', 'cmpcol')]}"
+                            required="('source', '=', 'cmpcol')" invisible="('source', '!=', 'cmpcol')"
                             domain="[('id', 'in', allowed_cmpcol_ids)]"
                             options="{'no_create': True, 'no_open': True}"
                         />
                         <field
                             name="source_cmpcol_from_id"
-                            attrs="{'invisible': [('source', '!=', 'cmpcol')], 'required': [('source', '=', 'cmpcol')]}"
+                            required="('source', '=', 'cmpcol')" invisible="('source', '!=', 'cmpcol')"
                             domain="[('id', 'in', allowed_cmpcol_ids)]"
                             options="{'no_create': True, 'no_open': True}"
                         />
@@ -354,18 +354,18 @@
                     </group>
                     <group
                         name="relative"
-                        attrs="{'invisible': [('mode', '!=', 'relative')]}"
+                        invisible="('mode', '!=', 'relative')"
                         colspan="4"
                     >
                         <group>
                             <field
                                 name="type"
-                                attrs="{'required': [('mode', '=', 'relative')]}"
+                                required="('mode', '=', 'relative')"
                             />
                             <field name="is_ytd" />
                             <field
                                 name="date_range_type_id"
-                                attrs="{'invisible': [('type', '!=', 'date_range')], 'required': [('type', '=', 'date_range'), ('mode', '=', 'relative')]}"
+                                required="('type', '=', 'date_range'), ('mode', '=', 'relative')" invisible="('type', '!=', 'date_range')"
                             />
                             <field name="offset" />
                             <field name="duration" />
@@ -377,7 +377,7 @@
                     </group>
                     <group
                         name="fix"
-                        attrs="{'invisible': [('mode', '!=', 'fix')]}"
+                        invisible="('mode', '!=', 'fix')"
                         colspan="4"
                     >
                         <group>
@@ -386,11 +386,11 @@
                         <group>
                             <field
                                 name="manual_date_from"
-                                attrs="{'required': [('mode', '=', 'fix')]}"
+                                required="('mode', '=', 'fix')"
                             />
                             <field
                                 name="manual_date_to"
-                                attrs="{'required': [('mode', '=', 'fix')]}"
+                                required="('mode', '=', 'fix')"
                             />
                         </group>
                     </group>

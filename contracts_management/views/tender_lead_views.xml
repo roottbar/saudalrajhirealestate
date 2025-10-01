@@ -42,16 +42,16 @@
                     <header>
                         <field name="tender_quotations_count" invisible="1"/>
                         <button name="generate_crm_lead" type="object" string="Generate Lead" class="oe_highlight"
-                                attrs="{'invisible':[('crm_lead_id','!=',False)]}"/>
+                                invisible="('crm_lead_id','!=',False)"/>
                         <button name="action_create_quotation" type="object"
-                                attrs="{'invisible':[('tender_quotations_count','!=',0)]}" string="Create Quotation"/>
+                                invisible="('tender_quotations_count','!=',0)" string="Create Quotation"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" type="object" name="get_crm_lead" icon="fa-star"
-                                    string="Lead" attrs="{'invisible':[('crm_lead_id','=',False)]}"/>
+                                    string="Lead" invisible="('crm_lead_id','=',False)"/>
                             <button class="oe_stat_button" type="object" name="get_tender_quotation" icon="fa-book"
-                                    string="Quotation" attrs="{'invisible':[('tender_quotations_count','=',0)]}"/>
+                                    string="Quotation" invisible="('tender_quotations_count','=',0)"/>
                         </div>
                         <div class="oe_title pr-0">
                             <h1 class="d-flex flex-row justify-content-between">
@@ -124,9 +124,9 @@
                                         </control>
                                         <field name="sequence" widget="handle"/>
                                         <field name="service_type_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="service_product_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="name" widget="section_and_note_text" string="Description"
                                                optional="show"/>
                                         <field name="code"/>
@@ -161,9 +161,9 @@
                                         </control>
                                         <field name="sequence" widget="handle"/>
                                         <field name="service_type_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="service_product_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="name" widget="section_and_note_text" optional="show"/>
                                         <field name="visit_duration" widget="float_time"/>
                                         <field name="total_visits_monthly"/>

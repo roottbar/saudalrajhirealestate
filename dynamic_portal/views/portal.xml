@@ -61,8 +61,8 @@
                                         <field name="attrs_readonly"/>
                                         <field name="attrs_invisible"/>
                                         <field name="domain"
-                                               attrs="{'readonly':[('ttype','not in',('many2one','many2many'))]}"/>
-                                        <button type="object" attrs="{'invisible':[('ttype','!=','one2many')]}"
+                                               readonly="('ttype','not in',('many2one','many2many'))"/>
+                                        <button type="object" invisible="('ttype','!=','one2many')"
                                                 icon="fa-list" name="form_view"/>
                                     </list>
                                 </field>
@@ -74,9 +74,9 @@
                                             <field name="type"/>
                                             <field name="name"/>
                                             <field name="action"
-                                                   attrs="{'readonly':[('type','!=','object')],'required':[('type','=','object')]}"/>
+                                                   required="('type','=','object')" readonly="('type','!=','object')"/>
                                             <field name="report_id"
-                                                   attrs="{'readonly':[('type','!=','report')],'required':[('type','=','report')]}"/>
+                                                   required="('type','=','report')" readonly="('type','!=','report')"/>
                                             <field name="attrs_invisible"/>
                                             <field name="type" invisible="1"/>
                                         </list>
@@ -173,7 +173,7 @@
                     <field name="required"/>
                     <field name="readonly"/>
                     <field name="domain"
-                           attrs="{'readonly':[('ttype','not in',('many2one','many2many'))]}"/>
+                           readonly="('ttype','not in',('many2one','many2many'))"/>
                 </list>
 
             </field>

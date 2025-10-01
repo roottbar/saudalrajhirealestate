@@ -14,7 +14,7 @@
                     />
                 </group>
                 <div
-                    attrs="{'invisible': [('not_only_one_unaffected_earnings_account', '=', True)]}"
+                    invisible="('not_only_one_unaffected_earnings_account', '=', True)"
                 >
                     <group name="filters">
                         <group name="date_range">
@@ -112,7 +112,7 @@
                     </notebook>
                 </div>
                 <div
-                    attrs="{'invisible': [('not_only_one_unaffected_earnings_account', '=', False)]}"
+                    invisible="('not_only_one_unaffected_earnings_account', '=', False)"
                 >
                     <field
                         name="not_only_one_unaffected_earnings_account"
@@ -127,7 +127,7 @@
                 </div>
                 <footer>
                     <div
-                        attrs="{'invisible': [('not_only_one_unaffected_earnings_account', '=', True)]}"
+                        invisible="('not_only_one_unaffected_earnings_account', '=', True)"
                     >
                         <button
                             name="button_export_html"
@@ -152,7 +152,7 @@
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </div>
                     <div
-                        attrs="{'invisible': [('not_only_one_unaffected_earnings_account', '=', False)]}"
+                        invisible="('not_only_one_unaffected_earnings_account', '=', False)"
                     >
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </div>

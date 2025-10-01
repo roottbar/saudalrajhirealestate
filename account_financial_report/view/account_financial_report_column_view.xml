@@ -11,7 +11,7 @@
                         <field name="name" />
                         <field
                             name="limit"
-                            attrs="{'invisible': [('field_type', '!=', 'string')]}"
+                            invisible="('field_type', '!=', 'string')"
                         />
                         <field name="is_visible" widget="boolean_toggle" />
                     </group>
@@ -37,7 +37,7 @@
                 <field name="field_type" optional="hide" />
                 <field
                     name="limit"
-                    attrs="{'invisible': [('field_type', '!=', 'string')]}"
+                    invisible="('field_type', '!=', 'string')"
                     optional="show"
                 />
             </list>

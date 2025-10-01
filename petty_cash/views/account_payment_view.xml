@@ -49,16 +49,16 @@
                     <header>
                         <field name="available_partner_bank_ids" invisible="1"/>
                         <button name="action_post" string="Confirm" type="object" class="oe_highlight"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                                invisible="('state', '!=', 'draft')"/>
                         <button name="action_draft" string="Reset To Draft" type="object" class="btn btn-secondary"
-                                attrs="{'invisible': [('state', 'not in', ('posted', 'cancel'))]}"
+                                invisible="('state', 'not in', ('posted', 'cancel'))"
                                 groups="account.group_account_invoice"/>
                         <button name="action_cancel" string="Cancel" type="object"
-                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                                invisible="('state', '!=', 'draft')"/>
                         <button name="mark_as_sent" string="Mark as Sent" type="object"
-                                attrs="{'invisible': ['|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', True), ('payment_method_code', '!=', 'manual')]}"/>
+                                invisible="'|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', True), ('payment_method_code', '!=', 'manual')"/>
                         <button name="unmark_as_sent" string="Unmark as Sent" type="object"
-                                attrs="{'invisible': ['|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', False), ('payment_method_code', '!=', 'manual')]}"/>
+                                invisible="'|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', False), ('payment_method_code', '!=', 'manual')"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
                     </header>
                     <sheet>
@@ -78,46 +78,46 @@
                             <!-- Invoice stat button -->
                             <button name="button_open_invoices" type="object"
                                     class="oe_stat_button" icon="fa-bars"
-                                    attrs="{'invisible': [('reconciled_invoices_count','=', 0)]}">
+                                    invisible="('reconciled_invoices_count','=', 0)">
                                 <field name="reconciled_invoices_count"/>
-                                <span attrs="{'invisible': [('reconciled_invoices_count','&gt;', 1)]}">Invoice</span>
-                                <span attrs="{'invisible': [('reconciled_invoices_count','&lt;=', 1)]}">Invoices</span>
+                                <span invisible="('reconciled_invoices_count','&gt;', 1)">Invoice</span>
+                                <span invisible="('reconciled_invoices_count','&lt;=', 1)">Invoices</span>
                             </button>
 
                             <!-- Bill stat button -->
                             <button name="button_open_bills" type="object"
                                     class="oe_stat_button" icon="fa-bars"
-                                    attrs="{'invisible': [('reconciled_bills_count','=', 0)]}">
+                                    invisible="('reconciled_bills_count','=', 0)">
                                 <field name="reconciled_bills_count"/>
-                                <span attrs="{'invisible': [('reconciled_bills_count','&gt;', 1)]}">Bill</span>
-                                <span attrs="{'invisible': [('reconciled_bills_count','&lt;=', 1)]}">Bills</span>
+                                <span invisible="('reconciled_bills_count','&gt;', 1)">Bill</span>
+                                <span invisible="('reconciled_bills_count','&lt;=', 1)">Bills</span>
                             </button>
 
                             <!-- Statement stat button -->
                             <button name="button_open_statements" type="object"
                                     class="oe_stat_button" icon="fa-bars"
-                                    attrs="{'invisible': [('reconciled_statements_count','=', 0)]}">
+                                    invisible="('reconciled_statements_count','=', 0)">
                                 <field name="reconciled_statements_count"/>
-                                <span attrs="{'invisible': [('reconciled_statements_count','&gt;', 1)]}">Statement
+                                <span invisible="('reconciled_statements_count','&gt;', 1)">Statement
                                 </span>
-                                <span attrs="{'invisible': [('reconciled_statements_count','&lt;=', 1)]}">Statements
+                                <span invisible="('reconciled_statements_count','&lt;=', 1)">Statements
                                 </span>
                             </button>
 
                             <button name="action_open_manual_reconciliation_widget" type="object"
                                     string="Payment Matching" class="oe_stat_button" icon="fa-dollar"
                                     groups="account.group_account_user"
-                                    attrs="{'invisible': ['|', ('is_reconciled', '=', True), ('state', '!=', 'posted')]}"/>
+                                    invisible="'|', ('is_reconciled', '=', True), ('state', '!=', 'posted')"/>
                         </div>
                         <widget name="web_ribbon" text="Invoicing App Legacy"
                                 bg_color="bg-info"
-                                attrs="{'invisible': [('state', '!=', 'invoicing_legacy')]}"
+                                invisible="('state', '!=', 'invoicing_legacy')"
                                 tooltip="This payment has been generated through the Invoicing app, before installing Accounting. It has been disabled by the 'Invoicing Switch Threshold Date' setting so that it does not impact your accounting."
                         />
 
-                        <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <div class="oe_title" invisible="('state', '=', 'draft')">
                             <h1>
-                                <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="name" readonly="('state', '!=', 'draft')"/>
                             </h1>
                         </div>
 
@@ -125,50 +125,50 @@
                             <group>
                                 <field name="payment_type" invisible="1"/>
                                 <field name="partner_type" widget="selection"
-                                       attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('is_internal_transfer', '=', True)]}"/>
+                                       invisible="('is_internal_transfer', '=', True)" readonly="('state', '!=', 'draft')"/>
                                 <field name="partner_id" context="{'default_is_company': True}"
-                                       attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)]}"/>
+                                       readonly="'|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)"/>
                                 <field name="destination_account_id"
                                        options="{'no_create': True}"
-                                       attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)]}"/>
+                                       readonly="'|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)"/>
                                 <field name="is_internal_transfer"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                                 <field name="company_id" groups="base.group_multi_company"/>
                             </group>
                             <group>
                                 <field name="journal_id"
                                        widget="selection"
                                        domain="[('type', 'in', ('bank', 'cash'))]"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                                 <field name="payment_method_id" widget="radio"
                                        required="1"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                                 <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
-                                       attrs="{'invisible': [('show_partner_bank_account', '=', False)], 'required': [('require_partner_bank_account', '=', True)]}"/>
+                                       required="('require_partner_bank_account', '=', True)" invisible="('show_partner_bank_account', '=', False)"/>
                                 <field name="move_id"
                                        required="0"
-                                       attrs="{'invisible': [('id', '=', False)]}"
+                                       invisible="('id', '=', False)"
                                        groups="account.group_account_readonly"/>
                             </group>
                             <group>
                                 <label for="amount"/>
                                 <div name="amount_div" class="o_row">
                                     <field name="amount"
-                                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                           readonly="('state', '!=', 'draft')"/>
                                     <field name="currency_id"
                                            options="{'no_create': True, 'no_open': True}"
                                            required="1"
-                                           attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                           readonly="('state', '!=', 'draft')"
                                            groups="base.group_multi_currency"/>
                                 </div>
                                 <field name="date"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                                 <field name="ref" string="Memo"/>
                             </group>
 
                             <group>
                                 <field name="qr_code" invisible="1"/>
-                                <div attrs="{'invisible': [('qr_code', '=', False)]}" colspan="2" class="text-center">
+                                <div invisible="('qr_code', '=', False)" colspan="2" class="text-center">
                                     <field name="qr_code" widget="html"/>
                                 </div>
                             </group>

@@ -22,7 +22,7 @@
                             <field name="recurring"/>
                             <field name="is_eos_element" readonly="1"/>
 
-                            <field name="annual_amount" attrs="{'invisible': [('is_eos_element', '=', True)]}"/>
+                            <field name="annual_amount" invisible="('is_eos_element', '=', True)"/>
                             <field name="monthly_amount" />
 
                             <field name="debit_account_id"/>

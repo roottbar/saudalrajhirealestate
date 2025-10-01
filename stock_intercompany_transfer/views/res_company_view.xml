@@ -11,13 +11,12 @@
                         <group>
                             <group>
                                 <field name="enable_inter_company_transfer"/>
-                                <field name="apply_transfer_type" widget="radio" attrs="{'invisible': [('enable_inter_company_transfer', '=', False)]}"/>
+                                <field name="apply_transfer_type" widget="radio" invisible="('enable_inter_company_transfer', '=', False)"/>
                                 <fiedl name="id" invisible="1"/>
                                 <field name="destination_warehouse_id" domain="[('company_id', '=', id)]"
-                                       attrs="{'invisible': [('enable_inter_company_transfer', '=', False)],
-                                               'required': [('enable_inter_company_transfer', '=', True)]}"/>
+                                       required="('enable_inter_company_transfer', '=', True)" invisible="('enable_inter_company_transfer', '=', False)"/>
                             </group>
-                            <group attrs="{'invisible': [('enable_inter_company_transfer', '=', False)]}">
+                            <group invisible="('enable_inter_company_transfer', '=', False)">
                               <div class="alert alert-info">
                                 <field name="message"/>
                               </div>

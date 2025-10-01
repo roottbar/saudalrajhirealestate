@@ -13,10 +13,9 @@
                         <group>
                             <group>
                                 <field name="custody_ok"/>
-                                <field name="linked_product_id" attrs="{'invisible': [('custody_ok', '=', False)],
-                                'required': [('custody_ok', '=', True)]}"/>
+                                <field name="linked_product_id" required="('custody_ok', '=', True)" invisible="('custody_ok', '=', False)"/>
                             </group>
-                            <group attrs="{'invisible': [('custody_ok', '=', False)]}">
+                            <group invisible="('custody_ok', '=', False)">
                                 <field name="status" readonly="1"/>
                                 <field name="allocation_date" readonly="1"/>
                                 <field name="owner_id" readonly="1"/>

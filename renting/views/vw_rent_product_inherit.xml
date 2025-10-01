@@ -61,11 +61,11 @@
                 </xpath>
 
                 <xpath expr="//page[@name='rental']" position="after">
-                    <page name="unit_information" string="معلومات الوحدة" attrs="{'invisible':[('rent_ok','==',False)]}">
+                    <page name="unit_information" string="معلومات الوحدة" invisible="('rent_ok','==',False)">
                         <group>
                             <group string="معلومات">
                                 <field name="unit_state"/>
-                                <field name="unit_number" attrs="{'required':[('rent_ok','!=',False)]}"/>
+                                <field name="unit_number" required="('rent_ok','!=',False)"/>
                                 <field name="unit_floor_number"/>
                                 <field name="rent_unit_area"/>
                                 <field name="entry_number"/>
@@ -88,33 +88,33 @@
                             <group string="الاثاث">
                                 <field name="furniture_bedroom"/>
                                 <field name="furniture_bedroom_no"
-                                       attrs="{'invisible': [('furniture_bedroom','==',False)]}"/>
+                                       invisible="('furniture_bedroom','==',False)"/>
                                 <field name="furniture_bathroom"/>
                                 <field name="furniture_bathroom_no"
-                                       attrs="{'invisible': [('furniture_bathroom','==',False)]}"/>
+                                       invisible="('furniture_bathroom','==',False)"/>
                                 <field name="furniture_reception"/>
                                 <field name="furniture_reception_no"
-                                       attrs="{'invisible': [('furniture_reception','==',False)]}"/>
+                                       invisible="('furniture_reception','==',False)"/>
                                 <field name="furniture_kitchen"/>
                                 <field name="furniture_kitchen_installed"
-                                       attrs="{'invisible': [('furniture_kitchen','==',False)]}"/>
+                                       invisible="('furniture_kitchen','==',False)"/>
                                 <field name="furniture_service_room"/>
                                 <field name="furniture_inventory"/>
                                 <field name="furniture_inventory_no"
-                                       attrs="{'invisible': [('furniture_inventory','==',False)]}"/>
+                                       invisible="('furniture_inventory','==',False)"/>
                                 <field name="furniture_setting_room"/>
                                 <field name="furniture_setting_room_no"
-                                       attrs="{'invisible': [('furniture_setting_room','==',False)]}"/>
+                                       invisible="('furniture_setting_room','==',False)"/>
                                 <field name="furniture_central_air_conditioner"/>
                                 <field name="furniture_split_air_conditioner"/>
                                 <field name="furniture_split_air_conditioner_no"
-                                       attrs="{'invisible': [('furniture_split_air_conditioner','==',False)]}"/>
+                                       invisible="('furniture_split_air_conditioner','==',False)"/>
                                 <field name="furniture_evaporator_cooler"/>
                                 <field name="furniture_evaporator_cooler_no"
-                                       attrs="{'invisible': [('furniture_evaporator_cooler','==',False)]}"/>
+                                       invisible="('furniture_evaporator_cooler','==',False)"/>
                                 <field name="furniture_locker_installed"/>
                                 <field name="furniture_locker_installed_no"
-                                       attrs="{'invisible': [('furniture_locker_installed','==',False)]}"/>
+                                       invisible="('furniture_locker_installed','==',False)"/>
                             </group>
                             <group string="تجهيزات الوحدة">
                                 <field name="rent_config_unit_finish_id"/>

@@ -86,17 +86,17 @@
                         <separator string="إجراءات سريعة"/>
                         <div class="row">
                             <div class="col-md-4">
-                                <button name="action_preview_settlements" string="معاينة التصفية" type="object" class="btn-info" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                                <button name="action_preview_settlements" string="معاينة التصفية" type="object" class="btn-info" invisible="('employee_id', '=', False)"/>
                             </div>
                             <div class="col-md-4">
-                                <button name="action_calculate_for_period" string="حساب للفترة" type="object" class="btn-secondary" attrs="{'invisible': [('employee_id', '=', False)]}"/>
+                                <button name="action_calculate_for_period" string="حساب للفترة" type="object" class="btn-secondary" invisible="('employee_id', '=', False)"/>
                             </div>
                             <div class="col-md-4">
                                 <button name="action_bulk_create_annual_settlements" string="تصفية جماعية" type="object" class="btn-warning"/>
                             </div>
                         </div>
                         
-                        <div attrs="{'invisible': [('employee_id', '=', False)]}">
+                        <div invisible="('employee_id', '=', False)">
                             <p class="text-muted">ملاحظة: سيتم حساب أيام الإجازة المتبقية تلقائياً بناءً على الفترة المحددة وأيام الإجازة المستخدمة.</p>
                         </div>
                     </sheet>

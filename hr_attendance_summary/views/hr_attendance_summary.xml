@@ -29,7 +29,7 @@
                         <group>
                             <field name="exception"/>
                             <field name="exception_reason"
-                                   attrs="{'invisible': [('exception','=',False)],'required': [('exception','=',True)]}"/>
+                                   required="('exception','=',True)" invisible="('exception','=',False)"/>
                         </group>
                         <group>
                             <field name="contract_id"/>

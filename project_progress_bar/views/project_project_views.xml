@@ -10,14 +10,14 @@
             <field name="tag_ids" position="after">
                 <field name="is_progress_bar" invisible="1"/>
                 <field name="progressbar" widget="progressbar"
-                       attrs="{'invisible': [('is_progress_bar', '=', False)]}"/>
+                       invisible="('is_progress_bar', '=', False)"/>
             </field>
             <xpath expr="//div[@t-if='record.date.raw_value or record.date_start.raw_value']"
                    position="after">
                 <field name="progressbar"
                        lass="d-flex align-items-center ps-0 ps-lg-5"
                        widget="progressbar"
-                       attrs="{'invisible': [('is_progress_bar', '=', False)]}"/>
+                       invisible="('is_progress_bar', '=', False)"/>
             </xpath>
         </field>
     </record>
@@ -32,7 +32,7 @@
                 <field name="progressbar"
                        class="d-flex align-items-center ps-0 ps-lg-5"
                        widget="progressbar"
-                       attrs="{'invisible': [('is_progress_bar', '=', False)]}"/>
+                       invisible="('is_progress_bar', '=', False)"/>
             </field>
         </field>
     </record>
@@ -47,7 +47,7 @@
                 <field name="progressbar"
                        class="d-flex align-items-center ps-0 ps-lg-5"
                        widget="progressbar"
-                       attrs="{'invisible': [('is_progress_bar', '=', False)]}"/>
+                       invisible="('is_progress_bar', '=', False)"/>
             </field>
         </field>
     </record>

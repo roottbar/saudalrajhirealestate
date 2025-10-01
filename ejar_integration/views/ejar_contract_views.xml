@@ -18,9 +18,9 @@
                 <field name="status"/>
                 <field name="ejar_synced"/>
                 <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
-                        icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                        icon="fa-refresh" invisible="('ejar_synced', '=', True)"/>
                 <button name="action_activate" type="object" string="Activate" 
-                        icon="fa-play" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                        icon="fa-play" invisible="('status', '!=', 'draft')"/>
             </list>
         </field>
     </record>
@@ -33,13 +33,13 @@
             <form string="Ejar Contract">
                 <header>
                     <button name="action_activate" type="object" string="Activate" 
-                            class="btn-primary" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                            class="btn-primary" invisible="('status', '!=', 'draft')"/>
                     <button name="action_terminate" type="object" string="Terminate" 
-                            class="btn-danger" attrs="{'invisible': [('status', 'not in', ['active'])]}"/>
+                            class="btn-danger" invisible="('status', 'not in', ['active'"/>
                     <button name="action_renew" type="object" string="Renew" 
-                            class="btn-success" attrs="{'invisible': [('status', 'not in', ['active', 'expired'])]}"/>
+                            class="btn-success" invisible="('status', 'not in', ['active', 'expired'"/>
                     <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
-                            class="btn-info" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                            class="btn-info" invisible="('ejar_synced', '=', True)"/>
                     <field name="status" widget="statusbar" statusbar_visible="draft,active,expired,terminated"/>
                 </header>
                 <sheet>
@@ -51,7 +51,7 @@
                             <field name="invoice_count" widget="statbutton" string="Invoices"/>
                         </button>
                         <button name="action_view_ejar_contract" type="object" class="oe_stat_button" 
-                                icon="fa-external-link" attrs="{'invisible': [('ejar_synced', '=', False)]}">
+                                icon="fa-external-link" invisible="('ejar_synced', '=', False)">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">View in</span>
                                 <span class="o_stat_text">Ejar</span>
@@ -64,7 +64,7 @@
                             <field name="name" placeholder="Contract Reference"/>
                         </h1>
                         <div class="o_row">
-                            <field name="ejar_contract_id" readonly="1" attrs="{'invisible': [('ejar_contract_id', '=', False)]}"/>
+                            <field name="ejar_contract_id" readonly="1" invisible="('ejar_contract_id', '=', False)"/>
                         </div>
                     </div>
 
@@ -150,7 +150,7 @@
                                     <field name="ejar_synced" readonly="1"/>
                                     <field name="ejar_sync_date" readonly="1"/>
                                     <field name="auto_sync"/>
-                                    <field name="last_sync_error" readonly="1" attrs="{'invisible': [('last_sync_error', '=', False)]}"/>
+                                    <field name="last_sync_error" readonly="1" invisible="('last_sync_error', '=', False)"/>
                                 </group>
                                 <group name="ejar_info" string="Ejar Information">
                                     <field name="ejar_contract_id" readonly="1"/>

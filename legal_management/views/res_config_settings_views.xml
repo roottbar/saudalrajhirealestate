@@ -49,7 +49,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
+                            <div class="col-6 o_setting_box" invisible="('legal_send_user_notify', '=', False)">
                                 <div class="o_setting_right_pane">
                                     <span class='o_form_label'>
                                         Notify Users
@@ -57,7 +57,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
+                            <div class="col-6 o_setting_box" invisible="('legal_send_user_notify', '=', False)">
                                 <div class="o_setting_right_pane">
                                     <span class='o_form_label'>
                                         Contract Ending Days
@@ -65,7 +65,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-6 o_setting_box" attrs="{'invisible':[('legal_send_user_notify', '=', False)]}">
+                            <div class="col-6 o_setting_box" invisible="('legal_send_user_notify', '=', False)">
                                 <div class="o_setting_right_pane">
                                     <span class='o_form_label'>
                                         Power Of Attorney Overdue Days

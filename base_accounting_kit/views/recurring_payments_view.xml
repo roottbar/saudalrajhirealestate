@@ -22,7 +22,7 @@
                                 <field name="recurring_interval" class="o_address_zip"/>
                             </group>
                             <group>
-                                <field name="partner_id" attrs="{'invisible':[('pay_time','!=','pay_later')]}"/>
+                                <field name="partner_id" invisible="('pay_time','!=','pay_later')"/>
                                 <field name="company_id" invisible="1"/>
                             </group>
                             <group>

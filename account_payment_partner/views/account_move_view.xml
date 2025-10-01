@@ -28,7 +28,7 @@
                     name="payment_mode_id"
                     domain="[('payment_type', '=', payment_mode_filter_type_domain), ('company_id', '=', company_id)]"
                     widget="selection"
-                    attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('move_type', 'not in', ('out_invoice','out_refund','in_invoice','in_refund'))]}"
+                    invisible="('move_type', 'not in', ('out_invoice','out_refund','in_invoice','in_refund'))" readonly="('state', '!=', 'draft')"
                 />
                 <field name="commercial_partner_id" invisible="1" />
                 <field name="bank_account_required" invisible="1" />

@@ -35,16 +35,16 @@
         <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[1]" position="before">
-                <group string="Info" attrs="{'invisible': [('asset_type', '!=', 'purchase')]}">
+                <group string="Info" invisible="('asset_type', '!=', 'purchase')">
                     <group>
-                        <field name="plate_no" attrs="{'readonly': [('state', 'not in', ('draft', 'model'))]}"/>
-                        <field name="chaises_no" attrs="{'readonly': [('state', 'not in', ('draft', 'model'))]}"/>
-                        <field name="location" attrs="{'readonly': [('state', 'not in', ('draft', 'model'))]}"/>
+                        <field name="plate_no" readonly="('state', 'not in', ('draft', 'model'))"/>
+                        <field name="chaises_no" readonly="('state', 'not in', ('draft', 'model'))"/>
+                        <field name="location" readonly="('state', 'not in', ('draft', 'model'))"/>
                     </group>
                     <group>
-                        <field name="project_code" attrs="{'readonly': [('state', 'not in', ('draft', 'model'))]}"/>
+                        <field name="project_code" readonly="('state', 'not in', ('draft', 'model'))"/>
                         <field name="employee_id" options="{'no_open':True,'no_create': True}"
-                               attrs="{'readonly': [('state', 'not in', ('draft', 'model'))]}"/>
+                               readonly="('state', 'not in', ('draft', 'model'))"/>
                     </group>
 
                 </group>

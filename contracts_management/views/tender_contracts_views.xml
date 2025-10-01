@@ -71,18 +71,18 @@
                         <field name="has_invoices_service" invisible="1"/>
                         <field name="create_invoice" invisible="1"/>
                         <button name="generate_reference" type="object" string="Generate Reference" class="oe_highlight"
-                                attrs="{'invisible': ['|','|',('id','=',False),('auto_generated_reference','=',True),('state','!=','open')]}"/>
-                        <button name="action_open" type="object" states="open" string="Open"
+                                invisible="'|','|',('id','=',False),('auto_generated_reference','=',True),('state','!=','open')"/>
+                        <button name="action_open" type="object"  string="Open"
                                 class="oe_highlight"/>
                         <button name="action_close" type="object" string="Close" class="oe_highlight"
-                                attrs="{'invisible': ['|',('create_invoice','!=',False),('state','!=','in progress')]}"/>
+                                invisible="'|',('create_invoice','!=',False),('state','!=','in progress')"/>
                         <button name="action_close" type="object" string="Close" class="oe_highlight"
-                                attrs="{'invisible': ['|',('create_invoice','=',False),('state','!=','in progress')]}"
+                                invisible="'|',('create_invoice','=',False),('state','!=','in progress')"
                                 confirm="Some services haven't invoice, this action will create invoice. Are you still sure you want to process ?"/>
                         <button name="action_create_invoice" string="Create Invoice" type="object" class="oe_highlight"
-                                attrs="{'invisible': ['|',('create_invoice','=',False),('state','!=','in progress')]}"/>
+                                invisible="'|',('create_invoice','=',False),('state','!=','in progress')"/>
                         <button name="print_customer_invoice" string="Print Invoice" type="object" class="oe_highlight"
-                                attrs="{'invisible': [('has_invoices_service','=',False)]}"/>
+                                invisible="('has_invoices_service','=',False)"/>
                         <field name="state" widget="statusbar" statusbar_visible="open,in progress,closed"/>
                     </header>
                     <sheet>
@@ -93,89 +93,89 @@
                             </button>
                             <button class="oe_stat_button" type="object" name="get_workers" icon="fa-users"
                                     string="Workers"
-                                    attrs="{'invisible':['|',('state','=','open'),('worker_ids','=',[])]}"/>
+                                    invisible="'|',('state','=','open'),('worker_ids','=',["/>
                             <button class="oe_stat_button" type="object" name="get_tasks" icon="fa-tasks"
                                     string="Tasks"
-                                    attrs="{'invisible':['|',('state','=','open'),('project_id','=',False)]}"/>
+                                    invisible="'|',('state','=','open'),('project_id','=',False)"/>
                             <button class="oe_stat_button" name="get_timesheets" type="object"
                                     icon="fa-calendar" string="Timesheets"
-                                    attrs="{'invisible':['|',('state','=','open'),('project_id','=',False)]}"/>
+                                    invisible="'|',('state','=','open'),('project_id','=',False)"/>
                             <button class="oe_stat_button" type="object" name="get_cost_analytic_account" icon="fa-usd"
-                                    string="Cost/Revenue" attrs="{'invisible':[('state','=','open')]}"/>
+                                    string="Cost/Revenue" invisible="('state','=','open')"/>
                             <button class="oe_stat_button" type="object" name="get_invoices" icon="fa-pencil-square-o"
-                                    string="Invoices" attrs="{'invisible':[('state','=','open')]}"/>
+                                    string="Invoices" invisible="('state','=','open')"/>
                             <button class="oe_stat_button" type="object" name="get_purchases" icon="fa-shopping-cart"
-                                    string="Purchases" attrs="{'invisible':[('state','=','open')]}"/>
+                                    string="Purchases" invisible="('state','=','open')"/>
                             <button class="oe_stat_button" type="object" name="get_sales" icon="fa-usd" string="Sales"
-                                    attrs="{'invisible':[('state','=','open')]}"/>
+                                    invisible="('state','=','open')"/>
                             <button class="oe_stat_button" type="object" name="get_payments" icon="fa-money"
-                                    string="Payments" attrs="{'invisible':[('state','=','open')]}"/>
+                                    string="Payments" invisible="('state','=','open')"/>
                             <button class="oe_stat_button" type="object" name="get_moves" icon="fa-truck"
-                                    string="Movements" attrs="{'invisible':[('state','=','open')]}"/>
+                                    string="Movements" invisible="('state','=','open')"/>
                         </div>
                         <widget name="web_ribbon" title="Open" bg_color="bg-danger"
-                                attrs="{'invisible':['|',('id','=',False),('state','!=','open')]}"/>
+                                invisible="'|',('id','=',False),('state','!=','open')"/>
                         <widget name="web_ribbon" title="In Progress" bg_color="bg-info"
-                                attrs="{'invisible':[('state','!=','in progress')]}"/>
-                        <widget name="web_ribbon" title="closed" attrs="{'invisible':[('state','!=','closed')]}"/>
+                                invisible="('state','!=','in progress')"/>
+                        <widget name="web_ribbon" title="closed" invisible="('state','!=','closed')"/>
 
                         <div class="oe_title pr-0">
                             <h1 class="d-flex flex-row justify-content-between">
                                 <field name="name" class="text-truncate" placeholder="Contract Name..."
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
+                                       readonly="('state','!=','open')"/>
                             </h1>
                         </div>
                         <group>
                             <group>
                                 <field name="tender_project_id" options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly': [('state','!=','open')],'required':[('select_tender_project','=',True)]}"
+                                       required="('select_tender_project','=',True)" readonly="('state','!=','open')"
                                        groups="contracts_management.group_show_tender_project"/>
                                 <field name="ref"
-                                       attrs="{'readonly':[('state','!=','open')],'required':[('auto_generated_reference','=',True)]}"/>
+                                       required="('auto_generated_reference','=',True)" readonly="('state','!=','open')"/>
                                 <field name="partner_id" force_save="1"
                                        context="{'default_customer_rank': 1,'customer_tender_contract':True}"
-                                       attrs="{'readonly': ['|','|',('state','!=','open'),('select_tender_project','=',True),('tender_project_id','!=',False)]}"/>
+                                       readonly="'|','|',('state','!=','open'),('select_tender_project','=',True),('tender_project_id','!=',False)"/>
                                 <field name="type_id" options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
+                                       readonly="('state','!=','open')"/>
                                 <field name="category_id" options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
+                                       readonly="('state','!=','open')"/>
                                 <label for="analytic_account_id" groups="analytic.group_analytic_accounting"/>
                                 <div class="o_row" groups="analytic.group_analytic_accounting">
                                     <field name="analytic_account_id" options="{'no_open':True,'no_create':True}"
-                                           attrs="{'readonly':[('state','!=','open')],'required':[('id','!=',False),('auto_generated_analytic_account','=',True)]}"
+                                           required="('id','!=',False),('auto_generated_analytic_account','=',True)" readonly="('state','!=','open')"
                                            class="oe_inline"/>
                                     <button string="Generate" type="object" name="generate_analytic_account"
                                             class="oe_link oe_inline"
-                                            attrs="{'invisible':['|',('state','!=','open'),('auto_generated_analytic_account','=',True)]}"/>
+                                            invisible="'|',('state','!=','open'),('auto_generated_analytic_account','=',True)"/>
                                 </div>
-                                <field name="analytic_tag_ids" attrs="{'readonly':[('state','!=','open')]}"
+                                <field name="analytic_tag_ids" readonly="('state','!=','open')"
                                        widget="many2many_tags" groups="analytic.group_analytic_tags"/>
                                 <field name="select_tender_project" invisible="1"/>
                                 <field name="auto_generated_analytic_account" invisible="1"/>
                             </group>
                             <group>
-                                <field name="start_date" attrs="{'readonly':[('state','!=','open')]}"/>
-                                <field name="end_date" attrs="{'readonly':[('state','!=','open')]}"/>
+                                <field name="start_date" readonly="('state','!=','open')"/>
+                                <field name="end_date" readonly="('state','!=','open')"/>
 
                                 <label for="project_id"/>
                                 <div class="o_row">
                                     <field name="project_id" options="{'no_open':True,'no_create':True}"
-                                           attrs="{'readonly':[('state','!=','open')],'required':[('id','!=',False),('auto_generated_project','=',True)]}"
+                                           required="('id','!=',False),('auto_generated_project','=',True)" readonly="('state','!=','open')"
                                            class="oe_inline"/>
                                     <button string="Generate" type="object" name="generate_project"
                                             class="oe_link oe_inline"
-                                            attrs="{'invisible':['|',('state','!=','open'),('auto_generated_project','=',True)]}"/>
+                                            invisible="'|',('state','!=','open'),('auto_generated_project','=',True)"/>
                                     <field name="auto_generated_project" invisible="1"/>
                                 </div>
                                 <field name="pricelist_id" groups="product.group_product_pricelist"
                                        options="{'no_open':True,'no_create': True}"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
+                                       readonly="('state','!=','open')"/>
                                 <field name="currency_id" groups="base.group_multi_currency"
                                        options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
+                                       readonly="('state','!=','open')"/>
                                 <field name="company_id" groups="base.group_multi_company"
                                        options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly':[('state','!=','open')]}"/>
+                                       readonly="('state','!=','open')"/>
                                 <field name="expected_value" invisible="1"/>
 
                                 <separator string="Totals"/>
@@ -188,7 +188,7 @@
 
                         <notebook>
                             <page name="manpower" string="Manpower">
-                                <field name="manpower_lines" attrs="{'readonly':[('state','in',['open','closed'])]}">
+                                <field name="manpower_lines" readonly="('state','in',['open','closed'">
                                     <list string="Manpower">
                                         <field name="service_type_id" optional="show"/>
                                         <field name="service_product_id" optional="hide"/>
@@ -220,7 +220,7 @@
                             </page>
                             <page name="equipments_tools" string="Equipments  &amp; Tools">
                                 <field name="equipments_lines" widget="section_and_note_one2many"
-                                       attrs="{'readonly':[('state','in',['open','closed'])]}">
+                                       readonly="('state','in',['open','closed'">
                                     <list string="Equipments  &amp; Tools" editable="bottom">
                                         <control>
                                             <create name="add_line_control" string="Add a line"/>
@@ -231,9 +231,9 @@
                                         </control>
                                         <field name="sequence" widget="handle"/>
                                         <field name="service_type_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="service_product_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="name" widget="section_and_note_text" string="Description"
                                                optional="show"/>
                                         <field name="code"/>
@@ -258,7 +258,7 @@
                             </page>
                             <page name="specialty_services_request" string="Specialty">
                                 <field name="specialty_services_lines" widget="section_and_note_one2many"
-                                       attrs="{'readonly':[('state','in',['open','closed'])]}">
+                                       readonly="('state','in',['open','closed'">
                                     <list string="Specialty Services Request" editable="bottom">
                                         <control>
                                             <create name="add_line_control" string="Add a line"/>
@@ -269,9 +269,9 @@
                                         </control>
                                         <field name="sequence" widget="handle"/>
                                         <field name="service_type_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="service_product_id" options="{'no_open':True,'no_create':True}"
-                                               attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                               required="('display_type', '=', False)" optional="show"/>
                                         <field name="name" widget="section_and_note_text" optional="show"/>
                                         <field name="visit_duration" widget="float_time"/>
                                         <field name="total_visits_monthly"/>
@@ -296,7 +296,7 @@
                                 </group>
                             </page>
                             <page name="workers" string="Workers">
-                                <field name="worker_ids" mode="kanban" attrs="{'readonly':[('state','!=','open')]}"
+                                <field name="worker_ids" mode="kanban" readonly="('state','!=','open')"
                                        options="{'no_create':True}"/>
                             </page>
                         </notebook>

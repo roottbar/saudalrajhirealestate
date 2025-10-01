@@ -9,8 +9,8 @@
                 <xpath expr="//field[@name='order_line']" position="before">
                     <group>
                         <group>
-                            <field name="discount_type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="discount_total" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="discount_type" readonly="('state', '!=', 'draft')"/>
+                            <field name="discount_total" readonly="('state', '!=', 'draft')"/>
                         </group>
                         <group/>
                     </group>

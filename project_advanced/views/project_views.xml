@@ -12,7 +12,7 @@
                             string="Change allowed users tasks"
                             context="{'default_project_id':active_id,}"
                             class="oe_highlight"
-                            attrs="{'invisible':['|','|',('privacy_visibility' ,'=','employees'), ('allowed_user_ids' ,'=',[]),('task_ids' ,'=',[])]}"
+                            invisible="'|','|',('privacy_visibility' ,'=','employees'), ('allowed_user_ids' ,'=',["
                             groups="project.group_project_manager"
                     />
                     <field name="task_ids" invisible="1"/>
@@ -23,7 +23,7 @@
                 <xpath expr="//field[@name='project_task_template_id']" position="after">
                     <field name="allowed_user_ids" widget="many2many_tags"
                            options="{'no_open': True, 'no_create': True}"
-                           attrs="{'invisible':[('privacy_visibility' ,'=','employees')]}"/>
+                           invisible="('privacy_visibility' ,'=','employees')"/>
                 </xpath>
                 <xpath expr="//notebook" position="inside">
                     <page name="stages" string="Stages">

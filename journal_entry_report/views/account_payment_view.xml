@@ -10,7 +10,7 @@
                     <field name="move_id" invisible="1"/>
                     <button name="print_journal_entry" string="Print Journal Entry" type="object"
                             class="oe_highlight"
-                            groups="account.group_account_user" attrs="{'invisible':[('move_id','=',False)]}"/>
+                            groups="account.group_account_user" invisible="('move_id','=',False)"/>
                 </xpath>
             </field>
         </record>

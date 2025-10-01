@@ -8,18 +8,18 @@
                 <form>
                     <group>
                         <field name='amount'
-                               attrs="{'invisible':[('approved_request_feeding','=',False)],'required':[('approved_request_feeding','=',True)]}"/>
+                               required="('approved_request_feeding','=',True)" invisible="('approved_request_feeding','=',False)"/>
                         <field name="journal_id"
-                               attrs="{'invisible':[('approved_request_feeding','=',False)],'required':[('approved_request_feeding','=',True)]}"/>
+                               required="('approved_request_feeding','=',True)" invisible="('approved_request_feeding','=',False)"/>
                         <field name="reason"/>
                         <field name="approved_request_feeding" invisible="1"/>
                     </group>
 
                     <footer>
                         <button name="action_rejected" string="Save" type="object"
-                                attrs="{'invisible':[('approved_request_feeding','=',True)]}" class="oe_highlight"/>
+                                invisible="('approved_request_feeding','=',True)" class="oe_highlight"/>
                         <button name="action_fm_approved" string="Save" type="object"
-                                attrs="{'invisible':[('approved_request_feeding','=',False)]}" class="oe_highlight"/>
+                                invisible="('approved_request_feeding','=',False)" class="oe_highlight"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>

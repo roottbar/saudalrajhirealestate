@@ -41,12 +41,12 @@
                 <form string="Hr Deduction Form">
                     <header>
                         <field name="is_manager" invisible="1"/>
-                        <button name="action_confirm" type="object" string="Confirm" states="draft"
+                        <button name="action_confirm" type="object" string="Confirm" 
                                 class="oe_highlight"/>
                         <button name="action_approved" type="object" string="Approved" class="oe_highlight"
-                                attrs="{'invisible': ['|', ('is_manager','=',False),('state', '!=', 'confirm')]}"/>
+                                invisible="'|', ('is_manager','=',False),('state', '!=', 'confirm')"/>
                         <button name="action_cancel" type="object" string="Cancel"
-                                attrs="{'invisible': ['|', ('is_manager','=',False),('state', '!=', 'confirm')]}"/>
+                                invisible="'|', ('is_manager','=',False),('state', '!=', 'confirm')"/>
 
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,approved,cancel"/>
                     </header>
@@ -56,21 +56,21 @@
                         <group>
                             <group>
                                 <field name="name" invisible="1"/>
-                                <field name="summary" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="summary" readonly="('state', '!=', 'draft')"/>
                                 <field name="tag_ids" widget="many2many_tags"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                             </group>
 
                             <group>
-                                <field name="applied_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="declaration_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="applied_date" readonly="('state', '!=', 'draft')"/>
+                                <field name="declaration_date" readonly="('state', '!=', 'draft')"/>
                             </group>
                         </group>
 
                         <separator string="Employee Details"/>
                         <group>
                             <group>
-                                <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="employee_id" readonly="('state', '!=', 'draft')"/>
                                 <field name="department_id"/>
                             </group>
 
@@ -83,11 +83,11 @@
                         <group>
                             <group>
                                 <field name="deduction_by" groups="base.group_system"/>
-                                <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="amount" readonly="('state', '!=', 'draft')"/>
                             </group>
                             <group>
                                 <field name="manager_id" options="{'no_create_edit': True, 'no_open': True}"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                             </group>
                         </group>
 

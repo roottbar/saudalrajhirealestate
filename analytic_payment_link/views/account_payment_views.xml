@@ -7,8 +7,8 @@
         <field name="arch" type="xml">
             <!-- تعديل XPath ليكون أكثر مرونة -->
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="analytic_account_id" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
-                <field name="analytic_tag_ids" attrs="{'invisible': [('payment_type', '=', 'transfer')]}"/>
+                <field name="analytic_account_id" invisible="('payment_type', '=', 'transfer')"/>
+                <field name="analytic_tag_ids" invisible="('payment_type', '=', 'transfer')"/>
             </xpath>
         </field>
     </record>

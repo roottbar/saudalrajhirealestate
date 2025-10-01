@@ -10,7 +10,7 @@
             <xpath expr="//field[@name='order_line']/tree" position="inside">
                 <field name="plustech_purchase_request_lines" invisible="1" />
                 <button
-                    attrs="{'invisible': [('plustech_purchase_request_lines', '=', [])]}"
+                    invisible="('plustech_purchase_request_lines', '=', ["
                     name="action_open_request_line_tree_view"
                     type="object"
                     icon="fa-folder-open-o"
@@ -37,7 +37,7 @@
             <xpath expr="//tree" position="inside">
                 <field name="plustech_purchase_request_lines" invisible="1" />
                 <button
-                    attrs="{'invisible': [('plustech_purchase_request_lines', '=', [])]}"
+                    invisible="('plustech_purchase_request_lines', '=', ["
                     name="action_open_request_line_tree_view"
                     type="object"
                     icon="fa-folder-open-o"

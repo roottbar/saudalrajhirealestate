@@ -14,7 +14,7 @@
                     options="{'no_create': True}"
                     groups="operating_unit.group_multi_operating_unit"
                 />
-<!--                attrs="{'required': [('id', '!=', False), ('type', '=', 'bank')]}"-->
+<!--                required="('id', '!=', False), ('type', '=', 'bank')"-->
             </field>
         </field>
     </record>

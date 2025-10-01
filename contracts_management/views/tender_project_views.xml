@@ -222,7 +222,7 @@
                         <field name="auto_generated_reference" invisible="1"/>
                         <field name="tender_contracts_count" invisible="1"/>
                         <button name="generate_reference" type="object" string="Generate Reference" class="oe_highlight"
-                                attrs="{'invisible': ['|','|',('id','=',False),('auto_generated_reference','=',True),('tender_contracts_count','!=',0)]}"/>
+                                invisible="'|','|',('id','=',False),('auto_generated_reference','=',True),('tender_contracts_count','!=',0)"/>
                     </header>
                     <sheet>
                         <div class="oe_title pr-0">

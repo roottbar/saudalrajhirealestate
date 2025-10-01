@@ -30,7 +30,7 @@
                             <group>
                                 <field name="apply_prefix"/>
                                 <field name="prefix"
-                                       attrs="{'invisible':[('apply_prefix','=',False)],'required':[('apply_prefix','=',True)]}"/>
+                                       required="('apply_prefix','=',True)" invisible="('apply_prefix','=',False)"/>
                             </group>
                         </group>
                     </sheet>

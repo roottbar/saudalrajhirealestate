@@ -64,20 +64,20 @@
             <form string="Hr End Of Service">
                 <header>
                     <button name="action_reject_reason" type="object" string="Reject" class="oe_highlight"
-                            states="in_progress"/>
-                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" states="draft"/>
+                            />
+                    <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" />
                     <button name="action_approve" type="object" string="Approve" class="oe_highlight"
-                            states="in_progress"/>
+                            />
                     <button name="action_reset_to_draft" type="object" confirm="Reset to draft ?"
                             string="Reset to draft"
-                            states="rejected"/>
+                            />
                     <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,approved"/>
                 </header>
                 <sheet>
                     <field name="eos_setting_type" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button type="object" name="action_open_payslip" class="oe_stat_button" icon="fa-money"
-                                attrs="{'invisible':['|', ('state','!=','approved'), ('eos_setting_type', '=', 'journal')]}"
+                                invisible="'|', ('state','!=','approved'), ('eos_setting_type', '=', 'journal')"
                                 string="Payslip"/>
 
                     </div>
@@ -90,17 +90,17 @@
                     <group>
                         <group>
                             <field name="employee_id" options="{'no_create': True, 'no_open': True}"
-                                   attrs="{'readonly' : [('state', '!=', 'draft')]}"/>
+                                   />
                             <field name="contract_id" invisible="1"/>
                             <field name="join_date"/>
-                            <field name="date" attrs="{'readonly' : [('state', '!=', 'draft')]}"/>
-                            <field name="reason" attrs="{'readonly' : [('state', '!=', 'draft')]}"/>
+                            <field name="date" />
+                            <field name="reason" />
                             <field name="eos_setting_id" required="1"
-                                   attrs="{'readonly' : [('state', '!=', 'draft')]}"/>
+                                   />
                         </group>
                         <group>
                             <field name="company_id" options="{'no_create': True, 'no_open': True}"
-                                   groups="base.group_multi_company" attrs="{'readonly' : [('state', '!=', 'draft')]}"/>
+                                   groups="base.group_multi_company" />
                             <field name="department_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="manager_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="job_id" options="{'no_create': True, 'no_open': True}"/>
@@ -130,11 +130,11 @@
 
                     </group>
                     <group>
-                        <field name="note" attrs="{'readonly' : [('state', '=', 'draft')]}"/>
+                        <field name="note" />
                     </group>
                     <group>
                         <field name="reject_reason"
-                               attrs="{'invisible' : [('reject_reason','=', False)], 'readonly' : [('state', '!=', 'draft')]}"/>
+                               />
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -172,11 +172,11 @@
                     <group col="4">
                         <field name="name" required="1"/>
                         <field name="type"/>
-                        <field name="credit_account_id" attrs="{'required' : [('type', '=', 'journal')]}"/>
-                        <field name="debit_account_id"  attrs="{'required' : [('type', '=', 'journal')]}"/>
-                        <field name="journal_id"  attrs="{'required' : [('type', '=', 'journal')]}"/>
-                        <field name="rule_code"  attrs="{'required' : [('type', '=', 'salary_structure')]}"/>
-                        <field name="rule_structure_id"  attrs="{'required' : [('type', '=', 'salary_structure')]}"/>
+                        <field name="credit_account_id" />
+                        <field name="debit_account_id"  />
+                        <field name="journal_id"  />
+                        <field name="rule_code"  />
+                        <field name="rule_structure_id"  />
                     </group>
                 </sheet>
                 <div class="oe_chatter">

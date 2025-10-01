@@ -9,7 +9,7 @@
                 <xpath expr="//group[1]" position="inside">
                     <group name="group_tender_contract">
                         <field name="tender_contract_id" options="{'no_open':True,'no_create':True}"
-                               attrs="{'readonly':[('state','!=','draft')]}"/>
+                               readonly="('state','!=','draft')"/>
                     </group>
                 </xpath>
             </field>

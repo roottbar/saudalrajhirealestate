@@ -30,9 +30,9 @@
                 <xpath expr="//field[@name='date_deadline']" position="before">
                     <field name="planned_hours" widget="float_time"/>
                     <label for="subtask_planned_hours" groups="project.group_subtask_project"
-                           attrs="{'invisible': [('subtask_count', '=', 0)]}"/>
+                           invisible="('subtask_count', '=', 0)"/>
                     <div class="o_row" groups="project.group_subtask_project"
-                         attrs="{'invisible': [('subtask_count', '=', 0)]}">
+                         invisible="('subtask_count', '=', 0)">
                         <field name="subtask_planned_hours" widget="float_time"/>
                         <span>planned hours</span>
                     </div>
@@ -45,7 +45,7 @@
                     <field name="privacy_visibility" widget="radio" invisible="1"/>
                     <field name="allowed_user_ids" string="Visible to" widget="many2many_tags"
                            options="{'no_open': True, 'no_create': True}"
-                           attrs="{'invisible':[('privacy_visibility' ,'=','employees')]}" readonly="0"/>
+                           invisible="('privacy_visibility' ,'=','employees')" readonly="0"/>
                 </xpath>
                 <xpath expr="//button[@name='action_assign_to_me']" position="after">
                     <button name="project_advanced.task_assign_history_wizard"

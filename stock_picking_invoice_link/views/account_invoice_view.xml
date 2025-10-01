@@ -14,7 +14,7 @@
                     name="action_show_picking"
                     class="oe_stat_button"
                     icon="fa-truck"
-                    attrs="{'invisible': [('picking_count', '=', 0)]}"
+                    invisible="('picking_count', '=', 0)"
                     groups="stock.group_stock_user"
                 >
                     <field name="picking_count" widget="statinfo" string="Delivery" />

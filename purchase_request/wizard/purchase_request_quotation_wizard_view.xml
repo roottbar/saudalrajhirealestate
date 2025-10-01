@@ -14,10 +14,10 @@
                     </group>
                     <group>
                         <field name="purchase_order_id" options="{'no_open': True, 'no_create': True}"
-                               attrs="{'invisible':[('select_purchase_order' ,'!=', True)],'required': [('select_purchase_order', '=', True)]}"/>
+                               required="('select_purchase_order', '=', True)" invisible="('select_purchase_order' ,'!=', True)"/>
                         <field name="vendor_id" options="{'no_open': True, 'no_create': True}"
-                               attrs="{'invisible':[('select_purchase_order' ,'=', True)],'required': [('select_purchase_order', '!=', True)]}"/>
-                        <field name="picking_type_id" attrs="{'invisible':[('select_purchase_order' ,'=', True)]}"
+                               required="('select_purchase_order', '!=', True)" invisible="('select_purchase_order' ,'=', True)"/>
+                        <field name="picking_type_id" invisible="('select_purchase_order' ,'=', True)"
                                options="{'no_open': True, 'no_create': True}"/>
                     </group>
 

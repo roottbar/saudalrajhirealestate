@@ -8,16 +8,16 @@
                 <form>
                     <group>
                         <field name='amount'
-                               attrs="{'invisible':[('approved_petty_cash_request','=',False)],'required':[('approved_petty_cash_request','=',True)]}"/>
+                               required="('approved_petty_cash_request','=',True)" invisible="('approved_petty_cash_request','=',False)"/>
                         <field name="reason"/>
                         <field name="approved_petty_cash_request" invisible="1"/>
                     </group>
 
                     <footer>
                         <button name="action_fm_approved" string="Save" type="object"
-                                attrs="{'invisible':[('approved_petty_cash_request','=',False)]}" class="oe_highlight"/>
+                                invisible="('approved_petty_cash_request','=',False)" class="oe_highlight"/>
                         <button name="action_cancel" string="Save" type="object"
-                                attrs="{'invisible':[('approved_petty_cash_request','=',True)]}" class="oe_highlight"/>
+                                invisible="('approved_petty_cash_request','=',True)" class="oe_highlight"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>

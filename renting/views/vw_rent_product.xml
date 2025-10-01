@@ -21,7 +21,7 @@
                     <field name="unit_state"  invisible="1"/>
                     <field name="state_id" string="مؤجرة / شاغرة"/>
                     <field name="default_code" invisible="1" optional="show"/>
-                    <field name="barcode"  invisible="1" optional="hide" attrs="{'readonly': [('product_variant_count', '&gt;', 1)]}"/>
+                    <field name="barcode"  invisible="1" optional="hide" readonly="('product_variant_count', '&gt;', 1)"/>
                     <field name="company_id"  invisible="1" options="{'no_create': True}" groups="base.group_multi_company"
                            optional="hide"/>
                     <field name="list_price" invisible="1" string="Sales Price" widget="monetary"

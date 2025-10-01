@@ -28,21 +28,21 @@
                     <field name="is_employee_manager" invisible="1"/>
                     <field name="is_hr_manager" invisible="1"/>
                     <button name="compute_installment" type="object" string="Compute Installment" class="oe_highlight"
-                            attrs="{'invisible':[('state','in',('approve', 'refuse'))]}"/>
-                    <button name="action_submit" type="object" string="Submit" states="draft" class="oe_highlight"/>
-                    <button name="action_cancel" type="object" string="Cancel" states="draft"/>
-                    <button name="action_reset_to_draft" type="object" string="Reset To Draft" states="waiting_approval_1,approve,refuse,cancel"/>
+                            invisible="('state','in',('approve', 'refuse'))"/>
+                    <button name="action_submit" type="object" string="Submit"  class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" />
+                    <button name="action_reset_to_draft" type="object" string="Reset To Draft" />
 <!--                    <button name="action_approve" type="object" string="Approve"-->
-<!--                            class="oe_highlight" attrs="{'invisible':['|', ('state','!=', 'waiting_approval_1'), ('is_responsible_approve','!=', True)]}"/>-->
-                    <button name="action_refuse" type="object" string="Refuse" states="draft,waiting_approval_1"
+<!--                            class="oe_highlight" invisible="'|', ('state','!=', 'waiting_approval_1'), ('is_responsible_approve','!=', True)"/>-->
+                    <button name="action_refuse" type="object" string="Refuse" 
                             class="oe_highlight" groups="hr.group_hr_manager,hr.group_hr_user"/>
                         <button name="action_employee_manager" type="object" string="موافقة مدير الموظف"
-                                attrs="{'invisible':['|', ('state','!=', 'employee_manager'), ('is_employee_manager','!=', True)]}"
+                                invisible="'|', ('state','!=', 'employee_manager'), ('is_employee_manager','!=', True)"
                                 class="oe_highlight"/>
                         <button name="action_hr_manager" type="object" string="موافقة مدير الموارد البشرية"
-                                attrs="{'invisible':['|', ('state','!=', 'hr_manager'), ('is_hr_manager','!=', True)]}" class="oe_highlight"/>
+                                invisible="'|', ('state','!=', 'hr_manager'), ('is_hr_manager','!=', True)" class="oe_highlight"/>
                         <button name="action_approve" type="object" string="موافقة المدير التنفيذي"
-                                states="executive_manager" groups="bstt_hr.group_executive_manager" class="oe_highlight"/>
+                                 groups="bstt_hr.group_executive_manager" class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,employee_manager,hr_manager,executive_manager,approve,refuse,cancel"/>
 
                 </header>
@@ -56,14 +56,14 @@
                         </h1>
                     </div>
                     <group col="4">
-                        <field name="employee_id" attrs="{'readonly':[('state','=','approve')]}"/>
+                        <field name="employee_id" readonly="('state','=','approve')"/>
                         <field name="date"/>
                         <field name="department_id"/>
                         <field name="job_position"/>
                         <field name="loan_type_id" required="1"/>
-                        <field name="loan_amount" attrs="{'readonly':[('state','=','approve')]}"/>
-                        <field name="installment" attrs="{'readonly':[('state','=','approve')]}"/>
-                        <field name="payment_date" attrs="{'readonly':[('state','=','approve')]}"/>
+                        <field name="loan_amount" readonly="('state','=','approve')"/>
+                        <field name="installment" readonly="('state','=','approve')"/>
+                        <field name="payment_date" readonly="('state','=','approve')"/>
                         <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                         <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                         <field name="reason"/>
@@ -77,9 +77,9 @@
                             <field name="loan_lines" readonly="1">
                                 <list string="Installments" editable="bottom">
                                     <field name="date"
-                                           attrs="{'readonly':[('parent.state','=','approve'),('paid','=', True)]}"/>
+                                           readonly="('parent.state','=','approve'),('paid','=', True)"/>
                                     <field name="amount" sum="Total"
-                                           attrs="{'readonly':[('parent.state','=','approve'),('paid','=', True)]}"/>
+                                           readonly="('parent.state','=','approve'),('paid','=', True)"/>
                                     <field name="paid" readonly="1" widget="upgrade_boolean"/>
                                 </list>
                             </field>

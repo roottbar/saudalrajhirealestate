@@ -7,13 +7,13 @@
             <field name="arch" type="xml">
                 <form string="Log an Activity" create="false">
                     <header>
-                        <button id="mail_activity_schedule" string="Schedule" name="action_close_dialog" type="object" class="btn-primary" attrs="{'invisible': [('id', '!=', False)]}" data-hotkey="q"/>
-                        <button id="mail_activity_save" string="Save" name="action_close_dialog" type="object" class="btn-primary" attrs="{'invisible': [('id', '=', False)]}" data-hotkey="q"/>
-                        <button attrs="{'invisible': ['|', ('chaining_type', '=', 'trigger'), ('state', 'in', ['done', 'cancel'])]}" string="Mark as Done" name="action_done" type="object" class="btn-secondary" data-hotkey="w" context="{'mail_activity_quick_update': True}"/>
-                        <button attrs="{'invisible': ['|', ('chaining_type', '=', 'trigger'), ('state', 'in', ['done', 'cancel'])]}" string="Done &amp; Schedule Next" name="action_done_schedule_next" type="object" class="btn-secondary" data-hotkey="x" context="{'mail_activity_quick_update': True}"/>
-                        <button attrs="{'invisible': ['|', ('chaining_type', '=', 'trigger'), ('state', 'in', ['done', 'cancel'])]}" string="Done &amp; Launch Next" name="action_done_schedule_next" type="object" class="btn-secondary" data-hotkey="x" context="{'mail_activity_quick_update': True}"/>
+                        <button id="mail_activity_schedule" string="Schedule" name="action_close_dialog" type="object" class="btn-primary" invisible="('id', '!=', False)" data-hotkey="q"/>
+                        <button id="mail_activity_save" string="Save" name="action_close_dialog" type="object" class="btn-primary" invisible="('id', '=', False)" data-hotkey="q"/>
+                        <button invisible="'|', ('chaining_type', '=', 'trigger'), ('state', 'in', ['done', 'cancel'" string="Mark as Done" name="action_done" type="object" class="btn-secondary" data-hotkey="w" context="{'mail_activity_quick_update': True}"/>
+                        <button invisible="'|', ('chaining_type', '=', 'trigger'), ('state', 'in', ['done', 'cancel'" string="Done &amp; Schedule Next" name="action_done_schedule_next" type="object" class="btn-secondary" data-hotkey="x" context="{'mail_activity_quick_update': True}"/>
+                        <button invisible="'|', ('chaining_type', '=', 'trigger'), ('state', 'in', ['done', 'cancel'" string="Done &amp; Launch Next" name="action_done_schedule_next" type="object" class="btn-secondary" data-hotkey="x" context="{'mail_activity_quick_update': True}"/>
                         <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
-                        <button string="Cancel" name="action_cancel" type="object" attrs="{'invisible': [('state', '=', 'done')]}"/>
+                        <button string="Cancel" name="action_cancel" type="object" invisible="('state', '=', 'done')"/>
                         <field name="state" widget="statusbar" statusbar_visible="today,planned,done"/>
                     </header>
                 <sheet string="Activity">
@@ -27,7 +27,7 @@
                         <field name="previous_activity_type_id"/>
                         <field name="has_recommended_activities"/>
                     </group>
-                    <group attrs="{'invisible': [('has_recommended_activities','=',False)]}">
+                    <group invisible="('has_recommended_activities','=',False)">
                         <div class="o_row">
                             <strong>Recommended Activities</strong>
                             <field name="recommended_activity_type_id" widget="selection_badge" domain="[('previous_type_ids', '=', previous_activity_type_id)]" nolabel="1"/>

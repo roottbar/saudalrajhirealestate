@@ -36,9 +36,9 @@
                     </header>
                     <sheet>
                         <widget style="margin-top:22px" name="web_ribbon" title="Expired" bg_color="bg-danger"
-                                attrs="{'invisible': [('package_status', '!=', 'expired')]}"/>
+                                invisible="('package_status', '!=', 'expired')"/>
                         <widget style="margin-top:22px" name="web_ribbon" title="Running" bg_color="bg-success"
-                                attrs="{'invisible': [('package_status', '!=', 'running')]}"/>
+                                invisible="('package_status', '!=', 'running')"/>
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" string="Tickets" name="action_open_tickets" type="object"
                                     icon="fa-ticket">
@@ -99,12 +99,12 @@
                             <page string="Activity Notification" name="activity_notification">
                                 <field name="activity_state_ids">
                                     <list editable="bottom">
-                                        <field name="state" attrs="{'required':[('send', '=', True)]}"/>
+                                        <field name="state" required="('send', '=', True)"/>
                                         <field name="user_ids" widget="many2many_tags"
-                                               attrs="{'required':[('send', '=', True)]}"/>
-                                        <field name="subject" attrs="{'required':[('send', '=', True)]}"/>
-                                        <field name="body" attrs="{'required':[('send', '=', True)]}"/>
-                                        <field name="activity_type_id" attrs="{'required':[('send', '=', True)]}"/>
+                                               required="('send', '=', True)"/>
+                                        <field name="subject" required="('send', '=', True)"/>
+                                        <field name="body" required="('send', '=', True)"/>
+                                        <field name="activity_type_id" required="('send', '=', True)"/>
                                         <field name="send"/>
                                     </list>
                                 </field>

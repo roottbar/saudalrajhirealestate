@@ -27,14 +27,13 @@
                     <group>
                         <group>
                             <field name="enable_filter"/>
-                            <field name="date_from_cmp" attrs="{'invisible':[('enable_filter','=',False)]}"/>
+                            <field name="date_from_cmp" invisible="('enable_filter','=',False)"/>
 
                         </group>
                         <group>
-                            <field name="label_filter" attrs="{'required':[('enable_filter','=',True)],
-                                                'invisible':[('enable_filter','=',False)]}"/>
+                            <field name="label_filter" required="('enable_filter','=',True)" invisible="('enable_filter','=',False)"/>
                             <field name="filter_cmp" invisible="1"/>
-                            <field name="date_to_cmp" attrs="{'invisible':[('enable_filter','=',False)]}"/>
+                            <field name="date_to_cmp" invisible="('enable_filter','=',False)"/>
                         </group>
                     </group>
                     <group>

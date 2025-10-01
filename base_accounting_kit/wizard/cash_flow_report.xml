@@ -17,15 +17,15 @@
                 <group>
                     <field name="company_id" position="replace"/>
                 </group>
-                <notebook tabpos="up" colspan="4" attrs="{'invisible': [('enable_filter','=',False)]}">
+                <notebook tabpos="up" colspan="4" invisible="('enable_filter','=',False)">
                     <page string="Comparison" name="comparison">
                         <group>
-                            <field name="label_filter" attrs="{'required': [('enable_filter', '=', True)]}"/>
+                            <field name="label_filter" required="('enable_filter', '=', True)"/>
                             <field name="filter_cmp"/>
                         </group>
-                        <group string="Dates" attrs="{'invisible':[('filter_cmp', '!=', 'filter_date')]}">
-                            <field name="date_from_cmp" attrs="{'required':[('filter_cmp', '=', 'filter_date')]}"/>
-                            <field name="date_to_cmp" attrs="{'required':[('filter_cmp', '=', 'filter_date')]}"/>
+                        <group string="Dates" invisible="('filter_cmp', '!=', 'filter_date')">
+                            <field name="date_from_cmp" required="('filter_cmp', '=', 'filter_date')"/>
+                            <field name="date_to_cmp" required="('filter_cmp', '=', 'filter_date')"/>
                         </group>
                     </page>
                 </notebook>

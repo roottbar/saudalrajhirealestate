@@ -14,7 +14,7 @@
             <xpath expr="//field[@name='project_ids']" position='after'>
                 <field name="is_progress_stage"/>
                 <field name="progress_bar"
-                       attrs="{'invisible':[('is_progress_stage','!=',True)]}"/>
+                       invisible="('is_progress_stage','!=',True)"/>
             </xpath>
         </field>
     </record>

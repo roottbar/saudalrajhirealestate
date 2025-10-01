@@ -9,17 +9,17 @@
                 <form string="Resume Analysis">
                     <header>
                         <button name="action_start_analysis" type="object" string="Start Analysis" 
-                                class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                                class="oe_highlight" invisible="('state', '!=', 'draft')"/>
                         <button name="action_reset_analysis" type="object" string="Reset Analysis" 
-                                attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                                invisible="('state', '=', 'draft')"/>
                         <button name="action_view_report" type="object" string="View Report" 
-                                class="oe_highlight" attrs="{'invisible': [('state', '!=', 'completed')]}"/>
+                                class="oe_highlight" invisible="('state', '!=', 'completed')"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,analyzing,completed"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name="action_view_report" type="object" class="oe_stat_button" icon="fa-file-pdf-o"
-                                    attrs="{'invisible': [('state', '!=', 'completed')]}">
+                                    invisible="('state', '!=', 'completed')">
                                 <div class="o_field_widget o_stat_info">
                                     <span class="o_stat_text">Analysis</span>
                                     <span class="o_stat_text">Report</span>
@@ -43,7 +43,7 @@
                             </group>
                             <group name="analysis_info" string="Analysis Information">
                                 <field name="job_position_id" options="{'no_create': True}"/>
-                                <field name="ai_provider" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="ai_provider" readonly="('state', '!=', 'draft')"/>
                                 <field name="analysis_date" readonly="1"/>
                                 <field name="analysis_duration" readonly="1" widget="float_time"/>
                             </group>
@@ -51,12 +51,12 @@
                         
                         <group name="resume_upload" string="Resume Upload">
                             <field name="resume_file" filename="resume_filename" 
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                   readonly="('state', '!=', 'draft')"/>
                             <field name="resume_filename" invisible="1"/>
                         </group>
                         
                         <notebook>
-                            <page string="Analysis Results" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <page string="Analysis Results" invisible="('state', '=', 'draft')">
                                 <group>
                                     <group name="scores" string="Scores">
                                         <field name="overall_score" widget="progressbar"/>
@@ -91,7 +91,7 @@
                                 </group>
                             </page>
                             
-                            <page string="Skills Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <page string="Skills Analysis" invisible="('state', '=', 'draft')">
                                 <group>
                                     <group name="skills_summary">
                                         <field name="found_skills"/>
@@ -110,7 +110,7 @@
                                 </field>
                             </page>
                             
-                            <page string="Experience Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <page string="Experience Analysis" invisible="('state', '=', 'draft')">
                                 <field name="experience_ids" nolabel="1">
                                     <list>
                                         <field name="job_title"/>
@@ -153,7 +153,7 @@
                                 </field>
                             </page>
                             
-                            <page string="Education Analysis" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <page string="Education Analysis" invisible="('state', '=', 'draft')">
                                 <field name="education_ids" nolabel="1">
                                     <list>
                                         <field name="degree_name"/>
@@ -197,7 +197,7 @@
                                 </field>
                             </page>
                             
-                            <page string="Resume Text" attrs="{'invisible': [('resume_text', '=', False)]}">
+                            <page string="Resume Text" invisible="('resume_text', '=', False)">
                                 <field name="resume_text" nolabel="1" readonly="1"/>
                             </page>
                             

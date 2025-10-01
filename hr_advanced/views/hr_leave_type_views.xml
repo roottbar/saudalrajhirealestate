@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='request_unit']" position="after">
                 <field name="is_include_balance" />
-<!--                 attrs="{'invisible':[('allocation_type','=', 'no')]}"-->
+<!--                 invisible="('allocation_type','=', 'no')"-->
             </xpath>
         </field>
     </record>

@@ -9,8 +9,8 @@
         <field name="arch" type="xml">
             <list>
                 <field name="type_verdict"/>
-                <field name="issue" attrs="{'invisible': [('type_verdict','=','appeal')]}"/>
-                <field name="appeal" attrs="{'invisible': [('type_verdict','=','trial')]}"/>
+                <field name="issue" invisible="('type_verdict','=','appeal')"/>
+                <field name="appeal" invisible="('type_verdict','=','trial')"/>
             </list>
         </field>
     </record>
@@ -29,8 +29,8 @@
                     <group>
                         <group>
                             <field name="type_verdict"/>
-                            <field name="issue"  attrs="{'invisible': [('type_verdict','=','appeal')]}"/>
-                            <field name="appeal" attrs="{'invisible': [('type_verdict','=','trial')]}"/>
+                            <field name="issue"  invisible="('type_verdict','=','appeal')"/>
+                            <field name="appeal" invisible="('type_verdict','=','trial')"/>
                         </group>
 
                         <group>

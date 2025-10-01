@@ -151,7 +151,7 @@
                             <field name="field_id"
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="currency_field_id" options="{'no_create': True, 'no_open': True}"
-                                   attrs="{'invisible':[('field_type','=','integer')]}"
+                                   invisible="('field_type','=','integer')"
                                    groups="base.group_multi_currency"/>
 
                             <field name="min_value"/>
@@ -219,7 +219,7 @@
                             <field name="field_id"
                                    options="{'no_create': True, 'no_open': True}"/>
                             <field name="currency_field_id" options="{'no_create': True, 'no_open': True}"
-                                   attrs="{'invisible':[('field_type','=','integer')]}"
+                                   invisible="('field_type','=','integer')"
                                    groups="base.group_multi_currency"/>
 
                             <field name="max_value"/>

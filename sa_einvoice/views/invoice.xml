@@ -10,18 +10,18 @@
 
                 <xpath expr="//header" position="inside">
                     <button name="submit_invoice" type="object" string="Submit Electronic Invoice"
-                    attrs="{'invisible':[('state','=','draft')]}"
+                    invisible="('state','=','draft')"
                     />
 <!--                    <button name="%(sa_einvoice.action_elect_inv_reason_wiz)d"-->
-<!--                            attrs="{'invisible':[('send_electronic_invoice','=',False)]}"-->
+<!--                            invisible="('send_electronic_invoice','=',False)"-->
 <!--                            context="{'default_status':'cancelled'}"-->
 <!--                            type="action" string="Cancel Electronic Invoice" groups="sa_einvoice.group_cancel_egeinvoice"/>-->
 <!--                    <button name="%(sa_einvoice.action_elect_inv_reason_wiz)d"-->
 <!--                            context="{'default_status':'rejected'}"-->
-<!--                            attrs="{'invisible':[('send_electronic_invoice','=',False)]}"-->
+<!--                            invisible="('send_electronic_invoice','=',False)"-->
 <!--                            type="action" string="Reject Electronic Invoice" groups="sa_einvoice.group_cancel_egeinvoice"/>-->
                     <button name="print_invoice"
-                            attrs="{'invisible':[('send_electronic_invoice','=',False)]}"
+                            invisible="('send_electronic_invoice','=',False)"
                             type="object" string="Print Electronic Invoice" />
                 </xpath>
 

@@ -29,21 +29,21 @@
                     <button name="action_submit"
                             string="Submit"
                             type="object"
-                            states="draft"
+                            
                             class="oe_highlight"/>
 
                     <button name="action_approve"
                             string="Approve"
                             type="object"
                             groups="hr.group_hr_user"
-                            states="submit"
+                            
                             class="btn-success"/>
 
                     <button name="action_refuse"
                             groups="hr.group_hr_user"
                             string="Refuse"
                             type="object"
-                            attrs="{'invisible':[('state','!=', 'submit')]}"
+                            invisible="('state','!=', 'submit')"
                             class="btn-danger"/>
 
                     <field name="state" widget="statusbar" statusbar_visible="draft,submit,approve"/>
@@ -59,11 +59,11 @@
                         <group>
                             <field name="employee_id"/>
                             <field name='department_id'/>
-                            <field name='absence_date' attrs="{'invisible':[('exception_type','=','forget')]}"/>
+                            <field name='absence_date' invisible="('exception_type','=','forget')"/>
                         </group>
                         <group>
                              <field name="exception_type"/>
-                             <field name="check_out" attrs="{'invisible':[('exception_type','=','absence')]}"/>
+                             <field name="check_out" invisible="('exception_type','=','absence')"/>
                         </group>
                         <label for="exception_reason" string="Exception Reason"/>
                         <field name="exception_reason"/>

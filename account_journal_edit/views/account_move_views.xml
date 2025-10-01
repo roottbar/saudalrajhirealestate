@@ -14,7 +14,7 @@
                 
                 <!-- إضافة تنبيه للمستخدمين المصرح لهم -->
                 <xpath expr="//sheet" position="before">
-                    <div class="alert alert-info" attrs="{'invisible': [('state', '!=', 'posted')]}">
+                    <div class="alert alert-info" invisible="('state', '!=', 'posted')">
                         <i class="fa fa-info-circle"/> 
                         أنت تملك صلاحية تعديل الحساب في البنود حتى بعد ترحيل الفاتورة.
                     </div>

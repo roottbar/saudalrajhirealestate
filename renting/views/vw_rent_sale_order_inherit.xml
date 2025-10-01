@@ -13,16 +13,16 @@
                 <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="replace">
                     <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
                         type="action" class="btn-primary"
-                        attrs="{'invisible': ['|',('invoice_status', '!=', 'to invoice'),('is_rental_order', '=', True)]}"/>
+                        invisible="'|',('invoice_status', '!=', 'to invoice'),('is_rental_order', '=', True)"/>
                 </xpath>
                 <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="replace">
                     <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
                         type="action" context="{'default_advance_payment_method': 'percentage'}"
-                        attrs="{'invisible': ['|','|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale'),('is_rental_order', '=', True)]}"/>
+                        invisible="'|','|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale'),('is_rental_order', '=', True)"/>
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="replace">
                     <button name="action_cancel" type="object" string="Cancel"
-                            attrs="{'invisible': ['|','|', ('state', 'not in', ['draft', 'sent','sale']), ('id', '=', False), ('no_of_invoiced', '>', 0)]}"/>
+                            invisible="'|','|', ('state', 'not in', ['draft', 'sent','sale'"/>
                     <field name="no_of_invoiced" invisible="1"/>
                 </xpath>
                 <xpath expr="// field [@ name = 'order_line'] / tree / field [@ name = 'tax_id']"
@@ -100,11 +100,11 @@
                                 <field name="status"/>
                                 <!--                                widget="toggle_button"-->
                                 <button name="create_invoices" type="object" string="Create Invoice" class="btn-success"
-                                        attrs="{'invisible':[('status','=', 'invoiced')]}"/>
+                                        invisible="('status','=', 'invoiced')"/>
                             </list>
                         </field>
                     </page>
-                    <page name="property_stats" string="حالة الوحدات" attrs="{'invisible':[('rental_status','not in', ['pickup','return'])]}">
+                    <page name="property_stats" string="حالة الوحدات" invisible="('rental_status','not in', ['pickup','return'">
                         <field name="order_property_state" widget="section_and_note_one2many" mode="tree,form" context="{'default_sale_order': active_id}">
                             <form>
                                 <group>
@@ -224,15 +224,15 @@
                 <xpath expr="//div[@name='button_box']" position="after">
                     <!--                    <div class="row float-right">-->
                     <div class="badge-pill badge-info float-right"
-                         attrs="{'invisible': [('full_invoiced', '=', False)]}">Fully Invoiced
+                         invisible="('full_invoiced', '=', False)">Fully Invoiced
                     </div>
                     <div class="badge-pill badge-info float-right"
-                         attrs="{'invisible': ['|', ('full_invoiced', '=', True),('no_of_not_invoiced', '=', 0) ]}">
+                         invisible="'|', ('full_invoiced', '=', True),('no_of_not_invoiced', '=', 0) ">
                         <field name="no_of_invoiced"/>/
                         <field name="no_of_not_invoiced"/>
                     </div>
                     <div class="badge-pill badge-info float-right"
-                         attrs="{'invisible': ['|', ('full_invoiced', '=', True),('no_of_not_invoiced', '=', 0) ]}">
+                         invisible="'|', ('full_invoiced', '=', True),('no_of_not_invoiced', '=', 0) ">
                         <field name="no_of_invoiced_amount"/>/
                         <field name="no_of_not_invoiced_amount"/>
                     </div>
@@ -278,14 +278,14 @@
                 <xpath expr="//div[hasclass('oe_kanban_bottom_left')][1]" position="after">
                     <!--                    <div class="oe_kanban_bottom_right">-->
                     <div class="o_kanban_inline_block "
-                         attrs="{'invisible': ['|', ('full_invoiced', '=', True),('no_of_not_invoiced', '=', 0) ]}">
+                         invisible="'|', ('full_invoiced', '=', True),('no_of_not_invoiced', '=', 0) ">
                         <field name="no_of_invoiced"/>/
                         <field name="no_of_not_invoiced"/>-
                         <field name="no_of_invoiced_amount"/>/
                         <field name="no_of_not_invoiced_amount"/>
                     </div>
 
-                    <div class="o_kanban_record_title" attrs="{'invisible': [('full_invoiced', '=', False)]}">Fully
+                    <div class="o_kanban_record_title" invisible="('full_invoiced', '=', False)">Fully
                         Invoiced
                     </div>
                     <!--                    </div>-->

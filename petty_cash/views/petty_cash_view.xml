@@ -69,13 +69,13 @@
             <field name="arch" type="xml">
                 <form string="Petty Cash">
                     <header>
-                        <button name="action_open" type="object" states="draft" string="Open"
+                        <button name="action_open" type="object"  string="Open"
                                 class="oe_highlight"/>
-                        <button name="action_close" type="object" states="in progress" string="Close"
+                        <button name="action_close" type="object"  string="Close"
                                 class="oe_highlight"/>
-                        <button name="action_post" type="object" states="review" string="Post"
+                        <button name="action_post" type="object"  string="Post"
                                 class="oe_highlight" groups="petty_cash.group_petty_cash_manager"/>
-                        <button name="%(petty_cash.action_petty_cash_transfer)d" type="action" states="review"
+                        <button name="%(petty_cash.action_petty_cash_transfer)d" type="action" 
                                 string="Transfer" class="oe_highlight"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,in progress,review,closed"/>
                     </header>
@@ -83,14 +83,14 @@
                     <sheet>
                         <div class="oe_button_box">
                             <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck"
-                                    attrs="{'invisible':[('picking_ids','=',[])]}"
+                                    invisible="('picking_ids','=',["
                                     groups="petty_cash.group_petty_cash_manager">
                                 <field name="picking_count" widget="statinfo" string="Shipments"/>
                                 <field name="picking_ids" invisible="1"/>
                             </button>
 
                             <button type="object" name="open_journal_entries" class="oe_stat_button" icon="fa-bars"
-                                    attrs="{'invisible': [('state','!=','closed')]}"
+                                    invisible="('state','!=','closed')"
                                     groups="petty_cash.group_petty_cash_manager">
                                 <field name="moves_count" widget="statinfo" string="Journal Entries"/>
                             </button>
@@ -105,12 +105,12 @@
                         <group>
                             <group>
                                 <field name="reference"/>
-                                <field name="user_rule" string="Box" attrs="{'readonly': [('id','!=',False)]}"
+                                <field name="user_rule" string="Box" readonly="('id','!=',False)"
                                        options="{'no_open': True,'no_create':True}"/>
                                 <field name="journal_id" readonly="1" force_save="1"/>
                                 <field name="responsible_id" string='Responsible Box'/>
                                 <field name="picking_type_id"
-                                       attrs="{'invisible':[('template_type','!=','with product')],'readonly': [('state','=','closed')],'required':[('template_type','=','with product')]}"/>
+                                       required="('template_type','=','with product')" invisible="('template_type','!=','with product')" readonly="('state','=','closed')"/>
                             </group>
 
                             <group>
@@ -122,7 +122,7 @@
                                        groups="petty_cash.group_petty_cash_multi_currency"/>
                                 <field name="company_id" groups="base.group_multi_company"
                                        options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly':[('state','=','closed')]}"/>
+                                       readonly="('state','=','closed')"/>
                                 <field name="account_id" invisible="1"/>
                                 <field name="template_type" invisible="1"/>
                                 <field name="dynamic_journal" invisible="1"/>
@@ -131,12 +131,12 @@
                         <notebook>
                             <page string="Petty Cash Lines">
                                 <group>
-                                    <button name="%(action_petty_cash_line_import)d" type="action" states="in progress"
+                                    <button name="%(action_petty_cash_line_import)d" type="action" 
                                             string="Import Excel" class="oe_highlight oe_right"/>
                                 </group>
 
                                 <field name="petty_cash_line_ids"
-                                       attrs="{'invisible':['|',('state','=','draft'),('template_type','=','with product')],'readonly':[('state','in',['review','closed'])]}">
+                                       invisible="'|',('state','=','draft'),('template_type','=','with product')" readonly="('state','in',['review','closed'">
                                     <list string="Petty Cash Lines">
                                         <field name="reference"/>
                                         <field name="date"/>
@@ -170,7 +170,7 @@
                                 </field>
 
                                 <field name="petty_cash_line_ids2" context="{'with_product':1}"
-                                       attrs="{'invisible':['|',('state','=','draft'),('template_type','!=','with product')],'readonly':[('state','in',['review','closed'])]}">
+                                       invisible="'|',('state','=','draft'),('template_type','!=','with product')" readonly="('state','in',['review','closed'">
                                     <list string="Petty Cash Lines">
                                         <field name="reference"/>
                                         <field name="date"/>
@@ -215,9 +215,9 @@
                                 <field name="note" placeholder="Internal note..."/>
                             </page>
                             <page string="Journal Items" groups="petty_cash.group_petty_cash_dynamic_journal"
-                                  attrs="{'invisible':['|',('state','=','draft'),('dynamic_journal','=',False)]}">
+                                  invisible="'|',('state','=','draft'),('dynamic_journal','=',False)">
                                 <field name="dynamic_move_line_ids" context="{'force_petty_cash':True}"
-                                       attrs="{'readonly':[('state','in',['review','closed'])]}">
+                                       readonly="('state','in',['review','closed'">
                                     <list string="Journal Items" editable="bottom" create="false" delete="false"
                                           readonly="1">
                                         <field name="account_id" readonly="1"/>

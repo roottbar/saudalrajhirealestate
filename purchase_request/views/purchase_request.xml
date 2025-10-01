@@ -25,23 +25,23 @@
                 <header>
                     <field name="allow_approve" invisible="1"/>
                     <field name="check_products" invisible="1"/>
-                    <button name="action_to_approve" type="object" states="draft" string="Request Approval"
+                    <button name="action_to_approve" type="object"  string="Request Approval"
                             class="oe_highlight"/>
                     <button name="action_approve" type="object" string="Approve" class="oe_highlight"
                             groups="purchase_request.group_purchase_request_supervisor"
-                            attrs="{'invisible': ['|',('state','!=','to_approve'),('allow_approve','=',False)]}"/>
+                            invisible="'|',('state','!=','to_approve'),('allow_approve','=',False)"/>
                     <button name="%(purchase_request.action_purchase_request_reject_wizard)d" type="action"
-                            states="to_approve" string="Reject"
+                             string="Reject"
                             groups="purchase_request.group_purchase_request_supervisor"/>
-                    <button name="action_done" type="object" states="approved" string="Done"
+                    <button name="action_done" type="object"  string="Done"
                             groups="purchase_request.group_purchase_request_manager" class="oe_highlight"/>
                     <button name="action_create_rfq" type="object" string="Create RFQ"
                             groups="purchase_request.group_manage_po_from_pr_manager"
-                            attrs="{'invisible': ['|',('state','!=','approved'),('check_products','=',False)]}"/>
+                            invisible="'|',('state','!=','approved'),('check_products','=',False)"/>
                     <button name="action_create_purchase_order" type="object" string="Create PO"
                             groups="purchase_request.group_manage_po_from_pr_manager"
-                            attrs="{'invisible': ['|',('state','!=','approved'),('check_products','=',False)]}"/>
-                    <button name="action_reset_to_draft" type="object" states="to_approve,rejected"
+                            invisible="'|',('state','!=','approved'),('check_products','=',False)"/>
+                    <button name="action_reset_to_draft" type="object" 
                             string="Reset to Draft"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,to_approve,approved,done,rejected"/>
@@ -49,7 +49,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="get_purchase_orders" type="object"
-                                icon="fa-list" attrs="{'invisible':[('purchase_order_count','=',0)]}">
+                                icon="fa-list" invisible="('purchase_order_count','=',0)">
                             <field string="Purchase Orders" name="purchase_order_count" widget="statinfo"/>
                         </button>
                     </div>
@@ -62,17 +62,17 @@
                     <group>
                         <group>
                             <field name="request_by" options="{'no_open': True, 'no_create': True}"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="ref" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="priority" widget="priority" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="is_it" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="pr_product" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                   readonly="('state', '!=', 'draft')"/>
+                            <field name="ref" readonly="('state', '!=', 'draft')"/>
+                            <field name="priority" widget="priority" readonly="('state', '!=', 'draft')"/>
+                            <field name="is_it" readonly="('state', '!=', 'draft')"/>
+                            <field name="pr_product" readonly="('state', '!=', 'draft')"
                                    groups="base.group_no_one"/>
                         </group>
                         <group>
-                            <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="deadline_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="date" readonly="('state', '!=', 'draft')"/>
+                            <field name="deadline_date" readonly="('state', '!=', 'draft')"/>
+                            <field name="company_id" readonly="('state', '!=', 'draft')"/>
                         </group>
                         <group>
                         </group>
@@ -81,7 +81,7 @@
 
                     <notebook>
                         <page string="Products" name="products">
-                            <field name="line_ids" attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            <field name="line_ids" readonly="('state', '!=', 'draft')"
                                    widget="section_and_note_one2many">
                                 <list string="Purchase Request Lines" editable="bottom">
                                     <control>
@@ -96,10 +96,10 @@
                                     <field name="company_id" invisible="1"/>
                                     <field name="sequence" widget="handle"/>
                                     <field name="product_id" options="{'no_open': True, 'no_create': True}"
-                                           attrs="{'required': [('display_type', '=', False)]}"/>
+                                           required="('display_type', '=', False)"/>
                                     <field name="name" widget="section_and_note_text"/>
                                     <field name="date"
-                                           attrs="{'required': [('display_type', '=', False)]}" force_save="1"/>
+                                           required="('display_type', '=', False)" force_save="1"/>
                                     <field name="account_analytic_id" optional="hide"
                                            options="{'no_open': True, 'no_create': True}"
                                            groups="analytic.group_analytic_accounting"/>
@@ -108,17 +108,17 @@
                                            groups="analytic.group_analytic_tags"/>
                                     <field name="product_qty"/>
                                     <field name="uom_id" groups="uom.group_uom"
-                                           attrs="{'required': [('display_type', '=', False)]}" optional="show"/>
+                                           required="('display_type', '=', False)" optional="show"/>
                                     <field name="product_uom_category_id" invisible="1"/>
                                     <field name="taxes_id" widget="many2many_tags"
                                            options="{'no_open': True, 'no_create': True}"
-                                           attrs="{'column_invisible': [('parent.state', 'not in', ('approved', 'done'))]}"
+                                           
                                            optional="hide"/>
 
                                 </list>
                             </field>
                             <group class="oe_subtotal_footer oe_right"
-                                   attrs="{'invisible': [('state', 'not in', ('approved', 'done'))]}">
+                                   invisible="('state', 'not in', ('approved', 'done'))">
                                 <field name="amount_untaxed"/>
                                 <field name="amount_tax"/>
                                 <div class="oe_subtotal_footer_separator oe_inline">

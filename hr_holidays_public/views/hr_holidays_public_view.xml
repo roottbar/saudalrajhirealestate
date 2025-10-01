@@ -29,7 +29,7 @@
                         <list string="Public Holidays" editable="top">
                             <field
                                 name="date"
-                                attrs="{'readonly':[['variable_date', '=', False]]}"
+                                readonly="['variable_date', '=', False"
                             />
                             <field name="name" />
                             <field

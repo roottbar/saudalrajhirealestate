@@ -20,7 +20,7 @@
                 <field name="ejar_synced"/>
                 <field name="landlord_id"/>
                 <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
-                        icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                        icon="fa-refresh" invisible="('ejar_synced', '=', True)"/>
             </list>
         </field>
     </record>
@@ -33,13 +33,13 @@
             <form string="Ejar Property">
                 <header>
                     <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
-                            class="btn-primary" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                            class="btn-primary" invisible="('ejar_synced', '=', True)"/>
                     <button name="action_set_available" type="object" string="Set Available" 
-                            class="btn-success" attrs="{'invisible': [('status', '=', 'available')]}"/>
+                            class="btn-success" invisible="('status', '=', 'available')"/>
                     <button name="action_set_rented" type="object" string="Set Rented" 
-                            class="btn-warning" attrs="{'invisible': [('status', '=', 'rented')]}"/>
+                            class="btn-warning" invisible="('status', '=', 'rented')"/>
                     <button name="action_set_maintenance" type="object" string="Set Maintenance" 
-                            class="btn-info" attrs="{'invisible': [('status', '=', 'maintenance')]}"/>
+                            class="btn-info" invisible="('status', '=', 'maintenance')"/>
                     <field name="status" widget="statusbar" statusbar_visible="available,rented,maintenance,unavailable"/>
                 </header>
                 <sheet>
@@ -48,7 +48,7 @@
                             <field name="contract_count" widget="statbutton" string="Contracts"/>
                         </button>
                         <button name="action_view_ejar_property" type="object" class="oe_stat_button" 
-                                icon="fa-external-link" attrs="{'invisible': [('ejar_synced', '=', False)]}">
+                                icon="fa-external-link" invisible="('ejar_synced', '=', False)">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">View in</span>
                                 <span class="o_stat_text">Ejar</span>
@@ -61,7 +61,7 @@
                             <field name="name" placeholder="Property Name"/>
                         </h1>
                         <div class="o_row">
-                            <field name="ejar_property_id" readonly="1" attrs="{'invisible': [('ejar_property_id', '=', False)]}"/>
+                            <field name="ejar_property_id" readonly="1" invisible="('ejar_property_id', '=', False)"/>
                         </div>
                     </div>
 
@@ -150,7 +150,7 @@
                                     <field name="ejar_synced" readonly="1"/>
                                     <field name="ejar_sync_date" readonly="1"/>
                                     <field name="auto_sync"/>
-                                    <field name="last_sync_error" readonly="1" attrs="{'invisible': [('last_sync_error', '=', False)]}"/>
+                                    <field name="last_sync_error" readonly="1" invisible="('last_sync_error', '=', False)"/>
                                 </group>
                                 <group name="ejar_info" string="Ejar Information">
                                     <field name="ejar_property_id" readonly="1"/>

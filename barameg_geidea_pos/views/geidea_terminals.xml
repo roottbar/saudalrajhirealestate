@@ -28,12 +28,12 @@
                 <field name="AppId" required="True"/>
               </group>
               <group>
-                <field name="ComName" attrs="{'invisible':[('ConnectionMode','!=', 'COM')], 'required':[('ConnectionMode','=','COM')]}"/>
-                <field name="BaudRate" attrs="{'invisible':[('ConnectionMode','!=', 'COM')], 'required':[('ConnectionMode','=','COM')]}"/>
-                <field name="Parity" attrs="{'invisible':[('ConnectionMode','!=', 'COM')], 'required':[('ConnectionMode','=','COM')]}"/>
-                <field name="DataBits" attrs="{'invisible':[('ConnectionMode','!=', 'COM')], 'required':[('ConnectionMode','=','COM')]}"/>
-                <field name="IpAddress" attrs="{'invisible':[('ConnectionMode','!=', 'TCP')], 'required':[('ConnectionMode','=','TCP')]}"/>
-                <field name="Port" attrs="{'invisible':[('ConnectionMode','!=', 'TCP')], 'required':[('ConnectionMode','=','TCP')]}"/>
+                <field name="ComName" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="BaudRate" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="Parity" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="DataBits" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="IpAddress" required="('ConnectionMode','=','TCP')" invisible="('ConnectionMode','!=', 'TCP')"/>
+                <field name="Port" required="('ConnectionMode','=','TCP')" invisible="('ConnectionMode','!=', 'TCP')"/>
               </group>
             </group>
           </sheet>

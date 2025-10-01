@@ -37,7 +37,7 @@
 
                 <sheet>
                     <widget name="web_ribbon" title="Close" bg_color="bg-danger"
-                            attrs="{'invisible': [('implement','=',False)]}"/>
+                            invisible="('implement','=',False)"/>
 
                     <div class='oe_button_box' name="button_box">
                     <button name="action_appeal" type="object" class="oe_stat_button" icon="fa-bookmark-o">
@@ -57,15 +57,15 @@
                     <group>
                         <group>
                             <field name="implement" invisible="1"/>
-                            <field name='case_no' attrs="{'readonly':[('implement','=',True)]}"/>
-                            <field name='date_of_the_invitation' attrs="{'readonly':[('implement','=',True)]}"/>
-                            <field name="court" attrs="{'readonly':[('implement','=',True)]}"/>
-                            <field name="type_of_court" attrs="{'readonly':[('implement','=',True)]}"/>
+                            <field name='case_no' readonly="('implement','=',True)"/>
+                            <field name='date_of_the_invitation' readonly="('implement','=',True)"/>
+                            <field name="court" readonly="('implement','=',True)"/>
+                            <field name="type_of_court" readonly="('implement','=',True)"/>
                         </group>
                         <group>
-                            <field name='judge' attrs="{'readonly':[('implement','=',True)]}"/>
-                            <field name='prosecut' attrs="{'readonly':[('implement','=',True)]}"/>
-                            <field name='defendant' attrs="{'readonly':[('implement','=',True)]}"/>
+                            <field name='judge' readonly="('implement','=',True)"/>
+                            <field name='prosecut' readonly="('implement','=',True)"/>
+                            <field name='defendant' readonly="('implement','=',True)"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="fee" widget="monetary"/>
 
@@ -74,16 +74,16 @@
 
                       <group string="Details of the verdict" name="details_verdict" >
                             <group>
-                                <field name="verdict_no" attrs="{'readonly':[('implement','=',True)]}"/>
-                                <field name="date_of_verdict" attrs="{'readonly':[('implement','=',True)]}"/>
+                                <field name="verdict_no" readonly="('implement','=',True)"/>
+                                <field name="date_of_verdict" readonly="('implement','=',True)"/>
                             </group>
                           <group>
-                                <field name ='court_2' attrs="{'readonly':[('implement','=',True)]}"/>
-                                <field name="attachment_verdict" widget="many2many_binary" attrs="{'readonly':[('implement','=',True)]}"/>
+                                <field name ='court_2' readonly="('implement','=',True)"/>
+                                <field name="attachment_verdict" widget="many2many_binary" readonly="('implement','=',True)"/>
                             </group>
-                          <group string="Transcript Of Verdict" name="transcript_verdict" attrs="{'readonly':[('implement','=',True)]}"></group>
+                          <group string="Transcript Of Verdict" name="transcript_verdict" readonly="('implement','=',True)"></group>
                         </group>
-                    <field name="transcript_of_verdict" class="field_description" placeholder="Description of the verdict..." attrs="{'readonly':[('implement','=',True)]}"/>
+                    <field name="transcript_of_verdict" class="field_description" placeholder="Description of the verdict..." readonly="('implement','=',True)"/>
                 </sheet>
 
 

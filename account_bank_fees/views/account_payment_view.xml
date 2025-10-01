@@ -34,7 +34,7 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <field name="journal_type" invisible="1"/>
-                <notebook attrs="{'invisible': [('journal_type','!=','bank')]}">
+                <notebook invisible="('journal_type','!=','bank')">
                     <page string="Bank Fees" name="payment_bank_fees">
                         <group>
                             <group>
@@ -43,7 +43,7 @@
                             </group>
                             <group/>
                         </group>
-                        <field name="payment_bank_fees_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
+                        <field name="payment_bank_fees_ids" readonly="('state', '!=', 'draft')">
                             <list editable="bottom">
                                 <field name="account_id" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="name" optional="show"/>

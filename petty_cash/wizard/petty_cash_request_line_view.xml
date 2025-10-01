@@ -13,9 +13,9 @@
                         <group>
                             <field name="template_type" invisible="1"/>
                             <field name="account_id" options="{'no_open':True,'no_create':True}" force_save="1"
-                                   attrs="{'readonly':[('template_type','=','with product')]}"/>
+                                   readonly="('template_type','=','with product')"/>
                             <field name="product_id" options="{'no_open':True,'no_create':True}"
-                                   attrs="{'invisible':[('template_type','!=','with product')],'required':[('template_type','=','with product')]}"/>
+                                   required="('template_type','=','with product')" invisible="('template_type','!=','with product')"/>
                         </group>
                     </group>
 

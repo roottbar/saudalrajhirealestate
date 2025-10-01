@@ -30,8 +30,8 @@
           <field name="type"/>
           <field name="recurring"/>
 
-                  <field name="annual_amount" attrs="{'invisible': [('is_eos_element', '=', True)]}"/>
-                  <field name="monthly_amount" attrs="{'invisible': [('is_eos_element', '=', True)]}"/>
+                  <field name="annual_amount" invisible="('is_eos_element', '=', True)"/>
+                  <field name="monthly_amount" invisible="('is_eos_element', '=', True)"/>
 
               </group>
               <group >

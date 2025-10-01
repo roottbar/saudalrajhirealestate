@@ -136,14 +136,14 @@
             <field name="arch" type="xml">
                 <form string="Customer Ticket">
                     <header>
-                        <button name="action_submit" class="oe_highlight" string="Submit Ticket" states="draft"
+                        <button name="action_submit" class="oe_highlight" string="Submit Ticket" 
                                 type="object"/>
-                        <!--                        <button name="action_in_progress" string="In Progress" states="submit" type="object"/>-->
+                        <!--                        <button name="action_in_progress" string="In Progress"  type="object"/>-->
                         <button name="action_escalation" string="Escalation" class="btn-danger"
-                                attrs="{'invisible':[('state', 'in',  ['draft', 'waiting', 'solved'])]}"  type="object"/>
-                        <button name="action_solve" string="Mark as Solved" states="waiting" type="object"/>
-<!--                        <button name="action_reset_to_progess" string="in porgress" states="solved" type="object"/>-->
-                        <button name="open_feedback" class="oe_highlight" string="Feedback" states="waiting"
+                                invisible="('state', 'in',  ['draft', 'waiting', 'solved'"  type="object"/>
+                        <button name="action_solve" string="Mark as Solved"  type="object"/>
+<!--                        <button name="action_reset_to_progess" string="in porgress"  type="object"/>-->
+                        <button name="open_feedback" class="oe_highlight" string="Feedback" 
                                 type="object"/>
                         <field name="state" widget="statusbar"/>
                         <field name="escalation" invisible="1"/>
@@ -156,30 +156,30 @@
                         </div>
                         <group>
                             <group>
-                                <field name="date" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                                <field name="ticket_subject" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="date" readonly="('state', '!=', 'draft')"/>
+                                <field name="ticket_subject" readonly="('state', '!=', 'draft')"/>
                                 <field name="priority" widget="radio"
-                                       attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                             </group>
                             <group>
                                 <field name="subscription_id" readonly="1" force_save="1"/>
                                 <field name="ticket_id" readonly="1" force_save="1" invisible="1"/>
-                                <field name="ticket_type_id" required="True" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                                <field name="ticket_user_id" required="True" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                                <field name="model_id" required="True" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                                <field name="ticket_type_id" required="True" readonly="('state', '!=', 'draft')"/>
+                                <field name="ticket_user_id" required="True" readonly="('state', '!=', 'draft')"/>
+                                <field name="model_id" required="True" readonly="('state', '!=', 'draft')"/>
                                 <field name="company_id" readonly="1" groups="base.group_multi_company"/>
 
                             </group>
                         </group>
                         <group col="4">
                             <field name="stage_state_date" invisible="1"/>
-                            <field name="attachment" invisible="1" attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            <field name="attachment" invisible="1" readonly="('state', '!=', 'draft')"/>
                             <!-- widget="priority" -->
                             <!--                            <field name="ticket_stage_id" widget="many2many_tags" readonly="1"/>-->
 
                         </group>
                         <group>
-                            <field name="tick_description" attrs="{'readonly':[('state', '!=', 'draft')]}"
+                            <field name="tick_description" readonly="('state', '!=', 'draft')"
                                    placeholder="Ticket Details" nolabel="1"/>
                         </group>
                         <!--                        <group>-->

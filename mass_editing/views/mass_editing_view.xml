@@ -13,14 +13,14 @@
                             type="object"
                             string="Add Sidebar Button"
                             class="oe_inline oe_stat_button"
-                            attrs="{'invisible':[('ref_ir_act_window_id','!=',False)]}"
+                            invisible="('ref_ir_act_window_id','!=',False)"
                             icon="fa-plus"
                             help="Display a button in the sidebar of related documents to open a composition wizard"/>
                         <button name="unlink_action"
                             type="object"
                             string="Remove Sidebar Button"
                             class="oe_stat_button" icon="fa-minus"
-                            attrs="{'invisible':[('ref_ir_act_window_id','=',False)]}"
+                            invisible="('ref_ir_act_window_id','=',False)"
                             help="Remove the contextual action to use this template on related documents"
                             widget="statinfo"/>
                     </div>
@@ -32,7 +32,7 @@
                     </div>
                     <group>
                         <group name="model_id">
-                            <field name="model_id" required="1" attrs="{'readonly':[('ref_ir_act_window_id','!=',False)]}"/>
+                            <field name="model_id" required="1" readonly="('ref_ir_act_window_id','!=',False)"/>
                         </group>
                         <group name="model_list">
                             <field name="model_list" invisible="1"/>
@@ -46,7 +46,7 @@
                         <page string="Security">
                             <field name="group_ids" nolabel="1"/>
                         </page>
-                        <page string="Advanced" attrs="{'invisible':[('ref_ir_act_window_id','=',False)]}">
+                        <page string="Advanced" invisible="('ref_ir_act_window_id','=',False)">
                             <group colspan="2" col="2">
                                 <field name="ref_ir_act_window_id"/>
                             </group>

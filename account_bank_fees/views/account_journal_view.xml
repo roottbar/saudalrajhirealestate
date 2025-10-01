@@ -29,7 +29,7 @@
         <field name="inherit_id" ref="account.view_account_journal_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='bank_account']" position="after">
-                <page string="Bank Fees" name="account_bank_fees" attrs="{'invisible': [('type','!=','bank')]}">
+                <page string="Bank Fees" name="account_bank_fees" invisible="('type','!=','bank')">
                     <field name="account_bank_fees_ids">
                         <list editable="bottom">
                             <field name="account_id"

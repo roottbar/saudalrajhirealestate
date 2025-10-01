@@ -17,7 +17,7 @@
 							-
 							<field name="date_to" class="oe_inline" />
 						</div>
-						<field name="show_initial_balance" attrs="{'invisible': [('date_from', '=', False)]}"/>
+						<field name="show_initial_balance" invisible="('date_from', '=', False)"/>
 						<field name="unfold"/>
 						<field name="report_type" required="1"/><!-- widget='radio' -->
 					</group>

@@ -14,7 +14,7 @@
                     <div class="o_row">
                         <field name="user_id" options="{'no_open': 1}"  context="{'default_employee': True}" />
                         <button string="Create User" class="btn btn-link" type="object" name="create_portal_user"
-                                attrs="{'invisible': ['|',('user_id', '!=',False),('user_type', '=', 'internal')]}"/>
+                                invisible="'|',('user_id', '!=',False),('user_type', '=', 'internal')"/>
                     </div>
                 </field>
                 <field name="job_title" position="attributes">
@@ -66,23 +66,23 @@
                     <group name="identification_id" string="Identification ID">
                         <field name="identification_id"/>
                         <field name="id_expiry_date" groups="hr.group_hr_user"
-                               attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
+                               invisible="('identification_id', 'in', [None,False"/>
                         <field name="id_attachment_id" groups="hr.group_hr_user" widget="many2many_binary"
-                               class="oe_inline" attrs="{'invisible': [('identification_id', 'in', [None,False])]}"/>
+                               class="oe_inline" invisible="('identification_id', 'in', [None,False"/>
                         <field name="membership_number"/>
-                        <field name="membership_name"  attrs="{'invisible': [('membership_number', 'in', [None,False])]}"/>
-                        <field name="membership_type"  attrs="{'invisible': [('membership_number', 'in', [None,False])]}"/>
-                        <field name="membership_expire_date"  attrs="{'invisible': [('membership_number', 'in', [None,False])]}"/>
+                        <field name="membership_name"  invisible="('membership_number', 'in', [None,False"/>
+                        <field name="membership_type"  invisible="('membership_number', 'in', [None,False"/>
+                        <field name="membership_expire_date"  invisible="('membership_number', 'in', [None,False"/>
                     </group>
                     <group name="passport_id" string="Passport ID">
                         <field name="passport_id"/>
                         <field name="passport_issue_location"
-                               attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
-                        <field name="passport_issue_date" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                               invisible="('passport_id', 'in', [None,False"/>
+                        <field name="passport_issue_date" invisible="('passport_id', 'in', [None,False"/>
                         <field name="passport_expiry_date" groups="hr.group_hr_user"
-                               attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                               invisible="('passport_id', 'in', [None,False"/>
                         <field name="passport_attachment_id" groups="hr.group_hr_user" widget="many2many_binary"
-                               class="oe_inline" attrs="{'invisible': [('passport_id', 'in', [None,False])]}"/>
+                               class="oe_inline" invisible="('passport_id', 'in', [None,False"/>
                     </group>
                 </xpath>
                   <field name="gender" position="after">

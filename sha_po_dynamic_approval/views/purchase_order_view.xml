@@ -6,17 +6,17 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button string="Approve" type="object" name="approve_purchase" class="oe_highlight"
-                        attrs="{'invisible': [('state', 'in', ['draft', 'sent']), ('is_approval_member', '=', False)]}"
+                        invisible="('state', 'in', ['draft', 'sent'"
                         confirm="Do You Want to Approve The Purchase?"
                 />
                 <button string="REJECT" type="object" name="disapprove_purchase" class="btn-danger"
-                        attrs="{'invisible': [('state', 'in', ['draft', 'sent']), ('is_approval_member', '=', False)]}"
+                        invisible="('state', 'in', ['draft', 'sent'"
                         confirm="You Clicked Reject Button. Do You Want to Reject The Purchase?"
                 />
             </xpath>
             <xpath expr="//sheet/group/group[1]" position="inside">
                 <field name="purchase_team_id" string="Approval Team"
-                       attrs="{'readonly': [('state', 'not in', ['draft', 'sent'])]}"
+                       readonly="('state', 'not in', ['draft', 'sent'"
                        options="{'no_create_edit': True, 'no_create': True}"
                        help="Assign a purchase team for multilevel approval"/>
                 <field name="team_lead_id" options="{'no_open': True}" string="Purchase Team Lead"/>

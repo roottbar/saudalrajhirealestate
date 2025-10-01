@@ -7,17 +7,17 @@
             <field name="arch" type="xml">
                 <form string="">
                     <header>
-                        <button string="Submit" name="action_submit" states="draft" type="object" class="oe_highlight"/>
+                        <button string="Submit" name="action_submit"  type="object" class="oe_highlight"/>
                         <button string="Line Manage Approve" name="action_l_m_approve" type="object"
                                 class="oe_highlight"
-                                attrs="{'invisible': ['|',('is_manager', '=', False),('state', '!=', 'submit')]}"/>
-                        <button string="Hr Approve" name="action_hrm" states="l_m_approve" type="object"
+                                invisible="'|',('is_manager', '=', False),('state', '!=', 'submit')"/>
+                        <button string="Hr Approve" name="action_hrm"  type="object"
                                 class="oe_highlight"
                                 groups="plustech_hr_employee_custody.employee_custody_hr_approval"/>
-                        <button string="Delivered" name="action_delivered" states="hrm" type="object"
+                        <button string="Delivered" name="action_delivered"  type="object"
                                 class="oe_highlight"
                                 groups="plustech_hr_employee_custody.employee_custody_delivery_approval"/>
-                        <button string="Return" name="action_returned" states="delivered" type="object"
+                        <button string="Return" name="action_returned"  type="object"
                                 class="oe_highlight"
                                 groups="plustech_hr_employee_custody.employee_custody_return_approval"/>
 
@@ -33,21 +33,21 @@
                             <group>
                                 <field name="employee_id"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
+                                       />
                                 <field name="employee_number"/>
                                 <field name="manager_id" invisible="1"/>
                                 <field name="is_manager" invisible="1"/>
                             </group>
                             <group>
-                                <field name="request_date" required="1"  attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
-                                <field name="receive_date" required="1"  attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
-                                <field name="return_date" required="1"  attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
+                                <field name="request_date" required="1"  />
+                                <field name="receive_date" required="1"  />
+                                <field name="return_date" required="1"  />
                                 <field name="department_id"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
+                                       />
                                 <field name="job_id"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
+                                       />
                                 <field name="company_id" invisible="1"/>
                             </group>
                         </group>
@@ -55,20 +55,20 @@
                         <notebook>
                             <page string="Items">
                                 <field name="item_ids"
-                                       attrs="{'readonly': [('state', 'in', ('delivered', 'returned'))]}">
+                                       readonly="('state', 'in', ('delivered', 'returned'))">
                                     <list editable="bottom">
                                         <field name="state" invisible="1"/>
                                         <field name="product_id"
                                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                               attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
+                                               />
                                         <field name="serial"/>
-                                        <field name="request_for" attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
+                                        <field name="request_for" />
                                         <field name="return_date" readonly="1"/>
                                         <field name="rejected" widget="boolean_toggle"
-                                               attrs="{'readonly' : [('state', '!=', 'draft')] }"/>
+                                               />
                                         <button string="" icon="fa-retweet" style="font-size: 1.5rem;"
                                                 name="action_renew" type="object" class="oe_highlight"
-                                                attrs="{'invisible' : ['|',('state', '!=', 'delivered'), ('rejected', '=', True)] }"/>
+                                                />
 
                                     </list>
                                 </field>

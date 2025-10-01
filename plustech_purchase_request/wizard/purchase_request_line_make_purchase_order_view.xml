@@ -32,7 +32,7 @@
                                 options="{'no_open': true}"
                                 invisible="1"
                             />
-                            <field name="request_id" attrs="{'readonly': True}" />
+                            <field name="request_id"  />
                             <field name="product_id" />
                             <field name="name" />
                             <field name="product_qty" />

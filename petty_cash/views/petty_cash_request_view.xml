@@ -29,26 +29,26 @@
                         <field name="petty_cash_id" invisible="1"/>
                         <field name="show_button" invisible="1"/>
 
-                        <button name="action_send" type="object" states="draft" string="Send" class="oe_highlight"/>
+                        <button name="action_send" type="object"  string="Send" class="oe_highlight"/>
                         <button name="action_project_manager_approve" type="object" string="PM Approved"
                                 class="oe_highlight"
-                                attrs="{'invisible': ['|',('state','!=','in progress'),('allow_pm_approve','=',False)]}"/>
+                                invisible="'|',('state','!=','in progress'),('allow_pm_approve','=',False)"/>
 
-                        <button name="action_gm_approve" type="object"  states="p_m_approved"
+                        <button name="action_gm_approve" type="object"  
                                 string="GM Approved" class="oe_highlight" groups="petty_cash.group_petty_cash_manager,petty_cash.group_petty_general_m_approved"
                         />
 
 
                         <button name="%(action_approved_petty_cash_request)d" type="action" string="FM Approved"
-                                class="oe_highlight" states="gm_approved"/>
+                                class="oe_highlight" />
 
-                        <button name="%(action_cancel_petty_cash_request)d" type="action" states="in progress,p_m_approved,approved"
+                        <button name="%(action_cancel_petty_cash_request)d" type="action" 
                                 string="Cancel" class="oe_highlight" groups="petty_cash.group_petty_cash_manager"/>
                         <button name="create_payment_voucher" type="object" string="Payment Voucher"
                                 class="oe_highlight"
-                                attrs="{'invisible': ['|','|','|',('show_button','=',False),('payment_voucher_id', '!=', False),('petty_cash_id', '!=', False),('state', '!=', 'f_m_approved')]}"/>
+                                invisible="'|','|','|',('show_button','=',False),('payment_voucher_id', '!=', False),('petty_cash_id', '!=', False),('state', '!=', 'f_m_approved')"/>
                         <button name="assign_petty_cash" type="object" string="Petty Cash" class="oe_highlight"
-                                attrs="{'invisible': ['|','|','|',('show_button','=',False),('payment_voucher_id', '!=', False),('petty_cash_id', '!=', False),('state', '!=', 'f_m_approved')]}"/>
+                                invisible="'|','|','|',('show_button','=',False),('payment_voucher_id', '!=', False),('petty_cash_id', '!=', False),('state', '!=', 'f_m_approved')"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,send,in progress,p_m_approved,gm_approved,f_m_approved,cancel"/>
                     </header>
@@ -56,11 +56,11 @@
                         <div class="oe_button_box">
                             <button name="open_payment_voucher" class="oe_stat_button" icon="fa-bars" type="object"
                                     string="Payment Voucher"
-                                    attrs="{'invisible':[('payment_voucher_id', '=', False)]}"/>
+                                    invisible="('payment_voucher_id', '=', False)"/>
                             <button name="open_petty_cash" class="oe_stat_button" icon="fa-money" type="object"
-                                    string="Petty Cash" attrs="{'invisible':[('petty_cash_id', '=', False)]}"/>
+                                    string="Petty Cash" invisible="('petty_cash_id', '=', False)"/>
                         </div>
-                        <div class="oe_title" attrs="{'invisible': [('state', '=', 'draft')]}">
+                        <div class="oe_title" invisible="('state', '=', 'draft')">
                             <h1>
                                 <field name="name"/>
                             </h1>
@@ -68,31 +68,31 @@
 
                         <group>
                             <group>
-                                <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="amount" readonly="('state', '!=', 'draft')"/>
                                 <field name="currency_id" options="{'no_open':True,'no_create':True}"
                                        groups="petty_cash.group_petty_cash_multi_currency"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                                 <field name="partner_id" options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                             </group>
                             <group>
-                                <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="date" readonly="('state', '!=', 'draft')"/>
                                 <field name="manager_id" options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
                                 <field name="project_id" options="{'no_open':True,'no_create':True}"
-                                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                       readonly="('state', '!=', 'draft')"/>
 
                                 <field name="journal_id" invisible="1"/>
                             </group>
                         </group>
                         <group>
-                            <field name="description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="description" readonly="('state', '!=', 'draft')"/>
                         </group>
                         <group>
-                            <field name="recommends" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="recommends" readonly="('state', '!=', 'draft')"/>
                         </group>
                         <group>
-                            <field name="attachment" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="attachment" readonly="('state', '!=', 'draft')"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">

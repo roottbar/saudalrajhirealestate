@@ -21,10 +21,10 @@
             <field name="arch" type="xml">
                 <form string="Server Details">
                     <header>
-                        <button name="action_confirm" type="object" string="Confirm" states="draft"
+                        <button name="action_confirm" type="object" string="Confirm" 
                                 class="oe_highlight"/>
-                        <button name="action_cancel" type="object" string="Cancel" states="draft"/>
-                        <button name="action_draft" type="object" string="Set to Draft" states="cancel"/>
+                        <button name="action_cancel" type="object" string="Cancel" />
+                        <button name="action_draft" type="object" string="Set to Draft" />
 
                         <button name="test_connect" string="Test Connection" type="object" class="oe_highlight"/>
                         <button name="action_connect" string="Fetch" type="object" class="oe_highlight"/>
@@ -46,7 +46,7 @@
                             </group>
                             <group>
                                 <field name="last_sync_time" readonly="1"/>
-                                <field name="last_record_id" attrs="{'readonly': [('first_insertion','>', 0)]}"/>
+                                <field name="last_record_id" readonly="('first_insertion','>', 0)"/>
                                 <field name="employees_exceptions" widget="many2many_tags"/>
                                 <field name="first_insertion" invisible="1"/>
                             </group>

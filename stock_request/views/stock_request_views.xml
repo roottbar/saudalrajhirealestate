@@ -108,17 +108,17 @@
                         name="action_confirm"
                         string="Confirm"
                         type="object"
-                        attrs="{'invisible': [('state', 'not in', ['draft'])]}"
+                        invisible="('state', 'not in', ['draft'"
                     />
                     <button
                         name="action_cancel"
-                        states="draft,open"
+                        
                         type="object"
                         string="Cancel"
                     />
                     <button
                         name="action_draft"
-                        states="cancel"
+                        
                         type="object"
                         string="Set to Draft"
                     />
@@ -126,7 +126,7 @@
                         name="action_done"
                         string="Done"
                         type="object"
-                        attrs="{'invisible': [('state', 'not in', ['open'])]}"
+                        invisible="('state', 'not in', ['open'"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
@@ -138,7 +138,7 @@
                             name="action_view_transfer"
                             class="oe_stat_button"
                             icon="fa-truck"
-                            attrs="{'invisible': [('picking_count', '=', 0)]}"
+                            invisible="('picking_count', '=', 0)"
                             groups="stock.group_stock_user"
                         >
                             <field
@@ -205,15 +205,15 @@
                             </div>
                             <field
                                 name="qty_in_progress"
-                                attrs="{'invisible': [('state', '=', 'draft')]}"
+                                invisible="('state', '=', 'draft')"
                             />
                             <field
                                 name="qty_done"
-                                attrs="{'invisible': [('state', '=', 'draft')]}"
+                                invisible="('state', '=', 'draft')"
                             />
                             <field
                                 name="qty_cancelled"
-                                attrs="{'invisible': [('state', '=', 'draft')]}"
+                                invisible="('state', '=', 'draft')"
                             />
                         </group>
                     </group>

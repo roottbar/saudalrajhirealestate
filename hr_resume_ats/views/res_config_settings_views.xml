@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         
-                        <div class="row mt16 o_settings_container" attrs="{'invisible': [('enable_ai_analysis', '=', False)]}">
+                        <div class="row mt16 o_settings_container" invisible="('enable_ai_analysis', '=', False)">
                             <div class="col-12 col-lg-6 o_setting_box">
                                 <div class="o_setting_left_pane">
                                     <field name="openai_api_key" password="True" placeholder="sk-..."/>
@@ -41,7 +41,7 @@
                                     <div class="mt8">
                                         <button name="action_test_openai_connection" type="object" 
                                                 string="Test Connection" class="btn-secondary"
-                                                attrs="{'invisible': [('openai_api_key', '=', False)]}"/>
+                                                invisible="('openai_api_key', '=', False)"/>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         
-                        <div class="row mt16 o_settings_container" attrs="{'invisible': [('enable_ai_analysis', '=', False)]}">
+                        <div class="row mt16 o_settings_container" invisible="('enable_ai_analysis', '=', False)">
                             <div class="col-12 col-lg-6 o_setting_box">
                                 <div class="o_setting_left_pane">
                                     <field name="openai_max_tokens"/>

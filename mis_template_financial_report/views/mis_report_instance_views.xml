@@ -9,7 +9,7 @@
                 <field name="allow_horizontal" invisible="1" />
                 <field
                     name="horizontal"
-                    attrs="{'invisible': [('allow_horizontal', '=', False)]}"
+                    invisible="('allow_horizontal', '=', False)"
                 />
             </group>
         </field>

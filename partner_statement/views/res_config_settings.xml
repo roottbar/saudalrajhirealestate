@@ -23,7 +23,7 @@
                             </div>
                             <div
                                 class="content-group"
-                                attrs="{'invisible': [('group_activity_statement', '=', False), ('group_outstanding_statement', '=', False)]}"
+                                invisible="('group_activity_statement', '=', False), ('group_outstanding_statement', '=', False)"
                             >
                                 <div class="row mt16">
                                     <label
@@ -76,7 +76,7 @@
                             </div>
                             <div
                                 class="text-muted"
-                                attrs="{'invisible': [('group_outstanding_statement', '=', False)]}"
+                                invisible="('group_outstanding_statement', '=', False)"
                             >
                                 Please set defaults under Activity Statements.
                             </div>

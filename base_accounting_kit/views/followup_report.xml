@@ -28,7 +28,7 @@
                         <br/>
 
                         <div class="alert alert-warning o_account_reports_followup-no-action"
-                             attrs="{'invisible': [('invoice_list', '!=', [])]}"
+                             invisible="('invoice_list', '!=', ["
                              id='no-action' role="alert">
                             <p>
                                 <strong>
@@ -38,7 +38,7 @@
                             </p>
                         </div>
 
-                        <div attrs="{'invisible': [('invoice_list', '=', [])]}">
+                        <div invisible="('invoice_list', '=', [">
                             <group>
                                 <field name="next_reminder_date"/>
                             </group>

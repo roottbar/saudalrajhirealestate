@@ -31,7 +31,7 @@
             >
                 <field
                     name="discount"
-                    attrs="{'readonly': [('qty_invoiced', '!=', 0)]}"
+                    readonly="('qty_invoiced', '!=', 0)"
                 />
             </xpath>
             <xpath
@@ -40,7 +40,7 @@
             >
                 <field
                     name="discount"
-                    attrs="{'readonly': [('qty_invoiced', '!=', 0)]}"
+                    readonly="('qty_invoiced', '!=', 0)"
                 />
             </xpath>
         </field>

@@ -17,7 +17,7 @@
                                    options="{'no_open':True,'no_create':True}"/>
                             <field name="description"/>
                             <field name="partner_id" options="{'no_open':True,'no_create':True}"
-                                   attrs="{'required':[('type','=','payment')]}"/>
+                                   required="('type','=','payment')"/>
                             <field name="account_id" options="{'no_open':True,'no_create':True}"
                                    readonly="context.get('with_product')" force_save="context.get('with_product')"/>
                             <field name="quantity" invisible="not context.get('with_product')"

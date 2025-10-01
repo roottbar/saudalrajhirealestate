@@ -86,7 +86,7 @@
                             </group>
                         </page>
 
-                        <page string="التفاصيل" attrs="{'invisible': [('id', '=', False)]}">
+                        <page string="التفاصيل" invisible="('id', '=', False)">
                             <field name="report_lines" widget="html" nolabel="1" class="oe_no_button"/>
                         </page>
                     </notebook>

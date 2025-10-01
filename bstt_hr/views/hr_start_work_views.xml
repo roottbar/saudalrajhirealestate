@@ -23,16 +23,16 @@
                 <form string="المباشرة">
                     <header>
                         <field name="is_project_manager" invisible="1"/>
-                        <button name="action_project_manager" type="object" string="ارسال" states="draft" class="oe_highlight"/>
+                        <button name="action_project_manager" type="object" string="ارسال"  class="oe_highlight"/>
                         <button name="action_hr_manager" type="object" string="موافقة مدير المشروع"
-                                attrs="{'invisible':['|', ('state','!=', 'project_manager'), ('is_project_manager','!=', True)]}"
+                                invisible="'|', ('state','!=', 'project_manager'), ('is_project_manager','!=', True)"
                                 class="oe_highlight"/>
                         <button name="action_executive_manager" type="object" string="موافقة مدير الموارد البشرية"
-                                states="hr_manager" groups="bstt_hr.group_hr_manager_group" class="oe_highlight"/>
+                                 groups="bstt_hr.group_hr_manager_group" class="oe_highlight"/>
                         <button name="action_approve" type="object" string="موافقة المدير التنفيذي"
-                                states="executive_manager" groups="bstt_hr.group_executive_manager" class="oe_highlight"/>
-                        <button name="action_cancel" type="object" string="Cancel" states="draft"/>
-                        <button name="action_refuse" type="object" string="Refuse" states="draft,waiting_approval_1"
+                                 groups="bstt_hr.group_executive_manager" class="oe_highlight"/>
+                        <button name="action_cancel" type="object" string="Cancel" />
+                        <button name="action_refuse" type="object" string="Refuse" 
                                 class="oe_highlight" groups="hr.group_hr_manager,hr.group_hr_user"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,project_manager,hr_manager,executive_manager"/>
 

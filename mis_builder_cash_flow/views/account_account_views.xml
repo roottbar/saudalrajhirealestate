@@ -7,7 +7,7 @@
             <field name="deprecated" position="after">
                 <field
                     name="hide_in_cash_flow"
-                    attrs="{'invisible': [('internal_type', 'not in', ['receivable', 'payable', 'liquidity'])]}"
+                    invisible="('internal_type', 'not in', ['receivable', 'payable', 'liquidity'"
                 />
             </field>
         </field>
