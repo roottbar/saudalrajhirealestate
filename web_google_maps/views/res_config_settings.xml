@@ -31,7 +31,7 @@
                                             <label for="google_maps_lang_localization" string="Language"/>
                                             <field name="google_maps_lang_localization"/>
                                         </div>
-                                        <div class="mt16" invisible="('google_maps_lang_localization', 'in', [False, ''">
+                                        <div class="mt16" invisible="('google_maps_lang_localization', 'in', [False, ''])">
                                             <div class="text-muted">
                                                 If you set the language of the map, it's important to consider setting the region too. This helps ensure that your application complies with local laws.
                                             </div>
