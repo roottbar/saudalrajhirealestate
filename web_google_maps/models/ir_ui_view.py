@@ -86,7 +86,7 @@ class IrUiView(models.Model):
             self._raise_view_error(msg, node)
 
         name_manager.has_field(
-            name, {'id': node.get('id'), 'select': node.get('select')}
+            name, {'id': node.get('id'), 'select': node.get('select')}, node_info
         )
 
         if validate:
@@ -159,7 +159,7 @@ class IrUiView(models.Model):
                     node.set('can_create', 'true' if can_create else 'false')
                     node.set('can_write', 'true' if can_write else 'false')
 
-            name_manager.has_field(node.get('name'), attrs)
+            name_manager.has_field(node.get('name'), attrs, node_info)
 
             field_info = name_manager.field_info.get(node.get('name'))
             if field_info:
