@@ -23,16 +23,12 @@
                     </group>
                     <group col="2">
                         <field name="account_ids" widget="many2many_tags"
-                               domain="[('company_id','=',company_id)]"
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="journal_ids" widget="many2many_tags"
-                               domain="[('company_id','=',company_id)]"
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="partner_category_ids" widget="many2many_tags"
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="partner_ids" widget="many2many_tags"
-                               domain="[('parent_id','=', False),
-                                        '|',('company_id','=',company_id),('company_id','=',False)]"
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                     </group>
                     <footer>
