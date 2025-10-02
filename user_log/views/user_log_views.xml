@@ -1,0 +1,68 @@
+<odoo>
+    <record id="view_user_log_tree" model="ir.ui.view">
+        <field name="name">user.log.tree</field>
+        <field name="model">user.log</field>
+        <field name="arch" type="xml">
+            <tree string="User Logs">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="date"/>
+                <field name="action"/>
+                <field name="model"/>
+                <field name="record_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_user_log_search" model="ir.ui.view">
+        <field name="name">user.log.search</field>
+        <field name="model">user.log</field>
+        <field name="arch" type="xml">
+            <search string="User Logs">
+                <field name="user_id" filter_domain="[('user_id', 'ilike', self)]"/>
+                <field name="model"/>
+                <field name="action"/>
+                <filter name="date_filter" string="Date" date="date"/>
+                <filter name="custom_date_filter" string="Custom Date Range">
+                    <filter name="date_from" string="From" date="date" default_period="this_month"/>
+                    <filter name="date_to" string="To" date="date" default_period="this_month"/>
+                </filter>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_user" string="User" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_by_model" string="Model" context="{'group_by': 'model'}"/>
+                    <filter name="group_by_action" string="Action" context="{'group_by': 'action'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_user_log_form" model="ir.ui.view">
+        <field name="name">user.log.form</field>
+        <field name="model">user.log</field>
+        <field name="arch" type="xml">
+            <form string="User Log">
+                <sheet>
+                    <group>
+                        <field name="user_id"/>
+                        <field name="date"/>
+                        <field name="action"/>
+                        <field name="model"/>
+                        <field name="record_id"/>
+                        <field name="ip_address"/>
+                    </group>
+                    <group>
+                        <field name="changes" widget="textarea" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_user_log">
+        <field name="name">User Activity Log</field>
+        <field name="res_model">user.log</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_user_log_search"/>
+        <field name="context">{'search_default_date_filter': 1}</field>
+    </record>
+</odoo>

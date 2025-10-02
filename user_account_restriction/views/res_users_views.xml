@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit User Form View -->
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='access_rights']" position="after">
+                    <page string="Account Restrictions" name="account_restrictions">
+                        <group>
+                            <group string="Restricted Accounts">
+                                <field name="restricted_account_ids" widget="many2many_tags" 
+                                       options="{'no_create': True, 'no_create_edit': True}"
+                                       domain="[('deprecated', '=', False)]"
+                                       help="Select accounts that this user should not be able to see or access in financial screens"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- User Tree View with Restricted Accounts -->
+        <record id="view_users_tree_inherit" model="ir.ui.view">
+            <field name="name">res.users.tree.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='login_date']" position="after">
+                    <field name="restricted_account_ids" widget="many2many_tags" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- User Search View -->
+        <record id="view_users_search_inherit" model="ir.ui.view">
+            <field name="name">res.users.search.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_search"/>
+            <field name="arch" type="xml">
+                <search position="inside">
+                    <separator/>
+                    <filter string="Users with Account Restrictions" name="has_restrictions"
+                            domain="[('restricted_account_ids', '!=', False)]"/>
+                    <filter string="Users without Account Restrictions" name="no_restrictions"
+                            domain="[('restricted_account_ids', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Restricted Accounts" name="group_by_restricted_accounts"
+                                context="{'group_by': 'restricted_account_ids'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="module_einv" model="ir.module.category">
+            <field name="name">الفاتورة الضريبية</field>
+            <field name="description">صلاحيات الفاتورة الضريبية</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="group_e_invoice" model="res.groups">
+            <field name="name">B2B-الفاتورة الضريبية</field>
+            <field name="category_id" ref="einv_sa.module_einv"/>
+        </record>
+
+        <record id="group_e_receipt" model="res.groups">
+            <field name="name">B2C-الايصال الضريبي</field>
+            <field name="category_id" ref="einv_sa.module_einv"/>
+        </record>
+
+
+    </data>
+</odoo>

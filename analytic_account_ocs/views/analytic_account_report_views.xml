@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Security -->
+    <record id="analytic_account_report_group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="base.module_category_accounting_accounting"/>
+    </record>
+
+    <record id="analytic_account_report_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_accounting_accounting"/>
+        <field name="implied_ids" eval="[(4, ref('analytic_account_report_group_user'))]"/>
+    </record>
+
+    <record id="analytic_account_report_access" model="ir.model.access">
+        <field name="name">analytic.account.report access</field>
+        <field name="model_id" ref="model_analytic_account_report"/>
+        <field name="group_id" ref="analytic_account_report_group_user"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_unlink">0</field>
+    </record>
+
+    <record id="analytic_account_report_manager_access" model="ir.model.access">
+        <field name="name">analytic.account.report manager access</field>
+        <field name="model_id" ref="model_analytic_account_report"/>
+        <field name="group_id" ref="analytic_account_report_group_manager"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">1</field>
+        <field name="perm_unlink">1</field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_analytic_account_report_search" model="ir.ui.view">
+        <field name="name">analytic.account.report.search</field>
+        <field name="model">analytic.account.report</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="company_ids" string="الشركات" widget="many2many_tags"/>
+                <field name="branch_id" string="الفرع"/>
+                <field name="group_id" string="مجموعة مراكز التكلفة"/>
+                <field name="analytic_account_id" string="مركز التكلفة"/>
+                <field name="date_from" string="من تاريخ"/>
+                <field name="date_to" string="إلى تاريخ"/>
+                <filter string="هذا الشهر" name="current_month"
+                        domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
+                <group expand="0" string="تصفية حسب">
+                    <filter string="اليوم" name="today"
+                            domain="[('date_from','=',context_today()),('date_to','=',context_today())]"/>
+                    <filter string="الأسبوع الحالي" name="this_week"
+                            domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
+                    <filter string="الشهر الحالي" name="this_month"
+                            domain="[('date_from','&lt;=',context_today()),('date_to','&gt;=',context_today())]"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_analytic_account_report_tree" model="ir.ui.view">
+        <field name="name">analytic.account.report.tree</field>
+        <field name="model">analytic.account.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="company_ids" widget="many2many_tags" string="الشركات" groups="base.group_multi_company"/>
+                <field name="branch_id" string="الفرع"/>
+                <field name="group_id" string="مجموعة مراكز التكلفة"/>
+                <field name="date_from" string="من تاريخ"/>
+                <field name="date_to" string="إلى تاريخ"/>
+                <field name="total_expenses" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="total_revenues" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                <field name="total_debts" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+            </tree>
+        </field>
+    </record>
+
+
+    
+    <record id="view_analytic_account_report_form" model="ir.ui.view">
+        <field name="name">analytic.account.report.form</field>
+        <field name="model">analytic.account.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_generate_excel_report"
+                            string="تقرير مراكز التكلفة (Excel)"
+                            type="object"
+                            class="oe_highlight"/>
+                    <button name="action_generate_pdf_report" 
+                            string="تقرير مراكز التكلفة (PDF)" 
+                            type="object" 
+                            class="oe_highlight"/>
+                    <button name="action_view_analytic_lines" 
+                            string="عرض حركات مراكز التكلفة" 
+                            type="object"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="company_ids" widget="many2many_tags" string="الشركات"/>
+                        <field name="branch_id" string="الفرع"
+                               domain="[('company_id','in',company_ids[0].ids if company_ids else [])]"/>
+                        <field name="group_id" string="مجموعة مراكز التكلفة"
+                               domain="[('company_id','in',company_ids[0].ids if company_ids else [])]"/>
+                        <field name="analytic_account_id" string="مركز التكلفة"
+                               domain="[('company_id','in',company_ids[0].ids if company_ids else []),('group_id','=',group_id)]"/>
+                        <field name="date_from" string="من تاريخ"/>
+                        <field name="date_to" string="إلى تاريخ"/>
+                    </group>
+        
+                    <notebook>
+                        <page string="الملخص">
+                            <group>
+                                <group string="إجمالي المصروفات">
+                                    <field name="total_expenses" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                                <group string="إجمالي الإيرادات">
+                                    <field name="total_revenues" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                                <group string="إجمالي التحصيل">
+                                    <field name="total_collections" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                                <group string="إجمالي المديونية">
+                                    <field name="total_debts" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+                            </group>
+                        </page>
+        
+                        <page string="التفاصيل">
+                            <field name="report_lines" widget="html" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Action and Menu -->
+    <record id="action_analytic_account_report" model="ir.actions.act_window">
+        <field name="name">تقارير مراكز التكلفة</field>
+        <field name="res_model">analytic.account.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_analytic_account_report_tree"/>
+        <field name="search_view_id" ref="view_analytic_account_report_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">اضغط على إنشاء لإنشاء تقرير جديد</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_accounting_analytic_reports_root" name="تقارير المحاسبة التحليلية" parent="account.menu_finance"/>
+    <menuitem id="menu_analytic_account_report" name="تقارير مراكز التكلفة" parent="menu_accounting_analytic_reports_root" action="action_analytic_account_report"/>
+</odoo>

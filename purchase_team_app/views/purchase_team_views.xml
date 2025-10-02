@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<odoo>
+	<record id="view_module_purchase_team_form" model="ir.ui.view">
+			<field name="name">purchase.team.form</field>
+			<field name="model">purchase.team</field>
+			<field name="arch" type="xml">
+				<form string="Purchase Team">
+			<sheet>
+				<div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+				<div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Purchase Team"/>
+                            <h1>
+                                <field name="name" placeholder="Purchaseteam name..."/>
+                            </h1>
+                            <div name="options_active"/>
+                </div>
+				<group>
+						<group>
+							<field name="user_id"/>
+						</group>								
+				</group>
+				
+				<notebook>
+				     <page name="members" string="Team Members">
+                                <field name="team_member_ids" widget="many2many" options="{'not_delete': True}">
+                                    <kanban quick_create="false" create="true" delete="true">
+                                        <field name="id"/>
+                                        <field name="name"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="oe_kanban_global_click" style="max-width: 200px">
+                                                    <div class="o_kanban_record_top">
+                                                        <img t-att-src="kanban_image('res.users', 'image_small', record.id.raw_value)" height="40" width="40" class="oe_avatar oe_kanban_avatar_smallbox mb0" alt="Avatar"/>
+                                                        <div class="o_kanban_record_headings ml8">
+                                                            <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </page>
+                            </notebook>		
+						</sheet>
+						<div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" help="Follow this salesteam to automatically track the events associated to users of this team."/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+				</form>
+			</field>
+			</record>
+
+			<record id="view_module_purchase_team_tree" model="ir.ui.view">
+			<field name="name">purchase.team.tree</field>
+			<field name="model">purchase.team</field>
+			<field name="arch" type="xml">
+				<tree string="Purchase Team">
+					<field name="name"/>
+				</tree>
+			</field>
+			</record>
+
+			<record id="view_purchase_filter_extended" model="ir.ui.view">
+            <field name="model">purchase.report</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_search"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//group[@expand='1']/filter[@name='country_id']" position="after">
+            		<filter name="group_team_id" string="Purchase Team" context="{'group_by': 'team_id'}"/>
+    			</xpath>
+			</field>
+			</record>
+
+			<record model="ir.actions.act_window" id="action_purchase_team">
+			<field name="name">Purchase Team</field>
+			<field name="res_model">purchase.team</field>
+			<field name="view_mode">tree,form</field>
+			</record>
+
+			<menuitem action="action_purchase_team" id="menu_action_purchase_team_id" parent="purchase.menu_purchase_config" groups='purchase_team_app.group_purchase_team'/>
+ 
+
+</odoo>

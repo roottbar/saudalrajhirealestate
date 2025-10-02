@@ -1,0 +1,186 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+
+        <!--    inherit  project task  form  -->
+        <record id="view_project_task_inherit_form" model="ir.ui.view">
+            <field name="name">view.project.task.inherit.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='extra_info']/group/group/field[@name='parent_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='extra_info']/group/group/field[@name='sequence']" position="after">
+                    <field name="ref"/>
+                </xpath>
+                <xpath expr="//field[@name='date_deadline']" position="before">
+                    <label for="start_date"/>
+                    <div class="o_row">
+                        <field name="start_date" class="oe_inline"/>
+                        <button name="calc_expect_start_date" type="object" string="Expect"
+                                icon="fa-arrow-right" class="oe_link oe_inline"/>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='date_deadline']" position="before">
+                    <field name="planned_hours" widget="float_time"/>
+                    <label for="subtask_planned_hours" groups="project.group_subtask_project"
+                           attrs="{'invisible': [('subtask_count', '=', 0)]}"/>
+                    <div class="o_row" groups="project.group_subtask_project"
+                         attrs="{'invisible': [('subtask_count', '=', 0)]}">
+                        <field name="subtask_planned_hours" widget="float_time"/>
+                        <span>planned hours</span>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="parent_id"/>
+                </xpath>
+                <xpath expr="//page[@name='extra_info']/group/group/field[@name='date_last_stage_update']"
+                       position="after">
+                    <field name="privacy_visibility" widget="radio" invisible="1"/>
+                    <field name="allowed_user_ids" string="Visible to" widget="many2many_tags"
+                           options="{'no_open': True, 'no_create': True}"
+                           attrs="{'invisible':[('privacy_visibility' ,'=','employees')]}" readonly="0"/>
+                </xpath>
+                <xpath expr="//button[@name='action_assign_to_me']" position="after">
+                    <button name="project_advanced.task_assign_history_wizard"
+                            type="action"
+                            string="Assign to"
+                            class="oe_highlight"
+                            groups="project_advanced.group_change_assign_user_tasks"
+                    />
+                </xpath>
+                <xpath expr="//page[@name='extra_info']" position="after">
+                    <page string="Assign History">
+                        <field name="assign_history_ids" editable="bottom" string="Assign History">
+                            <tree>
+                                <field name="description"/>
+                                <field name="old_user_id"/>
+                                <field name="new_user_id"/>
+                                <field name="create_uid"/>
+                                <field name="create_date"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <!--  hide planned hours original field -->
+        <record id="view_project_task_inherit_form11" model="ir.ui.view">
+            <field name="name">view.project.task.inherit.view_task_form2_inherited</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="hr_timesheet.view_task_form2_inherited"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@id='timesheets_tab']/group/group" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!--    inherit  project task   search  -->
+        <record id="view_project_task_inherit_filter" model="ir.ui.view">
+            <field name="name">project.task</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='rating_task']" position="after">
+                    <separator/>
+                    <filter name="planned_date_begin" string="Start Date" date="planned_date_begin"/>
+                    <filter string="This Week" name="this_week_date_begin" domain="[('planned_date_begin','&lt;=',(datetime.date.today() + relativedelta(weeks=0, weekday=-1)).strftime('%Y-%m-%d')),
+                    ('planned_date_begin','&gt;=',(datetime.date.today() - relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d'))]"/>
+                    <filter name="planned_date_end" string="End Date" date="planned_date_end"/>
+                    <filter string="This Week" name="this_week_date_end" domain="[('planned_date_end','&lt;=',(datetime.date.today() + relativedelta(weeks=0, weekday=-1)).strftime('%Y-%m-%d')),
+                    ('planned_date_end','&gt;=',(datetime.date.today() - relativedelta(weeks=1, weekday=0)).strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <filter string="In Progress" name="in_progress" domain="[('in_progress','=',True)]"/>
+                    <filter string="Is Ready" name="is_ready" domain="[('is_ready','=',True)]"/>
+                    <filter string="Is Review" name="is_review" domain="[('is_review','=',True)]"/>
+                    <filter string="Is Closed" name="is_closed" domain="[('is_closed','=',True)]"/>
+                </xpath>
+            </field>
+
+        </record>
+        <!--    set in_progress default filter project     -->
+        <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+            <field name="context">{
+                'pivot_row_groupby': ['user_id'],
+                'search_default_project_id': [active_id],
+                'search_default_in_progress': 1,
+                'default_project_id': active_id,
+                }
+            </field>
+        </record>
+        <!--    set in_progress default filter project task    -->
+        <record id="project.action_view_task" model="ir.actions.act_window">
+            <field name="context">{
+                'search_default_my_tasks': 1,
+                'search_default_in_progress': 1,
+                }
+            </field>
+        </record>
+        <!--    create project task dashboard view -->
+        <record id="view_project_tasks_dashboard" model="ir.ui.view">
+            <field name="name">Dashbaord</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <dashboard>
+                    <view ref="project.view_project_tasks_graph" type="graph"/>
+                    <group string="Tasks">
+                        <aggregate name="all_task" string="Total" group_operator="count" field="id"
+                                   measure="__count__"/>
+                        <aggregate name="progress_task" string="In Progress" domain="[('in_progress', '=', True)]"
+                                   group_operator="count" field="id" measure="__count__"/>
+                        <aggregate name="ready_task" string="Is Ready" domain="[('is_ready', '=', True)]"
+                                   group_operator="count" field="id" measure="__count__"/>
+                        <aggregate name="review_task" string="Is Review" domain="[('is_review', '=', True)]"
+                                   group_operator="count" field="id" measure="__count__"/>
+                        <aggregate name="closed_task" string="Is Closed" domain="[('is_closed', '=', True)]"
+                                   group_operator="count" field="id" measure="__count__"/>
+                        <formula name="done_average" string="Overall Progress"
+                                 value="record.closed_task / record.all_task" widget="percentage"/>
+                        <aggregate name="message_unread_task" string="Massage Unread"
+                                   domain="[('message_needaction', '=', True)]"
+                                   group_operator="count" field="id" measure="__count__"/>
+
+                    </group>
+                    <group string="Timesheets">
+                        <aggregate name="planned_hours_all_task" string="Total Planned Hours" group_operator="sum"
+                                   field="planned_hours"/>
+                        <aggregate name="timesheets_progress_task" string="In Progress"
+                                   domain="[('in_progress', '=', True)]"
+                                   group_operator="sum" field="effective_hours"/>
+                        <aggregate name="timesheets_ready_task" string="Ready" domain="[('is_ready', '=', True)]"
+                                   group_operator="sum" field="effective_hours"/>
+                        <aggregate name="timesheets_review_task" string="Review" domain="[('is_review', '=', True)]"
+                                   group_operator="sum" field="effective_hours"/>
+                        <aggregate name="timesheets_closed_task" string="Closed" domain="[('is_closed', '=', True)]"
+                                   group_operator="sum" field="effective_hours"/>
+                        <aggregate name="timesheets_all_task" string="Total" group_operator="sum"
+                                   field="effective_hours"/>
+
+                        <formula name="timesheets_done_average" string="Overall Progress"
+                                 value="record.timesheets_closed_task / record.planned_hours_all_task"
+                                 widget="percentage"/>
+
+                    </group>
+                    <view ref="project.view_project_tasks_pivot" type="pivot"/>
+                </dashboard>
+            </field>
+        </record>
+        <!--    create project task dashboard action -->
+        <record id='action_project_task_dashboard' model='ir.actions.act_window'>
+            <field name="name">Dashbaord</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">dashboard</field>
+        </record>
+        <!--    create  project task   dashboard menuitem -->
+        <menuitem id="menu_project_dashboard" name="Dashboard" parent="project.menu_main_pm"
+                  action="action_project_task_dashboard" sequence="0"/>
+
+
+    </data>
+</odoo>

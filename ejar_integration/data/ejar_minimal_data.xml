@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Minimal Ejar Configuration for reduced memory usage -->
+    <record id="default_ejar_config" model="ejar.config">
+        <field name="name">Default Ejar Configuration</field>
+        <field name="api_base_url">https://api.ejar.sa/v1</field>
+        <field name="sandbox_mode">True</field>
+        <field name="timeout">30</field>
+        <field name="retry_attempts">3</field>
+        <field name="auto_sync">False</field>
+        <field name="sync_interval">60</field>
+        <field name="webhook_enabled">False</field>
+        <field name="notification_enabled">False</field>
+        <field name="active">True</field>
+    </record>
+
+    <!-- Essential Property Types -->
+    <record id="property_type_apartment" model="ejar.property.type">
+        <field name="name">شقة</field>
+        <field name="name_en">Apartment</field>
+        <field name="code">APARTMENT</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="property_type_villa" model="ejar.property.type">
+        <field name="name">فيلا</field>
+        <field name="name_en">Villa</field>
+        <field name="code">VILLA</field>
+        <field name="active">True</field>
+    </record>
+
+    <!-- Essential Payment Methods -->
+    <record id="payment_method_bank_transfer" model="ejar.payment.method">
+        <field name="name">تحويل بنكي</field>
+        <field name="name_en">Bank Transfer</field>
+        <field name="code">BANK_TRANSFER</field>
+        <field name="active">True</field>
+    </record>
+
+    <!-- Essential Contract Status -->
+    <record id="contract_status_draft" model="ejar.contract.status">
+        <field name="name">مسودة</field>
+        <field name="name_en">Draft</field>
+        <field name="code">DRAFT</field>
+        <field name="ejar_code">draft</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="contract_status_active" model="ejar.contract.status">
+        <field name="name">نشط</field>
+        <field name="name_en">Active</field>
+        <field name="code">ACTIVE</field>
+        <field name="ejar_code">active</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

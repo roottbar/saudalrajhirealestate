@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partners_petty_cash_line_config_form" model="ir.ui.view">
+            <field name="name">view.partners.petty.cash.line.config.form</field>
+            <field name="model">partners.petty.cash.line.config</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="partner_ids"
+                           context="{'form_view_ref': 'petty_cash.view_vendor_petty_cash_form','default_supplier_rank': 1,'vendor_petty_cash':True}"/>
+
+                    <footer>
+                        <button name="execute" string="Save" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_partners_petty_cash_line_config" model="ir.actions.act_window">
+            <field name="name">Partners of Petty Cash Line</field>
+            <field name="res_model">partners.petty.cash.line.config</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_partners_petty_cash_line_config_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_validate_stock_picking_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.validate.stock.picking.form</field>
+            <field name="model">tender.contract.check.analytic.account.wizard</field>
+            <field name="inherit_id" ref="contracts_management.view_tender_contract_check_analytic_account_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//button" position="before">
+                    <button string="Validate" name="action_validate_stock_picking" type="object" class="btn-primary"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="action_tender_contract_validate_stock_picking" model="ir.actions.act_window">
+            <field name="name">Validate</field>
+            <field name="res_model">tender.contract.check.analytic.account.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contracts_management.view_tender_contract_validate_stock_picking_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

@@ -1,0 +1,59 @@
+<odoo>
+    <template id="search_template_operatings">
+        <button type="button" class="o_dropdown_toggler_btn btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-book"/>
+            Operating:
+            <t t-set="selected_operatings"
+               t-value="', '.join(operating.get('name') for operating in options['operatings'] if operating.get('selected'))"/>
+            <t t-if="selected_operatings">
+                <t t-esc="selected_operatings"/>
+            </t>
+            <t t-else="">
+                All
+            </t>
+        </button>
+        <div class="o_dropdown_menu dropdown-menu o_filter_menu" role="menu">
+            <t t-foreach="options['operatings']" t-as="operating">
+                <t t-if="operating.get('id') == 'divider'">
+                    <div role="separator" class="dropdown-divider"/>
+                    <b role="menuitem" class="ml4 dropdown-item-text">
+                        <t t-esc="operating.get('name')"/>
+                    </b>
+                    <div role="separator" class="dropdown-divider"/>
+                </t>
+                <t t-else="">
+                    <a role="menuitem" class="dropdown-item js_account_report_choice_filter"
+                       t-att-title="operating.get('name')" t-att-data-id="operating.get('id')" data-filter="operatings">
+                        <t t-esc="operating.get('name')"/>
+                    </a>
+                </t>
+            </t>
+        </div>
+    </template>
+
+    <template id="search_template" inherit_id="account_reports.search_template">
+        <xpath expr="." position="inside">
+            <div class="btn-group o_dropdown o_account_reports_filter_operatings" t-if="options.get('operatings') != None">
+                <t t-call="account_reports_operating.search_template_operatings"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="filter_info_template" inherit_id="account_reports.filter_info_template">
+        <xpath expr="//div[hasclass('col-4')][last()]" position="inside">
+            <div class="col-12">
+                <t t-if="options.get('operatings')">
+                    Operatings:
+                    <t t-set="operating_value" t-value="'All'"/>
+                    <t t-foreach="options['operatings']" t-as="b">
+                        <t t-if="b.get('selected') == True">
+                            <t t-set="operating_value" t-value="''"/>
+                            <t t-esc="b.get('name')"/>
+                        </t>
+                    </t>
+                    <t t-esc="operating_value"/>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

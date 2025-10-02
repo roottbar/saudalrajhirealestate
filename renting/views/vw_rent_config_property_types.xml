@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="rent_config_property_types_tree">
+            <field name="name">rent.config.property.types.tree</field>
+            <field name="model">rent.config.property.types</field>
+            <field name="arch" type="xml">
+                <tree string="Property Types">
+                    <field name="property_type_name"/>
+                    <field name="property_type_description"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="rent_config_property_types_form">
+            <field name="name">rent.config.property.types.form</field>
+            <field name="model">rent.config.property.types</field>
+            <field name="arch" type="xml">
+                <form string="Property Types">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="property_type_name"/>
+                            </group>
+                            <group>
+                                <field name="property_type_description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

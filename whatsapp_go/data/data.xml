@@ -1,0 +1,9 @@
+<odoo>
+    <data noupdate="1">
+        <record model="ir.config_parameter" id="minlength" forcecreate="True">
+            <field name="key">go4whatsapp_url</field>
+            <field name="value">https://stageapi.go4whatsup.com:8002</field>
+        </record>
+    </data>
+</odoo>
+    

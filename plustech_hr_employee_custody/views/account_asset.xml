@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="account_asset_form_inherit" model="ir.ui.view">
+            <field name="name">account.asset.form</field>
+            <field name="model">account.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='related_items']" position="after">
+                    <page string="Custody Info">
+                        <group>
+                            <group>
+                                <field name="custody_ok"/>
+                                <field name="linked_product_id" attrs="{'invisible': [('custody_ok', '=', False)],
+                                'required': [('custody_ok', '=', True)]}"/>
+                            </group>
+                            <group attrs="{'invisible': [('custody_ok', '=', False)]}">
+                                <field name="status" readonly="1"/>
+                                <field name="allocation_date" readonly="1"/>
+                                <field name="owner_id" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

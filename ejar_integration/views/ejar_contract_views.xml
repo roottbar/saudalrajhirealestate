@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Ejar Contract Tree View -->
+    <record id="view_ejar_contract_tree" model="ir.ui.view">
+        <field name="name">ejar.contract.tree</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <tree string="Ejar Contracts" decoration-success="status=='active'" 
+                  decoration-warning="status=='draft'" decoration-danger="status=='terminated'"
+                  decoration-muted="status=='expired'">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="tenant_id"/>
+                <field name="landlord_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="monthly_rent"/>
+                <field name="status"/>
+                <field name="ejar_synced"/>
+                <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
+                        icon="fa-refresh" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                <button name="action_activate" type="object" string="Activate" 
+                        icon="fa-play" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Ejar Contract Form View -->
+    <record id="view_ejar_contract_form" model="ir.ui.view">
+        <field name="name">ejar.contract.form</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <form string="Ejar Contract">
+                <header>
+                    <button name="action_activate" type="object" string="Activate" 
+                            class="btn-primary" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                    <button name="action_terminate" type="object" string="Terminate" 
+                            class="btn-danger" attrs="{'invisible': [('status', 'not in', ['active'])]}"/>
+                    <button name="action_renew" type="object" string="Renew" 
+                            class="btn-success" attrs="{'invisible': [('status', 'not in', ['active', 'expired'])]}"/>
+                    <button name="action_sync_to_ejar" type="object" string="Sync to Ejar" 
+                            class="btn-info" attrs="{'invisible': [('ejar_synced', '=', True)]}"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,active,expired,terminated"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_payments" type="object" class="oe_stat_button" icon="fa-money">
+                            <field name="payment_count" widget="statbutton" string="Payments"/>
+                        </button>
+                        <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="invoice_count" widget="statbutton" string="Invoices"/>
+                        </button>
+                        <button name="action_view_ejar_contract" type="object" class="oe_stat_button" 
+                                icon="fa-external-link" attrs="{'invisible': [('ejar_synced', '=', False)]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">View in</span>
+                                <span class="o_stat_text">Ejar</span>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Contract Reference"/>
+                        </h1>
+                        <div class="o_row">
+                            <field name="ejar_contract_id" readonly="1" attrs="{'invisible': [('ejar_contract_id', '=', False)]}"/>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group name="parties" string="Contract Parties">
+                            <field name="property_id" required="1" options="{'no_create': True}"/>
+                            <field name="tenant_id" required="1" options="{'no_create': True}"/>
+                            <field name="landlord_id" required="1" options="{'no_create': True}"/>
+                            <field name="broker_id" options="{'no_create': True}"/>
+                        </group>
+                        <group name="dates" string="Contract Period">
+                            <field name="start_date" required="1"/>
+                            <field name="end_date" required="1"/>
+                            <field name="duration_months" readonly="1"/>
+                            <field name="renewal_notice_days"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group name="financial" string="Financial Terms">
+                            <field name="monthly_rent" required="1"/>
+                            <field name="annual_rent" readonly="1"/>
+                            <field name="security_deposit"/>
+                            <field name="broker_commission"/>
+                            <field name="payment_frequency"/>
+                            <field name="advance_payment_months"/>
+                        </group>
+                        <group name="payment_terms" string="Payment Terms">
+                            <field name="payment_method"/>
+                            <field name="payment_due_day"/>
+                            <field name="late_fee_percentage"/>
+                            <field name="grace_period_days"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Contract Terms" name="terms">
+                            <group>
+                                <group name="utilities" string="Utilities">
+                                    <field name="electricity_included"/>
+                                    <field name="water_included"/>
+                                    <field name="gas_included"/>
+                                    <field name="internet_included"/>
+                                    <field name="maintenance_included"/>
+                                </group>
+                                <group name="restrictions" string="Restrictions">
+                                    <field name="pets_allowed"/>
+                                    <field name="smoking_allowed"/>
+                                    <field name="subletting_allowed"/>
+                                    <field name="renovation_allowed"/>
+                                </group>
+                            </group>
+                            <separator string="Special Terms"/>
+                            <field name="special_terms" placeholder="Any special terms or conditions..."/>
+                        </page>
+                        
+                        <page string="Payments" name="payments">
+                            <field name="payment_ids" readonly="1">
+                                <tree>
+                                    <field name="payment_date"/>
+                                    <field name="amount"/>
+                                    <field name="payment_method"/>
+                                    <field name="status"/>
+                                    <field name="reference"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Documents" name="documents">
+                            <field name="document_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="document_type"/>
+                                    <field name="upload_date"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Ejar Integration" name="ejar_integration">
+                            <group>
+                                <group name="sync_status" string="Sync Status">
+                                    <field name="ejar_synced" readonly="1"/>
+                                    <field name="ejar_sync_date" readonly="1"/>
+                                    <field name="auto_sync"/>
+                                    <field name="last_sync_error" readonly="1" attrs="{'invisible': [('last_sync_error', '=', False)]}"/>
+                                </group>
+                                <group name="ejar_info" string="Ejar Information">
+                                    <field name="ejar_contract_id" readonly="1"/>
+                                    <field name="ejar_status" readonly="1"/>
+                                    <field name="ejar_created_date" readonly="1"/>
+                                    <field name="ejar_updated_date" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Ejar Contract Search View -->
+    <record id="view_ejar_contract_search" model="ir.ui.view">
+        <field name="name">ejar.contract.search</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <search string="Search Contracts">
+                <field name="name" string="Contract Reference"/>
+                <field name="property_id"/>
+                <field name="tenant_id"/>
+                <field name="landlord_id"/>
+                <field name="broker_id"/>
+                
+                <filter string="Draft" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                <filter string="Expired" name="expired" domain="[('status', '=', 'expired')]"/>
+                <filter string="Terminated" name="terminated" domain="[('status', '=', 'terminated')]"/>
+                
+                <separator/>
+                <filter string="Expiring Soon" name="expiring_soon" 
+                        domain="[('end_date', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d')), ('status', '=', 'active')]"/>
+                <filter string="Overdue Payments" name="overdue_payments" 
+                        domain="[('payment_ids.status', '=', 'overdue')]"/>
+                
+                <separator/>
+                <filter string="Synced to Ejar" name="synced" domain="[('ejar_synced', '=', True)]"/>
+                <filter string="Not Synced" name="not_synced" domain="[('ejar_synced', '=', False)]"/>
+                <filter string="Auto Sync Enabled" name="auto_sync" domain="[('auto_sync', '=', True)]"/>
+                
+                <separator/>
+                <filter string="This Month" name="this_month" 
+                        domain="[('start_date', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')), ('start_date', '&lt;', ((context_today().replace(day=1) + datetime.timedelta(days=32)).replace(day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Year" name="this_year" 
+                        domain="[('start_date', '&gt;=', context_today().strftime('%Y-01-01')), ('start_date', '&lt;=', context_today().strftime('%Y-12-31'))]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Property" name="group_property" context="{'group_by': 'property_id'}"/>
+                    <filter string="Tenant" name="group_tenant" context="{'group_by': 'tenant_id'}"/>
+                    <filter string="Landlord" name="group_landlord" context="{'group_by': 'landlord_id'}"/>
+                    <filter string="Broker" name="group_broker" context="{'group_by': 'broker_id'}"/>
+                    <filter string="Start Date" name="group_start_date" context="{'group_by': 'start_date:month'}"/>
+                    <filter string="Sync Status" name="group_sync" context="{'group_by': 'ejar_synced'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Ejar Contract Calendar View -->
+    <record id="view_ejar_contract_calendar" model="ir.ui.view">
+        <field name="name">ejar.contract.calendar</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <calendar string="Contract Calendar" date_start="start_date" date_stop="end_date" 
+                      color="status" quick_add="False" event_open_popup="True">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="tenant_id"/>
+                <field name="status"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Ejar Contract Pivot View -->
+    <record id="view_ejar_contract_pivot" model="ir.ui.view">
+        <field name="name">ejar.contract.pivot</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <pivot string="Contract Analysis">
+                <field name="status" type="row"/>
+                <field name="start_date" type="col" interval="month"/>
+                <field name="monthly_rent" type="measure"/>
+                <field name="annual_rent" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Ejar Contract Graph View -->
+    <record id="view_ejar_contract_graph" model="ir.ui.view">
+        <field name="name">ejar.contract.graph</field>
+        <field name="model">ejar.contract</field>
+        <field name="arch" type="xml">
+            <graph string="Contract Statistics" type="bar">
+                <field name="start_date" type="row" interval="month"/>
+                <field name="monthly_rent" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Ejar Contract Action -->
+    <record id="action_ejar_contract" model="ir.actions.act_window">
+        <field name="name">Ejar Contracts</field>
+        <field name="res_model">ejar.contract</field>
+        <field name="view_mode">tree,form,calendar,pivot,graph</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Ejar contract!
+            </p>
+            <p>
+                Contracts define the rental agreements between landlords and tenants.
+                Manage contract terms, payments, and sync with Ejar platform for compliance.
+            </p>
+        </field>
+    </record>
+
+    <!-- Active Contracts Action -->
+    <record id="action_ejar_contract_active" model="ir.actions.act_window">
+        <field name="name">Active Contracts</field>
+        <field name="res_model">ejar.contract</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="domain">[('status', '=', 'active')]</field>
+        <field name="context">{'default_status': 'active'}</field>
+    </record>
+
+    <!-- Expiring Contracts Action -->
+    <record id="action_ejar_contract_expiring" model="ir.actions.act_window">
+        <field name="name">Expiring Contracts</field>
+        <field name="res_model">ejar.contract</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('end_date', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d')), ('status', '=', 'active')]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_ejar_contracts" name="Contracts" parent="menu_ejar_main" 
+              action="action_ejar_contract" sequence="20"/>
+    <menuitem id="menu_ejar_contracts_active" name="Active Contracts" parent="menu_ejar_contracts" 
+              action="action_ejar_contract_active" sequence="10"/>
+    <menuitem id="menu_ejar_contracts_expiring" name="Expiring Contracts" parent="menu_ejar_contracts" 
+              action="action_ejar_contract_expiring" sequence="20"/>
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="task_assign_history_wizard_form" model="ir.ui.view">
+        <field name="name">Assign To</field>
+        <field name="model">task.assign.history.wizard</field>
+        <field name="arch" type="xml">
+            <form string="task assign history wizard">
+                <group>
+                <group >
+                    <field name="user_id"/>
+                </group>
+                </group>
+                <group >
+                    <field name="notes"/>
+                </group>
+                <footer>
+                    <button name="assign_to" string="Assign" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="task_assign_history_wizard" model="ir.actions.act_window">
+        <field name="name">Assign To</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">task.assign.history.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="task_assign_history_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

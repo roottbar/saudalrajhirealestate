@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="contracts_external_layout_standard" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[@name='moto']" position="replace">
+            <div class="col-9 text-right" style="margin-top:22px;" name="moto"/>
+        </xpath>
+
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div class="col-6" name="company_address"/>
+        </xpath>
+
+        <xpath expr="//ul[hasclass('list-inline')]" position="before">
+            <li class="list-inline-item d-inline">
+                <span t-field="company.partner_id"
+                      t-options='{"widget": "contact", "fields": ["address"], "no_marker": true,"no_tag_br": True}'/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="contracts_external_layout_boxed" inherit_id="web.external_layout_boxed">
+        <xpath expr="//h4[hasclass('mt0')]" position="replace">
+            <h4 class="mt0"/>
+        </xpath>
+
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div name="company_address" class="float-right mb4"/>
+        </xpath>
+
+        <div t-field="company.report_footer" position="before">
+            <li class="list-inline-item">
+                <span t-field="company.partner_id"
+                      t-options='{"widget": "contact", "fields": ["address"], "no_marker": true,"no_tag_br": True}'/>
+            </li>
+        </div>
+    </template>
+
+<!--     <template id="contracts_external_layout_clean" inherit_id="web.external_layout_clean">
+        <xpath expr="//div[@name='company_address']" position="replace">
+            <div class="col-5 offset-1" name="company_address"/>
+        </xpath>
+    </template> -->
+
+  <!--   <template id="contracts_external_layout_background" inherit_id="web.external_layout_background">
+        <xpath expr="//h3[hasclass('mt0')]" position="replace">
+            <h3 class="mt0 text-right"/>
+        </xpath>
+
+        <xpath expr="//div[hasclass('company_address')]" position="replace">
+            <div class="float-left company_address"/>
+        </xpath>
+
+        <div t-field="company.report_footer" position="before">
+            <li class="list-inline-item">
+                <span t-field="company.partner_id"
+                      t-options='{"widget": "contact", "fields": ["address"], "no_marker": true,"no_tag_br": True}'/>
+            </li>
+        </div>
+    </template> -->
+</odoo>

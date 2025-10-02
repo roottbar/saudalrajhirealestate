@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_employee_request_doc" name="Employee Requests"
+                  parent="hr.menu_hr_root"
+                  sequence="50"/>
+<!--                          parent="hr.menu_hr_employee_payroll" action="hr_employee_docs_action"-->
+
+    </data>
+</odoo>

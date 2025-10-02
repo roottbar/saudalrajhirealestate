@@ -1,0 +1,2316 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* petty_cash
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-06-07 09:44+0000\n"
+"PO-Revision-Date: 2021-06-07 09:44+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: petty_cash
+#: model:ir.actions.report,print_report_name:petty_cash.action_report_payment_voucher
+msgid "'petty_cash_voucher'"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+msgid ""
+"<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Unfolded\" title=\"Unfolded\">\n"
+"                                                </i>"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid ""
+"<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
+"title=\"Selection\"/>"
+msgstr ""
+"<i class=\"fa fa-ellipsis-v\" aria-label=\"الاختيار\" role=\"img\" "
+"title=\"الاختيار\"/>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid ""
+"<span attrs=\"{'invisible': [('reconciled_bills_count','&gt;', 1)]}\">Bill</span>\n"
+"                                <span attrs=\"{'invisible': [('reconciled_bills_count','&lt;=', 1)]}\">Bills</span>"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid ""
+"<span attrs=\"{'invisible': [('reconciled_invoices_count','&gt;', 1)]}\">Invoice</span>\n"
+"                                <span attrs=\"{'invisible': [('reconciled_invoices_count','&lt;=', 1)]}\">Invoices</span>"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid ""
+"<span attrs=\"{'invisible': [('reconciled_statements_count','&gt;', 1)]}\">Statement\n"
+"                                </span>\n"
+"                                <span attrs=\"{'invisible': [('reconciled_statements_count','&lt;=', 1)]}\">Statements\n"
+"                                </span>"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid ""
+"<span class=\"fa fa-plus-square\"/>\n"
+"                                    Create company"
+msgstr ""
+"<span class=\"fa fa-plus-square\"/>\n"
+"                                       إنشاء مؤسسة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid ""
+"<span class=\"o_form_label o_td_label\" name=\"address_name\">\n"
+"                                    <b>Company Address</b>\n"
+"                                </span>"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<span style=\"font-weight: bold;\">Amount of :</span>"
+msgstr "<span style=\"font-weight: bold;\">المبلغ:</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<span style=\"font-weight: bold;\">Date :</span>"
+msgstr "<span style=\"font-weight: bold;\">التاريخ :</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<span style=\"font-weight: bold;\">Payment voucher number :</span>"
+msgstr "<span style=\"font-weight: bold;\">رقم قسيمة الدفع :</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<span style=\"font-weight: bold;\">That’s about: Payment number :</span>"
+msgstr "<span style=\"font-weight: bold;\">هذا عن: دُفعة رقم :</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<span style=\"font-weight: bold;\">Type payment :</span>"
+msgstr "<span style=\"font-weight: bold;\">نوع الدفع :</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid "<span title=\"Current Balance\">Current Balance</span>"
+msgstr "<span title=\"Current Balance\">الرصيد الحالي</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid "<span title=\"Expected Balance\">Expected Balance</span>"
+msgstr "<span title=\"Expected Balance\">الرصيد المتوقع</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "<span>Petty Cash Name</span>"
+msgstr "<span>إسم العهدة المالية</span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid ""
+"<span>This bond shall be considered valid unless we receive any objection within ten days from\n"
+"                            the\n"
+"                            date of the bond\n"
+"                        </span>"
+msgstr ""
+"<span>هذا السند يعتبر صحيح مالم يردنا عليه اعتراض في خلال  10 أيام من تاريخ السند\n"
+"                        </span>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<strong style=\"padding-bottom:50px;\">Accountant</strong>"
+msgstr "<strong style=\"padding-bottom:50px;\">المُحاسب</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<strong style=\"padding-bottom:50px;\">Manager</strong>"
+msgstr "<strong style=\"padding-bottom:50px;\">المُدير</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "<strong style=\"padding-bottom:50px;\">Recipient</strong>"
+msgstr "<strong style=\"padding-bottom:50px;\">المُستلم</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "<strong>Account:</strong>"
+msgstr "<strong>الحساب:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "<strong>Accounts:</strong>"
+msgstr "<strong>الحسابات:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "<strong>Analytic Accounts:</strong>"
+msgstr "<strong>الحسابات التحليلية:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "<strong>Close Date:</strong>"
+msgstr "<strong>تاريخ الإغلاق:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "<strong>Date from :</strong>"
+msgstr "<strong>من تاريخ: </strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "<strong>Date to :</strong>"
+msgstr "<strong>إلى تاريخ: </strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "<strong>Group By :</strong>"
+msgstr "<strong>تجميع حسب :</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "<strong>Journal:</strong>"
+msgstr "<strong>اليومية:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "<strong>Journals:</strong>"
+msgstr "<strong>دفاتر اليومية:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "<strong>Opening Balance:</strong>"
+msgstr "<strong>الرصيد الإفتتاحي:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "<strong>Partners:</strong>"
+msgstr "<strong>الشركاء:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "<strong>Payment Journals:</strong>"
+msgstr "<strong>دفاتر يومية الدفع:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "<strong>Products:</strong>"
+msgstr "<strong>المنتجات:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "<strong>Reference:</strong>"
+msgstr "<strong>المرجع:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "<strong>Responsible:</strong>"
+msgstr "<strong>المسئول:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "<strong>Start Date:</strong>"
+msgstr "<strong>تاريخ البدء:</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "<strong>Tax Amount</strong>"
+msgstr "<strong>إجمالي الضريبة</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "<strong>Total</strong>"
+msgstr "<strong>الإجمالي</strong>"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "<strong>Untaxed Amount</strong>"
+msgstr "<strong>المبلغ غير شامل الضريبة</strong>"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__account_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__account_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__account_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__account_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__account_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "Account"
+msgstr "الحساب"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__account_payment_id
+msgid "Account Payment"
+msgstr "حساب الدفع"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Account used when transferring between banks"
+msgstr "الحساب المُستخدم عن التحويل بين الحسابات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config__accounts
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__accounts
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__accounts
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_user_rule_form
+msgid "Accounts"
+msgstr "الحسابات"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_accounts_petty_cash_line_config
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Accounts of Petty Cash Line"
+msgstr "حسابات العهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_accounts_petty_cash_line_config
+msgid "Accounts of Petty Cash Line Config"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_needaction
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_needaction
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_needaction
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_needaction
+msgid "Action Needed"
+msgstr "إجراء مطلوب"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__active
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__active
+msgid "Active"
+msgstr "نشط"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_ids
+msgid "Activities"
+msgstr "الأنشطة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_exception_decoration
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_exception_decoration
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_exception_decoration
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_state
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_state
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_state
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_state
+msgid "Activity State"
+msgstr "حالة النشاط"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_type_icon
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_type_icon
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_type_icon
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__actual_amount
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__actual_amount
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "Actual Amount"
+msgstr "المبلغ الفعلية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__allow_pm_approve
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__allow_pm_approve
+msgid "Allow Approve"
+msgstr "السماح بالموافقة"
+
+#. module: petty_cash
+#: model:res.groups,name:petty_cash.group_petty_cash_discount
+msgid "Allow Discount"
+msgstr "السماح بالخصومات"
+
+#. module: petty_cash
+#: model:res.groups,name:petty_cash.group_petty_cash_dynamic_journal
+msgid "Allow Dynamic Journal"
+msgstr "السماح لقيد تفاعلي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__amount
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__amount
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__amount
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__amount
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_tree_no_create
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_petty_cash_request_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_line_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_tree
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__amount_discount
+msgid "Amount Discount"
+msgstr "مبلغ الخصم"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__amount_tax
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_tree
+msgid "Amount Tax"
+msgstr "مبلغ الضريبة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "Amount Untaxed"
+msgstr "المبلغ بدون ضريبة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__amount_currency
+msgid "Amount in Currency"
+msgstr "المبلغ بالعملة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "Analytic Account"
+msgstr "الحساب التحليلي"
+
+#. module: petty_cash
+#: model:res.groups,name:petty_cash.group_petty_cash_analytic_accounting
+msgid "Analytic Accounting"
+msgstr "الحساب التحليلي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__analytic_account_ids
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_user_rule_form
+msgid "Analytic Accounts"
+msgstr "حسابات تحليلة"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_analytic_accounts_petty_cash_line_config
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Analytic Accounts of Petty Cash Line"
+msgstr "الحسابات التحليلي لبنود للعهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_analytic_accounts_petty_cash_line_config
+msgid "Analytic Accounts of Petty Cash Line Config"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__analytic_tag_ids
+msgid "Analytic Tags"
+msgstr "الوسوم التحليلية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__analytic_account_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "Analytic account"
+msgstr "الحساب التحليلي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config__analytic_account_ids
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__analytic_account_ids
+msgid "Analytic accounts"
+msgstr "الحسابات التحليلية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_res_partner_account_category__apply_to_petty_cash
+msgid "Apply to Petty Cash"
+msgstr "تنطبق على العهد المالية"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_approved_petty_cash_request
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request__state__approved
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request_feeding__state__approved
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_approved
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_feeding_approved
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_feeding_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+msgid "Approved"
+msgstr "مقبول"
+
+#. module: petty_cash
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_f_m_approved
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_feeding_f_m_approved
+msgid "Approved Financial Manager"
+msgstr "موافقة المدير المالي"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_approved_cancel_petty_cash_request
+msgid "Approved Or Cancel Petty Cash Request"
+msgstr "تأكيد او إلغاء طلب العهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_approved_rejected_request_feeding
+msgid "Approved Or Rejected Request Feeding"
+msgstr "العهد الملية المرفوضة أو المُأكدة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__approved_petty_cash_request
+msgid "Approved Petty Cash Request"
+msgstr "تأكيد طلب تغذية العهد المالية"
+
+#. module: petty_cash
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_p_m_approved
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_p_m_approved
+msgid "Approved Project Manager"
+msgstr "موافقة مدير المشروع"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__approved_reason
+msgid "Approved Reason"
+msgstr "سبب التأكيد"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_approved_request_feeding
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__approved_request_feeding
+msgid "Approved Request Feeding"
+msgstr "قُبول طلب تغذية العهدة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Archived"
+msgstr "مؤرشف"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__file
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__attachment
+msgid "Attachment"
+msgstr "مرفق"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_attachment_count
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_attachment_count
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_attachment_count
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__bank_id
+msgid "Bank"
+msgstr "البنك"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_base_import_import
+msgid "Base Import"
+msgstr "الاستيراد الأساسي"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_tree
+msgid "Box"
+msgstr "صندوق"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_cancel_petty_cash_request
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request__state__cancel
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_cancel
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_accounts_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_analytic_accounts_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_approved_cancel_petty_cash_request_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_approved_rejected_request_feeding_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_partners_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_line_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_transfer_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_products_petty_cash_line_config_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "Cash Payment Voucher"
+msgstr "ايصال دفع نقدي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__product_uom_category_id
+msgid "Category"
+msgstr "فئة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__check_number
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__check_number_in_words
+msgid "Check Number"
+msgstr "رقم الشيك"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_payment_voucher_document
+msgid "Check Payment Voucher"
+msgstr "ايصال دفع بنكي"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__check_manual_sequencing
+msgid "Check this option if your pre-printed checks are not numbered."
+msgstr "حدد هذا الاختيار إذا كانت شيكاتك المطبوعة مسبقًا غير مُرقمة."
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "City"
+msgstr "المدينة"
+
+#. module: petty_cash
+#: model_terms:ir.actions.act_window,help:petty_cash.action_petty_cash_request_feeding
+msgid "Click to create Request Feeding."
+msgstr "اضغط لإنشاء عُهد مالية."
+
+#. module: petty_cash
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_close
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Close"
+msgstr "إغلاق"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__close_date
+msgid "Close Date"
+msgstr "تاريخ الاغلاق"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_close
+msgid "Close Petty Cash"
+msgstr "إغلاق عُهد مالية"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash__state__closed
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "Closed"
+msgstr "مغلق"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__payment_method_code
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__code
+msgid "Code"
+msgstr "الكود"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__color
+msgid "Color Index"
+msgstr "معرف اللون"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__company_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__company_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__company_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__company_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Company"
+msgstr "الشركة"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__company_id
+msgid "Company related to this journal"
+msgstr "المؤسسة المرتبطة بدفتر اليومية هذا"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_res_config_settings
+msgid "Config Settings"
+msgstr "ضبط الاعدادات"
+
+#. module: petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_configuration
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_form
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_res_partner
+msgid "Contact"
+msgstr "جهة الاتصال"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_line__product_uom_category_id
+msgid ""
+"Conversion between Units of Measure can only occur if they belong to the "
+"same category. The conversion will be made based on the ratios."
+msgstr ""
+"لا يمكن التحويل بين وحدات القياس إلا إذا كانت تنتمي لنفس الفئة. سيتم إجراء "
+"التحويل بناءً على النسب."
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Country"
+msgstr "الدولة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Create Stock Move in Petty Cash"
+msgstr "إنشاء خركة مخزن في العهد المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_petty_cash_lines__create_uid
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_request_feeding__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_petty_cash_lines__create_date
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_request_feeding__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__currency_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__currency_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__currency_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__petty_cash_currency_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__currency_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__current_balance
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__final_current_balance
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "Current Balance"
+msgstr "الرصيد الحالي"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_tree_no_create
+msgid "Customer"
+msgstr "العميل"
+
+#. module: petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_board_petty_cash
+msgid "Dashboard"
+msgstr "لوحات المعلومات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__date
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_tree
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Default accounting category used when created vendors in petty cash"
+msgstr ""
+"يتم استخدام فئة المحاسبة الافتراضية عند إنشاء الموردون في العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__description
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__description
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__description
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "Description"
+msgstr "الوصف"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__discount
+msgid "Discount"
+msgstr "الخصم"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "Discount (%)"
+msgstr "الخصم (%)"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__discount_type
+msgid "Discount Type"
+msgstr "نوع الخصم"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_account_move__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_account_payment__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_base_import_import__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_petty_cash_lines__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_request_feeding__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_report_petty_cash_report_petty_cash_lines__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_report_petty_cash_report_requests_feeding__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_res_partner__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_res_partner_account_category__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_res_users__display_name
+#: model:ir.model.fields,field_description:petty_cash.field_stock_picking__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__payment_voucher__state__draft
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash__state__draft
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request__state__draft
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request_feeding__state__draft
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__dynamic_journal
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__dynamic_journal
+msgid "Dynamic Journal"
+msgstr "قيد تفاعلي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__dynamic_move_id
+msgid "Dynamic Journal Entry"
+msgstr "قيد يومية تفاعلي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__dynamic_move_line_ids
+msgid "Dynamic Journal Items"
+msgstr "عناصر اليومية التفاعلية"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Dynamic Journal in Petty Cash"
+msgstr "قيد تفاعلي في العهد المالية"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_report_petty_cash_lines_view
+#: model:ir.ui.menu,name:petty_cash.menu_dynamic_report_petty_cash_lines
+msgid "Dynamic Petty Cash Lines"
+msgstr "بنود العُهد المالية الديناميكية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_report_dynamic_petty_cash_lines
+#: model:ir.model,name:petty_cash.model_report_dynamic_request_feeding
+msgid "Dynamic report helper model"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_executive
+msgid "Executive"
+msgstr "تنفيذي"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_line__type__expenses
+msgid "Expenses"
+msgstr "مصروفات"
+
+#. module: petty_cash
+#: model:ir.module.category,description:petty_cash.module_category_extra_rights_petty_cash
+msgid "Extra Rights Petty Cash"
+msgstr "صلاحيات إضافية العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request__state__f_m_approved
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request_feeding__state__f_m_approved
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_feeding_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+msgid "FM Approved"
+msgstr "موافقة المدير المالي"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_feeding_petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_nutrition_petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid "Feeding Petty Cash"
+msgstr "تغذية العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__file_name
+msgid "File Name"
+msgstr "اسم الملف"
+
+#. module: petty_cash
+#: model:res.groups,name:petty_cash.group_petty_f_m_approved
+msgid "Financial Manager Approve"
+msgstr "موافقة المدير المالي"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_line__discount_type__fixed
+msgid "Fixed"
+msgstr "ثابت"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_follower_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_follower_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_follower_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_follower_ids
+msgid "Followers"
+msgstr "المتابعون"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_channel_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_channel_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_channel_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "المتابعون (القنوات)"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_partner_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_partner_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_partner_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعون (الشركاء)"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__activity_type_icon
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__activity_type_icon
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__activity_type_icon
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__hide_payment_method
+msgid "Hide Payment Method"
+msgstr "إخفاء طريقة السداد"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_account_move__id
+#: model:ir.model.fields,field_description:petty_cash.field_account_move_line__id
+#: model:ir.model.fields,field_description:petty_cash.field_account_payment__id
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config__id
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config__id
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__id
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__id
+#: model:ir.model.fields,field_description:petty_cash.field_base_import_import__id
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config__id
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__id
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config__id
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_petty_cash_lines__id
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_request_feeding__id
+#: model:ir.model.fields,field_description:petty_cash.field_report_petty_cash_report_petty_cash_lines__id
+#: model:ir.model.fields,field_description:petty_cash.field_report_petty_cash_report_requests_feeding__id
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__id
+#: model:ir.model.fields,field_description:petty_cash.field_res_partner__id
+#: model:ir.model.fields,field_description:petty_cash.field_res_partner_account_category__id
+#: model:ir.model.fields,field_description:petty_cash.field_res_users__id
+#: model:ir.model.fields,field_description:petty_cash.field_stock_picking__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_exception_icon
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_exception_icon
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_exception_icon
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_exception_icon
+msgid "Icon"
+msgstr "الأيقونة"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__activity_exception_icon
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__activity_exception_icon
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__activity_exception_icon
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__message_needaction
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__message_unread
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__message_needaction
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__message_unread
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__message_needaction
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__message_unread
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__message_needaction
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__message_unread
+msgid "If checked, new messages require your attention."
+msgstr "إذا كان محددًا، فهناك رسائل جديدة تحتاج لرؤيتها."
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__message_has_error
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__message_has_sms_error
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__message_has_error
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__message_has_sms_error
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__message_has_error
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__message_has_sms_error
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__message_has_error
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "إذا كان محددًا، فقد حدث خطأ في تسليم بعض الرسائل."
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Import Excel"
+msgstr "إستيراد إكسل"
+
+#. module: petty_cash
+#: model:ir.actions.client,name:petty_cash.action_petty_cash_line_import
+msgid "Import Petty Cash line"
+msgstr "إستيراد عُهد مالية"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash__state__in_progress
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request__state__in_progress
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_in_progress
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "In Progress"
+msgstr "تحت الإجراء"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "Include Tax"
+msgstr "تشمل الضريبة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__transfer_account_id
+msgid "Inter-Banks Transfer Account"
+msgstr "حساب نقل عبر البنوك"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_res_config_settings__transfer_account_id
+msgid ""
+"Intermediary account used when moving money from a liquidity account to "
+"another"
+msgstr "يُستخدم حساب وسيط عند نقل الأموال من حساب جاري إلى حساب آخر"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Internal note..."
+msgstr "مذكرة داخلية..."
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_is_follower
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_is_follower
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_is_follower
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_is_follower
+msgid "Is Follower"
+msgstr "متابع"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__journal_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__journal_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__journal_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__journal_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "Journal"
+msgstr "دفتر اليومية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__move_ids
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Journal Entries"
+msgstr "القيود اليومية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_account_move
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__move_id
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__moves_count
+msgid "Journal Entry Count"
+msgstr "عدد قيود يومية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_account_move_line
+msgid "Journal Item"
+msgstr "عنصر اليومية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__move_line_ids
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Journal Items"
+msgstr "عناصر اليومية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__kanban_dashboard
+msgid "Kanban Dashboard"
+msgstr "لوحة معلومات كانبان"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__kanban_dashboard_graph
+msgid "Kanban Dashboard Graph"
+msgstr "الرسم البياني للوحة معلومات كانبان"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__last_balance
+msgid "Last Balance"
+msgstr "الرصيد السابق"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_account_move____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_account_move_line____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_account_payment____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_base_import_import____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_petty_cash_lines____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_request_feeding____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_report_petty_cash_report_petty_cash_lines____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_report_petty_cash_report_requests_feeding____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_res_partner____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_res_partner_account_category____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_res_users____last_update
+#: model:ir.model.fields,field_description:petty_cash.field_stock_picking____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_petty_cash_lines__write_uid
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_request_feeding__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_accounts_petty_cash_line_config__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_analytic_accounts_petty_cash_line_config__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_petty_cash_lines__write_date
+#: model:ir.model.fields,field_description:petty_cash.field_report_dynamic_request_feeding__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_main_attachment_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_main_attachment_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_main_attachment_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "المرفق الرئيسي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__manager_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__manager
+#: model:res.groups,name:petty_cash.group_petty_cash_manager
+msgid "Manager"
+msgstr "المدير"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__managers
+msgid "Managers"
+msgstr "المديرين"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__check_manual_sequencing
+msgid "Manual Numbering"
+msgstr "ترقيم يدوي"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid "Mark as Sent"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__communication
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid "Memo"
+msgstr "بيان"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_has_error
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_has_error
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_has_error
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ في تسليم الرسائل"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "More languages"
+msgstr ""
+
+#. module: petty_cash
+#: model:res.groups,name:petty_cash.group_petty_cash_multi_currency
+msgid "Multi Currencies"
+msgstr "تعدد العملات"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "My Petty Cash"
+msgstr "عُهدي المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__name
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__name
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_user_rule_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Name"
+msgstr "الاسم"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__net_balance
+msgid "Net Balance"
+msgstr "الرصيد الصافي"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid "New Petty Cash"
+msgstr "عُهد مالية جديدة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_date_deadline
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_date_deadline
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_date_deadline
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "الموعد النهائي للنشاط التالي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_summary
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_summary
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_summary
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_summary
+msgid "Next Activity Summary"
+msgstr "ملخص النشاط التالي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_type_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_type_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_type_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_type_id
+msgid "Next Activity Type"
+msgstr "نوع النشاط التالي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__note
+msgid "Note"
+msgstr "الملاحظات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer_wizard__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_needaction_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_needaction_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_needaction_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_has_error_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_has_error_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_has_error_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_has_error_counter
+msgid "Number of errors"
+msgstr "عدد الاخطاء"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__message_needaction_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__message_needaction_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__message_needaction_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "عدد الرسائل التي تتطلب إجراء"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__message_has_error_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__message_has_error_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__message_has_error_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "عدد الرسائل الحادث بها خطأ في التسليم"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__message_unread_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__message_unread_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__message_unread_counter
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__message_unread_counter
+msgid "Number of unread messages"
+msgstr "عدد الرسائل الجديدة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Open"
+msgstr "فتح"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__balance
+msgid "Opening Balance"
+msgstr "الرصيد الإفتتاحي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__picking_type_id
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__picking_type_id
+msgid "Operation Type"
+msgstr "نوع العملية"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Operation Type of Petty Cash Line"
+msgstr "نوع عملية العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_operations
+msgid "Operations"
+msgstr "العمليات"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request__state__p_m_approved
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request_feeding__state__p_m_approved
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_feeding_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+msgid "PM Approved"
+msgstr "موافقة مدير المشروع"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__partner_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__partner_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__partner_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_partners_petty_cash_line_config__partner_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__partner_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__partner_ids
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__partner_ids
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_user_rule_form
+msgid "Partners"
+msgstr "الشركاء"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_partners_petty_cash_line_config
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Partners of Petty Cash Line"
+msgstr "الشركاء فى العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_partners_petty_cash_line_config
+msgid "Partners of Petty Cash Line Config"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_line__type__payment
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_form
+msgid "Payment"
+msgstr "دفعة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__amount
+msgid "Payment Amount"
+msgstr "القيمة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__payment_date
+msgid "Payment Date"
+msgstr "تاريخ السداد"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__journal_id
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__journal_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__payment_journal_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "Payment Journal"
+msgstr "دفتر يومية السداد"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid "Payment Matching"
+msgstr "مطابقة المدفوعات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__payment_method_id
+msgid "Payment Method Type"
+msgstr "نوع طريقة السداد"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__payment_transaction_id
+msgid "Payment Transaction"
+msgstr "معاملة السداد"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_payment_voucher
+#: model:ir.actions.act_window,name:petty_cash.action_payment_voucher_petty_cash_request
+#: model:ir.actions.report,name:petty_cash.action_report_payment_voucher
+#: model:ir.model,name:petty_cash.model_payment_voucher
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__payment_voucher_id
+#: model:ir.ui.menu,name:petty_cash.menu_payment_voucher
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+msgid "Payment Voucher"
+msgstr "إيصال الدفع"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_account_payment
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__account_payments_ids
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_feeding_form
+msgid "Payments"
+msgstr "المدفوعات"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_line__discount_type__percentage
+msgid "Percentage"
+msgstr "النسبة"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash
+#: model:ir.actions.report,name:petty_cash.action_report_petty_cash
+#: model:ir.model,name:petty_cash.model_petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_account_bank_statement_line__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_account_move__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_account_move_line__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_account_payment__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_transfer__petty_cash_id
+#: model:ir.model.fields,field_description:petty_cash.field_stock_picking__petty_cash_id
+#: model:ir.module.category,name:petty_cash.module_category_extra_rights_petty_cash
+#: model:ir.module.category,name:petty_cash.module_category_petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_main
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_account_move_petty_cash_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+msgid "Petty Cash"
+msgstr "العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_dashboard_kanban
+msgid "Petty Cash Dashboard"
+msgstr "لوحة المعلومات"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_for_review
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_for_review
+msgid "Petty Cash For Review"
+msgstr "عُهد مالية قيد المُراجعة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_line_graph
+msgid "Petty Cash Graph"
+msgstr "الرسم البياني للمصروفات"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid "Petty Cash In Progress"
+msgstr "العُهد المالية تحت الأجراء"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_line
+#: model:ir.model,name:petty_cash.model_petty_cash_line
+#: model:ir.model.fields,field_description:petty_cash.field_account_move_line__petty_cash_line
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_line_form
+msgid "Petty Cash Line"
+msgstr "بند دفتر العهدة"
+
+#. module: petty_cash
+#: model:ir.actions.client,name:petty_cash.action_dynamic_report_petty_cash_lines
+#: model:ir.actions.report,name:petty_cash.action_dynamic_petty_cash_report_petty_cash_lines_pdf
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__petty_cash_line_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__petty_cash_line_ids2
+#: model:ir.ui.menu,name:petty_cash.menu_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_line_pivot
+msgid "Petty Cash Lines"
+msgstr "بنود العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_petty_cash_request
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__petty_cash_request_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+msgid "Petty Cash Request"
+msgstr "طلب عُهد مالية"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_approved
+msgid "Petty Cash Request Approved"
+msgstr "تم تأكيد العُهد المالية"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_cancel
+msgid "Petty Cash Request Cancel"
+msgstr "إلغاء العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_petty_cash_request_feeding
+msgid "Petty Cash Request Feeding"
+msgstr "تغذية طلب المصروفات النثرية"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_request_line
+#: model:ir.model,name:petty_cash.model_petty_cash_request_line
+msgid "Petty Cash Request Line"
+msgstr "بند طلب العُهد المالية"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_send
+msgid "Petty Cash Request Send"
+msgstr "تم إرسال العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_user_rule
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_user_rule_config
+msgid "Petty Cash Rule"
+msgstr "صلاحية الصناديق"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Petty Cash Settings"
+msgstr "إعدادات العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_petty_cash_transfer
+msgid "Petty Cash Transfer"
+msgstr "تحويل العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_petty_cash_transfer_wizard
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__transfers
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_transfer_form
+msgid "Petty Cash Transfers"
+msgstr "تحويلات العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_petty_cash_user_rule
+msgid "Petty Cash User Rule"
+msgstr "صلاحية مُستخدم العُهد المالية"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid "Petty Cash closed"
+msgstr "العُهد المالية مغلفة"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_in_progress
+msgid "Petty Cash in progress"
+msgstr "العُهد المالية تحت الأجراء"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid "Petty Cash to Review"
+msgstr "العُهد المالية قيد المراجعة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Post"
+msgstr "ترحيل"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__payment_voucher__state__posted
+msgid "Posted"
+msgstr "مُرحل"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_form
+msgid "Print"
+msgstr "طباعة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "Product"
+msgstr "المنتج"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__products
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_user_rule_form
+msgid "Products"
+msgstr "المنتجات"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_products_petty_cash_line_config
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Products of Petty Cash Line"
+msgstr "مُنتجات العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_products_petty_cash_line_config
+msgid "Products of Petty Cash Line Config"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__project_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__project_id
+msgid "Project"
+msgstr "المشروع"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__manager_project_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__manager_project_id
+msgid "Project Manger"
+msgstr "مدير المشروع"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__quantity
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "Quantity"
+msgstr "الكمية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_approved_cancel_petty_cash_request__reason
+#: model:ir.model.fields,field_description:petty_cash.field_approved_rejected_request_feeding__reason
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__reason
+msgid "Reason"
+msgstr "السبب"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__picking_count
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__picking_ids
+msgid "Receptions"
+msgstr "الاستلامات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__recommends
+msgid "Recommends"
+msgstr "التوصيات"
+
+#. module: petty_cash
+#: model:ir.actions.server,name:petty_cash.ir_cron_recreate_dashboard_ir_actions_server
+#: model:ir.cron,cron_name:petty_cash.ir_cron_recreate_dashboard
+#: model:ir.cron,name:petty_cash.ir_cron_recreate_dashboard
+msgid "Recreate Dashboard for all users"
+msgstr "إعادة إنشاء لوح معلومات لُكل المُستخدمين"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__reference
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__reference
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__reference
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "Reference"
+msgstr "رقم الإشارة"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request_feeding__state__rejected
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_feeding_rejected
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_feeding_form
+msgid "Rejected"
+msgstr "مرفوض"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__rejected_reason
+msgid "Rejected Reason"
+msgstr "سبب الرفض"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_rejected_request_feeding
+msgid "Rejected Request Feeding"
+msgstr "طلب تغذية مرفوض"
+
+#. module: petty_cash
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_reports
+msgid "Reports"
+msgstr "التقارير"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_account_payment__request_feeding_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_feeding_form
+msgid "Request Feeding"
+msgstr "تغذية طلب"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_feeding_approved
+msgid "Request Feeding Approved"
+msgstr "طلب التغذية تم تأكيده"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_p_m_approved
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_p_m_approved
+msgid "Request Feeding Approved by Project Manager"
+msgstr "الموافقة على طلب التغذية من قبل مدير المشروع"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_f_m_approved
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_feeding_f_m_approved
+msgid "Request Feeding Approved by financial Manager"
+msgstr "الموافقة على طلب التغذية من قبل المدير المالي"
+
+#. module: petty_cash
+#: model:ir.actions.report,name:petty_cash.action_dynamic_petty_cash_report_request_feeding_pdf
+msgid "Request Feeding Report"
+msgstr "تقرير طلب التغذية"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_feeding_rejected
+msgid "Request Feeding rejected"
+msgstr "طلب التغذية تم رفضة"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_request_feeding_validation
+msgid "Request Feeding validation"
+msgstr "تغعيل طلب التغذية"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_request
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_request
+msgid "Requests"
+msgstr "طلبات صرف"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_request_feeding
+#: model:ir.actions.client,name:petty_cash.action_dynamic_report_request_feeding
+#: model:ir.ui.menu,name:petty_cash.menu_dynamic_report_requests_feeding
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+msgid "Requests Feeding"
+msgstr "طلبات التغذية"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_requests_in_progress
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_requests_in_progress
+msgid "Requests In Progress"
+msgstr "طلبات صرف تحت الأجراء"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid "Reset To Draft"
+msgstr "إعادة التعيين إلى المسودة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__responsible_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__responsible_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "Responsible"
+msgstr "مسئول"
+
+#. module: petty_cash
+#: model:res.groups,name:petty_cash.group_petty_cash_responsible_box
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Responsible Box"
+msgstr "مسئول الصندوق"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__activity_user_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__activity_user_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__activity_user_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__activity_user_id
+msgid "Responsible User"
+msgstr "المستخدم المسؤول"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__is_review
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash__state__review
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request_feeding__state__review
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_review
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "Review"
+msgstr "مراجعة"
+
+#. module: petty_cash
+#: model:mail.message.subtype,description:petty_cash.mt_petty_cash_review
+msgid "Review Petty Cash"
+msgstr "مراجعة العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_has_sms_error
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_has_sms_error
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_has_sms_error
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "خطأ في تسليم الرسائل القصيرة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_accounts_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_analytic_accounts_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_approved_cancel_petty_cash_request_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_approved_rejected_request_feeding_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_partners_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_line_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_transfer_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_products_petty_cash_line_config_form
+msgid "Save"
+msgstr "حفظ"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_filter
+msgid "Search Petty Cash"
+msgstr "بحث"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "Search Petty Cash Line"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request__state__send
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_send
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_form
+msgid "Send"
+msgstr "إرسال"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_config
+#: model:ir.ui.menu,name:petty_cash.menu_petty_cash_settings
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_dashboard_kanban
+msgid "Settings"
+msgstr "الإعدادات"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Shipments"
+msgstr "الشحنات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__show_button
+msgid "Show Button"
+msgstr "إظهار الزر"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__start_date
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__state
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__state
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__state
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_request_feeding_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_requests_feeding
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "State"
+msgstr "المحافظة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__activity_state
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__activity_state
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__activity_state
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"الحالة على أساس الأنشطة\n"
+"المتأخرة: تاريخ الاستحقاق مر\n"
+"اليوم: تاريخ النشاط هو اليوم\n"
+"المخطط: الأنشطة المستقبلية."
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__is_stock_move
+msgid "Stock Move"
+msgstr "حركة المخزون"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Street 2..."
+msgstr "الشارع 2..."
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Street..."
+msgstr "الشارع..."
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__amount_untaxed
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__amount_untaxed_currency
+msgid "Subtotal"
+msgstr "الإجمالي الفرعي"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__vat_partner
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "TIN"
+msgstr "الرقم الضريبي"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Tags..."
+msgstr "الوسوم..."
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__amount_tax
+msgid "Tax"
+msgstr "الضريبة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "Tax ID"
+msgstr "معرف الضريبة"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_line__vat_partner
+msgid ""
+"Tax Identification Number. Fill it if the company is subjected to taxes. "
+"Used by the some of the legal statements."
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__tax_ids
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "Taxes"
+msgstr "الضرائب"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__template_type
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__template_type
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__template_type
+msgid "Template Type"
+msgstr "نوع القالب"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.petty_cash_settings_view_form
+msgid "Template Type of Petty Cash Line"
+msgstr "نوع قالب العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__picking_type_id
+#: model:ir.model.fields,help:petty_cash.field_res_config_settings__picking_type_id
+msgid "This will determine operation type of incoming shipment"
+msgstr "هذا سوف يُحدد نوع العملية للشُحنة القادمة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__amount_total
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__amount_total
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines
+#: model_terms:ir.ui.view,arch_db:petty_cash.dynamic_report_petty_cash_lines_grouped
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_lines
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_tree
+msgid "Total Amount"
+msgstr "المبلغ الإجمالي"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_tree
+msgid "Total Amount Tax"
+msgstr "إجمالي الضريبة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Total Credit"
+msgstr "إجمالي الائتمان"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Total Debit"
+msgstr "إجمالي الدين"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_tree
+msgid "Total Untaxed Amount"
+msgstr "إجمالي بدون ضرائب"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_line__amount_tax
+msgid "Total amount and with taxes"
+msgstr "مبلغ شامل الضريبة"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_line__amount_untaxed
+msgid "Total amount and without taxes"
+msgstr "إجمالي المبلغ غير شامل الضرائب"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_line__amount_untaxed_currency
+msgid "Total amount without taxes with currency of line"
+msgstr "المبلغ الإجمالي بدون ضرائب بعملة السطر"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_line_form
+msgid "Totals"
+msgstr "المجاميع"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_petty_cash_transfer
+#: model:ir.model,name:petty_cash.model_stock_picking
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Transfer"
+msgstr "تحويل"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_form
+msgid "Transfers"
+msgstr "تحويلات"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__type
+msgid "Type"
+msgstr "النوع"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__activity_exception_decoration
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__activity_exception_decoration
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__activity_exception_decoration
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__price_unit
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "Unit Price"
+msgstr "سعر الوحدة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__uom_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.report_petty_cash_document
+msgid "Unit of Measure"
+msgstr "وحدة القياس"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_feeding_petty_cash_form
+msgid "Unmark as Sent"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_unread
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_unread
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_unread
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_unread
+msgid "Unread Messages"
+msgstr "الرسائل الجديدة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__message_unread_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__message_unread_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__message_unread_counter
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "عدد الرسائل الجديدة"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__amount_untaxed
+msgid "Untaxed Amount"
+msgstr "المبلغ بدون ضرائب"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_user_rule__user
+#: model:res.groups,name:petty_cash.group_petty_cash_user
+msgid "User"
+msgstr "المستخدم"
+
+#. module: petty_cash
+#: model:ir.module.category,description:petty_cash.module_category_petty_cash
+msgid "User Petty Cash"
+msgstr "عُهد المُستخدم"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__user_rule
+msgid "User Rule"
+msgstr "صلاحية المُستخدم"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_res_users
+msgid "Users"
+msgstr "المستخدمون"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_feeding_form
+msgid "Validate"
+msgstr "اعتماد"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash_request_feeding__state__validation
+#: model:mail.message.subtype,name:petty_cash.mt_petty_cash_request_feeding_validation
+msgid "Validation"
+msgstr "تفعيل"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_petty_cash_request_tree
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_payment_voucher_tree
+msgid "Vendor"
+msgstr "المورد"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__petty_cash_vendor_account_category_id
+msgid "Vendor Accounting Category"
+msgstr "فئة محاسبة المورد"
+
+#. module: petty_cash
+#: model:ir.actions.act_window,name:petty_cash.action_vendor_petty_cash_accounting_category
+#: model:ir.ui.menu,name:petty_cash.menu_vendor_petty_cash_accounting_category_config
+msgid "Vendor Categories"
+msgstr "فئات المورد"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "Vendor Petty Cash"
+msgstr "مورد العُهد المالية"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_payment_voucher__website_message_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash__website_message_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request__website_message_ids
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_feeding__website_message_ids
+msgid "Website Messages"
+msgstr "رسائل الموقع"
+
+#. module: petty_cash
+#: model:ir.model.fields,help:petty_cash.field_payment_voucher__website_message_ids
+#: model:ir.model.fields,help:petty_cash.field_petty_cash__website_message_ids
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request__website_message_ids
+#: model:ir.model.fields,help:petty_cash.field_petty_cash_request_feeding__website_message_ids
+msgid "Website communication history"
+msgstr "سجل تواصل الموقع"
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash__template_type__with_product
+#: model:ir.model.fields.selection,name:petty_cash.selection__res_config_settings__template_type__with_product
+msgid "With Product"
+msgstr "مع الُمنتج"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "ZIP"
+msgstr "الرمز البريدي"
+
+#. module: petty_cash
+#: model_terms:ir.actions.act_window,help:petty_cash.action_petty_cash
+#: model_terms:ir.actions.act_window,help:petty_cash.action_petty_cash_for_review
+msgid "click to define new Petty Cash"
+msgstr "إضغط لإنشاء عهد مالية جديدة"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "e.g. BE0477472701"
+msgstr "مثال: BE0477472701"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "e.g. Mister"
+msgstr ""
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "e.g. Sales Director"
+msgstr "مثلًا مدير مبيعات"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_vendor_petty_cash_form
+msgid "e.g. https://www.odoo.com"
+msgstr "مثل https://www.odoo.com"
+
+#. module: petty_cash
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_accounts_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_analytic_accounts_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_approved_cancel_petty_cash_request_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_approved_rejected_request_feeding_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_partners_petty_cash_line_config_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_request_line_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_petty_cash_transfer_form
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_products_petty_cash_line_config_form
+msgid "or"
+msgstr "أو"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_line__product_id
+#: model:ir.model.fields,field_description:petty_cash.field_petty_cash_request_line__product_id
+#: model_terms:ir.ui.view,arch_db:petty_cash.view_dynamic_report_petty_cash_lines_filter
+msgid "product"
+msgstr "مُنتج"
+
+#. module: petty_cash
+#: model:ir.model.fields,field_description:petty_cash.field_products_petty_cash_line_config__products
+#: model:ir.model.fields,field_description:petty_cash.field_res_config_settings__products
+msgid "products"
+msgstr "مُنتجات"
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_report_petty_cash_report_petty_cash_lines
+msgid "report.petty_cash.report_petty_cash_lines"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_report_petty_cash_report_requests_feeding
+msgid "report.petty_cash.report_requests_feeding"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model,name:petty_cash.model_res_partner_account_category
+msgid "res.partner.account.category"
+msgstr ""
+
+#. module: petty_cash
+#: model:ir.model.fields.selection,name:petty_cash.selection__petty_cash__template_type__without_product
+#: model:ir.model.fields.selection,name:petty_cash.selection__res_config_settings__template_type__without_product
+msgid "without product"
+msgstr "بدون مُنتج"

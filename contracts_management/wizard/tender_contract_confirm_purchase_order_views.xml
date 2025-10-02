@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_confirm_purchase_order_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.confirm.purchase.order.form</field>
+            <field name="model">tender.contract.check.analytic.account.wizard</field>
+            <field name="inherit_id" ref="contracts_management.view_tender_contract_check_analytic_account_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//button" position="before">
+                    <button string="Confirm" name="action_confirm_purchase_orders" type="object" class="btn-primary"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_tender_contract_confirm_purchase_order" model="ir.actions.act_window">
+            <field name="name">Confirm</field>
+            <field name="res_model">tender.contract.check.analytic.account.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contracts_management.view_tender_contract_confirm_purchase_order_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

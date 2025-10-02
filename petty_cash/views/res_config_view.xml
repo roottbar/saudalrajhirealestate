@@ -1,0 +1,191 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="petty_cash_settings_view_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.settings.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" string="Petty Cash" data-key="petty_cash">
+                        <h2>Petty Cash Settings</h2>
+
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="accounts"/>
+                                    <field name="accounts" invisible="1"/>
+                                    <div class="text-muted">
+                                        Accounts of Petty Cash Line
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <button name="%(petty_cash.action_accounts_petty_cash_line_config)d"
+                                                    string="Accounts" type="action" icon="fa-arrow-right"
+                                                    class="btn-link"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="products"/>
+                                    <field name="products" invisible="1"/>
+                                    <div class="text-muted">
+                                        Products of Petty Cash Line
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <button name="%(petty_cash.action_products_petty_cash_line_config)d"
+                                                    string="Products" type="action" icon="fa-arrow-right"
+                                                    class="btn-link"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="analytic_account_ids"/>
+                                    <field name="analytic_account_ids" invisible="1"/>
+                                    <div class="text-muted">
+                                        Analytic Accounts of Petty Cash Line
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <button name="%(petty_cash.action_analytic_accounts_petty_cash_line_config)d"
+                                                    string="Analytic Accounts" type="action" icon="fa-arrow-right"
+                                                    class="btn-link"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="partner_ids"/>
+                                    <field name="partner_ids" invisible="1"/>
+                                    <div class="text-muted">
+                                        Partners of Petty Cash Line
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <button name="%(petty_cash.action_partners_petty_cash_line_config)d"
+                                                    string="Partners" type="action" icon="fa-arrow-right"
+                                                    class="btn-link"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="transfer_account_id"/>
+                                    <div class="text-muted">
+                                        Account used when transferring between banks
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="transfer_account_id" class="o_light_label"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="petty_cash_vendor_account_category_id"/>
+                                    <div class="text-muted">
+                                        Default accounting category used when created vendors in petty cash
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="petty_cash_vendor_account_category_id" class="o_light_label"
+                                                   context="{'form_view_ref': 'accounting_category_partner.view_res_partner_account_category_form2','default_apply_to_petty_cash':True,'default_apply_to_vendor':True,'default_apply_to_customer':False}"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="template_type"/>
+                                    <div class="text-muted">
+                                        Template Type of Petty Cash Line
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="template_type" class="o_light_label"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="picking_type_id"/>
+                                    <div class="text-muted">
+                                        Operation Type of Petty Cash Line
+                                    </div>
+
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="picking_type_id" class="o_light_label"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="is_stock_move"/>
+                                </div>
+
+                                <div class="o_setting_right_pane">
+                                    <label for="is_stock_move"/>
+                                    <div class="text-muted">
+                                        Create Stock Move in Petty Cash
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="dynamic_journal"/>
+                                </div>
+
+                                <div class="o_setting_right_pane">
+                                    <label for="dynamic_journal"/>
+                                    <div class="text-muted">
+                                        Dynamic Journal in Petty Cash
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_config" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'petty_cash'}</field>
+        </record>
+    </data>
+</odoo>

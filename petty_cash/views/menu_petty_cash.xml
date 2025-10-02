@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_petty_cash_main"
+                  name="Petty Cash"
+                  groups="petty_cash.group_petty_cash_user"
+                  web_icon="petty_cash,static/description/icon.png"/>
+
+        <menuitem id="menu_board_petty_cash"
+                  name="Dashboard"
+                  action="board.open_board_my_dash_action"
+                  parent="menu_petty_cash_main"
+                  sequence="1"/>
+
+        <menuitem id="menu_petty_cash_operations"
+                  name="Operations"
+                  parent="menu_petty_cash_main"
+                  sequence="2"/>
+        <menuitem id="menu_petty_cash"
+                  name="Petty Cash"
+                  parent="menu_petty_cash_operations"
+                  action="action_petty_cash"
+                  sequence="1"/>
+        <menuitem id="menu_petty_cash_for_review"
+                  name="Petty Cash For Review"
+                  parent="menu_petty_cash_operations"
+                  action="action_petty_cash_for_review"
+                  sequence="2"
+                  groups="petty_cash.group_petty_cash_manager"/>
+        <menuitem id="menu_nutrition_petty_cash"
+                  name="Feeding Petty Cash"
+                  parent="menu_petty_cash_operations"
+                  action="action_feeding_petty_cash"
+                  sequence="3"
+                  groups="petty_cash.group_petty_cash_manager"/>
+        <menuitem id="menu_payment_voucher"
+                  name="Payment Voucher"
+                  parent="menu_petty_cash_operations"
+                  action="action_payment_voucher"
+                  sequence="4"
+                  groups="petty_cash.group_petty_cash_manager"/>
+
+        <menuitem id="menu_petty_cash_executive"
+                  name="Executive"
+                  parent="menu_petty_cash_main"
+                  sequence="3"/>
+        <menuitem id="menu_petty_cash_request"
+                  name="Requests"
+                  parent="menu_petty_cash_executive"
+                  action="action_petty_cash_request"
+                  sequence="1"/>
+        <menuitem id="menu_petty_cash_requests_in_progress"
+                  name="Requests In Progress"
+                  parent="menu_petty_cash_executive"
+                  action="action_petty_cash_requests_in_progress"
+                  sequence="2"/>
+        <menuitem id="menu_petty_cash_request_feeding"
+                  name="Requests Feeding"
+                  parent="menu_petty_cash_executive"
+                  action="action_petty_cash_request_feeding"
+                  sequence="3"/>
+
+        <menuitem id="menu_petty_cash_reports"
+                  name="Reports"
+                  parent="menu_petty_cash_main"
+                  sequence="4"/>
+        <menuitem id="menu_report_petty_cash_lines"
+                  name="Petty Cash Lines"
+                  parent="menu_petty_cash_reports"
+                  action="action_dynamic_report_petty_cash_lines"
+                  sequence="1"/>
+
+        <menuitem id="menu_dynamic_report_petty_cash_lines"
+                  name="Dynamic Petty Cash Lines"
+                  parent="menu_petty_cash_reports"
+                  action="action_report_petty_cash_lines_view"
+                  sequence="2"/>
+
+        <menuitem id="menu_dynamic_report_requests_feeding"
+                  name="Requests Feeding"
+                  parent="menu_petty_cash_reports"
+                  action="action_dynamic_report_request_feeding"
+                  sequence="3"/>
+
+        <menuitem id="menu_petty_cash_configuration"
+                  name="Configuration"
+                  parent="menu_petty_cash_main"
+                  sequence="5"
+                  groups="petty_cash.group_petty_cash_manager"/>
+        <menuitem id="menu_petty_cash_settings"
+                  name="Settings"
+                  parent="menu_petty_cash_configuration"
+                  action="action_petty_cash_config"
+                  groups="base.group_system"
+                  sequence="1"/>
+        <menuitem id="menu_petty_cash_user_rule_config"
+                  name="Petty Cash Rule"
+                  parent="menu_petty_cash_configuration"
+                  action="action_petty_cash_user_rule"
+                  sequence="2"/>
+        <menuitem id="menu_vendor_petty_cash_accounting_category_config"
+                  name="Vendor Categories"
+                  parent="menu_petty_cash_configuration"
+                  action="action_vendor_petty_cash_accounting_category"
+                  sequence="3"/>
+    </data>
+</odoo>

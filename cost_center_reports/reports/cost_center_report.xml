@@ -1,0 +1,27 @@
+<odoo>
+    <!-- تعريف تنسيق الورق A4 -->
+    <record id="paperformat_a4" model="report.paperformat">
+        <field name="name">A4</field>
+        <field name="format">A4</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line">False</field>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!-- تعريف التقرير الرئيسي -->
+    <report 
+        id="action_cost_center_report"
+        name="cost_center_reports.cost_center_report_template"
+        model="cost.center.report"
+        report_type="qweb-html"
+        string="Cost Center Report"
+        paperformat="cost_center_reports.paperformat_a4"
+    />
+</odoo>

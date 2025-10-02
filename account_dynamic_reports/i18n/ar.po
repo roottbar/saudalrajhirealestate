@@ -1,0 +1,1982 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_dynamic_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0-20210923\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-02 10:24+0000\n"
+"PO-Revision-Date: 2021-11-02 10:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:194
+#, python-format
+msgid " To "
+msgstr "إلي"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/wizard/partner_ageing.py:107
+#, python-format
+msgid "\"Bucket order must be ascending\""
+msgstr "يجب أن يكون ترتيب المجموعة تصاعديًا"
+"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/wizard/general_ledger.py:237
+#: code:addons/account_dynamic_reports/wizard/partner_ledger.py:229
+#: code:addons/account_dynamic_reports/wizard/trial_balance.py:209
+#, python-format
+msgid "\"Date from\" must be less than or equal to \"Date to\""
+msgstr "التاريخ من \ يجب ان يكون اصغر من او يساوي \التايخ الي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:48
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:49
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1120
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1121
+#, python-format
+msgid "&nbsp;"
+msgstr ""
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid "*** END OF DOCUMENT ***"
+msgstr "نهاية المستند"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,financial_year:0
+#: selection:ins.general.ledger,financial_year:0
+#: selection:ins.partner.ledger,financial_year:0
+#: selection:ins.trial.balance,financial_year:0
+#: selection:res.company,financial_year:0
+msgid "1 April to 31 March"
+msgstr "من 1 ابريل إلى 31 مارس"
+ل
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,financial_year:0
+#: selection:ins.general.ledger,financial_year:0
+#: selection:ins.partner.ledger,financial_year:0
+#: selection:ins.trial.balance,financial_year:0
+#: selection:res.company,financial_year:0
+msgid "1 Jan to 31 Dec"
+msgstr "من 1 يناير إلى 31 ديسمبر"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,financial_year:0
+#: selection:ins.general.ledger,financial_year:0
+#: selection:ins.partner.ledger,financial_year:0
+#: selection:ins.trial.balance,financial_year:0
+#: selection:res.company,financial_year:0
+msgid "1 july to 30 June"
+msgstr "من 1 يوليو إلى 30 يونيو"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+msgid ": General ledger"
+msgstr " دفتر الأستاذ العام"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+msgid ": Partner Ageing"
+msgstr "اعمار الشريك"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid ": Partner ledger"
+msgstr "دفتر استاذ الشريك"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid ": Trial Balance"
+msgstr "  ميزان المراجعة"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid "<span>&amp;nbsp;</span>\n"
+"                                                <span>&amp;nbsp;</span>\n"
+"                                                <span>&amp;nbsp;</span>"
+msgstr ""
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid "<span>Ending Balance</span>"
+msgstr "الرصيد النهائي "
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid "<span>Initial Balance</span>"
+msgstr "الرصيد الأولي"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+msgid "<span>Total</span>"
+msgstr "الاجمالي"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid "<strong>Accounts:</strong>"
+msgstr "الحسابات"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+msgid "<strong>Analytic Tag:</strong>"
+msgstr "وسوم تحليلية"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid "<strong>Analytic:</strong>"
+msgstr "تحليلي"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+msgid "<strong>As on Date:</strong>"
+msgstr "كما في التاريخ"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+msgid "<strong>Comparison Date From:</strong>"
+msgstr "تاريخ المقارنة من"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+msgid "<strong>Comparison Date To:</strong>"
+msgstr "تاريخ المقارنة الي"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid "<strong>Date From:</strong>"
+msgstr "التاريخ من"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid "<strong>Date To:</strong>"
+msgstr "التاريخ الي"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid "<strong>Display Account</strong>"
+msgstr "عرض الحساب"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+msgid "<strong>Journals:</strong>"
+msgstr "دفاتر اليوميه"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid "<strong>Partner Tags:</strong>"
+msgstr "وسوم الشريك"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+msgid "<strong>Partners:</strong>"
+msgstr "الشركاء"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid "<strong>Reconciled:</strong>"
+msgstr " تمت تسويته"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid "<strong>Target Moves:</strong>"
+msgstr "<strong>الحركات المستهدفة:</strong>"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:233
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:159
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:203
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:302
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:504
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:559
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:816
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1032
+#: model:ir.model,name:account_dynamic_reports.model_account_account
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#, python-format
+msgid "Account"
+msgstr "الحساب"
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_ins_account_financial_report
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__children_ids
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_ins_account_financial_report_form
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_ins_account_financial_report_search
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_ins_account_financial_report_tree
+msgid "Account Report"
+msgstr "تقرير الحساب"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__account_report_id
+msgid "Account Reports"
+msgstr "تقارير الحساب"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:186
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__account_tag_ids
+#, python-format
+msgid "Account Tags"
+msgstr "وسوم الحساب"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:433
+#, python-format
+msgid "Account Tags:"
+msgstr "وسوم الحساب"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,type:0
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__type
+msgid "Account Type"
+msgstr "نوع الحساب"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:667
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:923
+#, python-format
+msgid "Account Type:"
+msgstr "نوع الحساب"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__account_type_ids
+msgid "Account Types"
+msgstr "انواع الحساب"
+
+#. module: account_dynamic_reports
+#: model:ir.ui.menu,name:account_dynamic_reports.account_reports_ins_wiz
+msgid "Accounting Reports"
+msgstr "تقارير الحسابات"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:178
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:171
+#: selection:ins.account.financial.report,type:0
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__account_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__account_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__account_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__account_ids
+#, python-format
+msgid "Accounts"
+msgstr "الحسابات"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:422
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:956
+#, python-format
+msgid "Accounts:"
+msgstr "الحسابات"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_res_company_form
+msgid "Ageing Bucket"
+msgstr " اعمارالمجموعة"
+
+#. module: account_dynamic_reports
+#: selection:ins.general.ledger,display_accounts:0
+#: selection:ins.partner.ledger,display_accounts:0
+#: selection:ins.trial.balance,display_accounts:0
+msgid "All"
+msgstr "الكل"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,target_move:0
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+msgid "All Entries"
+msgstr "كافة القيود"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,target_move:0
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+msgid "All Posted Entries"
+msgstr "كل القيود المرحلة"
+
+#. module: account_dynamic_reports
+#: selection:ins.general.ledger,target_moves:0
+#: selection:ins.partner.ledger,target_moves:0
+#: selection:ins.trial.balance,target_moves:0
+msgid "All entries"
+msgstr "كافة القيود"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:194
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:165
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__analytic_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__analytic_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__analytic_ids
+#, python-format
+msgid "Analytic Accounts"
+msgstr "حسابات تحليلية"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:202
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__analytic_tag_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__analytic_tag_ids
+#, python-format
+msgid "Analytic Tags"
+msgstr "علامات التحليلية"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:173
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:455
+#, python-format
+msgid "Analytic Tags:"
+msgstr "العلامات التحليلية"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:162
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:444
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1320
+#, python-format
+msgid "Analytic:"
+msgstr "تحليلي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:102
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:364
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:634
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:878
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1262
+#, python-format
+msgid "Apply"
+msgstr "تطبق"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:130
+#, python-format
+msgid "As on Date"
+msgstr "كما في التاريخ"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:642
+#, python-format
+msgid "As on Date :"
+msgstr "كما في التاريخ"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__as_on_date
+msgid "As on date"
+msgstr "كما في التاريخ"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_assets0
+msgid "Assets"
+msgstr "الاصول"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,style_overwrite:0
+msgid "Automatic formatting"
+msgstr "التنسيق التلقائي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:156
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:186
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:189
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:229
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:238
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:198
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:206
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:209
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:215
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:221
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:20
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:235
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:305
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:749
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:819
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1035
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1038
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1041
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+#, python-format
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_balancesheet0
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_balance_sheet_report
+#: model:ir.actions.client,name:account_dynamic_reports.action_dynamic_allinone_bs_report
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_bl
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_bs_wiz
+msgid "Balance Sheet"
+msgstr "الميزانية العمومية"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:236
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:750
+#, python-format
+msgid "Balance in FC"
+msgstr "الرصيد في الف سي"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__bucket_1
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__bucket_1
+msgid "Bucket 1"
+msgstr "مجموعة 1"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__bucket_2
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__bucket_2
+msgid "Bucket 2"
+msgstr "مجموعة 2"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__bucket_3
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__bucket_3
+msgid "Bucket 3"
+msgstr "مجموعة 3"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__bucket_4
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__bucket_4
+msgid "Bucket 4"
+msgstr "مجموعة 4"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__bucket_5
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__bucket_5
+msgid "Bucket 5"
+msgstr "مجموعة 5"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:653
+#, python-format
+msgid "Bucket-1"
+msgstr "مجموعة 1"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:655
+#, python-format
+msgid "Bucket-2"
+msgstr "مجموعة -2"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:657
+#, python-format
+msgid "Bucket-3"
+msgstr "مجموعة -3"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:659
+#, python-format
+msgid "Bucket-4"
+msgstr "مجموعة-4"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:661
+#, python-format
+msgid "Bucket-5"
+msgstr "مجموعة-5"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_general_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ageing_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_trial_balance_wizard
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: account_dynamic_reports
+#: model:ir.actions.client,name:account_dynamic_reports.action_dynamic_allinone_cf_report
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_cf_wiz
+msgid "Cash Flow"
+msgstr "التدفق النقدي"
+
+#. module: account_dynamic_reports
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_cash_flow_report
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_cashflow
+msgid "Cash Flow Report"
+msgstr "تقرير التدفق النقدي"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_cash_flow0
+msgid "Cash Flow Statement"
+msgstr "بيان حركة النقد"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_account_account__cash_flow_category
+msgid "Cash Flow type"
+msgstr "نوع التدفق النقدي"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_cash_in_financial_1
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_cash_in_investing_1
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_cash_in_operation_1
+msgid "Cash In"
+msgstr "النقد في"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_cash_out_financial_2
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_cash_out_investing_2
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_cash_out_operation_2
+msgid "Cash Out"
+msgstr "السحب النقدي"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:232
+#, python-format
+msgid "Code"
+msgstr "الكود"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__label_filter
+msgid "Column Label"
+msgstr "اسم العمود"
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_res_company
+msgid "Companies"
+msgstr "الشركات"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__company_id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__company_id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__company_id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__company_id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:128
+#, python-format
+msgid "Comparison"
+msgstr "مقارنة"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:123
+#, python-format
+msgid "Comparison Date from"
+msgstr "مقارنة التاريخ من"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:132
+#, python-format
+msgid "Comparison Date to"
+msgstr "مقارنة التاريخ الي"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__create_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__create_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__create_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__create_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__create_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__create_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__create_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__create_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__create_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__create_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:154
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:227
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:236
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:196
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:204
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:207
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:213
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:219
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:15
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:234
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:304
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:748
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:818
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1034
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1037
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1040
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+#, python-format
+msgid "Credit"
+msgstr "الدائن"
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_res_currency
+msgid "Currency"
+msgstr "العملة"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:5
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#, python-format
+msgid "Current Cash Balance"
+msgstr "الرصيد النقدي الحالي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:105
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:110
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:367
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:637
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:881
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1265
+#, python-format
+msgid "Custom"
+msgstr "مخصص"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:651
+#, python-format
+msgid "Custom Buckets"
+msgstr " مجموعة مخصصة"
+
+#. module: account_dynamic_reports
+#: selection:ins.partner.ageing,partner_type:0
+msgid "Customer Only"
+msgstr "العميل فقط"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:681
+#, python-format
+msgid "Customers Only"
+msgstr "العملاء فقط"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:213
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:182
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:228
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:742
+#: selection:ins.financial.report,filter_cmp:0
+#: selection:ins.general.ledger,sort_accounts_by:0
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_financial_report_wiz_modified
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#, python-format
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__date_range
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__date_range
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__date_range
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__date_range
+msgid "Date Range"
+msgstr "نطاق التاريخ"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:184
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:391
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:905
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1289
+#, python-format
+msgid "Date Range:"
+msgstr "نطاق التاريخ"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:103
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:129
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:114
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:139
+#, python-format
+msgid "Date from"
+msgstr "التاريخ من"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:112
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:134
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:119
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:144
+#, python-format
+msgid "Date to"
+msgstr "التاريخ الي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:105
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:367
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:637
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:881
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1265
+#, python-format
+msgid "Dates"
+msgstr "التواريخ"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:152
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:225
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:234
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:194
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:202
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:205
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:211
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:217
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:14
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:233
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:303
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:747
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:817
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1033
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1036
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1039
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+#, python-format
+msgid "Debit"
+msgstr "المدين"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__date_range
+msgid "Default Date Range"
+msgstr "فترة التاريخ الافتراضية"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_financial_report_wiz_modified
+msgid "Discard"
+msgstr "تجاهل"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__debit_credit
+msgid "Display Debit/Credit Columns"
+msgstr "عرض أعمدة الدائن/المدين"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_general_ledger__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_ins_report_financial__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_partner_ageing__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_partner_ledger__display_name
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_trial_balance__display_name
+msgid "Display Name"
+msgstr "عرض الاسم "
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:144
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:129
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:150
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__display_accounts
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__display_accounts
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__display_accounts
+#, python-format
+msgid "Display accounts"
+msgstr "عرض الحسابات"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,display_detail:0
+msgid "Display children flat"
+msgstr " عرض الحسابات المنسدلة"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,display_detail:0
+msgid "Display children with hierarchy"
+msgstr "عرض الحسابات المنسدلة ذوي التسلسل الهرمي"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__display_detail
+msgid "Display details"
+msgstr "تفاصيل العرض"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:157
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:502
+#, python-format
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_res_company_form
+msgid "Dynamic Reports"
+msgstr "التقارير الحيوية"
+
+#. module: account_dynamic_reports
+#: model:ir.ui.menu,name:account_dynamic_reports.account_reports_ins
+msgid "Dynamic Reports(Wiz)"
+msgstr "التقارير الحيوية"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__enable_filter
+msgid "Enable Comparison"
+msgstr "تمكين المقارنة"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__date_to
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__date_to_cmp
+msgid "End Date"
+msgstr "تاريخ الإنتهاء"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:119
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:137
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:379
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:893
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1277
+#, python-format
+msgid "End Date :"
+msgstr "تاريخ الإنتهاء"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__date_to
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__date_to
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__date_to
+msgid "End date"
+msgstr "تاريخ الانتهاء"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1029
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+#, python-format
+msgid "Ending Balance"
+msgstr "الرصيد النهائي"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:156
+#, python-format
+msgid "Entry #"
+msgstr "ادخال"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:223
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:192
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:232
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:501
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:746
+#, python-format
+msgid "Entry Label"
+msgstr "تسمية الادخال"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_currency__excel_format
+msgid "Excel format"
+msgstr "تنسيق الاكسيل"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_expense0
+msgid "Expense"
+msgstr "المصروفات"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:97
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:359
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:629
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:873
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1257
+#, python-format
+msgid "Export (XLSX)"
+msgstr " طباعة الي اكسل"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__filter_cmp
+msgid "Filter by"
+msgstr " تصفيةب"
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_report_account_dynamic_reports_ins_report_financial
+msgid "Financial Report"
+msgstr "التقرير المالي"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__style_overwrite
+msgid "Financial Report Style"
+msgstr "نمط التقرير المالي"
+
+#. module: account_dynamic_reports
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_account_financial_report_tree
+#: model:ir.model,name:account_dynamic_reports.model_ins_financial_report
+#: model:ir.ui.menu,name:account_dynamic_reports.ins_account_financial_report
+msgid "Financial Reports"
+msgstr "التقارير المالية"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__financial_year
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__financial_year
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__financial_year
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__financial_year
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__financial_year
+msgid "Financial Year"
+msgstr "السنة المالية"
+
+#. module: account_dynamic_reports
+#: model:ir.actions.report,name:account_dynamic_reports.ins_financial_report_pdf
+msgid "Financial reports"
+msgstr "التقارير المالية"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_financing_activity1
+msgid "Financing Activities"
+msgstr "الأنشطة المالية"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,help:account_dynamic_reports.field_ins_account_financial_report__sign
+msgid "For accounts that are typically more debited than credited and that you would like to print as negative amounts in your reports, you should reverse the sign of the balance; e.g.: Expense account. The same applies for accounts that are typically more credited than debited and that you would like to print as positive amounts in your reports; e.g.: Income account."
+msgstr "بالنسبة للحسابات التي عادة ما تكون أكثر خصما من الحسابات الدائنة والتي ترغب في طباعتها كمبالغ سالبة في تقاريرك، يجب عكس علامة الرصيد؛ على سبيل المثال: حساب المصروفات. وينطبق نفس الشيء على الحسابات التي عادة ما تكون أكثر دائنة من المدينة والتي ترغب في طباعتها كمبالغ موجبة في تقاريرك؛ على سبيل المثال: حساب الدخل."
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__view_format
+msgid "Format"
+msgstr "تنسيق"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/wizard/trial_balance.py:220
+#, python-format
+msgid "From date and To dates are mandatory for this report"
+msgstr "من التاريخ وإلى التواريخ إلزامية لهذا التقرير"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/wizard/trial_balance.py:217
+#, python-format
+msgid "From date must not be less than to date"
+msgstr "يجب ألا يقل  من تاريخ إلى تاريخ"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:353
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_general_ledger_wizard
+#: model:ir.actions.report,name:account_dynamic_reports.action_print_general_ledger
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_gl
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_gl_wiz
+#, python-format
+msgid "General Ledger"
+msgstr "دفتر حساب الاستاذ"
+
+#. module: account_dynamic_reports
+#: model:ir.actions.client,name:account_dynamic_reports.action_dynamic_allinone_gl_report
+msgid "General Ledger Report"
+msgstr "تقرير دفتر حساب الاستاذ"
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_ins_general_ledger
+msgid "General Ledger Reports"
+msgstr "تقرير دفتر حساب الاستاذ"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_ins_account_financial_report_search
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,help:account_dynamic_reports.field_ins_financial_report__debit_credit
+msgid "Help to identify debit and credit with balance line for better understanding."
+msgstr "المساعدة في تحديد الدائن والمدين باستخدام خط الرصيد لفهم أفضل"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,view_format:0
+msgid "Horizontal"
+msgstr "أفقي"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_general_ledger__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_ins_report_financial__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_partner_ageing__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_partner_ledger__id
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_trial_balance__id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:470
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:713
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:993
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__include_details
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__include_details
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__include_details
+#, python-format
+msgid "Include Details"
+msgstr "تضمن كل التفاصييل"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__initial_balance
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__initial_balance
+msgid "Include Initial Balance"
+msgstr "تضمن الرصيد الأولي"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_income0
+msgid "Income"
+msgstr "الدخل"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:154
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:139
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:471
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:994
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1027
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.trial_balance
+#, python-format
+msgid "Initial Balance"
+msgstr "الرصيد الاولي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:4
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#, python-format
+msgid "Initial Cash Balance"
+msgstr "الرصيد النقدي الأولي"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_investing_activity0
+msgid "Investing Activities"
+msgstr "الأنشطة الاستثمارية"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_general_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ledger_wizard
+msgid "It will show detailed lines in reports"
+msgstr "وسوف تظهر خطوط مفصلة في التقارير"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,style_overwrite:0
+msgid "Italic Text (smaller)"
+msgstr "نص مائل (أصغر)"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:215
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:184
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:229
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:743
+#, python-format
+msgid "JRNL"
+msgstr "يومية"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:158
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:503
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#, python-format
+msgid "Journal"
+msgstr "دفتر اليومية"
+
+#. module: account_dynamic_reports
+#: selection:ins.general.ledger,sort_accounts_by:0
+msgid "Journal and Partner"
+msgstr "دفتر اليومية و الشريك"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:162
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:147
+#: code:addons/account_dynamic_reports/report/report_trial_balance_xlsx.py:157
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__journal_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__journal_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__journal_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__journal_ids
+#, python-format
+msgid "Journals"
+msgstr "دفاتر اليومية"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:149
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:409
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:943
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1307
+#, python-format
+msgid "Journals:"
+msgstr "دفاتر اليومية"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+msgid "Last Financial Year"
+msgstr "السنة المالية الماضية"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_general_ledger____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_ins_report_financial____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_partner_ageing____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_partner_ledger____last_update
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_report_account_dynamic_reports_trial_balance____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:195
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:402
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:916
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1300
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "Last Month"
+msgstr "الشهر الماضي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:196
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:403
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:917
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1301
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "Last Quarter"
+msgstr "الربع الأخير"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__write_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__write_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__write_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__write_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__write_uid
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__write_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__write_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__write_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__write_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__write_date
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:194
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:401
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:915
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1299
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "Last Week"
+msgstr "اخر اسبوع"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:197
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:404
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:918
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1302
+#, python-format
+msgid "Last Year"
+msgstr "اخر سنة"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__level
+msgid "Level"
+msgstr "المستوى"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_liability0
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_liabilitysum0
+msgid "Liability"
+msgstr "الديون"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,style_overwrite:0
+msgid "Main Title 1 (bold, underlined)"
+msgstr "العنوان الرئسي 1"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:221
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:190
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:231
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:745
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#, python-format
+msgid "Move"
+msgstr "حركة"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:150
+#: code:addons/account_dynamic_reports/report/report_financial_report_xlsx.py:181
+#, python-format
+msgid "Name"
+msgstr "الاسم"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:5
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_report_financial
+#, python-format
+msgid "Net Cash Balance"
+msgstr "صافي الرصيد النقدي"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,filter_cmp:0
+msgid "No Filters"
+msgstr "لا توجد تصفية"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,display_detail:0
+msgid "No detail"
+msgstr "لا توجد تفاصيل"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,style_overwrite:0
+msgid "Normal Text"
+msgstr "نص عادي"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_operation0
+msgid "Operations"
+msgstr "العمليات"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:202
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:466
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:709
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:989
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1331
+#, python-format
+msgid "Options:"
+msgstr "خيارات"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_financial_report_wiz_modified
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_general_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ageing_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_trial_balance_wizard
+msgid "PDF"
+msgstr "بي دي اف"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__parent_id
+msgid "Parent"
+msgstr "الأصل"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_ins_account_financial_report_search
+msgid "Parent Report"
+msgstr "التقرير الاصلي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:217
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:161
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:186
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:201
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:230
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:744
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__partner_ids
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+#, python-format
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:623
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_partner_ageing_wizard
+#: model:ir.actions.report,name:account_dynamic_reports.action_print_partner_ageing
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_pa
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_pa_wiz
+#, python-format
+msgid "Partner Ageing"
+msgstr "اعمار الشريك"
+
+#. module: account_dynamic_reports
+#: model:ir.actions.client,name:account_dynamic_reports.action_dynamic_allinone_pa_report
+msgid "Partner Ageing Report"
+msgstr "تقرير اعمار الشريك"
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_ins_partner_ageing
+msgid "Partner Ageing Reports"
+msgstr "تقارير اعمار الشريك"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:867
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_partner_ledger_wizard
+#: model:ir.actions.report,name:account_dynamic_reports.action_print_partner_ledger
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_plg
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_plg_wiz
+#, python-format
+msgid "Partner Ledger"
+msgstr "دفتر الأستاذ "
+
+#. module: account_dynamic_reports
+#: model:ir.actions.client,name:account_dynamic_reports.action_dynamic_allinone_plg_report
+msgid "Partner Ledger Report"
+msgstr "تقرير دفتر الأستاذ "
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_ins_partner_ledger
+msgid "Partner Ledger Reports"
+msgstr "تقارير دفتر الأستاذ "
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:145
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:163
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__partner_category_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__partner_category_ids
+#, python-format
+msgid "Partner Tag"
+msgstr "وسم الشريك"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:698
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:978
+#, python-format
+msgid "Partner Tag:"
+msgstr "وسم الشريك"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__partner_type
+msgid "Partner Type"
+msgstr "نوع الشريك"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:677
+#, python-format
+msgid "Partner Type:"
+msgstr "نوع الشريك"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:170
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:137
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:155
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__partner_ids
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__partner_ids
+#, python-format
+msgid "Partners"
+msgstr "الشركاء"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:687
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:967
+#, python-format
+msgid "Partners:"
+msgstr "الشركاء"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:672
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:928
+#: selection:ins.partner.ageing,type:0
+#, python-format
+msgid "Payable Accounts Only"
+msgstr "حسابات الدفع فقط"
+
+#. module: account_dynamic_reports
+#: selection:ins.partner.ledger,type:0
+msgid "Payable only"
+msgstr "تدفع فقط"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/wizard/financial_report.py:508
+#: code:addons/account_dynamic_reports/wizard/general_ledger.py:770
+#: code:addons/account_dynamic_reports/wizard/partner_ageing.py:576
+#: code:addons/account_dynamic_reports/wizard/partner_ledger.py:764
+#: code:addons/account_dynamic_reports/wizard/trial_balance.py:554
+#, python-format
+msgid "Please install a free module \"dynamic_xlsx\".You can get it by contacting \"pycustech@gmail.com\". It is free"
+msgstr "الرجاء تثبيت موديول مجاني . يمكنك الحصول عليه عن طريق الاتصال ب (\"pycustech@gmail.com\)مجانا"
+
+#. module: account_dynamic_reports
+#: selection:ins.general.ledger,target_moves:0
+#: selection:ins.partner.ledger,target_moves:0
+#: selection:ins.trial.balance,target_moves:0
+msgid "Posted Only"
+msgstr "ترحيل فقط"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,sign:0
+msgid "Preserve balance sign"
+msgstr "الحفاظ على علامة الرصيد"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:96
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:358
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:628
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:872
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1256
+#, python-format
+msgid "Print (Pdf)"
+msgstr "طبع"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_profitloss_toreport0
+msgid "Profit (Loss) to report"
+msgstr "الربح (الخسارة) للتقرير"
+
+#. module: account_dynamic_reports
+#: model:ins.account.financial.report,name:account_dynamic_reports.ins_account_financial_report_profitandloss0
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_profit_and_loss_report
+#: model:ir.actions.client,name:account_dynamic_reports.action_dynamic_allinone_pl_report
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_pandl
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_pl_wiz
+msgid "Profit and Loss"
+msgstr "الربح و الخسارة"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:671
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:927
+#: selection:ins.partner.ageing,type:0
+#, python-format
+msgid "Receivable Accounts Only"
+msgstr "حسابات القبض فقط"
+
+#. module: account_dynamic_reports
+#: selection:ins.partner.ledger,type:0
+msgid "Receivable Only"
+msgstr "مستحق القبض فقط"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__reconciled
+msgid "Reconcile Type"
+msgstr "نوع التسوية"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:134
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:937
+#, python-format
+msgid "Reconciled"
+msgstr "تمت تسويته "
+
+#. module: account_dynamic_reports
+#: selection:ins.partner.ledger,reconciled:0
+msgid "Reconciled Only"
+msgstr "مستحق القبض فقط"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:933
+#, python-format
+msgid "Reconciled:"
+msgstr "تمت تسويته"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.general_ledger
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ledger
+msgid "Reference"
+msgstr "رقم الإشارة"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_ins_account_financial_report_form
+msgid "Report"
+msgstr "التقرير"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__name
+msgid "Report Name"
+msgstr "اسم التقرير"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.view_ins_account_financial_report_search
+msgid "Report Type"
+msgstr "نوع التقرير"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,type:0
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__account_report_id
+msgid "Report Value"
+msgstr "قيمة التقرير"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,sign:0
+msgid "Reverse balance sign"
+msgstr "علامة الرصيد العكسي"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__sequence
+msgid "Sequence"
+msgstr "التسلسل"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:206
+#, python-format
+msgid "Show Debit Credit"
+msgstr "إظهار رصيد الدائن"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1336
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__show_hierarchy
+#, python-format
+msgid "Show hierarchy"
+msgstr "إظهار التسلسل الهرمي"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__sign
+msgid "Sign on Reports"
+msgstr "التوقيع على التقارير"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,style_overwrite:0
+msgid "Smallest Text"
+msgstr "نص أصغر "
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__sort_accounts_by
+msgid "Sort By"
+msgstr "ترتيب حسب"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:149
+#, python-format
+msgid "Sort by"
+msgstr "مرتب حسب"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__date_from
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__date_from_cmp
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:112
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:130
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:372
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:886
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1270
+#, python-format
+msgid "Start Date :"
+msgstr "تاريخ البداية"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__date_from
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__date_from
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__date_from
+msgid "Start date"
+msgstr "تاريخ البدء"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__strict_range
+msgid "Strict Range"
+msgstr "نطاق صارم"
+
+#. module: account_dynamic_reports
+#: selection:ins.partner.ageing,partner_type:0
+msgid "Supplier Only"
+msgstr "المورد فقط"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:682
+#, python-format
+msgid "Suppliers Only"
+msgstr "الموردون فقط"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_financial_report__target_move
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_general_ledger__target_moves
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__target_moves
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_trial_balance__target_moves
+msgid "Target Moves"
+msgstr "الحركات المستهدفة"
+
+#. module: account_dynamic_reports
+#: code:addons/account_dynamic_reports/report/report_general_ledger_xlsx.py:139
+#: code:addons/account_dynamic_reports/report/report_partner_ledger_xlsx.py:124
+#, python-format
+msgid "Target moves"
+msgstr "الحركات المستهدفة"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:190
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:397
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:911
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1295
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "This Month"
+msgstr "هذا الشهر"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:191
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:398
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:912
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1296
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "This Quarter"
+msgstr "هذا الربع"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:189
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:396
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:910
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1294
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "This Week"
+msgstr "هذا الاسبوع"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:192
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:399
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:913
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1297
+#, python-format
+msgid "This Year"
+msgstr "هذا العام"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+msgid "This financial Year"
+msgstr "هذه السنة المالية"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,help:account_dynamic_reports.field_ins_financial_report__label_filter
+msgid "This label will be displayed on report to show the balance computed for the given comparison filter."
+msgstr "سيتم عرض هذه التسمية في التقرير لإظهار الرصيد المحسوب لتصفية المقارنة المعطى"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,style_overwrite:0
+msgid "Title 2 (bold)"
+msgstr "العنوان 2"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,style_overwrite:0
+msgid "Title 3 (bold, smaller)"
+msgstr "العنوان 3"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:188
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:395
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:909
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1293
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "Today"
+msgstr "اليوم"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:168
+#: code:addons/account_dynamic_reports/report/report_partner_ageing_xlsx.py:190
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:563
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:605
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.partner_ageing
+#, python-format
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1251
+#: model:ir.actions.act_window,name:account_dynamic_reports.action_ins_trial_balance_wizard
+#: model:ir.actions.report,name:account_dynamic_reports.action_print_trial_balance
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_tb
+#: model:ir.ui.menu,name:account_dynamic_reports.account_report_tb_wiz
+#, python-format
+msgid "Trial Balance"
+msgstr "ميزان المراجعة"
+
+#. module: account_dynamic_reports
+#: model:ir.actions.client,name:account_dynamic_reports.action_dynamic_allinone_tb_report
+msgid "Trial Balance Report"
+msgstr "تقريرميزان المراجعة"
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_ins_trial_balance
+msgid "Trial Balance Reports"
+msgstr "تقاريرميزان المراجعة"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_account_financial_report__type
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ageing__type
+msgid "Type"
+msgstr "النوع"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:52
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:59
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:256
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:315
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:521
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:573
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:770
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:829
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1055
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1133
+#, python-format
+msgid "Unfolded"
+msgstr "غير مطوي"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:938
+#, python-format
+msgid "Unreconciled"
+msgstr "غير مسوي"
+
+#. module: account_dynamic_reports
+#: selection:ins.partner.ledger,reconciled:0
+msgid "Unreconciled Only"
+msgstr "غير قابلة للتسوية فقط "
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_res_company__strict_range
+msgid "Use Strict Range"
+msgstr "استخدام نطاق صارم"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,help:account_dynamic_reports.field_res_company__strict_range
+msgid "Use this if you want to show TB with retained earnings section"
+msgstr "استخدم هذا إذا كنت تريد إظهار تي بي مع قسم الأرباح المحتجزة"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_financial_report_wiz_modified
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_general_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ageing_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_trial_balance_wizard
+msgid "VIEW"
+msgstr "عرض"
+
+#. module: account_dynamic_reports
+#: selection:ins.financial.report,view_format:0
+msgid "Vertical"
+msgstr "عمودي"
+
+#. module: account_dynamic_reports
+#: selection:ins.account.financial.report,type:0
+msgid "View"
+msgstr "عرض"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:67
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1062
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1141
+#, python-format
+msgid "View General Ledger"
+msgstr "عرض دفتر الأستاذ العام"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:263
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:528
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:777
+#, python-format
+msgid "View Source move"
+msgstr "عرض مصدر الحركة "
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:996
+#, python-format
+msgid "With Balance < Zero"
+msgstr "مع الرصيد < صفر"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:997
+#, python-format
+msgid "With Balance > Zero"
+msgstr "مع الرصيد > صفر"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:472
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:995
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1335
+#, python-format
+msgid "With Balance not Zero"
+msgstr "مع الرصيد لا صفر"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__balance_greater_than_zero
+msgid "With balance greater than zero"
+msgstr "مع رصيد أكبر من الصفر"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,field_description:account_dynamic_reports.field_ins_partner_ledger__balance_less_than_zero
+msgid "With balance less than zero"
+msgstr "مع رصيد أقل من صفر"
+
+#. module: account_dynamic_reports
+#: selection:ins.general.ledger,display_accounts:0
+#: selection:ins.partner.ledger,display_accounts:0
+msgid "With balance not equal to zero"
+msgstr "مع رصيد لا يساوي صفر"
+
+#. module: account_dynamic_reports
+#: selection:ins.trial.balance,display_accounts:0
+msgid "With balance not zero"
+msgstr "مع الرصيد لا صفر"
+
+#. module: account_dynamic_reports
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_financial_report_wiz_modified
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_general_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ageing_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_partner_ledger_wizard
+#: model_terms:ir.ui.view,arch_db:account_dynamic_reports.ins_trial_balance_wizard
+msgid "XLSX"
+msgstr "اكسل"
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:193
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:400
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:914
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1298
+#: selection:ins.financial.report,date_range:0
+#: selection:ins.general.ledger,date_range:0
+#: selection:ins.partner.ledger,date_range:0
+#: selection:ins.trial.balance,date_range:0
+#: selection:res.company,date_range:0
+#, python-format
+msgid "Yesterday"
+msgstr "امس"
+
+#. module: account_dynamic_reports
+#: model:ir.model.fields,help:account_dynamic_reports.field_ins_account_financial_report__style_overwrite
+msgid "You can set up here the format you want this record to be displayed. If you leave the automatic formatting, it will be computed based on the financial reports hierarchy (auto-computed field 'level')."
+msgstr "يمكنك إعداد التنسيق الذي تريد عرض هذا السجل هنا. إذا تركت التنسيق التلقائي، سيتم حسابها استنادا إلى التسلسل الهرمي للتقارير المالية (حقل "مستوى" محسوب تلقائيا)."
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_report_account_dynamic_reports_general_ledger
+msgid "report.account_dynamic_reports.general_ledger"
+msgstr ""
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_report_account_dynamic_reports_partner_ageing
+msgid "report.account_dynamic_reports.partner_ageing"
+msgstr ""
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_report_account_dynamic_reports_partner_ledger
+msgid "report.account_dynamic_reports.partner_ledger"
+msgstr ""
+
+#. module: account_dynamic_reports
+#: model:ir.model,name:account_dynamic_reports.model_report_account_dynamic_reports_trial_balance
+msgid "report.account_dynamic_reports.trial_balance"
+msgstr ""
+
+#. module: account_dynamic_reports
+#. openerp-web
+#: code:addons/account_dynamic_reports/static/src/xml/view.xml:1028
+#, python-format
+msgid "to"
+msgstr "الي"
