@@ -11,7 +11,8 @@
                 <field name="code"/>
                 <field name="ref_analytic_account"/>
                 <field name="analytic_account"/>
-                <field name="group_analytic_account"/>
+                <!-- Odoo 18: analytic groups removed; drop the grouped analytic account field from the view -->
+                <!-- <field name="group_analytic_account"/> -->
             </xpath>
         </field>
     </record>
