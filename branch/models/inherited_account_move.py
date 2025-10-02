@@ -3,7 +3,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
-from odoo.exceptions import Warning
+from odoo.exceptions import UserError
 from odoo.tools.sql import column_exists, create_column
 
 
