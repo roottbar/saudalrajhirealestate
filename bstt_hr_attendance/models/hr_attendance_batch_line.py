@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import date, datetime
+from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
 from pytz import timezone, UTC, utc
 from odoo.tools import format_datetime
@@ -7,7 +7,15 @@ from odoo.tools import format_time
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
-from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
+
+# Custom implementation of float_to_time function
+def float_to_time(hours):
+    """Convert a float representing hours to a time object."""
+    if hours < 0:
+        hours = 0
+    hour = int(hours)
+    minute = int((hours - hour) * 60)
+    return time(hour, minute)
 
 
 class HrAttendanceBatchLine(models.Model):
