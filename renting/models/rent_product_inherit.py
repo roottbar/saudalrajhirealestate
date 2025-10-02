@@ -73,16 +73,19 @@ class RentProduct(models.Model):
     ref_analytic_account = fields.Char(string='رقم اشارة الحساب التحليلي', readonly=True)
     property_analytic_account = fields.Many2one('account.analytic.account', string='الحساب التحليلي للعقار',
                                                 related='property_id.analytic_account')
-    property_analytic_account_parent = fields.Many2one('account.analytic.group',
-                                                       related='property_id.analytic_account.group_id')
+    # NOTE (Odoo 18): account.analytic.account no longer has 'group_id'.
+    # Analytic groups were reworked/removed; disable broken related field to unblock registry.
+    # property_analytic_account_parent = fields.Many2one('account.analytic.group',
+    #                                                    related='property_id.analytic_account.group_id')
 
     @api.model_create_multi
     def create(self, vals_list):
 
         res = super(RentProduct, self).create(vals_list)
         res.ref_analytic_account = str(res.property_id.ref_analytic_account) + '-' + str(res.unit_number)
+        # In Odoo 18, analytic accounts no longer have 'group_id'; create without grouping
         analytic_account = self.env['account.analytic.account'].sudo().create(
-            {'name': res.name, 'group_id': res.property_analytic_account_parent.id, 'code': res.ref_analytic_account})
+            {'name': res.name, 'code': res.ref_analytic_account})
         res.analytic_account = analytic_account
         return res
 
