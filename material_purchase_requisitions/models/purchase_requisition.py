@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api, _
 from datetime import datetime, date
-from odoo.exceptions import Warning, UserError
+from odoo.exceptions import UserError
 
 class MaterialPurchaseRequisition(models.Model):
     _name = 'material.purchase.requisition'
