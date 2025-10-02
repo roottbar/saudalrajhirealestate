@@ -3,7 +3,10 @@ import re
 import datetime
 import io
 import json
+import logging
 import operator
+
+from werkzeug.exceptions import InternalServerError
 
 from odoo.addons.web.controllers.export import ExportFormat, ExportXlsxWriter
 from odoo.http import serialize_exception
@@ -13,6 +16,8 @@ from odoo.http import content_disposition, request
 from odoo.tools.misc import xlwt
 from odoo.exceptions import UserError
 from odoo.tools import pycompat
+
+_logger = logging.getLogger(__name__)
 
 
 class KsChartExport(http.Controller):
@@ -45,9 +50,17 @@ class KsChartExcelExport(KsChartExport, http.Controller):
     raw_data = True
 
     @http.route('/ks_dashboard_ninja/export/chart_xls', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
-        return self.base(data)
+        try:
+            return self.base(data)
+        except Exception as exc:
+            _logger.exception("Exception during chart export request handling.")
+            payload = json.dumps({
+                'code': 200,
+                'message': "Odoo Server Error",
+                'data': serialize_exception(exc)
+            })
+            raise InternalServerError(payload) from exc
 
     @property
     def content_type(self):
