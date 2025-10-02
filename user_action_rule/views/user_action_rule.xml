@@ -81,7 +81,7 @@
                                             <field name="manager_id"/>
                                             <field name="next_state"/>
                                             <field name="sequence"/>
-                                        </list>
+                                        </tree>
                                     </field>
                                     <button name="action_manager_sequence" type="object" icon="fa-list" width="0.1"/>
                                 </list>
