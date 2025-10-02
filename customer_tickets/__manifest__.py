@@ -26,6 +26,6 @@
         'views/ir_attachment.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,
     'auto_install': False,
 }
