@@ -21,10 +21,10 @@
                     odoo.loadTemplatesPromise = fetch(`/web/webclient/qweb/${odoo.__session_info__.cache_hashes.qweb}?bundle=project.assets_qweb`).then(doc => doc.text());
                 </script>
                 <base target="_parent"/>
-                <t t-call-assets="web.assets_common" t-js="false"/>
-                <t t-call-assets="project.webclient" t-js="false"/>
-                <t t-call-assets="web.assets_common" t-css="false"/>
-                <t t-call-assets="project.webclient" t-css="false"/>
+                <t t-call-assets="web.assets_backend" t-js="false"/>
+                <t t-call-assets="project.assets_backend" t-js="false"/>
+                <t t-call-assets="web.assets_backend" t-css="false"/>
+                <t t-call-assets="project.assets_backend" t-css="false"/>
                 <t t-call="web.conditional_assets_tests"/>
             </t>
             <t t-set="head" t-value="head_project_sharing + (head or '')"/>
