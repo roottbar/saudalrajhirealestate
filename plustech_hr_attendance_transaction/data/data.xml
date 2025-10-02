@@ -8,7 +8,7 @@
             <field name="code">model._get_attendance_transaction()</field>
             <field name="interval_type">minutes</field>
             <field name="interval_number">5</field>
-            <field name="max_calls">-1</field>
+            <field name="numbercall">-1</field>
         </record>
 
     </data>

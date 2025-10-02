@@ -5,7 +5,7 @@
       <field name="name">Return Custody</field>
       <field name="interval_number">1</field>
       <field name="interval_type">days</field>
-      <field name="max_calls">-1</field>
+      <field name="numbercall">-1</field>
       <field name="doall" eval="False"/>
       <field name="model_id" ref="model_employee_custody"/>
       <field name="state">code</field>

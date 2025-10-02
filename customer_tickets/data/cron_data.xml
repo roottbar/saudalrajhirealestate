@@ -32,7 +32,7 @@
             <field name="code">model.cron_subscription_info()</field>
             <field name="interval_number">1</field>
             <field name="interval_type">hours</field>
-            <field name="max_calls">-1</field>
+            <field name="numbercall">-1</field>
         </record>
     </data>
 </odoo>
