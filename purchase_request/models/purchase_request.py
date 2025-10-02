@@ -329,7 +329,15 @@ class PurchaseRequestLine(models.Model):
     price_subtotal = fields.Monetary(related='purchase_order_line.price_subtotal', string='Subtotal', store=True,
                                      readonly=True)
     price_total = fields.Monetary(related='purchase_order_line.price_total', string='Total', store=True, readonly=True)
-    price_tax = fields.Monetary(related='purchase_order_line.price_tax', string='Tax', store=True, readonly=True)
+    # In Odoo 18, purchase.order.line.price_tax type may differ; avoid a mismatched related field
+    # Compute tax amount from total and subtotal to ensure consistent Monetary type
+    price_tax = fields.Monetary(
+        compute='_compute_price_tax',
+        string='Tax',
+        store=True,
+        readonly=True,
+        currency_field='currency_id'
+    )
 
     purchase_request_id = fields.Many2one('purchase.request', string='Purchase Request', index=True, required=True,
                                           ondelete='cascade')
@@ -351,6 +359,13 @@ class PurchaseRequestLine(models.Model):
 
     purchase_order_line = fields.Many2one("purchase.order.line", string="Purchase Order Line", copy=False)
     vendor_id = fields.Many2one(related="purchase_order_line.partner_id", string="Vendor", store=True, readonly=True)
+
+    @api.depends('price_total', 'price_subtotal')
+    def _compute_price_tax(self):
+        for line in self:
+            total = line.price_total or 0.0
+            subtotal = line.price_subtotal or 0.0
+            line.price_tax = total - subtotal
 
     @api.onchange('product_id')
     def onchange_product(self):
