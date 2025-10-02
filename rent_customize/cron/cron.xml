@@ -4,7 +4,7 @@
             <field name="name">Update Product Rent</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
+            <field name="max_calls">-1</field>
             <field name="doall" eval="False"/>
             <field name="model_id" ref="product.model_product_template"/>
             <field name="state">code</field>
