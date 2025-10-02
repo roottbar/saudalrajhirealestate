@@ -130,9 +130,13 @@ class HrLoan(models.Model):
                                                                                                              "the "
                                                                                                              "paymemt")
     loan_lines = fields.One2many('hr.loan.line', 'loan_id', string="Loan Line", index=True)
-    company_id = fields.Many2one('res.company', 'Company', readonly=True, help="Company",
-                                 default=lambda self: self.env.user.company_id,
-                                 readonly="state != 'draft'")
+    company_id = fields.Many2one(
+        'res.company', 'Company',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        help="Company",
+        default=lambda self: self.env.user.company_id,
+    )
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, help="Currency",
                                   default=lambda self: self.env.user.company_id.currency_id)
     job_position = fields.Many2one('hr.job', related="employee_id.job_id", readonly=True, string="Job Position",
