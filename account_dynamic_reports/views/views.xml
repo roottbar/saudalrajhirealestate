@@ -30,17 +30,17 @@
                         <field name="sequence"/>
                         <field name="type"/>
                         <field name="sign"/>
-                        <field name="range_selection" attrs="{'required': [('type','in',['accounts','account_type'])]}"/>
+                        <field name="range_selection" required="('type','in',['accounts','account_type'])"/>
                         <field name="style_overwrite" invisible="1"/>
                     </group>
-                    <notebook attrs="{'invisible': [('type','not in',['accounts','account_type','account_report'])]}">
+                    <notebook invisible="('type','not in',['accounts','account_type','account_report'])">
                         <page string="Report">
                             <group>
-                                <field name="display_detail" attrs="{'invisible': [('type','not in',['accounts','account_type'])]}"/>
-                                <field name="account_report_id" attrs="{'invisible': [('type','!=','account_report')]}"/>
+                                <field name="display_detail" invisible="('type','not in',['accounts','account_type'])"/>
+                                <field name="account_report_id" invisible="('type','!=','account_report')"/>
                             </group>
-                            <field name="account_ids" attrs="{'invisible': [('type','!=','accounts')]}"/>
-                            <field name="account_type_ids" attrs="{'invisible': [('type','!=','account_type')]}"/>
+                            <field name="account_ids" invisible="('type','!=','accounts')"/>
+                            <field name="account_type_ids" invisible="('type','!=','account_type')"/>
                         </page>
                     </notebook>
                 </form>
