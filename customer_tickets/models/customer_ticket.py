@@ -42,7 +42,7 @@ class CustomerTickets(models.Model):
         ('waiting', 'Waiting Fot Your feedback'),
         ('feedback', 'Feedback Sent'),
         ('solved', 'Solved'),
-    ], string='Status', required=True, copy=False, tracking=True,store=1, default='draft')
+    ], string='Status', required=True, copy=False, tracking=True, store=1, default='draft')
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company.id)
     subscription_code = fields.Char(string='Subscription Code', readonly=True)
     subscription_id = fields.Many2one('subscription.info', string='Subscription Info')

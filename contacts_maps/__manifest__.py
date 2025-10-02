@@ -16,7 +16,7 @@
         'base',
         'contacts',
         'base_geolocalize',
-        'web_google_maps',
+        # 'web_google_maps',  # Commented out - module not installable
         'google_marker_icon_picker',
     ],
     'data': [

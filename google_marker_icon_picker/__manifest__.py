@@ -17,7 +17,7 @@
     'website': "",
     'depends': [
         'base',
-        'web_google_maps',
+        # 'web_google_maps',  # Commented out - module not installable
     ],
     'assets': {
         'web.assets_backend': [

@@ -9,7 +9,7 @@
     'maintainer': "roottbar",
     'depends': [
         'base',
-        'ks_dashboard_ninja',
+        # 'ks_dashboard_ninja',  # Commented out - module not installable
     ],
     'data': [],
     'qweb': [
