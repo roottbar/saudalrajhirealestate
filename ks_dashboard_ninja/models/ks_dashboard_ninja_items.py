@@ -95,8 +95,8 @@ def ks_read(self, records):
 
 fields.Many2many.read = ks_read
 
-# Odoo 15 compatibility: _read_group_postprocess_groupby was renamed to _read_group_process_groupby
-read_group = models.BaseModel._read_group_process_groupby
+# Odoo 15+ compatibility: using _read_group_postprocess_groupby
+read_group = models.BaseModel._read_group_postprocess_groupby
 
 
 def ks_time_addition(self, gb, query):
