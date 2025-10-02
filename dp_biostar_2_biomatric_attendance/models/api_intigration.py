@@ -1,7 +1,6 @@
 import base64
 from odoo import api, fields, models, _
 from collections import defaultdict
-from odoo.addons.base.models.res_partner import tz_get as _tz_get
 import pytz
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError, ValidationError
@@ -11,6 +10,11 @@ import json
 import logging
 
 _logger = logging.getLogger(__name__)
+
+# Custom timezone selection function for Odoo 18 compatibility
+def _tz_get():
+    """Return timezone selection list."""
+    return [(tz, tz) for tz in pytz.all_timezones]
 
 
 class BiostarApi(models.Model):
