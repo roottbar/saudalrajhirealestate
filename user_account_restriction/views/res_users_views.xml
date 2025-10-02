@@ -40,17 +40,17 @@
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_search"/>
             <field name="arch" type="xml">
-                <xpath expr="//filter[@name='inactive_users']" position="after">
+                <search position="inside">
                     <separator/>
                     <filter string="Users with Account Restrictions" name="has_restrictions"
                             domain="[('restricted_account_ids', '!=', False)]"/>
                     <filter string="Users without Account Restrictions" name="no_restrictions"
                             domain="[('restricted_account_ids', '=', False)]"/>
-                </xpath>
-                <xpath expr="//group" position="inside">
-                    <filter string="Restricted Accounts" name="group_by_restricted_accounts"
-                            context="{'group_by': 'restricted_account_ids'}"/>
-                </xpath>
+                    <group expand="0" string="Group By">
+                        <filter string="Restricted Accounts" name="group_by_restricted_accounts"
+                                context="{'group_by': 'restricted_account_ids'}"/>
+                    </group>
+                </search>
             </field>
         </record>
     </data>
