@@ -9,7 +9,7 @@
     'maintainer': "roottbar",
     'depends': [
         'base',
-        'ks_dashboard_ninja',
+        # 'ks_dashboard_ninja',  # Commented out - module not installable for v18
     ],
     'data': [
         'views/ks_dashboard_ninja_item_view_inherit.xml',
