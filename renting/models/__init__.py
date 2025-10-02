@@ -18,7 +18,8 @@ from . import rent_product_inherit
 from . import rent_property
 from . import rent_property_elevator
 from . import rent_property_maintenance
-from . import rent_rental_pricing_inherit
+# Commented out rental.pricing inheritance as this model doesn't exist in Odoo 18
+# from . import rent_rental_pricing_inherit
 from . import rent_rental_wizard_inherit
 from . import rent_res_partner_inherit
 from . import rent_sale_advance_payment_inv_inherit
