@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_approve_route,purchase.approve.route,model_purchase_approve_route,,1,0,0,0
+access_purchase_approve_route_user,purchase.approve.route.user,model_purchase_approve_route,purchase.group_purchase_user,1,1,1,0
+access_purchase_approve_route_manager,purchase.approve.route.manager,model_purchase_approve_route,purchase.group_purchase_manager,1,1,1,1
+access_purchase_order_teams,purchase.order.teams,model_purchase_order_teams,,1,0,0,0
+access_purchase_order_teams_manager,purchase.order.teams.manager,model_purchase_order_teams,purchase.group_purchase_manager,1,1,1,1
+access_purchase_team_member,purchase.team.member,model_purchase_team_member,,1,0,0,0
+access_purchase_team_member_manager,purchase.team_member.manager,model_purchase_team_member,purchase.group_purchase_manager,1,1,1,1

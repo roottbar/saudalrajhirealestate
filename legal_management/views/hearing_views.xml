@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+    <record id="view_hearing_tree" model="ir.ui.view">
+        <field name="name">hearing.tree</field>
+        <field name="model">hearing</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name='issues'/>
+                <field name="court"/>
+                <field name="hearing_time"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="view_hearing_form" model="ir.ui.view">
+        <field name="name">hearing.form</field>
+        <field name="model">hearing</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="issues"/>
+                            <field name="hearing_time"/>
+                        </group>
+                        <group>
+                            <field name ='court'/>
+                        </group>
+                        <group string="Transcript Of Hearing" name="transcript_hearing"></group>
+                    </group>
+                    <field name="transcript_of_hearing" class="field_description" placeholder="Description of the hearing..."/>
+
+                    <notebook>
+                        <page string="Attachment" name="attachment hearing">
+                            <field name="attachment_hearing" widget="many2many_binary"/>
+                        </page>
+
+                        <page string="Requirement Of Session" name="requirement_of_session">
+                            <field name="name" placeholder="Enter your Requirement Of Session"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="o_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hearing" model="ir.actions.act_window">
+        <field name="name">Hearing</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hearing</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hearing"
+              name="Hearing"
+              parent="legal_management.menu_legal_master_first"
+              action="action_hearing"
+              sequence="2"/>
+
+
+</odoo>

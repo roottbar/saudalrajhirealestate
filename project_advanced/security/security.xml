@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<odoo>
+
+
+    <data noupdate="1">
+
+        <!--  rule to group_portal show to allowed users if visibility is portal employees at task -->
+        <record id="project.project_task_rule_portal" model="ir.rule">
+            <field name="domain_force">[('privacy_visibility', '=', 'portal'),'|',('allowed_user_ids',
+                'in',user.ids),('user_id', '=', user.id)]
+            </field>
+
+        </record>
+        <!--  rule to group_portal show to allowed users if visibility is portal employees at project -->
+        <record id="project.project_project_rule_portal" model="ir.rule">
+            <field name="domain_force">[[('privacy_visibility', '=', 'portal'),('allowed_user_ids', 'in', user.ids)]]
+            </field>
+
+        </record>
+        <!-- rule to group_user show to allowed users if visiblility is not all employees  at task -->
+        <record id="project.task_visibility_rule" model="ir.rule">
+            <field name="domain_force">['|','&amp;',('privacy_visibility', '!=', 'employees'),'|',('allowed_user_ids',
+                'in',user.ids),('user_id', '=', user.id),('privacy_visibility', '=', 'employees')]
+            </field>
+        </record>
+        <!-- rule to group_user show to allowed users if visiblility is not all employees  at project -->
+        <record id="project.project_public_members_rule" model="ir.rule">
+            <field name="domain_force">['|','&amp;',('privacy_visibility', '!=', 'employees'),'|',('allowed_user_ids',
+                'in', user.ids),('user_id', '=', user.id),('privacy_visibility', '=', 'employees')]
+            </field>
+        </record>
+
+        <!-- group to change assign user tasks-->
+        <record id="group_change_assign_user_tasks" model="res.groups">
+            <field name="name">Allow to Change Assign User of Tasks</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <record id="project.group_project_manager" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('project_advanced.group_change_assign_user_tasks'))]"/>
+        </record>
+    </data>
+</odoo>

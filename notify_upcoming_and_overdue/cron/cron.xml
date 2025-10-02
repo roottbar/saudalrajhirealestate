@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="notify_upcoming_and_overdue_cron" model="ir.cron">
+            <field name="name">Notification For Upcoming and Overdue Invoices</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="max_calls">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="state">code</field>
+            <field name="code">model.notify_upcoming_overdue()</field>
+        </record>
+        <record id="notify_upcoming_and_overdue_contract_cron" model="ir.cron">
+            <field name="name">Notification For Upcoming and Overdue Contracts</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="max_calls">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">model.notify_upcoming_overdue_contract()</field>
+        </record>
+    </data>
+</odoo>

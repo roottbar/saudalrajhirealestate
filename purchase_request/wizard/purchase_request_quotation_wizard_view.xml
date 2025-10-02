@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+    <record id="view_create_purchase_request_quotation_form" model="ir.ui.view">
+        <field name="name">view.create.purchase.request.quotation.form</field>
+        <field name="model">purchase.request.quotation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create RFQ">
+                <group>
+                    <group invisible="context.get('create_purchase_order')">
+                        <field name="select_purchase_order"/>
+                    </group>
+                    <group>
+                        <field name="purchase_order_id" options="{'no_open': True, 'no_create': True}"
+                               required="('select_purchase_order', '=', True)" invisible="('select_purchase_order' ,'!=', True)"/>
+                        <field name="vendor_id" options="{'no_open': True, 'no_create': True}"
+                               required="('select_purchase_order', '!=', True)" invisible="('select_purchase_order' ,'=', True)"/>
+                        <field name="picking_type_id" invisible="('select_purchase_order' ,'=', True)"
+                               options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+
+                </group>
+                <notebook>
+                    <page string="Products">
+                        <field name="lines">
+                            <list editable="bottom" create="0" delete="0">
+                                <field name="product_id"/>
+                                <field name="product_qty"/>
+                                <field name="uom_id"/>
+                                <field name="price_unit" invisible="not context.get('create_purchase_order')"
+                                       sum="Total"/>
+                                <field name="purchase_request_line" force_save="1" invisible="1"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+
+
+                <footer>
+                    <button name="action_create_purchase_order" string="Save" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_create_purchase_request_quotation_wizard" model="ir.actions.act_window">
+        <field name="name">Create RFQ Or PO</field>
+        <field name="res_model">purchase.request.quotation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_create_purchase_request_quotation_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

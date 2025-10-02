@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_res_religion_form" model="ir.ui.view">
+            <field name="name">employee.religion.form</field>
+            <field name="model">employee.religion</field>
+            <field name="priority" eval="0"/>
+            <field name="arch" type="xml">
+                <form string="Travel Way" create="1">
+                    <sheet>
+                      <div class="o_title">
+                        <label for="name" string="Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Islam"/>
+                        </h1>
+                    </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_employee_religion_tree" model="ir.ui.view">
+            <field name="name">employee.religion.form</field>
+            <field name="model">employee.religion</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <list string="Religions" create="1">
+                    <field name="name"/>
+               </list>
+            </field>
+        </record>
+
+        <record id="action_hr_employee_religion" model="ir.actions.act_window">
+            <field name="name">Religion</field>
+            <field name="res_model">employee.religion</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem
+            id="menu_hr_employee_religion"
+            name="Religions"
+            parent="hr.menu_human_resources_configuration"
+            action="action_hr_employee_religion"
+            sequence="11"/>
+    </data>
+</odoo>

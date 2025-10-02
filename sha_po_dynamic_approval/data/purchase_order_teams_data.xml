@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default Purchase Order Team -->
+        <record id="default_purchase_team" model="purchase.order.teams">
+            <field name="short_code">DefaultPO</field>
+            <field name="name">Default Purchase Team</field>
+        </record>
+    </data>
+</odoo>

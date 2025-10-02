@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="renting_product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="amount_paid" />
+                    <field name="amount_due" />
+                    <field name="fromdate" />
+                    <field name="todate" />
+                    <field name="last_sale_id" />
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="product_template_search_inherit">
+            <field name="name">product.template.search</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <search>
+                    <field string="رقم الوحدة" name="ref_analytic_account"
+                           filter_domain="[('ref_analytic_account','ilike',self)]"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="rent_product_inherit">
+            <field name="name">product_template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button type="object" name="get_unit_maintenance"
+                            icon="fa-building">
+<!--                        <field name="unit_maintenance_count" string="الصيانات" widget="statinfo"/>-->
+                    </button>
+                    <!--                    <button type="object" name="unit_expenses"-->
+                    <!--                            icon="fa-money">-->
+                    <!--&lt;!&ndash;                        <field name="unit_expenses_count" string="مصروفات" widget="statinfo"/>&ndash;&gt;-->
+                    <!--                    </button>-->
+                    <button type="object" name="unit_sales"
+                            icon="fa-file-text-o">
+                        <field name="unit_sales_count" string="ايجارات" widget="statinfo"/>
+                    </button>
+                </div>
+                <xpath expr="//field[@name='sale_ok']" position="before">
+                    <group>
+                        <label for="analytic_account" string="الحساب التحليلي "/>
+                        <div>
+                            <field name="analytic_account" style="width: 33%"/>
+                        </div>
+<!--                        <label for="ref_analytic_account" string="رقم اشارة الحساب التحليلي "/>-->
+<!--                        <div>-->
+<!--                            <field name="ref_analytic_account" style="width: 15%"/>-->
+<!--                        </div>-->
+
+                    </group>
+                </xpath>
+
+                <xpath expr="//page[@name='rental']" position="after">
+                    <page name="unit_information" string="معلومات الوحدة" invisible="('rent_ok','==',False)">
+                        <group>
+                            <group string="معلومات">
+                                <field name="unit_state"/>
+                                <field name="unit_number" required="('rent_ok','!=',False)"/>
+                                <field name="unit_floor_number"/>
+                                <field name="rent_unit_area"/>
+                                <field name="entry_number"/>
+                                <field name="entry_overlook"/>
+                                <field name="unit_rooms_number"/>
+                                <field name="rent_config_unit_overlook_id"/>
+                                <field name="operating_unit" widget="many2many_tags"/>
+                                <field name="property_id"/>
+                                <field name="property_analytic_account"/>
+                            </group>
+                            <group>
+                                <field name="rent_config_unit_type_id"/>
+                                <field name="rent_config_unit_purpose_id"/>
+                                <field name="unit_construction_date"/>
+                                <!--                                <field name="unit_contain_two_scales"/>-->
+                                <!--                                <field name="unit_furniture"/>-->
+                            </group>
+                        </group>
+                        <group>
+                            <group string="الاثاث">
+                                <field name="furniture_bedroom"/>
+                                <field name="furniture_bedroom_no"
+                                       invisible="('furniture_bedroom','==',False)"/>
+                                <field name="furniture_bathroom"/>
+                                <field name="furniture_bathroom_no"
+                                       invisible="('furniture_bathroom','==',False)"/>
+                                <field name="furniture_reception"/>
+                                <field name="furniture_reception_no"
+                                       invisible="('furniture_reception','==',False)"/>
+                                <field name="furniture_kitchen"/>
+                                <field name="furniture_kitchen_installed"
+                                       invisible="('furniture_kitchen','==',False)"/>
+                                <field name="furniture_service_room"/>
+                                <field name="furniture_inventory"/>
+                                <field name="furniture_inventory_no"
+                                       invisible="('furniture_inventory','==',False)"/>
+                                <field name="furniture_setting_room"/>
+                                <field name="furniture_setting_room_no"
+                                       invisible="('furniture_setting_room','==',False)"/>
+                                <field name="furniture_central_air_conditioner"/>
+                                <field name="furniture_split_air_conditioner"/>
+                                <field name="furniture_split_air_conditioner_no"
+                                       invisible="('furniture_split_air_conditioner','==',False)"/>
+                                <field name="furniture_evaporator_cooler"/>
+                                <field name="furniture_evaporator_cooler_no"
+                                       invisible="('furniture_evaporator_cooler','==',False)"/>
+                                <field name="furniture_locker_installed"/>
+                                <field name="furniture_locker_installed_no"
+                                       invisible="('furniture_locker_installed','==',False)"/>
+                            </group>
+                            <group string="تجهيزات الوحدة">
+                                <field name="rent_config_unit_finish_id"/>
+                                <field name="unit_area"/>
+                                <br/>
+                                <br/>
+                                <field name="unit_gas"/>
+                                <field name="unit_electricity"/>
+                                <field name="unit_water"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

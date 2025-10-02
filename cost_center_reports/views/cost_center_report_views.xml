@@ -1,0 +1,29 @@
+<odoo>
+    <record id="view_cost_center_report_form" model="ir.ui.view">
+        <field name="name">cost.center.report.form</field>
+        <field name="model">cost.center.report</field>
+        <field name="arch" type="xml">
+            <form string="Cost Center Report">
+                <sheet>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="group_id"/>
+                        <field name="analytic_account_ids" widget="many2many_tags"/>
+                    </group>
+                    <footer>
+                        <button name="action_generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-link" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_cost_center_report"
+                name="Cost Center Report"
+                res_model="cost.center.report"
+                view_mode="form"
+                target="new"
+                binding_model="account.analytic.account"/>
+</odoo>

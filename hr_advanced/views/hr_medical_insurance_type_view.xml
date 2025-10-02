@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_medical_insurance_type_form" model="ir.ui.view">
+            <field name="name">Medical Insurance Type</field>
+            <field name="model">hr.medical.insurance.type</field>
+
+            <field name="arch" type="xml">
+
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="code"/>
+                            </group>
+
+                            <group>
+                                <field name="amount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="hr_medical_insurance_type_tree" model="ir.ui.view">
+            <field name="name">Medical Insurance Type</field>
+            <field name="model">hr.medical.insurance.type</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="code" optional="hide"/>
+                    <field name="amount" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="hr_medical_insurance_type_action" model="ir.actions.act_window">
+            <field name="name">Medical Insurance Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.medical.insurance.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create First Medical Insurance Type
+                </p>
+            </field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_medical_insurance_type" name="Medical Insurance Type"
+                  parent="hr_payroll.menu_hr_salary_configuration" action="hr_medical_insurance_type_action"
+                  sequence="50"/>
+    </data>
+</odoo>

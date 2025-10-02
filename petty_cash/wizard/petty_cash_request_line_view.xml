@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_petty_cash_request_line_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.request.line.form</field>
+            <field name="model">petty.cash.request.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name='petty_cash_id' options="{'no_open':True,'no_create':True}"/>
+                        </group>
+                        <group>
+                            <field name="template_type" invisible="1"/>
+                            <field name="account_id" options="{'no_open':True,'no_create':True}" force_save="1"
+                                   readonly="('template_type','=','with product')"/>
+                            <field name="product_id" options="{'no_open':True,'no_create':True}"
+                                   required="('template_type','=','with product')" invisible="('template_type','!=','with product')"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="create_petty_cash_line" string="Save" type="object" class="btn-primary"/>
+                        or
+                        <button string="Cancel" class="btn-link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_request_line" model="ir.actions.act_window">
+            <field name="name">Petty Cash Request Line</field>
+            <field name="res_model">petty.cash.request.line</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_petty_cash_request_line_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

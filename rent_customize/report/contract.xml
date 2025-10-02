@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <record id="contract_view_form" model="ir.ui.view">
+            <field name="name">contract_view_form</field>
+            <field name="model">contract.wizard</field>
+            <field name="arch" type="xml">
+                <form string="contract_form">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="start_date"/>
+                            </group>
+                            <group>
+                                <field name="end_date"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="show_report" type="object" string="Show Report" class="btn-primary"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="contract_report_action" model="ir.actions.act_window">
+            <field name="name">Contract</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">contract.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="sale_renting.menu_rental_reporting" name="Reporting" parent="sale_renting.rental_menu_root"
+                  sequence="5" groups="sales_team.group_sale_manager"/>
+        <menuitem id="menu_rental_reporting_child" name="Reporting" parent="sale_renting.menu_rental_reporting"
+                  sequence="5" groups="sales_team.group_sale_manager" action="sale_renting.action_rental_report"/>
+        <menuitem id="contract_menu_report" name="Contract Report" parent="sale_renting.menu_rental_reporting"
+                  sequence="5" groups="sales_team.group_sale_manager" action="contract_report_action"/>
+
+    </data>
+</odoo>

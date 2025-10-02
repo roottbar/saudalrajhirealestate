@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Decimal Precision for Purchase Price with 4 decimals -->
+        <record id="decimal_precision_purchase_price_4" model="decimal.precision">
+            <field name="name">Purchase Price 4 Decimals</field>
+            <field name="digits">4</field>
+        </record>
+        
+        <!-- Decimal Precision for Purchase Quantity with 4 decimals -->
+        <record id="decimal_precision_purchase_quantity_4" model="decimal.precision">
+            <field name="name">Purchase Quantity 4 Decimals</field>
+            <field name="digits">4</field>
+        </record>
+        
+        <!-- Update existing Purchase Price precision to 4 decimals -->
+        <record id="decimal_precision_purchase_update" model="decimal.precision">
+            <field name="name">Purchase Price</field>
+            <field name="digits">4</field>
+        </record>
+        
+    </data>
+</odoo>

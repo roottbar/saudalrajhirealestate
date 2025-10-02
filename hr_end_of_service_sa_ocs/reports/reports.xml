@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- End of Service Settlement Reports -->
+        
+        <!-- Excel Report -->
+        <record id="action_report_end_of_service_xlsx" model="ir.actions.report">
+            <field name="name">تصفية نهاية الخدمة (Excel)</field>
+            <field name="model">hr.end.of.service</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">hr_end_of_service_sa.end_of_service_xlsx</field>
+            <field name="report_file">hr_end_of_service_sa.end_of_service_xlsx</field>
+            <field name="print_report_name">'تصفية_نهاية_الخدمة_' + object.employee_id.name + '_' + time.strftime('%Y%m%d')</field>
+            <field name="binding_model_id" ref="model_hr_end_of_service"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <!-- PDF Report -->
+        <record id="action_report_end_of_service_pdf" model="ir.actions.report">
+            <field name="name">تصفية نهاية الخدمة (PDF)</field>
+            <field name="model">hr.end.of.service</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_end_of_service_sa.end_of_service_pdf_template</field>
+            <field name="report_file">hr_end_of_service_sa.end_of_service_pdf_template</field>
+            <field name="print_report_name">'تصفية_نهاية_الخدمة_' + object.employee_id.name + '_' + time.strftime('%Y%m%d')</field>
+            <field name="binding_model_id" ref="model_hr_end_of_service"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <!-- PDF Template -->
+        <template id="end_of_service_pdf_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="settlement">
+                    <t t-call="web.external_layout">
+                        <div class="page" dir="rtl" style="font-family: 'Arial', sans-serif;">
+                            
+                            <!-- Header -->
+                            <div class="row mb-4">
+                                <div class="col-12 text-center">
+                                    <h2 class="mb-3" style="color: #2E86AB; border-bottom: 2px solid #2E86AB; padding-bottom: 10px;">
+                                        تصفية نهاية الخدمة
+                                    </h2>
+                                </div>
+                            </div>
+                            
+                            <!-- Company and Date Info -->
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <strong>اسم الشركة:</strong> <span t-field="settlement.company_id.name"/>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <strong>تاريخ التقرير:</strong> <span t-esc="print_date"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Employee Information -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #2E86AB;">معلومات الموظف</h4>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>اسم الموظف:</strong> <span t-field="settlement.employee_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>رقم الهوية:</strong> <span t-field="settlement.employee_id.identification_id"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>المسمى الوظيفي:</strong> <span t-field="settlement.employee_id.job_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>القسم:</strong> <span t-field="settlement.employee_id.department_id.name"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>تاريخ التعيين:</strong> <span t-field="settlement.start_date" t-options="{'widget': 'date'}"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>تاريخ انتهاء الخدمة:</strong> <span t-field="settlement.end_date" t-options="{'widget': 'date'}"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <strong>نوع إنهاء الخدمة:</strong> 
+                                    <span t-if="settlement.termination_type == 'resignation'">استقالة</span>
+                                    <span t-elif="settlement.termination_type == 'termination_with_cause'">فصل بسبب</span>
+                                    <span t-elif="settlement.termination_type == 'termination_without_cause'">فصل بدون سبب</span>
+                                    <span t-elif="settlement.termination_type == 'end_of_contract'">انتهاء العقد</span>
+                                    <span t-elif="settlement.termination_type == 'retirement'">تقاعد</span>
+                                    <span t-elif="settlement.termination_type == 'death'">وفاة</span>
+                                    <span t-elif="settlement.termination_type == 'disability'">عجز</span>
+                                    <span t-elif="settlement.termination_type == 'mutual_agreement'">اتفاق متبادل</span>
+                                </div>
+                                <div class="col-6">
+                                    <strong>سنوات الخدمة:</strong> <span t-field="settlement.service_years"/> سنة
+                                </div>
+                            </div>
+                            
+                            <!-- Salary Details -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #2E86AB;">تفاصيل الراتب</h4>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-bordered mb-4">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>الراتب الأساسي</strong></td>
+                                        <td class="text-left"><span t-field="settlement.basic_salary" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>بدل السكن</strong></td>
+                                        <td class="text-left"><span t-field="settlement.housing_allowance" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>بدل المواصلات</strong></td>
+                                        <td class="text-left"><span t-field="settlement.transport_allowance" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>البدلات الأخرى</strong></td>
+                                        <td class="text-left"><span t-field="settlement.other_allowances" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr style="background-color: #e9ecef;">
+                                        <td><strong>إجمالي الراتب</strong></td>
+                                        <td class="text-left"><strong><span t-field="settlement.total_salary" t-options="{'widget': 'monetary'}"/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Benefits and Entitlements -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #2E86AB;">المكافآت والاستحقاقات</h4>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-bordered mb-4">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>مكافأة نهاية الخدمة</strong></td>
+                                        <td class="text-left"><span t-field="settlement.end_of_service_benefit" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>أيام الإجازة المتبقية</strong></td>
+                                        <td class="text-left"><span t-field="settlement.remaining_vacation_days"/> يوم</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>مبلغ الإجازة</strong></td>
+                                        <td class="text-left"><span t-field="settlement.vacation_amount" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>مكافآت أخرى</strong></td>
+                                        <td class="text-left"><span t-field="settlement.other_benefits" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr style="background-color: #e9ecef;">
+                                        <td><strong>إجمالي المكافآت</strong></td>
+                                        <td class="text-left"><strong><span t-field="settlement.gross_amount" t-options="{'widget': 'monetary'}"/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Deductions -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #2E86AB;">الخصومات</h4>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-bordered mb-4">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>خصم القروض</strong></td>
+                                        <td class="text-left"><span t-field="settlement.loan_deductions" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>خصم السلف</strong></td>
+                                        <td class="text-left"><span t-field="settlement.advance_deductions" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>خصومات أخرى</strong></td>
+                                        <td class="text-left"><span t-field="settlement.other_deductions" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr style="background-color: #e9ecef;">
+                                        <td><strong>إجمالي الخصومات</strong></td>
+                                        <td class="text-left"><strong><span t-field="settlement.total_deductions" t-options="{'widget': 'monetary'}"/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Net Amount -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="alert alert-success text-center" style="font-size: 18px;">
+                                        <strong>صافي المبلغ المستحق: <span t-field="settlement.net_amount" t-options="{'widget': 'monetary'}"/></strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Notes -->
+                            <div t-if="settlement.notes" class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #2E86AB;">ملاحظات</h4>
+                                    <p><span t-field="settlement.notes"/></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Signatures -->
+                            <div class="row mt-5">
+                                <div class="col-6 text-center">
+                                    <div style="border-top: 1px solid #000; margin-top: 50px; padding-top: 10px;">
+                                        <strong>توقيع الموظف</strong>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <div style="border-top: 1px solid #000; margin-top: 50px; padding-top: 10px;">
+                                        <strong>توقيع المدير</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+        <!-- Annual Leave Settlement Reports -->
+        
+        <!-- Excel Report -->
+        <record id="action_report_annual_leave_settlement_xlsx" model="ir.actions.report">
+            <field name="name">تصفية الإجازة السنوية (Excel)</field>
+            <field name="model">hr.annual.leave.settlement</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">hr_end_of_service_sa.annual_leave_settlement_xlsx</field>
+            <field name="report_file">hr_end_of_service_sa.annual_leave_settlement_xlsx</field>
+            <field name="print_report_name">'تصفية_الإجازة_السنوية_' + object.employee_id.name + '_' + time.strftime('%Y%m%d')</field>
+            <field name="binding_model_id" ref="model_hr_annual_leave_settlement"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <!-- PDF Report -->
+        <record id="action_report_annual_leave_settlement_pdf" model="ir.actions.report">
+            <field name="name">تصفية الإجازة السنوية (PDF)</field>
+            <field name="model">hr.annual.leave.settlement</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_end_of_service_sa.annual_leave_settlement_pdf_template</field>
+            <field name="report_file">hr_end_of_service_sa.annual_leave_settlement_pdf_template</field>
+            <field name="print_report_name">'تصفية_الإجازة_السنوية_' + object.employee_id.name + '_' + time.strftime('%Y%m%d')</field>
+            <field name="binding_model_id" ref="model_hr_annual_leave_settlement"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <!-- PDF Template -->
+        <template id="annual_leave_settlement_pdf_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="settlement">
+                    <t t-call="web.external_layout">
+                        <div class="page" dir="rtl" style="font-family: 'Arial', sans-serif;">
+                            
+                            <!-- Header -->
+                            <div class="row mb-4">
+                                <div class="col-12 text-center">
+                                    <h2 class="mb-3" style="color: #70AD47; border-bottom: 2px solid #70AD47; padding-bottom: 10px;">
+                                        تصفية الإجازة السنوية
+                                    </h2>
+                                </div>
+                            </div>
+                            
+                            <!-- Company and Date Info -->
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <strong>اسم الشركة:</strong> <span t-field="settlement.company_id.name"/>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <strong>تاريخ التقرير:</strong> <span t-esc="print_date"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Employee Information -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #70AD47;">معلومات الموظف</h4>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>اسم الموظف:</strong> <span t-field="settlement.employee_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>رقم الهوية:</strong> <span t-field="settlement.employee_id.identification_id"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>المسمى الوظيفي:</strong> <span t-field="settlement.employee_id.job_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>القسم:</strong> <span t-field="settlement.employee_id.department_id.name"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <strong>تاريخ الحساب:</strong> <span t-field="settlement.calculation_date" t-options="{'widget': 'date'}"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>نوع التصفية:</strong> 
+                                    <span t-if="settlement.settlement_type == 'annual'">سنوية</span>
+                                    <span t-elif="settlement.settlement_type == 'end_of_service'">نهاية خدمة</span>
+                                    <span t-elif="settlement.settlement_type == 'custom'">مخصصة</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Settlement Period -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #70AD47;">فترة التصفية</h4>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-4">
+                                    <strong>من تاريخ:</strong> <span t-field="settlement.period_from" t-options="{'widget': 'date'}"/>
+                                </div>
+                                <div class="col-4">
+                                    <strong>إلى تاريخ:</strong> <span t-field="settlement.period_to" t-options="{'widget': 'date'}"/>
+                                </div>
+                                <div class="col-4">
+                                    <strong>تاريخ التصفية:</strong> <span t-field="settlement.settlement_date" t-options="{'widget': 'date'}"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Salary Details -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #70AD47;">تفاصيل الراتب</h4>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-bordered mb-4">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>الراتب الأساسي</strong></td>
+                                        <td class="text-left"><span t-field="settlement.basic_salary" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>بدل السكن</strong></td>
+                                        <td class="text-left"><span t-field="settlement.housing_allowance" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>بدل المواصلات</strong></td>
+                                        <td class="text-left"><span t-field="settlement.transport_allowance" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>البدلات الأخرى</strong></td>
+                                        <td class="text-left"><span t-field="settlement.other_allowances" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr style="background-color: #e9ecef;">
+                                        <td><strong>إجمالي الراتب</strong></td>
+                                        <td class="text-left"><strong><span t-field="settlement.total_salary" t-options="{'widget': 'monetary'}"/></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>الراتب اليومي</strong></td>
+                                        <td class="text-left"><span t-field="settlement.daily_salary" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Leave Details -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #70AD47;">تفاصيل الإجازة</h4>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-bordered mb-4">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>إجمالي أيام الإجازة السنوية</strong></td>
+                                        <td class="text-left"><span t-field="settlement.total_leave_days"/> يوم</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>أيام الإجازة المستخدمة</strong></td>
+                                        <td class="text-left"><span t-field="settlement.used_leave_days"/> يوم</td>
+                                    </tr>
+                                    <tr style="background-color: #e9ecef;">
+                                        <td><strong>أيام الإجازة المتبقية</strong></td>
+                                        <td class="text-left"><strong><span t-field="settlement.remaining_leave_days"/> يوم</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Settlement Calculation -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #70AD47;">حساب التصفية</h4>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-bordered mb-4">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>مبلغ تصفية الإجازة</strong></td>
+                                        <td class="text-left"><span t-field="settlement.settlement_amount" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>مكافآت أخرى</strong></td>
+                                        <td class="text-left"><span t-field="settlement.other_benefits" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr style="background-color: #e9ecef;">
+                                        <td><strong>إجمالي المكافآت</strong></td>
+                                        <td class="text-left"><strong><span t-field="settlement.gross_amount" t-options="{'widget': 'monetary'}"/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Deductions -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #70AD47;">الخصومات</h4>
+                                </div>
+                            </div>
+                            
+                            <table class="table table-bordered mb-4">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>خصم القروض</strong></td>
+                                        <td class="text-left"><span t-field="settlement.loan_deductions" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>خصم السلف</strong></td>
+                                        <td class="text-left"><span t-field="settlement.advance_deductions" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>خصومات أخرى</strong></td>
+                                        <td class="text-left"><span t-field="settlement.other_deductions" t-options="{'widget': 'monetary'}"/></td>
+                                    </tr>
+                                    <tr style="background-color: #e9ecef;">
+                                        <td><strong>إجمالي الخصومات</strong></td>
+                                        <td class="text-left"><strong><span t-field="settlement.total_deductions" t-options="{'widget': 'monetary'}"/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Net Amount -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="alert alert-success text-center" style="font-size: 18px;">
+                                        <strong>صافي المبلغ المستحق: <span t-field="settlement.net_amount" t-options="{'widget': 'monetary'}"/></strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Notes -->
+                            <div t-if="settlement.notes" class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="background-color: #f8f9fa; padding: 10px; border-right: 4px solid #70AD47;">ملاحظات</h4>
+                                    <p><span t-field="settlement.notes"/></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Signatures -->
+                            <div class="row mt-5">
+                                <div class="col-6 text-center">
+                                    <div style="border-top: 1px solid #000; margin-top: 50px; padding-top: 10px;">
+                                        <strong>توقيع الموظف</strong>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <div style="border-top: 1px solid #000; margin-top: 50px; padding-top: 10px;">
+                                        <strong>توقيع المدير</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_products_petty_cash_line_config_form" model="ir.ui.view">
+            <field name="name">view.products.petty.cash.line.config.form</field>
+            <field name="model">products.petty.cash.line.config</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="products"/>
+
+                    <footer>
+                        <button name="execute" string="Save" type="object" class="btn-primary"/>
+                        or
+                        <button string="Cancel" class="btn-link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_products_petty_cash_line_config" model="ir.actions.act_window">
+            <field name="name">Products of Petty Cash Line</field>
+            <field name="res_model">products.petty.cash.line.config</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_products_petty_cash_line_config_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

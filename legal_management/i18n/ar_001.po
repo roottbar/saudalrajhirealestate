@@ -1,0 +1,1198 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* legal_management
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-28 11:44+0000\n"
+"PO-Revision-Date: 2023-02-28 14:48+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: ar\n"
+"X-Generator: Poedit 2.3\n"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid ""
+"<span class=\"o_form_label\">\n"
+"                                        Send Notification for User\n"
+"                                    </span>"
+msgstr "إرسال إشعار للمستخدم"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
+msgid "<span class=\"o_stat_text\">Appeals</span>"
+msgstr "<span class=\"o_stat_text\">الإستئناف</span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
+msgid "<span class=\"o_stat_text\">Hearings</span>"
+msgstr "<span class=\"o_stat_text\">جلسات الاستماع</span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Case No.</span>"
+msgstr "<span>رقم القضية</span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Court</span>"
+msgstr "<span>محكمة</span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Date of invitation</span>"
+msgstr "<span>تاريخ الدعوة</span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Defendant</span>"
+msgstr "<span><span>Defendant</span></span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Fee</span>"
+msgstr "<span> الأتعاب </ span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Judge</span>"
+msgstr "<span> القاضي </ span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Prosecut</span>"
+msgstr "<span> الإدعاء </ span>"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "<span>Type of Court</span>"
+msgstr "<span> نوع المحكمة </ span>"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_needaction
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_needaction
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_needaction
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_needaction
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_needaction
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_needaction
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_needaction
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_ids
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_ids
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_ids
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_ids
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_ids
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_ids
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_ids
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_exception_decoration
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_exception_decoration
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_exception_decoration
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_exception_decoration
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_exception_decoration
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_exception_decoration
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_exception_decoration
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_state
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_state
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_state
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_state
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_state
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_state
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_state
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_type_icon
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_type_icon
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_type_icon
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_type_icon
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_type_icon
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_type_icon
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_type_icon
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_type_icon
+msgid "Activity Type Icon"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_appeal
+#: model:ir.model,name:legal_management.model_appeal
+#: model:ir.model.fields,field_description:legal_management.field_implementation__appeal
+#: model:ir.model.fields.selection,name:legal_management.selection__implementation__type_verdict__appeal
+#: model:ir.ui.menu,name:legal_management.menu_appeal
+msgid "Appeal"
+msgstr "إستئناف"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__appeal_count
+msgid "Appeal Count"
+msgstr "عدد الإستئنافات"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_contract_form
+#: model_terms:ir.ui.view,arch_db:legal_management.view_hearing_form
+#: model_terms:ir.ui.view,arch_db:legal_management.view_implementation_form
+#: model_terms:ir.ui.view,arch_db:legal_management.view_power_of_attorney_form
+msgid "Attachment"
+msgstr "مرفق"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_contract__attachment_contract
+msgid "Attachment Contract"
+msgstr "مرفق العقد"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_attachment_count
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_attachment_count
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_attachment_count
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_attachment_count
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_attachment_count
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_attachment_count
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_attachment_count
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_hearing__attachment_hearing
+msgid "Attachment Hearing"
+msgstr "عدد مرفقات جلسة الإستماع"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__attachment_attorney
+msgid "Attachment Power Of Attorney"
+msgstr "مرفق التوكيل"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__attachment_verdict
+#: model:ir.model.fields,field_description:legal_management.field_issues__attachment_verdict
+msgid "Attachment Verdict"
+msgstr "مرفق الحكم"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_implementation__attachment_implementation
+msgid "Attachment implementation"
+msgstr "مرفق التنفيذ"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_contract__beginning_contract
+msgid "Beginning Contract"
+msgstr "حكم إبيتدائي"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__beginning_power
+msgid "Beginning Power"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__case_no
+msgid "Case No."
+msgstr "رقم الدعو"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
+msgid "Close"
+msgstr "إغلاق"
+
+#. module: legal_management
+#: model:ir.model,name:legal_management.model_res_company
+msgid "Companies"
+msgstr "شركات"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__company_id
+msgid "Company"
+msgstr "شركة"
+
+#. module: legal_management
+#: model:ir.model,name:legal_management.model_res_config_settings
+msgid "Config Settings"
+msgstr "ضبط الاعدادات"
+
+#. module: legal_management
+#: model:ir.ui.menu,name:legal_management.menu_configuration
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_contract
+#: model:ir.model,name:legal_management.model_contract
+#: model:ir.ui.menu,name:legal_management.menu_contract
+msgid "Contract"
+msgstr "العقود"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Contract Ending Days"
+msgstr "عدد الايام قبل إنتهاء العقد"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__court_2
+#: model:ir.model.fields,field_description:legal_management.field_hearing__court
+#: model:ir.model.fields,field_description:legal_management.field_issues__court
+#: model:ir.model.fields,field_description:legal_management.field_issues__court_2
+msgid "Court"
+msgstr "محكمة"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
+msgid "Create Invoice"
+msgstr "إنشاء فاتورة"
+
+#. module: legal_management
+#: model_terms:ir.actions.act_window,help:legal_management.action_issues
+msgid "Create your first issue !"
+msgstr "أنشأ أول قضية !"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_contract__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_hearing__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_implementation__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_investigation__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_issues__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__create_uid
+#: model:ir.model.fields,field_description:legal_management.field_type_court__create_uid
+msgid "Created by"
+msgstr "أنشأ بواسطة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__create_date
+#: model:ir.model.fields,field_description:legal_management.field_contract__create_date
+#: model:ir.model.fields,field_description:legal_management.field_hearing__create_date
+#: model:ir.model.fields,field_description:legal_management.field_implementation__create_date
+#: model:ir.model.fields,field_description:legal_management.field_investigation__create_date
+#: model:ir.model.fields,field_description:legal_management.field_issues__create_date
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__create_date
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__create_date
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__create_date
+#: model:ir.model.fields,field_description:legal_management.field_type_court__create_date
+msgid "Created on"
+msgstr "أنشأ فى"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: legal_management
+#: model:ir.model.fields.selection,name:legal_management.selection__investigation__state__currently
+#: model:ir.model.fields.selection,name:legal_management.selection__promissory_note__state__currently
+msgid "Currently"
+msgstr "حالياً"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_power_of_attorney_form
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__date_of_appeal
+msgid "Date Of Appeal"
+msgstr "تاريخ الإستئناف"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__date_of_verdict
+#: model:ir.model.fields,field_description:legal_management.field_issues__date_of_verdict
+msgid "Date Of Verdict"
+msgstr "تاريخ الحكم"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_hearing__hearing_time
+msgid "Date and Time Hearing"
+msgstr "موعد ووقت جلسة الاستماع"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__date_from
+msgid "Date from"
+msgstr "من"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__date_of_the_invitation
+msgid "Date of invitation"
+msgstr "تاريخ الدعوة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__date_to
+msgid "Date to"
+msgstr "إلى"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__defendant
+msgid "Defendant"
+msgstr "المدعى عليه"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_appeal_form
+msgid "Description of the appeal.."
+msgstr "وصف الاستئناف .."
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_hearing_form
+msgid "Description of the hearing..."
+msgstr "وصف الجلسة ..."
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_appeal_form
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
+msgid "Description of the verdict..."
+msgstr "وصف الحكم ..."
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_appeal_form
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
+msgid "Details of the verdict"
+msgstr "تفاصيل الحكم"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_wizard_form
+msgid "Discard"
+msgstr "تجاهل التغييرات"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__display_name
+#: model:ir.model.fields,field_description:legal_management.field_contract__display_name
+#: model:ir.model.fields,field_description:legal_management.field_hearing__display_name
+#: model:ir.model.fields,field_description:legal_management.field_implementation__display_name
+#: model:ir.model.fields,field_description:legal_management.field_investigation__display_name
+#: model:ir.model.fields,field_description:legal_management.field_issues__display_name
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__display_name
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__display_name
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__display_name
+#: model:ir.model.fields,field_description:legal_management.field_type_court__display_name
+msgid "Display Name"
+msgstr "الاسم"
+
+#. module: legal_management
+#: model:ir.ui.menu,name:legal_management.menu_legal_master_second
+msgid "Document Systems"
+msgstr "أنظمة المرفقات"
+
+#. module: legal_management
+#: model:ir.model.fields.selection,name:legal_management.selection__implementation__state__done
+#: model:ir.model.fields.selection,name:legal_management.selection__investigation__state__done
+#: model:ir.model.fields.selection,name:legal_management.selection__promissory_note__state__done
+msgid "Done"
+msgstr "منتهي"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_contract__duration
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__duration
+msgid "Duration"
+msgstr "مدة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_contract__end_contract
+msgid "End Contract"
+msgstr "إنهاء العقد"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__end_power
+msgid "End Power"
+msgstr ""
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_hearing_form
+msgid "Enter your Requirement Of Session"
+msgstr "أدخل متطلبات الجلسة الخاصة بك"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__fee
+msgid "Fee"
+msgstr "أتعاب"
+
+#. module: legal_management
+#: model:ir.model.fields.selection,name:legal_management.selection__appeal__state__finished
+#: model:ir.model.fields.selection,name:legal_management.selection__issues__state__finished
+msgid "Finished"
+msgstr "تم الانتهاء"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_follower_ids
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_follower_ids
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_follower_ids
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_follower_ids
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_follower_ids
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_follower_ids
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_follower_ids
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_partner_ids
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_partner_ids
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_partner_ids
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_partner_ids
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_partner_ids
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_partner_ids
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_partner_ids
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__activity_type_icon
+#: model:ir.model.fields,help:legal_management.field_contract__activity_type_icon
+#: model:ir.model.fields,help:legal_management.field_hearing__activity_type_icon
+#: model:ir.model.fields,help:legal_management.field_implementation__activity_type_icon
+#: model:ir.model.fields,help:legal_management.field_investigation__activity_type_icon
+#: model:ir.model.fields,help:legal_management.field_issues__activity_type_icon
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__activity_type_icon
+#: model:ir.model.fields,help:legal_management.field_promissory_note__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__has_message
+#: model:ir.model.fields,field_description:legal_management.field_contract__has_message
+#: model:ir.model.fields,field_description:legal_management.field_hearing__has_message
+#: model:ir.model.fields,field_description:legal_management.field_implementation__has_message
+#: model:ir.model.fields,field_description:legal_management.field_investigation__has_message
+#: model:ir.model.fields,field_description:legal_management.field_issues__has_message
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__has_message
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_hearing
+#: model:ir.model,name:legal_management.model_hearing
+#: model:ir.ui.menu,name:legal_management.menu_hearing
+msgid "Hearing"
+msgstr "إستماع"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__hearing_count
+msgid "Hearing Count"
+msgstr "عدد جلسات الاستماع"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_appeal_form
+msgid "Hearings"
+msgstr "إستماع"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__id
+#: model:ir.model.fields,field_description:legal_management.field_contract__id
+#: model:ir.model.fields,field_description:legal_management.field_hearing__id
+#: model:ir.model.fields,field_description:legal_management.field_implementation__id
+#: model:ir.model.fields,field_description:legal_management.field_investigation__id
+#: model:ir.model.fields,field_description:legal_management.field_issues__id
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__id
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__id
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__id
+#: model:ir.model.fields,field_description:legal_management.field_type_court__id
+msgid "ID"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_exception_icon
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_exception_icon
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_exception_icon
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_exception_icon
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_exception_icon
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_exception_icon
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_exception_icon
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__activity_exception_icon
+#: model:ir.model.fields,help:legal_management.field_contract__activity_exception_icon
+#: model:ir.model.fields,help:legal_management.field_hearing__activity_exception_icon
+#: model:ir.model.fields,help:legal_management.field_implementation__activity_exception_icon
+#: model:ir.model.fields,help:legal_management.field_investigation__activity_exception_icon
+#: model:ir.model.fields,help:legal_management.field_issues__activity_exception_icon
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__activity_exception_icon
+#: model:ir.model.fields,help:legal_management.field_promissory_note__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__message_needaction
+#: model:ir.model.fields,help:legal_management.field_appeal__message_unread
+#: model:ir.model.fields,help:legal_management.field_contract__message_needaction
+#: model:ir.model.fields,help:legal_management.field_contract__message_unread
+#: model:ir.model.fields,help:legal_management.field_hearing__message_needaction
+#: model:ir.model.fields,help:legal_management.field_hearing__message_unread
+#: model:ir.model.fields,help:legal_management.field_implementation__message_needaction
+#: model:ir.model.fields,help:legal_management.field_implementation__message_unread
+#: model:ir.model.fields,help:legal_management.field_investigation__message_needaction
+#: model:ir.model.fields,help:legal_management.field_investigation__message_unread
+#: model:ir.model.fields,help:legal_management.field_issues__message_needaction
+#: model:ir.model.fields,help:legal_management.field_issues__message_unread
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_needaction
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_unread
+#: model:ir.model.fields,help:legal_management.field_promissory_note__message_needaction
+#: model:ir.model.fields,help:legal_management.field_promissory_note__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__message_has_error
+#: model:ir.model.fields,help:legal_management.field_appeal__message_has_sms_error
+#: model:ir.model.fields,help:legal_management.field_contract__message_has_error
+#: model:ir.model.fields,help:legal_management.field_contract__message_has_sms_error
+#: model:ir.model.fields,help:legal_management.field_hearing__message_has_error
+#: model:ir.model.fields,help:legal_management.field_hearing__message_has_sms_error
+#: model:ir.model.fields,help:legal_management.field_implementation__message_has_error
+#: model:ir.model.fields,help:legal_management.field_implementation__message_has_sms_error
+#: model:ir.model.fields,help:legal_management.field_investigation__message_has_error
+#: model:ir.model.fields,help:legal_management.field_investigation__message_has_sms_error
+#: model:ir.model.fields,help:legal_management.field_issues__message_has_error
+#: model:ir.model.fields,help:legal_management.field_issues__message_has_sms_error
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_has_error
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_has_sms_error
+#: model:ir.model.fields,help:legal_management.field_promissory_note__message_has_error
+#: model:ir.model.fields,help:legal_management.field_promissory_note__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__implement
+msgid "Implement"
+msgstr "تنفيذ"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_implementation
+#: model:ir.model,name:legal_management.model_implementation
+#: model:ir.ui.menu,name:legal_management.menu_implementation
+msgid "Implementation"
+msgstr "تنفيذ"
+
+#. module: legal_management
+#: model:ir.model.fields.selection,name:legal_management.selection__implementation__state__in-progress
+msgid "In Progress"
+msgstr "جارى العمل"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_investigation
+#: model:ir.model,name:legal_management.model_investigation
+#: model:ir.ui.menu,name:legal_management.menu_investigation
+msgid "Investigation"
+msgstr "التحقيق"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Invoicing"
+msgstr "الفواتير"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_is_follower
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_is_follower
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_is_follower
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_is_follower
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_is_follower
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_is_follower
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_is_follower
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_implementation__issue
+msgid "Issue"
+msgstr "قضية"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__issuer_bond
+msgid "Issuer of bond"
+msgstr "الجهة المصدرة"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_issues
+#: model:ir.model,name:legal_management.model_issues
+#: model:ir.model.fields,field_description:legal_management.field_appeal__issues
+#: model:ir.model.fields,field_description:legal_management.field_hearing__issues
+#: model:ir.ui.menu,name:legal_management.menu_issues
+msgid "Issues"
+msgstr "قضايا"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_issue_detail
+#: model:ir.actions.report,name:legal_management.action_issues_details
+#: model:ir.actions.report,name:legal_management.report_issues_details
+#: model:ir.ui.menu,name:legal_management.menu_issues_reporting
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "Issues Details"
+msgstr "تفاصيل القضايا"
+
+#. module: legal_management
+#: model:ir.model,name:legal_management.model_issues_wizard
+msgid "Issues Details Wizard"
+msgstr "تفاصيل القضايا"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__judge
+#: model:ir.model.fields,field_description:legal_management.field_issues__judge
+msgid "Judge"
+msgstr "القاضى"
+
+#. module: legal_management
+#: model:ir.ui.menu,name:legal_management.menu_legal_master_first
+msgid "Judicial Systems"
+msgstr "الأنظمة القضائية"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal____last_update
+#: model:ir.model.fields,field_description:legal_management.field_contract____last_update
+#: model:ir.model.fields,field_description:legal_management.field_hearing____last_update
+#: model:ir.model.fields,field_description:legal_management.field_implementation____last_update
+#: model:ir.model.fields,field_description:legal_management.field_investigation____last_update
+#: model:ir.model.fields,field_description:legal_management.field_issues____last_update
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard____last_update
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney____last_update
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note____last_update
+#: model:ir.model.fields,field_description:legal_management.field_type_court____last_update
+msgid "Last Modified on"
+msgstr "تاريخ آخر تعديل"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_contract__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_hearing__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_implementation__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_investigation__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_issues__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__write_uid
+#: model:ir.model.fields,field_description:legal_management.field_type_court__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__write_date
+#: model:ir.model.fields,field_description:legal_management.field_contract__write_date
+#: model:ir.model.fields,field_description:legal_management.field_hearing__write_date
+#: model:ir.model.fields,field_description:legal_management.field_implementation__write_date
+#: model:ir.model.fields,field_description:legal_management.field_investigation__write_date
+#: model:ir.model.fields,field_description:legal_management.field_issues__write_date
+#: model:ir.model.fields,field_description:legal_management.field_issues_wizard__write_date
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__write_date
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__write_date
+#: model:ir.model.fields,field_description:legal_management.field_type_court__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_contract_over_days
+msgid "Legal Contract Over Days"
+msgstr "أيام على إنتهاء العقد"
+
+#. module: legal_management
+#: model:ir.ui.menu,name:legal_management.menu_legal_root
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Legal Management"
+msgstr "الإدارة القانونية"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_over_days
+msgid "Legal Over Days"
+msgstr "الأيام المتأخرة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_send_user_notify
+msgid "Legal Send User Notify"
+msgstr "إرسال إشعار للمستخدم"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_main_attachment_id
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_main_attachment_id
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_main_attachment_id
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_main_attachment_id
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_main_attachment_id
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_main_attachment_id
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_main_attachment_id
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "المرفق الرئيسي"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_has_error
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_has_error
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_has_error
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_has_error
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_has_error
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_has_error
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_has_error
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_ids
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_ids
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_ids
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_ids
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_ids
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_ids
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_ids
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__my_activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_contract__my_activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_hearing__my_activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_implementation__my_activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_investigation__my_activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_issues__my_activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__my_activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__name
+#: model:ir.model.fields,field_description:legal_management.field_hearing__name
+msgid "Name"
+msgstr "اسم"
+
+#. module: legal_management
+#: model:mail.activity.type,name:legal_management.need_approve
+msgid "Need Approval"
+msgstr "تحتاج الى موافقة"
+
+#. module: legal_management
+#: model:ir.model.fields.selection,name:legal_management.selection__implementation__state__new
+#: model:ir.model.fields.selection,name:legal_management.selection__investigation__state__new
+#: model:ir.model.fields.selection,name:legal_management.selection__promissory_note__state__new
+msgid "New"
+msgstr "جديد"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_calendar_event_id
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_calendar_event_id
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_calendar_event_id
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_calendar_event_id
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_calendar_event_id
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_calendar_event_id
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_calendar_event_id
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_date_deadline
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_summary
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_summary
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_summary
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_summary
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_summary
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_summary
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_summary
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_type_id
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_type_id
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_type_id
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_type_id
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_type_id
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_type_id
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_type_id
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__notification
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Notification"
+msgstr "إشعار"
+
+#. module: legal_management
+#: model:ir.actions.server,name:legal_management.notify_power_of_attorney_cron_ir_actions_server
+#: model:ir.cron,cron_name:legal_management.notify_power_of_attorney_cron
+#: model:ir.cron,name:legal_management.notify_power_of_attorney_cron
+msgid "Notification For Power of Attorney"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_res_company__legal_notify_user_ids
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__legal_notify_user_ids
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Notify Users"
+msgstr "المستخدمين"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_needaction_counter
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_needaction_counter
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_needaction_counter
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_needaction_counter
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_needaction_counter
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_needaction_counter
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_needaction_counter
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_has_error_counter
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_has_error_counter
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_has_error_counter
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_has_error_counter
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_has_error_counter
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_has_error_counter
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_has_error_counter
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_has_error_counter
+msgid "Number of errors"
+msgstr "عدد الأخطاء"
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__message_needaction_counter
+#: model:ir.model.fields,help:legal_management.field_contract__message_needaction_counter
+#: model:ir.model.fields,help:legal_management.field_hearing__message_needaction_counter
+#: model:ir.model.fields,help:legal_management.field_implementation__message_needaction_counter
+#: model:ir.model.fields,help:legal_management.field_investigation__message_needaction_counter
+#: model:ir.model.fields,help:legal_management.field_issues__message_needaction_counter
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_needaction_counter
+#: model:ir.model.fields,help:legal_management.field_promissory_note__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__message_has_error_counter
+#: model:ir.model.fields,help:legal_management.field_contract__message_has_error_counter
+#: model:ir.model.fields,help:legal_management.field_hearing__message_has_error_counter
+#: model:ir.model.fields,help:legal_management.field_implementation__message_has_error_counter
+#: model:ir.model.fields,help:legal_management.field_investigation__message_has_error_counter
+#: model:ir.model.fields,help:legal_management.field_issues__message_has_error_counter
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_has_error_counter
+#: model:ir.model.fields,help:legal_management.field_promissory_note__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__message_unread_counter
+#: model:ir.model.fields,help:legal_management.field_contract__message_unread_counter
+#: model:ir.model.fields,help:legal_management.field_hearing__message_unread_counter
+#: model:ir.model.fields,help:legal_management.field_implementation__message_unread_counter
+#: model:ir.model.fields,help:legal_management.field_investigation__message_unread_counter
+#: model:ir.model.fields,help:legal_management.field_issues__message_unread_counter
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__message_unread_counter
+#: model:ir.model.fields,help:legal_management.field_promissory_note__message_unread_counter
+msgid "Number of unread messages"
+msgstr "عدد الرسائل غير المقروءة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__partner
+#: model:ir.model.fields,field_description:legal_management.field_res_company__partner_id
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__partner_id
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_contract_form
+msgid "Period"
+msgstr "فترة"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_power_of_attorney
+#: model:ir.model,name:legal_management.model_power_of_attorney
+#: model:ir.ui.menu,name:legal_management.menu_power_of_attorney
+msgid "Power Of Attorney"
+msgstr "توكيل عام"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Power Of Attorney Overdue Days"
+msgstr " عدد الأيام قبل إنتهاء التوكيل"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__principal
+msgid "Principal"
+msgstr "رئيسي"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_wizard_form
+msgid "Print"
+msgstr "طباعة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_contract__product
+#: model:ir.model.fields,field_description:legal_management.field_res_company__product_id
+#: model:ir.model.fields,field_description:legal_management.field_res_config_settings__product_id
+msgid "Product"
+msgstr "منتج"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.res_config_settings_view_form
+msgid "Product Type"
+msgstr "منتج التكاليف القانونية"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_promissory_note
+#: model:ir.model,name:legal_management.model_promissory_note
+#: model:ir.ui.menu,name:legal_management.menu_promissory_note
+msgid "Promissory Note"
+msgstr "سندات ﻷمر"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_issues__prosecut
+msgid "Prosecut"
+msgstr "محاكمة"
+
+#. module: legal_management
+#: model:ir.actions.server,name:legal_management.ir_cron_scheduler_recurring_action_ir_actions_server
+#: model:ir.cron,cron_name:legal_management.ir_cron_scheduler_recurring_action
+#: model:ir.cron,name:legal_management.ir_cron_scheduler_recurring_action
+msgid "Recurring Todo Activity"
+msgstr "أنشطة دورية"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_contract__ref
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__ref
+msgid "Reference"
+msgstr "رقم"
+
+#. module: legal_management
+#: model:ir.ui.menu,name:legal_management.menu_reporting
+msgid "Reporting"
+msgstr "التقارير"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_hearing_form
+msgid "Requirement Of Session"
+msgstr "متطلبات الجلسة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__activity_user_id
+#: model:ir.model.fields,field_description:legal_management.field_contract__activity_user_id
+#: model:ir.model.fields,field_description:legal_management.field_hearing__activity_user_id
+#: model:ir.model.fields,field_description:legal_management.field_implementation__activity_user_id
+#: model:ir.model.fields,field_description:legal_management.field_investigation__activity_user_id
+#: model:ir.model.fields,field_description:legal_management.field_issues__activity_user_id
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__activity_user_id
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__activity_user_id
+msgid "Responsible User"
+msgstr "مستخدم مسؤول"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_has_sms_error
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_has_sms_error
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_has_sms_error
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_has_sms_error
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_has_sms_error
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_has_sms_error
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_has_sms_error
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "خطأ في تسليم الرسائل القصيرة"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.legal_config_settings_action
+#: model:ir.ui.menu,name:legal_management.legal_config_settings_menu
+msgid "Settings"
+msgstr "الإعدادات"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__state
+#: model:ir.model.fields,field_description:legal_management.field_implementation__state
+#: model:ir.model.fields,field_description:legal_management.field_investigation__state
+#: model:ir.model.fields,field_description:legal_management.field_issues__state
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__state
+msgid "Status"
+msgstr "حالة"
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__activity_state
+#: model:ir.model.fields,help:legal_management.field_contract__activity_state
+#: model:ir.model.fields,help:legal_management.field_hearing__activity_state
+#: model:ir.model.fields,help:legal_management.field_implementation__activity_state
+#: model:ir.model.fields,help:legal_management.field_investigation__activity_state
+#: model:ir.model.fields,help:legal_management.field_issues__activity_state
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__activity_state
+#: model:ir.model.fields,help:legal_management.field_promissory_note__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"الحالة على أساس الأنشطة\n"
+"متأخر: تاريخ الاستحقاق فات بالفعل\n"
+"اليوم: تاريخ النشاط هو اليوم\n"
+"مخطط له: الأنشطة المستقبلية."
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "Total Appeals"
+msgstr "إجمالي الاستئنافات"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.report_issues_details_template
+msgid "Total Hearings"
+msgstr "إجمالي جلسات الاستماع"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_appeal_form
+msgid "Transcript Of Appeal"
+msgstr "نسخة من الاستئناف"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_hearing__transcript_of_hearing
+#: model_terms:ir.ui.view,arch_db:legal_management.view_hearing_form
+msgid "Transcript Of Hearing"
+msgstr "نسخة من جلسة الاستماع"
+
+#. module: legal_management
+#: model_terms:ir.ui.view,arch_db:legal_management.view_appeal_form
+#: model_terms:ir.ui.view,arch_db:legal_management.view_issues_form
+msgid "Transcript Of Verdict"
+msgstr "نسخة من الحكم"
+
+#. module: legal_management
+#: model:ir.model.fields.selection,name:legal_management.selection__implementation__type_verdict__trial
+msgid "Trial"
+msgstr "محاكمة"
+
+#. module: legal_management
+#: model:ir.model,name:legal_management.model_type_court
+msgid "Type of Court"
+msgstr "نوع المحكمة"
+
+#. module: legal_management
+#: model:ir.actions.act_window,name:legal_management.action_type_court
+#: model:ir.model.fields,field_description:legal_management.field_issues__type_of_court
+#: model:ir.ui.menu,name:legal_management.menu_configuration_master
+msgid "Type of court"
+msgstr "نوع المحكمة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_implementation__type_verdict
+msgid "Type of court verdict"
+msgstr "نوع حكم المحكمة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_type_court__type_court
+msgid "Type of courts"
+msgstr "نوع المحكمة"
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__activity_exception_decoration
+#: model:ir.model.fields,help:legal_management.field_contract__activity_exception_decoration
+#: model:ir.model.fields,help:legal_management.field_hearing__activity_exception_decoration
+#: model:ir.model.fields,help:legal_management.field_implementation__activity_exception_decoration
+#: model:ir.model.fields,help:legal_management.field_investigation__activity_exception_decoration
+#: model:ir.model.fields,help:legal_management.field_issues__activity_exception_decoration
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__activity_exception_decoration
+#: model:ir.model.fields,help:legal_management.field_promissory_note__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "نوع نشاط الاستثناء المسجل."
+
+#. module: legal_management
+#: model:ir.model.fields.selection,name:legal_management.selection__appeal__state__unforeseen
+#: model:ir.model.fields.selection,name:legal_management.selection__issues__state__unforeseen
+msgid "Unforeseen"
+msgstr "غير متوقع"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_unread
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_unread
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_unread
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_unread
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_unread
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_unread
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_unread
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_unread
+msgid "Unread Messages"
+msgstr "رسائل غير مقروءة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__message_unread_counter
+#: model:ir.model.fields,field_description:legal_management.field_contract__message_unread_counter
+#: model:ir.model.fields,field_description:legal_management.field_hearing__message_unread_counter
+#: model:ir.model.fields,field_description:legal_management.field_implementation__message_unread_counter
+#: model:ir.model.fields,field_description:legal_management.field_investigation__message_unread_counter
+#: model:ir.model.fields,field_description:legal_management.field_issues__message_unread_counter
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__message_unread_counter
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "عدد الرسائل غير المقروءة"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__verdict_no
+#: model:ir.model.fields,field_description:legal_management.field_issues__verdict_no
+msgid "Verdict No."
+msgstr "رقم الحكم"
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__website_message_ids
+#: model:ir.model.fields,field_description:legal_management.field_contract__website_message_ids
+#: model:ir.model.fields,field_description:legal_management.field_hearing__website_message_ids
+#: model:ir.model.fields,field_description:legal_management.field_implementation__website_message_ids
+#: model:ir.model.fields,field_description:legal_management.field_investigation__website_message_ids
+#: model:ir.model.fields,field_description:legal_management.field_issues__website_message_ids
+#: model:ir.model.fields,field_description:legal_management.field_power_of_attorney__website_message_ids
+#: model:ir.model.fields,field_description:legal_management.field_promissory_note__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,help:legal_management.field_appeal__website_message_ids
+#: model:ir.model.fields,help:legal_management.field_contract__website_message_ids
+#: model:ir.model.fields,help:legal_management.field_hearing__website_message_ids
+#: model:ir.model.fields,help:legal_management.field_implementation__website_message_ids
+#: model:ir.model.fields,help:legal_management.field_investigation__website_message_ids
+#: model:ir.model.fields,help:legal_management.field_issues__website_message_ids
+#: model:ir.model.fields,help:legal_management.field_power_of_attorney__website_message_ids
+#: model:ir.model.fields,help:legal_management.field_promissory_note__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: legal_management
+#: model:ir.model.fields,field_description:legal_management.field_appeal__description_of_appeal
+#: model:ir.model.fields,field_description:legal_management.field_appeal__transcript_of_verdict
+#: model:ir.model.fields,field_description:legal_management.field_issues__transcript_of_verdict
+msgid "description"
+msgstr "وصف"

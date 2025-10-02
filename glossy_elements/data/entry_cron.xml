@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_auto_create_monthly_element_entry" model="ir.cron">
+        <field name="name">Create Journal entries for employee elements</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="max_calls">-1</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="code">model._generate_monthly_elements_entry()</field>
+        <field name="state">code</field>
+    </record>
+<!--            <field name="nextcall" eval="(DateTime.now().replace(hour=2, minute=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')" />-->
+
+</odoo>

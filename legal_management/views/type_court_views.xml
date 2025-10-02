@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+    <record id="view_type_court_tree" model="ir.ui.view">
+        <field name="name">type.court.tree</field>
+        <field name="model">type.court</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name='type_court'/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="view_type_court_form" model="ir.ui.view">
+        <field name="name">type.court.form</field>
+        <field name="model">type.court</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name='type_court'/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_type_court" model="ir.actions.act_window">
+        <field name="name">Type of court</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">type.court</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_configuration_master"
+              name="Type of court"
+              parent="menu_configuration"
+              action="action_type_court"
+              sequence="10"/>
+</odoo>

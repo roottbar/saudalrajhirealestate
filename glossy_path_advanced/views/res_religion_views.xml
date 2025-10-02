@@ -1,0 +1,46 @@
+<odoo>
+    <record model="ir.ui.view" id="res_religion_view_tree">
+        <field name="name">res.religion Tree</field>
+        <field name="model">res.religion</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="res_religion_view_form">
+        <field name="name">res.religion Form</field>
+        <field name="model">res.religion</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group name="header_1" colspan="4" col="2">
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page name="note" string="Note">
+                            <field name="note" colspan="4" nolabel="1" placeholder="Add note here ..."/>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="res_religion_action">
+        <field name="name">Religion</field>
+        <field name="res_model">res.religion</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem name="Religion"
+              parent="hr.menu_human_resources_configuration_employee"
+              id="res_religion_menu"
+              action="res_religion_action"/>
+
+</odoo>

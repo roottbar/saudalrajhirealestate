@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Partner Statement",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Partner Statement module",
+    'description': "Enhanced Partner Statement module for Odoo 18.0 by roottbar",
+    'category': "Accounting & Finance",
+    'author': "ForgeFlow, Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+        'report_xlsx',
+        'report_xlsx_helper',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'security/statement_security.xml',
+        'views/activity_statement.xml',
+        'views/outstanding_statement.xml',
+        'views/detailed_activity_statement.xml',
+        'views/aging_buckets.xml',
+        'views/res_config_settings.xml',
+        'wizard/statement_wizard.xml',
+    ],
+    'license': "LGPL-3",
+    'application': True,
+    'installable': True,
+    'auto_install': False,
+}

@@ -1,0 +1,38 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "All in one Dynamic Financial Reports v15",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced All in one Dynamic Financial Reports v15 module",
+    'description': "Enhanced All in one Dynamic Financial Reports v15 module for Odoo 18.0 by roottbar",
+    'category': "Accounting/Accounting",
+    'author': "Pycus",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'account',
+        'web',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/data_financial_report.xml',
+        'views/views.xml',
+        'views/res_company_view.xml',
+        'views/general_ledger_view.xml',
+        'views/partner_ledger_view.xml',
+        'views/trial_balance_view.xml',
+        'views/partner_ageing_view.xml',
+        'views/financial_report_view.xml',
+        'wizard/general_ledger_view.xml',
+        'wizard/partner_ledger_view.xml',
+        'wizard/trial_balance_view.xml',
+        'wizard/partner_ageing_view.xml',
+        'wizard/financial_report_view.xml',
+    ],
+    'qweb': [
+        'static/src/xml/view.xml',
+    ],
+    'license': "LGPL-3",
+    'application': True,
+    'installable': True,
+    'auto_install': False,
+}

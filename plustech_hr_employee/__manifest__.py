@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "PlusTech HR Employee",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced PlusTech HR Employee module",
+    'description': "Enhanced PlusTech HR Employee module for Odoo 18.0 by roottbar",
+    'category': "Human Resources/Employees",
+    'author': "Plus Technology Team",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr',
+        'resource',
+        'account',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'sequence/employee_sequence.xml',
+        'views/hr_employee_view.xml',
+        'views/hr_notification.xml',
+        'views/hr_setting.xml',
+        'views/hr_check_list_view.xml',
+        'views/hr_employee_religion.xml',
+        'data/mail_activity.xml',
+        'data/server_action.xml',
+        'data/mail_template.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_petty_cash"
+                model="petty.cash"
+                string="Petty Cash"
+                report_type="qweb-pdf"
+                name="petty_cash.report_petty_cash"
+                file="petty_cash.report_petty_cash"/>
+
+        <report
+                id="action_report_payment_voucher"
+                model="payment.voucher"
+                string="Payment Voucher"
+                report_type="qweb-pdf"
+                name="petty_cash.report_payment_voucher"
+                file="petty_cash.report_payment_voucher"
+                print_report_name="'petty_cash_voucher'"/>
+    </data>
+</odoo>

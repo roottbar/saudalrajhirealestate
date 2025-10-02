@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="print_employee_badge" inherit_id="hr_attendance.print_employee_badge">
+        <xpath expr="t" position="replace">
+            <t t-call="report.html_container">
+                <t t-set="data_report_margin_top" t-value="1"/>
+                <t t-foreach="docs" t-as="employee">
+                    <div class="page">
+                        <t >
+                            <div style="width:153pt; height:243pt; border: 1pt solid black; border-collapse:separate; border-radius:8pt; margin:5pt">
+                                <div style="margin-top:9px; margin-lift:9px">
+                                    <img t-if="employee.company_id and employee.company_id.logo" t-att-src="'data:image/png;base64,%s' % (employee.company_id.logo,)" style="max-height:45pt;max-width:90%" alt="Company Logo"/>
+                                    <t t-esc="employee.company_id.name" style="float: right;"/>
+                                </div>
+                                <div align="center">
+                                    <div class="" style="">
+                                        <img t-if="employee.image" t-att-src="'data:image/png;base64,%s' % (employee.image,)" style="height:100px;width:auto" alt="Employee Image"/>
+                                    </div>
+                                    <div class="" style="text-align: lift;">
+                                        <t t-esc="employee.name" />
+                                        <br/>
+                                        <t t-if="employee.job_id.name">
+                                            <t t-esc="employee.job_id.name" />
+                                            <br/>
+                                        </t>
+                                        <t t-if="employee.mobile_phone">
+                                            <t t-esc="employee.mobile_phone" />
+                                            <br/>
+                                        </t>
+                                        <t t-if="employee.work_email">
+                                            <t t-esc="employee.work_email" />
+                                            <br/>
+                                        </t>
+                                        <div class="row" style="">
+                                            <div class="col-xs-6">
+                                                <img t-if="employee.image" t-att-src="'data:image/png;base64,%s' % (employee.country_id.image,)" style="height:50px;width:50px" alt="Employee Image"/>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <img t-if="employee.employee_qr_code" t-att-src="'data:image/png;base64,%s' % (employee.employee_qr_code,)" style="height:50px;width:50px" alt="Employee Image"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+    <record id="custom_hr.print_employee_badge_format" model="report.paperformat">
+        <field name="name">Employee Badge format</field>
+        <field name="default" eval="False"/>
+        <field name="format">custom</field>
+        <field name="page_height">95</field>
+        <field name="page_width">55</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="True"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">80</field>
+    </record>
+    <report
+        id="hr_employee_print_badge"
+        string="Print Badge"
+        model="hr.employee"
+        report_type="qweb-pdf"
+        paperformat="print_employee_badge_format"
+        name="custom_hr.print_employee_badge"
+        file="custom_hr.print_employee_badge"/>
+</odoo>

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_filter" model="ir.ui.view">
+            <field name="name">view.tender.contract.filter</field>
+            <field name="model">tender.contract</field>
+            <field name="arch" type="xml">
+                <search string="Search Tender Contracts">
+                    <field name="name" string="Contract Name"/>
+                    <field name="ref"/>
+                    <field name="partner_id"/>
+                    <field name="analytic_account_id"/>
+                    <field name="category_id"/>
+                    <field name="type_id"/>
+                    <field name="tender_project_id" groups="contracts_management.group_show_tender_project"/>
+
+                    <filter name="open" string="Open" domain="[('state','=','open')]"/>
+                    <filter name="in_progress" string="In Progress" domain="[('state','=','in progress')]"/>
+                    <filter name="closed" string="Closed" domain="[('state','=','closed')]"/>
+                    <separator/>
+                    <filter name="month" string="Created on" date="create_date"/>
+
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_tender_project" string="Project"
+                                context="{'group_by':'tender_project_id'}"
+                                groups="contracts_management.group_show_tender_project"/>
+                        <filter name="group_by_customer" string="Customer" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_by_type" string="Type" context="{'group_by':'type_id'}"/>
+                        <filter name="group_by_analytic_account" string="Analytic Account"
+                                context="{'group_by':'analytic_account_id'}"/>
+                        <filter name="group_by_category" string="Category" context="{'group_by':'category_id'}"/>
+                        <filter name="group_by_create_date" string="Created on" context="{'group_by':'create_date'}"/>
+                        <filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_tree" model="ir.ui.view">
+            <field name="name">view.tender.contract.tree</field>
+            <field name="model">tender.contract</field>
+            <field name="arch" type="xml">
+                <list string="Tender Contracts">
+                    <field name="name"/>
+                    <field name="tender_project_id" optional="show"
+                           groups="contracts_management.group_show_tender_project"/>
+                    <field name="ref" optional="hide"/>
+                    <field name="partner_id"/>
+                    <field name="type_id" optional="show"/>
+                    <field name="category_id" optional="show"/>
+                    <field name="project_id" optional="show"/>
+                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting" optional="show"/>
+                    <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"
+                           optional="hide"/>
+                    <field name="amount_untaxed" sum="Total Subtotal" optional="show"/>
+                    <field name="amount_discount" sum="Total Discount" optional="show"/>
+                    <field name="amount_tax" sum="Total Tax" optional="show"/>
+                    <field name="amount_total" sum="Total" optional="show"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.form</field>
+            <field name="model">tender.contract</field>
+            <field name="arch" type="xml">
+                <form string="Tender Contracts">
+                    <header>
+                        <field name="auto_generated_reference" invisible="1"/>
+                        <field name="has_invoices_service" invisible="1"/>
+                        <field name="create_invoice" invisible="1"/>
+                        <button name="generate_reference" type="object" string="Generate Reference" class="btn-primary"
+                                invisible="'|','|',('id','=',False),('auto_generated_reference','=',True),('state','!=','open')"/>
+                        <button name="action_open" type="object"  string="Open"
+                                class="btn-primary"/>
+                        <button name="action_close" type="object" string="Close" class="btn-primary"
+                                invisible="'|',('create_invoice','!=',False),('state','!=','in progress')"/>
+                        <button name="action_close" type="object" string="Close" class="btn-primary"
+                                invisible="'|',('create_invoice','=',False),('state','!=','in progress')"
+                                confirm="Some services haven't invoice, this action will create invoice. Are you still sure you want to process ?"/>
+                        <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary"
+                                invisible="'|',('create_invoice','=',False),('state','!=','in progress')"/>
+                        <button name="print_customer_invoice" string="Print Invoice" type="object" class="btn-primary"
+                                invisible="('has_invoices_service','=',False)"/>
+                        <field name="state" widget="statusbar" statusbar_visible="open,in progress,closed"/>
+                    </header>
+                    <sheet>
+                        <div class="o_button_box" name="button_box">
+                            <button class="o_stat_button" name="get_documents" type="object"
+                                    icon="fa-file-text-o">
+                                <field string="Documents" name="documents_count" widget="statinfo"/>
+                            </button>
+                            <button class="o_stat_button" type="object" name="get_workers" icon="fa-users"
+                                    string="Workers"
+                                    invisible="'|',('state','=','open'),('worker_ids','=',["/>
+                            <button class="o_stat_button" type="object" name="get_tasks" icon="fa-tasks"
+                                    string="Tasks"
+                                    invisible="'|',('state','=','open'),('project_id','=',False)"/>
+                            <button class="o_stat_button" name="get_timesheets" type="object"
+                                    icon="fa-calendar" string="Timesheets"
+                                    invisible="'|',('state','=','open'),('project_id','=',False)"/>
+                            <button class="o_stat_button" type="object" name="get_cost_analytic_account" icon="fa-usd"
+                                    string="Cost/Revenue" invisible="('state','=','open')"/>
+                            <button class="o_stat_button" type="object" name="get_invoices" icon="fa-pencil-square-o"
+                                    string="Invoices" invisible="('state','=','open')"/>
+                            <button class="o_stat_button" type="object" name="get_purchases" icon="fa-shopping-cart"
+                                    string="Purchases" invisible="('state','=','open')"/>
+                            <button class="o_stat_button" type="object" name="get_sales" icon="fa-usd" string="Sales"
+                                    invisible="('state','=','open')"/>
+                            <button class="o_stat_button" type="object" name="get_payments" icon="fa-money"
+                                    string="Payments" invisible="('state','=','open')"/>
+                            <button class="o_stat_button" type="object" name="get_moves" icon="fa-truck"
+                                    string="Movements" invisible="('state','=','open')"/>
+                        </div>
+                        <widget name="web_ribbon" title="Open" bg_color="bg-danger"
+                                invisible="'|',('id','=',False),('state','!=','open')"/>
+                        <widget name="web_ribbon" title="In Progress" bg_color="bg-info"
+                                invisible="('state','!=','in progress')"/>
+                        <widget name="web_ribbon" title="closed" invisible="('state','!=','closed')"/>
+
+                        <div class="o_title pr-0">
+                            <h1 class="d-flex flex-row justify-content-between">
+                                <field name="name" class="text-truncate" placeholder="Contract Name..."
+                                       readonly="('state','!=','open')"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="tender_project_id" options="{'no_open':True,'no_create':True}"
+                                       required="('select_tender_project','=',True)" readonly="('state','!=','open')"
+                                       groups="contracts_management.group_show_tender_project"/>
+                                <field name="ref"
+                                       required="('auto_generated_reference','=',True)" readonly="('state','!=','open')"/>
+                                <field name="partner_id" force_save="1"
+                                       context="{'default_customer_rank': 1,'customer_tender_contract':True}"
+                                       readonly="'|','|',('state','!=','open'),('select_tender_project','=',True),('tender_project_id','!=',False)"/>
+                                <field name="type_id" options="{'no_open':True,'no_create':True}"
+                                       readonly="('state','!=','open')"/>
+                                <field name="category_id" options="{'no_open':True,'no_create':True}"
+                                       readonly="('state','!=','open')"/>
+                                <label for="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                                <div class="o_row" groups="analytic.group_analytic_accounting">
+                                    <field name="analytic_account_id" options="{'no_open':True,'no_create':True}"
+                                           required="('id','!=',False),('auto_generated_analytic_account','=',True)" readonly="('state','!=','open')"
+                                           class="o_inline"/>
+                                    <button string="Generate" type="object" name="generate_analytic_account"
+                                            class="btn-link o_inline"
+                                            invisible="'|',('state','!=','open'),('auto_generated_analytic_account','=',True)"/>
+                                </div>
+                                <field name="analytic_tag_ids" readonly="('state','!=','open')"
+                                       widget="many2many_tags" groups="analytic.group_analytic_tags"/>
+                                <field name="select_tender_project" invisible="1"/>
+                                <field name="auto_generated_analytic_account" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="start_date" readonly="('state','!=','open')"/>
+                                <field name="end_date" readonly="('state','!=','open')"/>
+
+                                <label for="project_id"/>
+                                <div class="o_row">
+                                    <field name="project_id" options="{'no_open':True,'no_create':True}"
+                                           required="('id','!=',False),('auto_generated_project','=',True)" readonly="('state','!=','open')"
+                                           class="o_inline"/>
+                                    <button string="Generate" type="object" name="generate_project"
+                                            class="btn-link o_inline"
+                                            invisible="'|',('state','!=','open'),('auto_generated_project','=',True)"/>
+                                    <field name="auto_generated_project" invisible="1"/>
+                                </div>
+                                <field name="pricelist_id" groups="product.group_product_pricelist"
+                                       options="{'no_open':True,'no_create': True}"
+                                       readonly="('state','!=','open')"/>
+                                <field name="currency_id" groups="base.group_multi_currency"
+                                       options="{'no_open':True,'no_create':True}"
+                                       readonly="('state','!=','open')"/>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       options="{'no_open':True,'no_create':True}"
+                                       readonly="('state','!=','open')"/>
+                                <field name="expected_value" invisible="1"/>
+
+                                <separator string="Totals"/>
+                                <field name="amount_untaxed"/>
+                                <field name="amount_discount"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="manpower" string="Manpower">
+                                <field name="manpower_lines" readonly="('state','in',['open','closed'">
+                                    <list string="Manpower">
+                                        <field name="service_type_id" optional="show"/>
+                                        <field name="service_product_id" optional="hide"/>
+                                        <field name="name" optional="show"/>
+                                        <field name="profession_id" optional="show"/>
+                                        <field name="nationality_id"/>
+                                        <field name="resource_calendar_id" optional="show"/>
+                                        <field name="duration" widget="float_time"/>
+                                        <field name="work_shifts" widget="float_time" optional="hide"/>
+                                        <field name="accommodation_providing_amount" optional="show"/>
+                                        <field name="transportation_providing_amount" optional="show"/>
+                                        <field name="other_amount" optional="show"/>
+                                        <field name="price_unit" optional="show"/>
+                                        <field name="quantity" string="Number of workers" optional="show"/>
+                                        <field name="tax_ids" widget="many2many_tags" optional="show"/>
+                                        <field name="discount" optional="show"/>
+                                        <field name="branch_id" optional="hide"/>
+                                        <field name="total_price_unit" invisible="1"/>
+                                    </list>
+                                </field>
+                                <group class="o_subtotal_footer oe_right">
+                                    <field name="amount_untaxed_manpower"/>
+                                    <field name="amount_discount_manpower"/>
+                                    <field name="amount_tax_manpower"/>
+                                    <field name="amount_total_manpower" class="o_subtotal_footer_separator"/>
+                                </group>
+
+                                <field name="notes" placeholder="Internal Notes..." class="o_inline" nolabel="1"/>
+                            </page>
+                            <page name="equipments_tools" string="Equipments  &amp; Tools">
+                                <field name="equipments_lines" widget="section_and_note_one2many"
+                                       readonly="('state','in',['open','closed'">
+                                    <list string="Equipments  &amp; Tools" editable="bottom">
+                                        <control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                            <create name="add_section_control" string="Add a section"
+                                                    context="{'default_display_type': 'line_section'}"/>
+                                            <create name="add_note_control" string="Add a note"
+                                                    context="{'default_display_type': 'line_note'}"/>
+                                        </control>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="service_type_id" options="{'no_open':True,'no_create':True}"
+                                               required="('display_type', '=', False)" optional="show"/>
+                                        <field name="service_product_id" options="{'no_open':True,'no_create':True}"
+                                               required="('display_type', '=', False)" optional="show"/>
+                                        <field name="name" widget="section_and_note_text" string="Description"
+                                               optional="show"/>
+                                        <field name="code"/>
+                                        <field name="consumption_duration_monthly"/>
+                                        <field name="price_unit" optional="show"/>
+                                        <field name="quantity" optional="show"/>
+                                        <field name="tax_ids" widget="many2many_tags"
+                                               options="{'no_open':True,'no_create':True}" optional="show"/>
+                                        <field name="discount" optional="show"/>
+                                        <field name="branch_id" options="{'no_open':True,'no_create':True}"
+                                               optional="hide"/>
+                                        <field name="display_type" force_save="1" invisible="1"/>
+                                        <field name="total_price_unit" invisible="1"/>
+                                    </list>
+                                </field>
+                                <group class="o_subtotal_footer oe_right">
+                                    <field name="amount_untaxed_equipments"/>
+                                    <field name="amount_discount_equipments"/>
+                                    <field name="amount_tax_equipments"/>
+                                    <field name="amount_total_equipments" class="o_subtotal_footer_separator"/>
+                                </group>
+                            </page>
+                            <page name="specialty_services_request" string="Specialty">
+                                <field name="specialty_services_lines" widget="section_and_note_one2many"
+                                       readonly="('state','in',['open','closed'">
+                                    <list string="Specialty Services Request" editable="bottom">
+                                        <control>
+                                            <create name="add_line_control" string="Add a line"/>
+                                            <create name="add_section_control" string="Add a section"
+                                                    context="{'default_display_type': 'line_section'}"/>
+                                            <create name="add_note_control" string="Add a note"
+                                                    context="{'default_display_type': 'line_note'}"/>
+                                        </control>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="service_type_id" options="{'no_open':True,'no_create':True}"
+                                               required="('display_type', '=', False)" optional="show"/>
+                                        <field name="service_product_id" options="{'no_open':True,'no_create':True}"
+                                               required="('display_type', '=', False)" optional="show"/>
+                                        <field name="name" widget="section_and_note_text" optional="show"/>
+                                        <field name="visit_duration" widget="float_time"/>
+                                        <field name="total_visits_monthly"/>
+                                        <field name="details"/>
+                                        <field name="price_unit" optional="show"/>
+                                        <field name="quantity" optional="show"/>
+                                        <field name="tax_ids" widget="many2many_tags"
+                                               options="{'no_open':True,'no_create':True}" optional="show"/>
+                                        <field name="discount" optional="show"/>
+                                        <field name="branch_id" options="{'no_open':True,'no_create':True}"
+                                               optional="hide"/>
+                                        <field name="display_type" force_save="1" invisible="1"/>
+                                        <field name="total_price_unit" invisible="1"/>
+                                    </list>
+                                </field>
+                                <group class="o_subtotal_footer oe_right">
+                                    <field name="amount_untaxed_specialty_services"/>
+                                    <field name="amount_discount_specialty_services"/>
+                                    <field name="amount_tax_specialty_services"/>
+                                    <field name="amount_total_specialty_services"
+                                           class="o_subtotal_footer_separator"/>
+                                </group>
+                            </page>
+                            <page name="workers" string="Workers">
+                                <field name="worker_ids" mode="kanban" readonly="('state','!=','open')"
+                                       options="{'no_create':True}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="o_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_calendar" model="ir.ui.view">
+            <field name="name">view.tender.contract.calendar</field>
+            <field name="model">tender.contract</field>
+            <field name="arch" type="xml">
+                <calendar date_start="create_date" string="Tender Contracts" mode="month" color="partner_id"
+                          event_limit="5">
+                    <field name="partner_id" avatar_field="image_128"/>
+                    <field name="create_date"/>
+                    <field name="tender_project_id" groups="contracts_management.group_show_tender_project"/>
+                    <field name="type_id"/>
+                    <field name="category_id"/>
+                    <field name="amount_total"/>
+                    <field name="state"/>
+                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_pivot" model="ir.ui.view">
+            <field name="name">view.tender.contract.pivot</field>
+            <field name="model">tender.contract</field>
+            <field name="arch" type="xml">
+                <pivot string="Tender Contracts">
+                    <field name="tender_project_id" type="row" groups="contracts_management.group_show_tender_project"/>
+                    <field name="partner_id" type="col"/>
+                    <field name="amount_total" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_graph" model="ir.ui.view">
+            <field name="name">view.tender.contract.graph</field>
+            <field name="model">tender.contract</field>
+            <field name="arch" type="xml">
+                <graph string="Tender Contracts">
+                    <field name="partner_id"/>
+                    <field name="tender_project_id" groups="contracts_management.group_show_tender_project"/>
+                    <field name="state"/>
+                    <field name="amount_total"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_activity" model="ir.ui.view">
+            <field name="name">view.tender.contract.activity</field>
+            <field name="model">tender.contract</field>
+            <field name="arch" type="xml">
+                <activity string="Tender Contracts">
+                    <field name="partner_id"/>
+                    <templates>
+                        <div t-name="activity-box">
+                            <img t-att-src="activity_image('res.partner', 'image_128', record.partner_id.raw_value)"
+                                 t-att-title="record.partner_id.value" t-att-alt="record.partner_id.value"/>
+                            <div>
+                                <field name="name" display="full"/>
+                                <field name="tender_project_id" muted="1" display="full"
+                                       groups="contracts_management.group_show_tender_project"/>
+                                <field name="amount_total" muted="1" display="full"/>
+                            </div>
+                        </div>
+                    </templates>
+                </activity>
+            </field>
+        </record>
+
+        <record id="action_tender_contracts" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">tender.contract</field>
+            <field name="view_mode">list,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="contracts_management.view_tender_contract_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new contract
+                </p>
+            </field>
+        </record>
+
+        <record id="action_all_tender_contracts_project" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">tender.contract</field>
+            <field name="view_mode">list,form,calendar,pivot,graph,activity</field>
+            <field name="context">{'search_default_tender_project_id': [active_id], 'default_tender_project_id':
+                active_id}
+            </field>
+            <field name="search_view_id" ref="contracts_management.view_tender_contract_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new contract
+                </p>
+            </field>
+        </record>
+
+        <record id="open_create_tender_contract_for_project" model="ir.actions.act_window">
+            <field name="name">Create a Contract</field>
+            <field name="res_model">tender.contract</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contracts_management.view_tender_contract_form"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+
+    <t t-name="DynamicReports.buttons">
+        <button type="button" class="btn btn-primary o_dynamic_report_pdf">Print Preview</button>
+        <button type="button" class="btn btn-primary o_dynamic_report_xlsx">Export (XLSX)</button>
+    </t>
+
+    <t t-name="DynamicReports.dynamic_report_period_filter_menu">
+        <div class="btn-group o_dropdown o_dynamic_reports_filter_date">
+            <a type="button" class="dropdown-toggle js_period_filter_dropdown" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>
+            </a>
+
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="Today"
+                   data-filter="today">Today
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="Yesterday"
+                   data-filter="yesterday">Yesterday
+                </a>
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="This Week"
+                   data-filter="this_week">This Week
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="This Month"
+                   data-filter="this_month">This Month
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="This Quarter"
+                   data-filter="this_quarter">This Quarter
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter selected"
+                   title="This Financial Year" data-filter="this_year">This Financial Year
+                </a>
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="Last Week"
+                   data-filter="last_week">Last Week
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="Last Month"
+                   data-filter="last_month">Last Month
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="Last Quarter"
+                   data-filter="last_quarter">Last Quarter
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_period_filter" title="Last Financial Year"
+                   data-filter="last_year">Last Financial Year
+                </a>
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="custom_filter_date">Custom
+                </a>
+
+                <div class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="custom_filter_date">
+                    <label class="custom-date" for="date_from">Start Date :</label>
+                    <t t-set="start_date_datepickerID" t-value="_.uniqueId('datepicker')"/>
+                    <div class="form-group custom-date">
+                        <div class="o_datepicker" aria-atomic="true" t-att-id="start_date_datepickerID"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="o_datepicker_input o_input datetimepicker-input"
+                                   t-attf-data-target="##{start_date_datepickerID}"
+                                   name="date_from"/>
+                            <span class="o_datepicker_button"/>
+                        </div>
+                    </div>
+
+                    <label class="custom-date" for="date_to">Date :</label>
+                    <t t-set="date_to_datepickerID" t-value="_.uniqueId('datepicker')"/>
+                    <div class="form-group custom-date">
+                        <div class="o_datepicker" aria-atomic="true" t-att-id="date_to_datepickerID"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="o_datepicker_input o_input datetimepicker-input"
+                                   t-attf-data-target="##{date_to_datepickerID}"
+                                   name="date_to"/>
+                            <span class="o_datepicker_button"/>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary js_dynamic_report_period_filter" data-filter="custom">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="DynamicReports.dynamic_report_filter_date_menu">
+        <div class="btn-group o_dropdown o_dynamic_reports_filter_date">
+            <a type="button" class="dropdown-toggle js_filter_date_dropdown" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>
+            </a>
+
+            <div class="dropdown-menu o_filters_menu overflow-hidden" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_date_filter selected" title="Today"
+                   data-filter="today">Today
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_date_filter" title="Yesterday"
+                   data-filter="yesterday">Yesterday
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_date_filter" title="End of Last Month"
+                   data-filter="last_month">End of Last Month
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_date_filter" title="End of Last Quarter"
+                   data-filter="last_quarter">End of Last Quarter
+                </a>
+                <a role="menuitem" class="dropdown-item js_dynamic_report_date_filter"
+                   title="End of Last Financial Year" data-filter="last_year">End of Last Financial Year
+                </a>
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="custom_filter_date">Custom
+                </a>
+
+                <div class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="custom_filter_date">
+
+                    <label class="custom-date" for="date">End Date :</label>
+                    <t t-set="date_datepickerID" t-value="_.uniqueId('datepicker')"/>
+                    <div class="form-group custom-date">
+                        <div class="o_datepicker" aria-atomic="true" t-att-id="date_datepickerID"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="o_datepicker_input o_input datetimepicker-input"
+                                   t-attf-data-target="##{date_datepickerID}"
+                                   name="date"/>
+                            <span class="o_datepicker_button"/>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary js_dynamic_report_date_filter" data-filter="custom">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="DynamicReports.dynamic_report_period_filter_comparison_menu">
+        <div class="btn-group o_dropdown o_dynamic_reports_filter_date_cmp">
+            <a type="button" class="dropdown-toggle js_period_comparison_dropdown" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-bar-chart"/>
+            </a>
+
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" title="No Comparison" data-filter="no_comparison"
+                   class="dropdown-item js_dynamic_report_period_cmp_filter selected">No Comparison
+                </a>
+
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="previous_period_filter">Previous Period
+                </a>
+
+                <div class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="previous_period_filter">
+                    <label for="periods_number">Number of periods :</label>
+                    <br/>
+                    <input type="number" name="periods_number" value="1" min="1"/>
+                    <br/>
+                    <button type="button" class="btn btn-primary js_dynamic_report_period_cmp_filter"
+                            data-filter="previous_period">Apply
+                    </button>
+                </div>
+
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="same_last_year_filter">Same Period Last Year
+                </a>
+
+                <li class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="same_last_year_filter">
+                    <label for="periods_number">Number of periods :</label>
+                    <br/>
+                    <input type="number" name="periods_number" value="1" min="1"/>
+                    <br/>
+                    <button type="button" class="btn btn-primary js_dynamic_report_period_cmp_filter"
+                            data-filter="same_last_year">Apply
+                    </button>
+                </li>
+
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="custom_cmp_filter">
+                    Custom
+                </a>
+
+                <div class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="custom_cmp_filter">
+                    <label class="custom-date" for="date_from_cmp">Start Date :</label>
+                    <t t-set="start_date_cmp_datepickerID" t-value="_.uniqueId('datepicker')"/>
+                    <div class="form-group custom-date">
+                        <div class="o_datepicker" aria-atomic="true" t-att-id="start_date_cmp_datepickerID"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="o_datepicker_input o_input datetimepicker-input"
+                                   t-attf-data-target="##{start_date_cmp_datepickerID}"
+                                   name="date_from_cmp"/>
+                            <span class="o_datepicker_button"/>
+                        </div>
+                    </div>
+
+                    <label class="custom-date" for="date_to_cmp">End Date :</label>
+                    <t t-set="date_to_cmp_datepickerID" t-value="_.uniqueId('datepicker')"/>
+                    <div class="form-group custom-date">
+                        <div class="o_datepicker" aria-atomic="true" t-att-id="date_to_cmp_datepickerID"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="o_datepicker_input o_input datetimepicker-input"
+                                   t-attf-data-target="##{date_to_cmp_datepickerID}"
+                                   name="date_to_cmp"/>
+                            <span class="o_datepicker_button"/>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary js_dynamic_report_period_cmp_filter"
+                            data-filter="custom">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="DynamicReports.dynamic_report_filter_date_comparison_menu">
+        <div class="btn-group o_dropdown o_dynamic_reports_filter_date_cmp">
+            <a type="button" class="dropdown-toggle js_date_comparison_dropdown" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-bar-chart"/>
+            </a>
+
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" title="No Comparison" data-filter="no_comparison"
+                   class="dropdown-item js_dynamic_report_date_cmp_filter selected">No Comparison
+                </a>
+
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="previous_period_filter">Previous Period
+                </a>
+
+                <div class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="previous_period_filter">
+                    <label for="periods_number">Number of periods :</label>
+                    <br/>
+                    <input type="number" name="periods_number" value="1" min="1"/>
+                    <br/>
+                    <button type="button" class="btn btn-primary js_dynamic_report_date_cmp_filter"
+                            data-filter="previous_period">Apply
+                    </button>
+                </div>
+
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="same_last_year_filter">Same Period Last Year
+                </a>
+
+                <li class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="same_last_year_filter">
+                    <label for="periods_number">Number of periods :</label>
+                    <br/>
+                    <input type="number" name="periods_number" value="1" min="1"/>
+                    <br/>
+                    <button type="button" class="btn btn-primary js_dynamic_report_date_cmp_filter"
+                            data-filter="same_last_year">Apply
+                    </button>
+                </li>
+
+                <div role="separator" class="dropdown-divider"/>
+                <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu"
+                   data-filter="custom_cmp_filter">
+                    Custom
+                </a>
+
+                <div class="o_foldable_menu o_closed_menu o_dynamic_report_search" data-filter="custom_cmp_filter">
+                    <label class="custom-date" for="date_cmp">Date :</label>
+                    <t t-set="date_cmp_datepickerID" t-value="_.uniqueId('datepicker')"/>
+                    <div class="form-group custom-date">
+                        <div class="o_datepicker" aria-atomic="true" t-att-id="date_cmp_datepickerID"
+                             data-target-input="nearest">
+                            <input type="text"
+                                   class="o_datepicker_input o_input datetimepicker-input"
+                                   t-attf-data-target="##{date_cmp_datepickerID}"
+                                   name="date_cmp"/>
+                            <span class="o_datepicker_button"/>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary js_dynamic_report_date_cmp_filter"
+                            data-filter="custom">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="DynamicReports.dynamic_report_extra_options_menu">
+        <div id="extra_options_dropdown" class="btn-group o_dropdown o_dynamic_reports_filter_bool">
+            <a type="button" class="dropdown-toggle js_extra_options_dropdown" data-toggle="dropdown"
+               aria-expanded="false">
+                <span class="fa fa-filter"/>
+            </a>
+
+            <div class="dropdown-menu o_filters_menu" role="menu" x-placement="bottom-start">
+                <a role="menuitem" class="dropdown-item js_dynamic_report_bool_filter" title="Unfold"
+                   data-filter="unfold_all">Unfold All
+                </a>
+            </div>
+        </div>
+    </t>
+
+    <t t-name='DynamicReports.RelationWidgetTable'>
+        <div class="o_form_view">
+            <table class="o_group o_inner_group">
+                <tr t-foreach="fields" t-as="field">
+                    <td class="o_td_label">
+                        <label class="o_form_label" t-esc="fields[field].label"/>
+                    </td>
+                    <td t-att-id="field + '_field'" style="min-width:200px;"/>
+                </tr>
+            </table>
+        </div>
+    </t>
+</templates>

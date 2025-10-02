@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="supply_tender_contract_type" model="tender.contract.type">
+            <field name="name">Supply</field>
+            <field name="code">S</field>
+        </record>
+        <record id="composition_tender_contract_type" model="tender.contract.type">
+            <field name="name">Composition</field>
+            <field name="code">Comp</field>
+        </record>
+        <record id="supply_composition_tender_contract_type" model="tender.contract.type">
+            <field name="name">Supply and Composition</field>
+            <field name="code">SC</field>
+        </record>
+        <record id="maintenance_operation_tender_contract_type" model="tender.contract.type">
+            <field name="name">Maintenance and Operation</field>
+            <field name="code">MO</field>
+        </record>
+    </data>
+</odoo>

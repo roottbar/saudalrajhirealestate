@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+    <data>
+    <template id="report_activity_id"> 
+        <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Activity Report</h2>
+                    </div>
+                      <table class="table table-sm"> 
+                        <thead>
+                            <tr>
+                                <th>Activity Created on</th>
+                                <th>Activity Type</th>
+                                <th>Due Date Of Activity</th>
+                                <th>Summary</th>
+                                <th>Assigned To</th>     
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <t t-set="activity" t-value="env['mail.activity'].browse(activity_ids)"/>
+                        <tr t-foreach='activity' t-as='o'>
+                            <td><span t-esc="o.create_date"/></td>
+                            <td><span t-esc="o.activity_type_id.name"/></td>
+                            <td><span t-esc="o.date_deadline"/></td>
+                            <td><span t-esc="o.summary"/></td>
+                            <td><span t-esc="o.user_id.name"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </t>
+            </t>
+    </template>
+    </data>
+</odoo> 

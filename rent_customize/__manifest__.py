@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Rent Customize",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Rent Customize module",
+    'description': "Enhanced Rent Customize module for Odoo 18.0 by roottbar",
+    'category': "Sales Management",
+    'author': "roottbar",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale_renting',
+        'renting',
+        'web_google_maps',
+    ],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'cron/cron.xml',
+        'views/product.xml',
+        'views/sales_views.xml',
+        'views/rent_property_build.xml',
+        'views/sale_rental_schedule.xml',
+        'views/attachment.xml',
+        'views/move.xml',
+        'report/contract.xml',
+        'report/transfer.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
+}

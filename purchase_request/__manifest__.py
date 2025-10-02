@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Purchase Request",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Purchase Request module",
+    'description': "Enhanced Purchase Request module for Odoo 18.0 by roottbar",
+    'category': "Inventory/Purchase",
+    'author': "Crevisoft Corporate",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'purchase_stock',
+        'user_action_rule',
+        'bstt_hr',
+    ],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'data/data.xml',
+        'data/sequense.xml',
+        'data/cron.xml',
+        'wizard/purchase_request_quotation_wizard_view.xml',
+        'wizard/purchase_request_reject_wizard_view.xml',
+        'views/purchase_request.xml',
+        'views/purchase_request_line.xml',
+        'views/res_config_settings.xml',
+        'views/product_category_view.xml',
+        'views/menus.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
+}

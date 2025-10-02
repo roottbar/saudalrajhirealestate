@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_inherit_res_users_form" model="ir.ui.view">
+        <field name="name">res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='access_rights']/group[1]" position="after">
+                <separator string="ِApprovals"/>
+                <group>
+                    <group>
+                        <field name="action_rule_id" string="Approval" options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

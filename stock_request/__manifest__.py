@@ -1,0 +1,30 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Stock Request",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Stock Request module",
+    'description': "Enhanced Stock Request module for Odoo 18.0 by roottbar",
+    'category': "Warehouse Management",
+    'author': "ForgeFlow, Odoo Community Association (OCA)",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'stock',
+    ],
+    'data': [
+        'security/stock_request_security.xml',
+        'security/ir.model.access.csv',
+        'views/product.xml',
+        'views/stock_request_views.xml',
+        'views/stock_request_allocation_views.xml',
+        'views/stock_move_views.xml',
+        'views/stock_picking_views.xml',
+        'views/stock_request_order_views.xml',
+        'views/res_config_settings_views.xml',
+        'views/stock_request_menu.xml',
+        'data/stock_request_sequence_data.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
+}

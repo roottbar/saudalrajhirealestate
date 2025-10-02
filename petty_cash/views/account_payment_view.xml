@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_feeding_petty_cash_tree_no_create" model="ir.ui.view">
+            <field name="name">view.feeding.petty.cash.tree</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <list edit="false" create="false" sample="1">
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                    <field name="payment_method_id"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="amount" sum="Amount"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                           decoration-success="state == 'posted'"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_feeding_petty_cash_tree" model="ir.ui.view">
+            <field name="name">view.feeding.petty.cash.tree</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <list edit="false" sample="1">
+                    <header>
+                        <button name="action_post" type="object" string="Confirm"/>
+                    </header>
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                    <field name="payment_method_id"/>
+                    <field name="partner_id" string="Customer"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="amount" sum="Amount"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                           decoration-success="state == 'posted'"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_feeding_petty_cash_form" model="ir.ui.view">
+            <field name="name">view.feeding.petty.cash.form</field>
+            <field name="model">account.payment</field>
+            <field name="arch" type="xml">
+                <form string="Feeding Petty Cash">
+                    <header>
+                        <field name="available_partner_bank_ids" invisible="1"/>
+                        <button name="action_post" string="Confirm" type="object" class="btn-primary"
+                                invisible="('state', '!=', 'draft')"/>
+                        <button name="action_draft" string="Reset To Draft" type="object" class="btn btn-secondary"
+                                invisible="('state', 'not in', ('posted', 'cancel'))"
+                                groups="account.group_account_invoice"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                invisible="('state', '!=', 'draft')"/>
+                        <button name="mark_as_sent" string="Mark as Sent" type="object"
+                                invisible="'|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', True), ('payment_method_code', '!=', 'manual')"/>
+                        <button name="unmark_as_sent" string="Unmark as Sent" type="object"
+                                invisible="'|', '|', ('state', '!=', 'posted'), ('is_move_sent', '=', False), ('payment_method_code', '!=', 'manual')"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                    </header>
+                    <sheet>
+                        <!-- Invisible fields -->
+                        <field name="id" invisible="1"/>
+                        <field name="is_move_sent" invisible="1"/>
+                        <field name="is_reconciled" invisible="1"/>
+                        <field name="payment_method_code" invisible="1"/>
+                        <field name="show_partner_bank_account" invisible="1"/>
+                        <field name="require_partner_bank_account" invisible="1"/>
+<!--                        <field name="hide_payment_method" invisible="1"/>-->
+<!--                        <field name="available_payment_method_ids" invisible="1"/>-->
+                        <field name="suitable_journal_ids" invisible="1"/>
+                        <field name="country_code" invisible="1"/>
+
+                        <div class="o_button_box" name="button_box">
+                            <!-- Invoice stat button -->
+                            <button name="button_open_invoices" type="object"
+                                    class="o_stat_button" icon="fa-bars"
+                                    invisible="('reconciled_invoices_count','=', 0)">
+                                <field name="reconciled_invoices_count"/>
+                                <span invisible="('reconciled_invoices_count','&gt;', 1)">Invoice</span>
+                                <span invisible="('reconciled_invoices_count','&lt;=', 1)">Invoices</span>
+                            </button>
+
+                            <!-- Bill stat button -->
+                            <button name="button_open_bills" type="object"
+                                    class="o_stat_button" icon="fa-bars"
+                                    invisible="('reconciled_bills_count','=', 0)">
+                                <field name="reconciled_bills_count"/>
+                                <span invisible="('reconciled_bills_count','&gt;', 1)">Bill</span>
+                                <span invisible="('reconciled_bills_count','&lt;=', 1)">Bills</span>
+                            </button>
+
+                            <!-- Statement stat button -->
+                            <button name="button_open_statements" type="object"
+                                    class="o_stat_button" icon="fa-bars"
+                                    invisible="('reconciled_statements_count','=', 0)">
+                                <field name="reconciled_statements_count"/>
+                                <span invisible="('reconciled_statements_count','&gt;', 1)">Statement
+                                </span>
+                                <span invisible="('reconciled_statements_count','&lt;=', 1)">Statements
+                                </span>
+                            </button>
+
+                            <button name="action_open_manual_reconciliation_widget" type="object"
+                                    string="Payment Matching" class="o_stat_button" icon="fa-dollar"
+                                    groups="account.group_account_user"
+                                    invisible="'|', ('is_reconciled', '=', True), ('state', '!=', 'posted')"/>
+                        </div>
+                        <widget name="web_ribbon" text="Invoicing App Legacy"
+                                bg_color="bg-info"
+                                invisible="('state', '!=', 'invoicing_legacy')"
+                                tooltip="This payment has been generated through the Invoicing app, before installing Accounting. It has been disabled by the 'Invoicing Switch Threshold Date' setting so that it does not impact your accounting."
+                        />
+
+                        <div class="o_title" invisible="('state', '=', 'draft')">
+                            <h1>
+                                <field name="name" readonly="('state', '!=', 'draft')"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="payment_type" invisible="1"/>
+                                <field name="partner_type" widget="selection"
+                                       invisible="('is_internal_transfer', '=', True)" readonly="('state', '!=', 'draft')"/>
+                                <field name="partner_id" context="{'default_is_company': True}"
+                                       readonly="'|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)"/>
+                                <field name="destination_account_id"
+                                       options="{'no_create': True}"
+                                       readonly="'|', ('state', '!=', 'draft'), ('is_internal_transfer', '=', True)"/>
+                                <field name="is_internal_transfer"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group>
+                                <field name="journal_id"
+                                       widget="selection"
+                                       domain="[('type', 'in', ('bank', 'cash'))]"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="payment_method_id" widget="radio"
+                                       required="1"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
+                                       required="('require_partner_bank_account', '=', True)" invisible="('show_partner_bank_account', '=', False)"/>
+                                <field name="move_id"
+                                       required="0"
+                                       invisible="('id', '=', False)"
+                                       groups="account.group_account_readonly"/>
+                            </group>
+                            <group>
+                                <label for="amount"/>
+                                <div name="amount_div" class="o_row">
+                                    <field name="amount"
+                                           readonly="('state', '!=', 'draft')"/>
+                                    <field name="currency_id"
+                                           options="{'no_create': True, 'no_open': True}"
+                                           required="1"
+                                           readonly="('state', '!=', 'draft')"
+                                           groups="base.group_multi_currency"/>
+                                </div>
+                                <field name="date"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="ref" string="Memo"/>
+                            </group>
+
+                            <group>
+                                <field name="qr_code" invisible="1"/>
+                                <div invisible="('qr_code', '=', False)" colspan="2" class="text-center">
+                                    <field name="qr_code" widget="html"/>
+                                </div>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="o_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_feeding_petty_cash" model="ir.actions.act_window">
+            <field name="name">Feeding Petty Cash</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'default_is_internal_transfer': True,'feeding_petty_cash':True}</field>
+            <field name="domain">[('is_internal_transfer', '=', True)]</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('petty_cash.view_feeding_petty_cash_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('petty_cash.view_feeding_petty_cash_form')})]"/>
+        </record>
+    </data>
+</odoo>

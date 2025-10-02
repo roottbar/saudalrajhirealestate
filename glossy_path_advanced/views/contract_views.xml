@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_glossy_path_hr_contract_tree" model="ir.ui.view">
+        <field name="name">view.glossy.path.hr.contract.tree</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='wage']" position="attributes">
+                <attribute name="string">Basic Salary</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="report_template_view_form" model="ir.ui.view">
+            <field name="name">report_template_view_form</field>
+            <field name="model">xlsx.report.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="o_title">
+                            <label for="name" class="o_edit_only" string="Template"/>
+                            <h1>
+                                <field name="name" placeholder="Report Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="model_id"/>
+                                <field name="type"/>
+
+                            </group>
+                            <group>
+                                <field name="paperformat_id"/>
+                                <field name="report_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="mapping_ids" string="Mapping">
+                                <field name="mapping_ids" context="{'default_model_id': model_id}">
+                                    <list editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="model_id" invisible="1"/>
+                                        <field name="field_id" required="1"
+                                               options="{'no_create_edit': True,'no_create':True,'no_open':True}"/>
+                                        <field name="label" force_save="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="report_template_view_tree" model="ir.ui.view">
+            <field name="name">report_template_view_tree</field>
+            <field name="model">xlsx.report.template</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="model_id"/>
+                    <field name="type"/>
+                </list>
+            </field>
+        </record>
+
+
+        <record id="report_template_action" model="ir.actions.act_window">
+            <field name="name">Report Template</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">xlsx.report.template</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+
+        <menuitem id="report_template_menu" name="Excel Report"
+                   parent="base.menu_administration"
+                  action="report_template_action" sequence="99"/>
+
+
+    </data>
+</odoo>

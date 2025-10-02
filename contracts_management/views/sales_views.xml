@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_sale_order_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="tender_contract_id" options="{'no_open':True,'no_create':True}"
+                           readonly="('state','!=','draft')"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

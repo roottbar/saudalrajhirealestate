@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_analytic_account_report_user,analytic.account.report.user,model_analytic_account_report,base.group_user,1,1,1,0
+access_analytic_account_report_manager,analytic.account.report.manager,model_analytic_account_report,account.group_account_manager,1,1,1,1

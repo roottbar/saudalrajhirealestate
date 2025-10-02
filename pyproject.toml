@@ -1,0 +1,293 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "saudalrajhirealestate"
+version = "18.0.0"
+description = "Saudi Al-Rajhi Real Estate - Odoo 18.0 Complete Migration"
+authors = [
+    {name = "roottbar", email = "root@tbarholding.com"}
+]
+readme = "README.md"
+license = {text = "LGPL-3.0"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Odoo",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    # Core Odoo dependencies
+    "odoo>=18.0.0",
+    
+    # PDF Processing
+    "PyPDF2>=3.0.0",
+    "pypdf>=3.0.0",
+    "pdfplumber>=0.9.0",
+    
+    # Excel/Spreadsheet
+    "xlsxwriter>=3.0.0",
+    "xlrd>=2.0.0",
+    
+    # Document Processing
+    "python-docx>=0.8.11",
+    
+    # NLP
+    "nltk>=3.8",
+    "textstat>=0.7.3",
+    
+    # HTTP & API
+    "requests>=2.28.0",
+    
+    # Security
+    "cryptography>=3.4.8",
+    "PyJWT>=2.4.0",
+    
+    # QR Code
+    "qrcode[pil]>=7.4.2",
+    "Pillow>=9.0.0",
+    
+    # Biometric
+    "pyzk>=0.9.0",
+    
+    # Standard libraries
+    "python-dateutil>=2.8.2",
+    "lxml>=4.9.0",
+    "Babel>=2.9.1",
+    "chardet>=4.0.0",
+    "urllib3>=1.26.0",
+    "certifi>=2022.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Language Server Protocol
+    "python-lsp-server[all]>=1.9.0",
+    "jedi>=0.19.0",
+    "rope>=1.9.0",
+    
+    # Code Formatting & Linting
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.0",
+    "pylint>=2.17.0",
+    "autopep8>=2.0.0",
+    
+    # Type Checking
+    "pyright>=1.1.0",
+    "pyre-check>=0.9.0",
+    
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.11.0",
+    "pytest-odoo>=3.0.0",
+    "coverage>=7.3.0",
+    
+    # Debugging
+    "pdbpp>=0.10.3",
+    "memory-profiler>=0.61.0",
+    "line-profiler>=4.1.0",
+    "py-spy>=0.3.14",
+    "psutil>=5.9.0",
+    
+    # Code Quality
+    "bandit>=1.7.5",
+    "safety>=2.3.0",
+    "vulture>=2.9.0",
+    "radon>=6.0.0",
+    
+    # Documentation
+    "sphinx>=7.1.0",
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.2.0",
+    
+    # Development Tools
+    "ipython>=8.15.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
+    "python-dotenv>=1.0.0",
+    "click>=8.1.0",
+    "rich>=13.5.0",
+]
+
+cursor = [
+    # Cursor IDE specific enhancements
+    "cursor-python>=0.1.0",
+    "pylsp-mypy>=1.0.0",
+    "python-lsp-black>=1.3.0",
+    "python-lsp-isort>=1.2.0",
+    "python-lsp-ruff>=1.0.0",
+    "jedi-language-server>=0.40.0",
+    "pyright>=1.1.0",
+    
+    # Enhanced IntelliSense
+    "rope>=1.9.0",
+    "jedi>=0.19.0",
+    "parso>=0.8.0",
+    
+    # Code Navigation
+    "astroid>=2.15.0",
+    "pylint>=2.17.0",
+    
+    # Real-time collaboration
+    "websockets>=11.0.0",
+    "aiohttp>=3.8.0",
+    
+    # Performance monitoring
+    "py-spy>=0.3.14",
+    "memory-profiler>=0.61.0",
+    "psutil>=5.9.0",
+]
+
+all = [
+    "saudalrajhirealestate[dev,cursor]"
+]
+
+[project.urls]
+Homepage = "https://github.com/roottbar/saudalrajhirealestate"
+Repository = "https://github.com/roottbar/saudalrajhirealestate.git"
+Issues = "https://github.com/roottbar/saudalrajhirealestate/issues"
+Documentation = "https://github.com/roottbar/saudalrajhirealestate#readme"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+exclude = ["tests*", "docs*", "*.egg-info*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["odoo", "saudalrajhirealestate"]
+known_third_party = ["requests", "lxml", "PIL", "PyPDF2"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "odoo.*",
+    "PyPDF2.*",
+    "xlsxwriter.*",
+    "qrcode.*",
+    "nltk.*",
+    "textstat.*",
+    "pyzk.*",
+]
+ignore_missing_imports = true
+
+[tool.pylint]
+max-line-length = 88
+indent-string = "    "
+expected-line-ending-format = "LF"
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "W0613",  # unused-argument
+    "R0903",  # too-few-public-methods
+    "R0913",  # too-many-arguments
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/migrations/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/*" = ["B011"]

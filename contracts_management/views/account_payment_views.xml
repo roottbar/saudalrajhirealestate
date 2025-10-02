@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_account_payment_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="inside">
+                    <group name="group_tender_contract">
+                        <field name="tender_contract_id" options="{'no_open':True,'no_create':True}"
+                               readonly="('state','!=','draft')"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

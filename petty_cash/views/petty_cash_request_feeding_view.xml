@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_petty_cash_request_feeding_tree" model="ir.ui.view">
+            <field name="name">view.petty.cash.request.feeding.tree</field>
+            <field name="model">petty.cash.request.feeding</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="user_rule_id"/>
+                    <field name="journal_id"/>
+                    <field name="payment_journal_id"/>
+                    <field name="amount"/>
+                    <field name="actual_amount" optional="hide"/>
+                    <field name="account_id" optional="hide"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_request_feeding_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.request.feeding.form</field>
+            <field name="model">petty.cash.request.feeding</field>
+            <field name="arch" type="xml">
+                <form string="Request Feeding">
+                    <header>
+                        <field name="allow_pm_approve" invisible="1"/>
+                        <button name="action_validate" type="object"  string="Validate"
+                                class="btn-primary"/>
+
+                        <button name="action_project_manager_approve" type="object" string="PM Approved"
+                                class="btn-primary"
+                                invisible="'|',('state','!=','review'),('allow_pm_approve','=',False)"/>
+
+                        <button name="action_gm_approve" type="object" 
+                                string="GM Approved" class="btn-primary"
+                                groups="petty_cash.group_petty_cash_manager,petty_cash.group_petty_g_m_approved"/>
+
+                        <button name="%(action_approved_request_feeding)d" type="action" string="FM Approved"
+                                class="btn-primary" />
+                        <button name="%(action_rejected_request_feeding)d" type="action"
+                                
+                                string="Rejected" class="btn-primary" groups="petty_cash.group_petty_cash_manager"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,validation,review,p_m_approved,gm_approved,f_m_approved,rejected"/>
+                    </header>
+                    <sheet>
+                        <div class="o_button_box">
+                            <button name="open_journal_entries" class="o_stat_button" icon="fa-bars" type="object"
+                                    string="Journal Entries"
+                                    invisible="('state','!=','f_m_approved')"
+                                    groups="petty_cash.group_petty_cash_manager"/>
+                        </div>
+                        <div class="o_title">
+                            <h1>
+                                <field name="name" invisible="('name','=','/')"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" readonly="1" force_save="1"/>
+                                <field name="amount" readonly="('state', '!=', 'draft')"/>
+                                <field name="currency_id" options="{'no_open':True,'no_create':True}"
+                                       groups="petty_cash.group_petty_cash_multi_currency"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       readonly="('state', '!=', 'draft')"/>
+                            </group>
+
+                            <group>
+                                <field name="create_uid" invisible="1"/>
+                                <field name="user_rule_id" options="{'no_open':True,'no_create':True}"
+                                       domain="[('user','=', create_uid)]"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="project_id" options="{'no_open':True,'no_create':True}"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="current_balance"
+                                       invisible="('state','in',('gm_approved','rejected'))"/>
+                                <field name="final_current_balance"
+                                       invisible="('state','not in',('gm_approved','rejected'))"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="reason" readonly="('state', '!=', 'draft')"/>
+                            <field name="actual_amount" invisible="('state','!=','gm_approved')"/>
+                            <field name="approved_reason" invisible="('state','!=','gm_approved')"/>
+                            <field name="rejected_reason" invisible="('state','!=','rejected')"/>
+                        </group>
+                    </sheet>
+                    <div class="o_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_request_feeding_manager_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.request.feeding.manager.form</field>
+            <field name="model">petty.cash.request.feeding</field>
+            <field name="inherit_id" ref="view_petty_cash_request_feeding_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('petty_cash.group_petty_cash_manager')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_rule_id']" position="attributes">
+                    <attribute name="domain">[]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_request_feeding_admin_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.request.feeding.admin.form</field>
+            <field name="model">petty.cash.request.feeding</field>
+            <field name="inherit_id" ref="view_petty_cash_request_feeding_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="replace">
+                    <field name="date" readonly="('state', 'in', ['gm_approved','rejected'"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_request_feeding" model="ir.actions.act_window">
+            <field name="name">Requests Feeding</field>
+            <field name="res_model">petty.cash.request.feeding</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Click to create Request Feeding.</p>
+            </field>
+        </record>
+    </data>
+</odoo>

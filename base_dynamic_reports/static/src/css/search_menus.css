@@ -1,0 +1,194 @@
+.o_dynamic_report_search {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.o_foldable_menu.o_closed_menu {
+  display: none;
+}
+
+.o_dynamic_reports_body > .alert-info {
+  color: #46646d;
+  background-color: #e7f2f6;
+  border-color: #ddedf2;
+}
+
+.o_dynamic_reports_body .alert.alert-info {
+  border-width: 0 0 0 3px;
+}
+
+.o_dynamic_reports_body .alert a {
+  font-weight: 700;
+}
+
+.o_dynamic_reports_page {
+  background-color: white;
+  color: #666666;
+  padding-bottom: 125px;
+  padding-top: 24px;
+  padding-right: 16px;
+  padding-bottom: 24px;
+  padding-left: 16px;
+}
+
+.o_dynamic_reports_body .o_dynamic_reports_summary {
+  display: inline-block;
+  position: relative;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_summary {
+  margin-bottom: 20px;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_table {
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 128px;
+}
+
+.o_dynamic_reports_page .o_dynamic_report_column_header {
+  padding-left: 15px;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_table .number {
+  text-align: right;
+  width: 6%;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_table .date {
+  text-align: center;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_level0 {
+  border-width: 3px;
+  font-weight: bold;
+  border-bottom-style: double;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_level1 {
+  border-width: 2px;
+  border-bottom-style: solid;
+  font-weight: bold;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_level2 {
+  border-bottom: 1px solid #bbb;
+  font-weight: bold;
+}
+.o_dynamic_reports_page .o_dynamic_reports_normal_text {
+  font-weight: normal !important;
+}
+.o_dynamic_reports_page .o_dynamic_reports_level3 {
+  border-bottom: 1px solid #eee;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_level0 td {
+  padding-top: 32px;
+}
+
+.o_dynamic_reports_page
+  .o_dynamic_reports_level2
+  > td.o_dynamic_report_line_indent
+  > span:last-child {
+  margin-left: 15px;
+}
+
+.o_dynamic_reports_page
+  .o_dynamic_reports_level3
+  > td.o_dynamic_report_line_indent
+  > span:last-child {
+  margin-left: 30px;
+}
+
+.o_dynamic_reports_page .total {
+  font-weight: bold;
+}
+
+.o_dynamic_reports_page
+  .o_dynamic_reports_level3.total
+  > td.o_dynamic_report_line_indent
+  > span:last-child {
+  margin-left: 15px;
+}
+
+.o_dynamic_reports_page .o_dynamic_report_line {
+  white-space: nowrap;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_caret_icon {
+  position: absolute;
+  display: contents;
+}
+
+.o_dynamic_reports_page .js_dynamic_report_foldable {
+  cursor: pointer;
+}
+
+.o_dynamic_reports_page td.o_foldable_total {
+  font-weight: bold;
+  color: #666666 !important;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_domain_line_3 {
+  margin-left: 40px;
+}
+.o_dynamic_reports_page .o_dynamic_reports_domain_line_4 {
+  margin-left: 50px;
+}
+
+.o_dynamic_reports_page tr.o_dynamic_reports_domain_total {
+  font-weight: bold;
+}
+
+.o_dynamic_reports_page .oe_link_reports:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+
+.o_dynamic_reports_page .oe_link_reports {
+  line-height: 0.8;
+  vertical-align: initial;
+  border-radius: 0px;
+  background-color: white;
+  border-color: #d8dbdd;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.94791667rem;
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  user-select: none;
+  border: 1px solid transparent;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.o_dynamic_reports_page .folded .oe_link_reports {
+  display: none;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_default_style {
+  border-bottom: 1px solid #eee;
+}
+
+.o_dynamic_reports_page
+  .o_dynamic_reports_default_style
+  > td.o_dynamic_report_line_indent
+  > span:last-child {
+  margin-left: 50px;
+}
+
+.o_dynamic_reports_page
+  .o_dynamic_reports_default_style.o_dynamic_reports_domain_total
+  > td.o_dynamic_report_line_indent
+  > span:last-child {
+  margin-left: 30px;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_block_line {
+  border-bottom: 5px #875a7b double;
+  margin-left: 63px;
+}
+
+.o_dynamic_reports_page .o_dynamic_reports_primary_block_line {
+  border-bottom: 5px #00a09d double;
+  margin-left: 63px;
+}

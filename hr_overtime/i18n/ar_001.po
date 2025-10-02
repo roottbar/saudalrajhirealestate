@@ -1,0 +1,192 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_overtime
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-20 15:59+0000\n"
+"PO-Revision-Date: 2022-04-20 18:06+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: hr_overtime
+#: model:ir.model.fields.selection,name:hr_overtime.selection__res_company__month_days__30day
+msgid "30 Day"
+msgstr "30 يوم"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Approve"
+msgstr "موافقة"
+
+#. module: hr_overtime
+#: model:ir.model.fields.selection,name:hr_overtime.selection__hr_overtime__state__approve
+msgid "Approved"
+msgstr "تمت الموافقة"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: hr_overtime
+#: model:ir.model.fields.selection,name:hr_overtime.selection__hr_overtime__state__cancel
+msgid "Canceled"
+msgstr "تم الإلغاء"
+
+#. module: hr_overtime
+#: model_terms:ir.actions.act_window,help:hr_overtime.action_hr_overtime_request
+msgid "Click to create a new Overtime request."
+msgstr "انقر لإنشاء طلب عمل إضافي جديد."
+
+#. module: hr_overtime
+#: model:ir.model,name:hr_overtime.model_res_company
+msgid "Companies"
+msgstr "شركات"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Dates"
+msgstr "التواريخ"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.view_overtime_request_search_form
+msgid "Department"
+msgstr "القسم"
+
+#. module: hr_overtime
+#: model:ir.model.fields,field_description:hr_overtime.field_hr_payslip__display_name
+#: model:ir.model.fields,field_description:hr_overtime.field_res_company__display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: hr_overtime
+#: model:ir.model.fields.selection,name:hr_overtime.selection__hr_overtime__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.view_overtime_request_search_form
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Employee Information"
+msgstr "معلومات الموظف"
+
+#. module: hr_overtime
+#: model:ir.model.fields,field_description:hr_overtime.field_hr_payslip__id
+#: model:ir.model.fields,field_description:hr_overtime.field_res_company__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: hr_overtime
+#: model:ir.model.fields,field_description:hr_overtime.field_hr_payslip____last_update
+#: model:ir.model.fields,field_description:hr_overtime.field_res_company____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.view_overtime_request_search_form
+msgid "My Requests"
+msgstr "طلباتى"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_type_form_view
+msgid "Name"
+msgstr "الاسم"
+
+#. module: hr_overtime
+#: model:hr.salary.rule,name:hr_overtime.hr_rule_overtime
+#: model:ir.ui.menu,name:hr_overtime.menu_base_hr_overtime_request
+#: model_terms:ir.ui.view,arch_db:hr_overtime.view_overtime_request_search_form
+msgid "Overtime"
+msgstr "عمل إضافى"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Overtime Calculation"
+msgstr "حساب العمل الإضافى"
+
+#. module: hr_overtime
+#: model:res.groups,name:hr_overtime.group_overtime_manager
+msgid "Overtime Manager"
+msgstr "مدير العمل الإضافى"
+
+#. module: hr_overtime
+#: model:ir.model,name:hr_overtime.model_hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Overtime Request"
+msgstr "طلب عمل إضافى"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_tree_view
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_type_tree_view
+msgid "Overtime Requests"
+msgstr "طلبات العمل الإضافي"
+
+#. module: hr_overtime
+#: model:ir.model,name:hr_overtime.model_hr_overtime_type
+#: model:ir.ui.menu,name:hr_overtime.menu_hr_overtime_Type
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_type_form_view
+msgid "Overtime Type"
+msgstr "نوع العمل الإضافى"
+
+#. module: hr_overtime
+#: model:ir.actions.act_window,name:hr_overtime.act_hr_employee_overtime_type
+msgid "Overtime Types"
+msgstr "انواع العمل الإضافى"
+
+#. module: hr_overtime
+#: model:res.groups,name:hr_overtime.group_overtime_user
+msgid "Overtime User"
+msgstr "مستخدم العمل الإضافى"
+
+#. module: hr_overtime
+#: model:ir.ui.menu,name:hr_overtime.menu_hr_overtimes_root
+msgid "Overtimes"
+msgstr "ساعات العمل الإضافية"
+
+#. module: hr_overtime
+#: model:ir.model,name:hr_overtime.model_hr_payslip
+msgid "Pay Slip"
+msgstr "إيصال المرتب"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Refuse"
+msgstr "رفض"
+
+#. module: hr_overtime
+#: model:ir.model.fields.selection,name:hr_overtime.selection__hr_overtime__state__refuse
+msgid "Refused"
+msgstr "مرفض"
+
+#. module: hr_overtime
+#: model:ir.actions.act_window,name:hr_overtime.action_hr_overtime_request
+msgid "Request for Overtime"
+msgstr "طلب عمل إضافى"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.view_overtime_request_search_form
+msgid "Status"
+msgstr "الحالة"
+
+#. module: hr_overtime
+#: model_terms:ir.ui.view,arch_db:hr_overtime.hr_overtime_form_view
+msgid "Submit"
+msgstr "إرسال"
+
+#. module: hr_overtime
+#: model_terms:ir.actions.act_window,help:hr_overtime.action_hr_overtime_request
+msgid "Use this menu to create overtime requests."
+msgstr "استخدم هذه القائمة لإنشاء طلبات العمل الإضافي."

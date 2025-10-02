@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="view_res_config_settings_inherit_form" model="ir.ui.view">
+            <field name="name">view.res.config.settings.inherit.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='invoicing_settings']" position="after">
+                    <h2>Partner Category</h2>
+                    <div class="row mt16 o_settings_container" id="partner_accounting_category_settings">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="customer_account_category_id"/>
+                                <div class="text-muted">
+                                    Default accounting category used when created customers
+                                </div>
+
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="customer_account_category_id" class="o_light_label"
+                                               context="{'form_view_ref': 'accounting_category_partner.view_res_partner_account_category_form'}"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="vendor_account_category_id"/>
+                                <div class="text-muted">
+                                    Default accounting category used when created vendors
+                                </div>
+
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="vendor_account_category_id" class="o_light_label"
+                                               context="{'form_view_ref': 'accounting_category_partner.view_res_partner_account_category_form'}"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Product/Material Purchase Requisitions by Employees/Users",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Product/Material Purchase Requisitions by Employees/Users module",
+    'description': "Enhanced Product/Material Purchase Requisitions by Employees/Users module for Odoo 18.0 by roottbar",
+    'category': "Warehouse",
+    'author': "Probuse Consulting Service Pvt. Ltd.",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'stock',
+        'hr',
+        'purchase',
+    ],
+    'data': [
+        'security/security.xml',
+        'security/multi_company_security.xml',
+        'security/ir.model.access.csv',
+        'data/purchase_requisition_sequence.xml',
+        'data/employee_purchase_approval_template.xml',
+        'data/confirm_template_material_purchase.xml',
+        'report/purchase_requisition_report.xml',
+        'views/purchase_requisition_view.xml',
+        'views/hr_employee_view.xml',
+        'views/hr_department_view.xml',
+        'views/stock_picking_view.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
+}

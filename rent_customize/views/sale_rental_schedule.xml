@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+
+        <record id="rental_schedule_view_form2" model="ir.ui.view">
+            <field name="name">sale.rental.schedule</field>
+            <field name="model">sale.rental.schedule</field>
+            <field name="inherit_id" ref="sale_renting.rental_schedule_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="property_number"/>
+<!--                    <field name="rental_name"/>-->
+                </xpath>
+            </field>
+        </record>
+
+        <record id="rental_schedule_view_gantt2" model="ir.ui.view">
+            <field name="name">sale.rental.schedule</field>
+            <field name="model">sale.rental.schedule</field>
+            <field name="inherit_id" ref="sale_renting.rental_schedule_view_gantt"/>
+            <field name="arch" type="xml">
+                <xpath expr="//gantt" position="attributes">
+                    <attribute name="default_group_by">product_id</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="property_number" force_save="1" />
+<!--                    <field name="rental_name" force_save="1" />-->
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

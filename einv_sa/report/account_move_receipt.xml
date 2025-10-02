@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_receipt" model="report.paperformat">
+            <field name="name">Receipt</field>
+            <field name="default" eval="False" />
+            <field name="format">custom</field>
+            <field name="page_height">175</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">3</field>
+            <field name="dpi">90</field>
+        </record>
+
+<!--        <template id="report_style_inherit" inherit_id="web.report_assets_common">-->
+<!--            <xpath expr="." position="inside">-->
+<!--                <link href="/einv_sa/static/css/report_style.css" rel="stylesheet" type="text/css"/>-->
+<!--            </xpath>-->
+<!--        </template>-->
+
+        <!-- report action  -->
+        <record id="action_tax_receipt_report" model="ir.actions.report">
+            <field name="name"> Receipt - ايصال</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">einv_sa.account_move_report_receipt</field>
+            <field name="report_file">einv_sa.account_move_report_receipt</field>
+            <field name="print_report_name">'Receipt - %s' % (object.name).replace('/', '')</field>
+            <field name="binding_model_id" ref="model_account_move"/>
+            <field name="binding_type">report</field>
+            <field name='groups_id' eval="[(4, ref('einv_sa.group_e_receipt'))]"/>
+            <field name="paperformat_id" ref="einv_sa.paperformat_receipt"/>
+        </record>
+
+<!--        <template id="einv_sa.inv_header">-->
+<!--            <div class="row">-->
+<!--                <div class="col-12 text-center" style="font-size:1.2rem;padding-bottom: 15px">-->
+<!--                    <Strong>Tax Invoice فاتورة ضريبية</Strong>-->
+<!--                    <span t-if="doc.move_type=='out_refund'"> - Credit Note إشعار دائن</span>-->
+<!--                    <span t-if="doc.move_type=='in_refund'"> - Debit Note إشعار مدين</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="oe_structure"/>-->
+<!--        </template>-->
+
+        <template id="einv_sa.partner_info_receipt">
+
+            <div class="row">
+                <div class="col-6 text-right" ><Strong>الشركة: <span t-field="doc.company_id.name"/></Strong></div>
+                <div class="col-6 text-right" ><Strong>اسم العميل: <span t-field="doc.partner_id.name"/></Strong></div>
+
+            </div>
+            <div class="row">
+                <div class="col-6 text-right" ><Strong>الرقم الضريبي: <span t-field="doc.company_id.vat"/></Strong></div>
+                <div class="col-6 text-right" ><Strong t-if="doc.partner_id.vat">الرقم الضريبي للعميل: <span t-field="doc.partner_id.vat"/></Strong></div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-6 text-right" >رقم الفاتورة: <span t-field="doc.name"/></div>
+                <div class="col-6 text-right" >رقم العميل: <span t-field="doc.partner_id.partner_number"/></div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 text-right" >تاريخ الفاتورة: <span t-field="doc.invoice_date"/></div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right" >
+                    <t t-if="doc.invoice_date_due">
+                        فترة الفاتورة<span t-esc="doc.invoice_date_due.strftime('%m-%Y')"/>
+                    </t>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right" >نظام الدفع: <span t-field="doc.invoice_payment_term_id.name"/></div>
+            </div>
+            <div class="row" style="padding-bottom: 20px">
+                <div class="col-12 text-right" >
+                    <t t-if="doc.invoice_date_due">
+                        تاريخ الاستحقاق: <span t-esc="doc.invoice_date_due.strftime('%d-%m-%Y')"/>
+                    </t>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+        </template>
+
+        <template id="einv_sa.inv_lines_receipt">
+            <div class="boarder">
+            <table class="table table-sm o_main_table " name="invoice_line_ids_table" >
+                <thead class="bg-light text-center">
+                    <tr>
+                        <td><div class="mw-100 text-right">الوصف</div></td>
+                        <td><div class="mw-100 ">الكمية</div></td>
+                        <td><div class="mw-100 ">سعر الوحدة</div></td>
+                        <td><div class="mw-100 ">مبلغ الخصم</div></td>
+                        <td><div class="mw-100 ">الاجمالى</div></td>
+                        <td><div class="mw-100 ">قيمة الضريبة</div></td>
+                        <td><div class="mw-100 ">الاجمالي شامل الضريبة</div></td>
+                    </tr>
+                </thead>
+                <tbody class="invoice_line_ids_tbody text-center">
+                    <!-- foreach-->
+                    <tr t-foreach="doc.invoice_line_ids" t-as="line">
+                        <td class="text-right"><span t-field="line.name"/></td>
+                        <td><span t-field="line.quantity"/></td>
+                        <td><span t-field="line.price_unit"/></td>
+                        <td><span t-field="line.einv_amount_discount"/></td>
+                        <td><span t-field="line.price_subtotal"/></td>
+                        <td><span t-field="line.einv_amount_tax"/></td>
+                        <td><span t-field="line.price_total"/></td>
+
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="oe_structure"/>
+        </template>
+
+
+        <template id="einv_sa.inv_total_receipt">
+            <div class="row" style="padding-top: 20px;padding-right: 5px;padding-left: 5px">
+                <div class="col-6 text-right" style="font-size: xx-small;margin-left: 5px">
+                    <table style="page-break-inside: avoid">
+                        <div class="row text-right">
+                            <div class="col-12"><span>بيانات البنك</span></div>
+                        </div>
+                        <div class="row border  text-right">
+                            <div class="col-12">المستفيد: <span t-field="doc.partner_bank_id.acc_holder_name"></span> </div>
+                        </div>
+                        <div class="row border  text-right" >
+                            <div class="col-12"> البنك:<span t-field="doc.partner_bank_id.bank_id.name"></span> </div>
+                        </div>
+                        <div class="row border  text-right">
+                            <div class="col-12">رقم الحساب: <span t-field="doc.partner_bank_id.bank_bic"></span> </div>
+                        </div>
+                        <div class="row border  text-right">
+                            <div class="col-12">الأيبان: <span t-esc="doc.partner_bank_id.acc_number"></span> </div>
+                        </div>
+                    </table>
+                </div>
+                <div class="col-6 width: 100%">
+                    <table style="page-break-inside: avoid; text-right">
+                        <div class="row border ">
+                            <div class="col-6" ><span >الاجمالي بدون الضريبة</span></div>
+                            <div class="col-6 text-center" ><span   t-field="doc.einv_amount_sale_total"></span></div>
+                        </div>
+                        <div class="row border ">
+                            <div class="col-6">الخصم</div>
+                            <div class="col-6 text-center"><span
+                                    t-field="doc.einv_amount_discount_total"></span></div>
+                        </div>
+                        <div class="row border ">
+                            <div class="col-6">الصافي بدون الضريبة</div>
+                            <div class="col-6 text-center"><span t-field="doc.amount_untaxed"></span></div>
+                        </div>
+                        <div class="row border ">
+                            <div class="col-6">اجمالي الضريبة</div>
+                            <div class="col-6 text-center"><span t-field="doc.amount_tax_signed"></span></div>
+                        </div>
+                        <div class="row border ">
+                            <div class="col-6">الاجمالي</div>
+                            <div class="col-6 text-center"><span t-field="doc.amount_total"></span></div>
+                        </div>
+                    </table>
+                </div>
+            </div>
+            <div class="row" style="padding: 5px">
+            <div class="col-4" ></div>
+                <div class="col-4" >
+<!--                      <img t-att-src="'/report/barcode/?type=%s&amp;width=%s&amp;height=%s&amp;value=Seller : %s;Vat_Number : %s;date : %s;Total_Vat : %s;Total_Amount : %s'%('QR', 100, 100,doc.company_id.name,doc.company_id.vat,doc.invoice_date,doc.amount_tax_signed,doc.amount_total)"-->
+<!--                        class="float-center my-1"/>-->
+                    <t t-esc="doc.generate_qr_code()"/>
+                    <img t-att-src="image_data_uri(doc.qr_code)" style="max-height: 100px;" alt="QR Code"/>
+                </div>
+                <div class="col-4" ></div>
+            </div>
+
+            <div class="oe_structure"/>
+
+        </template>
+
+        <!-- main document template -->
+        <template id="einv_sa.account_move_report_document_receipt">
+            <t t-call="web.external_layout"  >
+                <t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+                <div class="page" style="font-size: xx-small;direction: rtl;">
+
+                    <!-- Invoice fields-->
+                    <t t-call="einv_sa.inv_header"/>
+
+                    <!-- partner fields-->
+                    <t t-call="einv_sa.partner_info_receipt"/>
+
+                    <!-- Invoice fields-->
+                    <t t-call="einv_sa.inv_lines_receipt" t-lang="ar"/>
+
+                    <!-- Invoice total-->
+                    <t t-call="einv_sa.inv_total_receipt"/>
+                </div>
+
+            </t>
+        </template>
+
+        <!-- main template -->
+        <template id="einv_sa.account_move_report_receipt">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="lang" t-value="doc.create_uid.lang"/>
+                    <t t-call="einv_sa.account_move_report_document_receipt"/>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

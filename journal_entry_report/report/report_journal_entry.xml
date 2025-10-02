@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_report_journal_entry" model="report.paperformat">
+            <field name="name">A4</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">28</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="action_report_journal_entry"
+                model="account.move"
+                string="Journal Entry Report"
+                report_type="qweb-pdf"
+                name="journal_entry_report.report_journal_entry"
+                file="journal_entry_report.report_journal_entry"/>
+
+        <record id="action_report_journal_entry" model="ir.actions.report">
+            <field name="paperformat_id" ref="journal_entry_report.paperformat_report_journal_entry"/>
+        </record>
+
+        <template id="journal_external_layout">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <t t-call="journal_entry_report.journal_external_layout_standard">
+                <t t-raw="0"/>
+            </t>
+        </template>
+
+        <template id="journal_external_layout_standard">
+            <div t-attf-class="header o_company_#{company.id}_layout">
+                <div class="row">
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;"
+                             alt="Logo"/>
+                    </div>
+                    <div class="col-9 text-right" style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+                </div>
+                <div t-if="company.logo or company.report_header" class="row zero_min_height">
+                    <div class="col-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div>
+            </div>
+
+            <div t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout"
+                 t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-raw="0"/>
+            </div>
+            <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+                <div class="text-center" style="border-top: 1px solid black;">
+                    <ul class="list-inline mb4">
+                        <li class="list-inline-item d-inline">Print Date:
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/>
+                        </li>
+
+                        <li class="list-inline-item d-inline">Printed by :
+                            <span t-field="user.name"/>
+                        </li>
+
+                        <li class="list-inline-item d-inline">Prepared by :
+                            <span t-field="o.create_uid.name"/>
+                        </li>
+                    </ul>
+
+                    <div name="financial_infos">
+                        <span t-field="company.report_footer"/>
+                    </div>
+
+                    <div t-if="report_type == 'pdf'" class="text-muted">
+                        Page:
+                        <span class="page"/>
+                        /
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="report_journal_entry_document">
+            <t t-call="journal_entry_report.journal_external_layout">
+                <div class="page">
+                    <h2 class="text-center">
+                        <span>Journal Entry</span>
+                    </h2>
+
+                    <h2>
+                        <span>Journal Number:</span>
+                        <span t-if="o.name != '/'" t-field="o.name"/>
+                    </h2>
+
+                    <div class="row mt32 mb32">
+                        <div class="col-6">
+                            <strong>Journal :</strong>
+                            <p class="m-0" t-field="o.journal_id.name"/>
+                        </div>
+
+                        <div class="col-6">
+                            <strong>Date :</strong>
+                            <p class="m-0" t-field="o.date"/>
+                        </div>
+                    </div>
+
+                    <div class="row mt32 mb32" t-if="o.ref">
+                        <div class="col-6">
+                            <strong>Reference :</strong>
+                            <p class="m-0" t-field="o.ref"/>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>Statement</th>
+                                <th t-if="o.company_id.print_reference_journal_entry">Reference</th>
+                                <th>Account</th>
+                                <th>Partner</th>
+                                <th groups="analytic.group_analytic_accounting">Analytic Account</th>
+                                <th>Taxes</th>
+                                <th class="text-right">Debit</th>
+                                <th class="text-right">Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_debit" t-value="0"/>
+                            <t t-set="total_credit" t-value="0"/>
+
+                            <tr t-foreach="o.line_ids" t-as="l">
+                                <td>
+                                    <span t-field="l.name"/>
+                                </td>
+                                <td t-if="o.company_id.print_reference_journal_entry">
+                                    <span t-field="l.ref"/>
+                                </td>
+                                <td>
+                                    <span t-field="l.account_id.display_name"/>
+                                </td>
+                                <td>
+                                    <span t-field="l.partner_id.name"/>
+                                </td>
+                                <td groups="analytic.group_analytic_accounting">
+                                    <t t-if="o.company_id.print_analytic_account_journal_entry">
+                                        <t t-if="o.company_id.print_analytic_account_journal_entry == 'name'">
+                                            <span t-field="l.analytic_account_id.name"/>
+                                        </t>
+                                        <t t-elif="o.company_id.print_analytic_account_journal_entry == 'code'">
+                                            <span t-field="l.analytic_account_id.code"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-field="l.analytic_account_id.display_name"/>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-field="l.analytic_account_id.display_name"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <span t-esc="', '.join(map(lambda tax: (tax.description or tax.name), l.tax_ids))"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.debit"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.credit"/>
+                                </td>
+
+                                <t t-set="total_debit"
+                                   t-value="l.debit + total_debit"/>
+                                <t t-set="total_credit"
+                                   t-value="l.credit + total_credit"/>
+                            </tr>
+                            <tr style="height:40px;vertical-align: center;">
+                                <td colspan="3"/>
+                                <td t-if="o.company_id.print_reference_journal_entry"/>
+                                <td groups="analytic.group_analytic_accounting"/>
+                                <td style="font-weight:bold;">
+                                    <span>Total</span>
+                                </td>
+                                <td class="text-right" style="font-weight:bold;">
+                                    <span t-esc="total_debit"
+                                          t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                </td>
+                                <td class="text-right" style="font-weight:bold;">
+                                    <span t-esc="total_credit"
+                                          t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row" style="padding-top:50px;">
+                        <div class="col-xs-4 text-center" style="width: 30%;">
+                            <span class="text-center" style="font-size:16px; border-top:1px solid #393e46;">Accountant
+                            </span>
+                        </div>
+                        <div class="col-xs-4 text-center" style="width: 30%;">
+                            <span class="text-center" style="font-size:16px; border-top:1px solid #393e46;">
+                                Chief Accountant
+                            </span>
+                        </div>
+                        <div class="col-xs-4 text-center" style="width: 30%;">
+                            <span class="text-center" style="font-size:16px; border-top:1px solid #393e46;">
+                                Internal Auditor
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_journal_entry">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="journal_entry_report.report_journal_entry_document" t-lang="user_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

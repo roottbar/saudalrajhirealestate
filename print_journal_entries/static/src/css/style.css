@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'MonixBold';
+    src: local('MonixBold'), local('MonixBold'), url(/print_journal_entries/static/src/fonts/PFDinTextUniversal-Regular.otf) format('opentype');
+}
+
+.mabco_font {
+    font-family: MonixBold;
+}
+

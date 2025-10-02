@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "HR Advanced",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced HR Advanced module",
+    'description': "Enhanced HR Advanced module for Odoo 18.0 by roottbar",
+    'category': "Human Resources",
+    'author': "Crevisoft Corporate",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'hr_payroll',
+        'hr_holidays',
+    ],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'data/hr_payroll_data.xml',
+        'data/medical_insurance_type_data.xml',
+        'data/ir_sequence.xml',
+        'views/hr_contract_views.xml',
+        'views/hr_employee_views.xml',
+        'views/hr_medical_insurance_type_view.xml',
+        'views/hr_leave_type_views.xml',
+        'views/employee_docs.xml',
+        'views/employee_docs_expiry.xml',
+        'views/request_menu.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': True,
+    'auto_install': False,
+}

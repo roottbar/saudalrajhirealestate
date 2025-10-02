@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="rent_config_unit_finishes_tree">
+            <field name="name">rent.config.unit.finishes.tree</field>
+            <field name="model">rent.config.unit.finishes</field>
+            <field name="arch" type="xml">
+                <list string="Unit Finishes">
+                    <field name="unit_finish_name"/>
+                    <field name="unit_finish_description"/>
+                </list>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="rent_config_unit_finishes_form">
+            <field name="name">rent.config.unit.finishes.form</field>
+            <field name="model">rent.config.unit.finishes</field>
+            <field name="arch" type="xml">
+                <form string="Unit Finishes">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="unit_finish_name"/>
+                            </group>
+                            <group>
+                                <field name="unit_finish_description"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

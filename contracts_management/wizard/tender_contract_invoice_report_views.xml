@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_invoice_report_wizard_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.invoice.report.wizard.form</field>
+            <field name="model">tender.contract.invoice.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Print Invoice">
+                    <group>
+                        <field name="invoice_id" options="{'no_open':True,'no_create':True}"
+                               domain="[('id','in',context.get('invoice_service_ids',[]))]"/>
+                    </group>
+
+                    <footer>
+                        <button string="Print" name="print_report" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_tender_contract_invoice_report_wizard" model="ir.actions.act_window">
+            <field name="name">Print Invoice</field>
+            <field name="res_model">tender.contract.invoice.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contracts_management.view_tender_contract_invoice_report_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

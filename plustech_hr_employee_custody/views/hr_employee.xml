@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_inherited_form_view" model="ir.ui.view">
+        <field name="name">custody.inherited.employee.form.view</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+              <div name="button_box" position="inside">
+                <button name="action_custody_view" type="object" class="o_stat_button"
+                        icon="fa-ticket"   groups="base.group_user" help="Employee Custody">
+                   <field name="custody_count"  widget="statinfo"  string="Custodies"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

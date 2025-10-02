@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="employee_custody_view_form" model="ir.ui.view">
+            <field name="name">employee.custody.view.form</field>
+            <field name="model">employee.custody</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <button string="Submit" name="action_submit"  type="object" class="btn-primary"/>
+                        <button string="Line Manage Approve" name="action_l_m_approve" type="object"
+                                class="btn-primary"
+                                invisible="'|',('is_manager', '=', False),('state', '!=', 'submit')"/>
+                        <button string="Hr Approve" name="action_hrm"  type="object"
+                                class="btn-primary"
+                                groups="plustech_hr_employee_custody.employee_custody_hr_approval"/>
+                        <button string="Delivered" name="action_delivered"  type="object"
+                                class="btn-primary"
+                                groups="plustech_hr_employee_custody.employee_custody_delivery_approval"/>
+                        <button string="Return" name="action_returned"  type="object"
+                                class="btn-primary"
+                                groups="plustech_hr_employee_custody.employee_custody_return_approval"/>
+
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="o_title">
+                            <h1 class="mt0">
+                                <field name="name" readonly="True"/>
+                            </h1>
+                        </div>
+                        <group string='General Information'>
+                            <group>
+                                <field name="employee_id"
+                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+                                       />
+                                <field name="employee_number"/>
+                                <field name="manager_id" invisible="1"/>
+                                <field name="is_manager" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="request_date" required="1"  />
+                                <field name="receive_date" required="1"  />
+                                <field name="return_date" required="1"  />
+                                <field name="department_id"
+                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+                                       />
+                                <field name="job_id"
+                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+                                       />
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <sperator/>
+                        <notebook>
+                            <page string="Items">
+                                <field name="item_ids"
+                                       readonly="('state', 'in', ('delivered', 'returned'))">
+                                    <list editable="bottom">
+                                        <field name="state" invisible="1"/>
+                                        <field name="product_id"
+                                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
+                                               />
+                                        <field name="serial"/>
+                                        <field name="request_for" />
+                                        <field name="return_date" readonly="1"/>
+                                        <field name="rejected" widget="boolean_toggle"
+                                               />
+                                        <button string="" icon="fa-retweet" style="font-size: 1.5rem;"
+                                                name="action_renew" type="object" class="btn-primary"
+                                                />
+
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Requester Function"
+                                  groups="plustech_hr_employee_custody.employee_custody_manager">
+                                <group>
+                                    <group string="Prepared By">
+                                        <field name="create_uid" widget="selection"/>
+                                        <field name="create_date"/>
+                                    </group>
+                                    <group string="HR Approval">
+                                        <field name="hr_responsible_id" widget="selection" readonly="1"/>
+                                        <field name="hr_approval_date" readonly="1"/>
+                                    </group>
+                                    <group string="Direct Manager">
+                                        <field name="line_manager_id" widget="selection" readonly="1"/>
+                                        <field name="line_manager_approval_date" readonly="1"/>
+                                    </group>
+                                    <group string="Deliver Info">
+                                        <field name="delivered_by" readonly="1" widget="selection"/>
+                                        <field name="delivered_date" readonly="1"/>
+                                    </group>
+                                    <group/>
+                                    <group string="Return Info">
+                                        <field name="returned_by" readonly="1" widget="selection"/>
+                                        <field name="returned_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Note">
+                                <field name="note"></field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="o_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_custody_view_tree" model="ir.ui.view">
+            <field name="name">employee.custody.view.tree</field>
+            <field name="model">employee.custody</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="employee_number"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="job_id"/>
+                    <field name="request_date"/>
+                    <field name="receive_date"/>
+                    <field name="return_date"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="employee_custody_action" model="ir.actions.act_window">
+            <field name="name">Custody</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.custody</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'uid': uid}</field>
+        </record>
+
+        <!-- renew.renew form view -->
+        <record id="mrenew_renew_view_form" model="ir.ui.view">
+            <field name="name">renew.renew.view.form</field>
+            <field name="model">renew.renew</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <div>
+                            <group>
+                                <field name="return_date"/>
+                                <field name="reason"/>
+                            </group>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button string="Cancel" class="btn btn-default" special="cancel"/>
+                        <button name="action_submit" string="Submit" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="renew_custody_action" model="ir.actions.act_window">
+            <field name="name">Renew</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">renew.renew</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="custody_menu_root" name="Custody" sequence="8"
+                  web_icon="plustech_hr_employee_custody,static/description/icon.png"/>
+        <menuitem id="employee_custody_menu_action" name="Custody"
+                  parent="plustech_hr_employee_custody.custody_menu_root" action="employee_custody_action"
+                  sequence="1"/>
+
+    </data>
+</odoo>

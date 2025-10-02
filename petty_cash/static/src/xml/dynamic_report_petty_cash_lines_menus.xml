@@ -1,0 +1,9 @@
+<templates>
+    <t t-name="petty_cash_dynamic_report.dynamic_report_petty_cash_lines_menus">
+        <t t-call="DynamicReports.dynamic_report_period_filter_menu"/>
+        <t t-call="PettyCash.dynamic_report_m2m_filters_menu"/>
+        <t t-call="PettyCash.dynamic_report_group_by_menu"/>
+        <t t-call="PettyCash.dynamic_report_display_options_menu"/>
+        <t t-call="PettyCash.dynamic_report_options_menu"/>
+    </t>
+</templates>

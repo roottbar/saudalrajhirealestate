@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+    <record id="view_implementation_tree" model="ir.ui.view">
+        <field name="name">implementation.tree</field>
+        <field name="model">implementation</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="type_verdict"/>
+                <field name="issue" invisible="('type_verdict','=','appeal')"/>
+                <field name="appeal" invisible="('type_verdict','=','trial')"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="view_implementation_form" model="ir.ui.view">
+        <field name="name">implementation.form</field>
+        <field name="model">implementation</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" nolabel="1" options="{'clickable':'1'}"
+                           statusbar_visible="new,in-progress,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="type_verdict"/>
+                            <field name="issue"  invisible="('type_verdict','=','appeal')"/>
+                            <field name="appeal" invisible="('type_verdict','=','trial')"/>
+                        </group>
+
+                        <group>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Attachment" name="attachment implementation">
+                            <field name="attachment_implementation" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="o_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_implementation" model="ir.actions.act_window">
+        <field name="name">Implementation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">implementation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_implementation"
+              name="Implementation"
+              parent="legal_management.menu_legal_master_first"
+              action="action_implementation"
+              sequence="4"/>
+
+
+</odoo>

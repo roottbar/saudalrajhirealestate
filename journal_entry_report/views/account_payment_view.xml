@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="view_account_payment_inherit_form" model="ir.ui.view">
+            <field name="name">view.account.payment.inherit.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="move_id" invisible="1"/>
+                    <button name="print_journal_entry" string="Print Journal Entry" type="object"
+                            class="btn-primary"
+                            groups="account.group_account_user" invisible="('move_id','=',False)"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

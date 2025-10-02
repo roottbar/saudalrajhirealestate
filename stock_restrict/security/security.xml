@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Warehouses Rules -->
+    <record id="stock_warehouse_user_rule" model="ir.rule">
+        <field name="name">Warehouses User</field>
+        <field name="model_id" ref="stock.model_stock_warehouse"/>
+        <field name="domain_force">['|',(user.all_warehouses, '=', True),('id','in',user.allowed_warehouses.ids)]
+        </field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_config_manager_rule" model="ir.rule">
+        <field name="name">Warehouses Manager</field>
+        <field name="model_id" ref="stock.model_stock_warehouse"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_manager'))]"/>
+    </record>
+
+    <!-- Stock Location Rules -->
+    <record id="stock_location_user_rule" model="ir.rule">
+        <field name="name">Stock Location User</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="domain_force">['|','|',(user.all_warehouses, '=',
+            True),('warehouse_id','in',user.allowed_warehouses.ids),('warehouse_id','=',False)]
+        </field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_location_manager_rule" model="ir.rule">
+        <field name="name">Stock Location Manager</field>
+        <field name="model_id" ref="stock.model_stock_location"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_manager'))]"/>
+    </record>
+
+    <!-- Stock Picking Type Rules -->
+    <record id="stock_picking_type_user_rule" model="ir.rule">
+        <field name="name">Stock Picking Type User</field>
+        <field name="model_id" ref="stock.model_stock_picking_type"/>
+        <field name="domain_force">['|','|',(user.all_warehouses, '=',
+            True),('warehouse_id','in',user.allowed_warehouses.ids),('warehouse_id','=',False)]
+        </field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_picking_type_manager_rule" model="ir.rule">
+        <field name="name">Stock Picking Type Manager</field>
+        <field name="model_id" ref="stock.model_stock_picking_type"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_manager'))]"/>
+    </record>
+
+    <!-- Stock Picking Rules -->
+    <record id="stock_picking_user_rule" model="ir.rule">
+        <field name="name">Stock Picking User</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">['|','|',(user.all_warehouses, '=',
+            True),('picking_type_id.warehouse_id','in',user.allowed_warehouses.ids),('picking_type_id.warehouse_id','=',False)]
+        </field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_picking_manager_rule" model="ir.rule">
+        <field name="name">Stock Picking Manager</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_manager'))]"/>
+    </record>
+
+    <!-- Stock Move Rules -->
+    <record id="stock_move_user_rule" model="ir.rule">
+        <field name="name">Stock Move User</field>
+        <field name="model_id" ref="stock.model_stock_move"/>
+        <field name="domain_force">['|','|',(user.all_warehouses, '=',
+            True),('picking_id.picking_type_id.warehouse_id','in',user.allowed_warehouses.ids),('picking_id.picking_type_id.warehouse_id','=',False)]
+        </field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_move_manager_rule" model="ir.rule">
+        <field name="name">Stock Move Manager</field>
+        <field name="model_id" ref="stock.model_stock_move"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_manager'))]"/>
+    </record>
+
+    <!-- Stock Move Lines Rules -->
+    <record id="stock_move_line_user_rule" model="ir.rule">
+        <field name="name">Stock Move Lines User</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+        <field name="domain_force">['|','|',(user.all_warehouses, '=',
+            True),('picking_id.picking_type_id.warehouse_id','in',user.allowed_warehouses.ids),('picking_id.picking_type_id.warehouse_id','=',False)]
+        </field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_move_line_manager_rule" model="ir.rule">
+        <field name="name">Stock Move Lines Manager</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('stock.group_stock_manager'))]"/>
+    </record>
+</odoo>

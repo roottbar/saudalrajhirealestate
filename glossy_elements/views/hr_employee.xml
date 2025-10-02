@@ -1,0 +1,40 @@
+<odoo>
+  <data>
+
+  <record id="hr_employee_view_elements_form" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.inherit.appraisal</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+<!--        <xpath expr="//button[@name='%(hr.plan_wizard_action)d']" position="before">-->
+<!--            <button name="generate_monthly_elements_entry"-->
+<!--                string="Generate Moves"-->
+<!--                type="object"-->
+<!--                class="btn btn-primary"/>-->
+<!--        </xpath>-->
+
+            <xpath expr="//page[@name='hr_settings']" position="after">
+                <page name="elements" string="Elements">
+                    <field name="element_line_ids">
+                        <list editable ="bottom">
+                            <field name="element_id"/>
+                            <field name="type"/>
+                            <field name="recurring"/>
+                            <field name="is_eos_element" readonly="1"/>
+
+                            <field name="annual_amount" invisible="('is_eos_element', '=', True)"/>
+                            <field name="monthly_amount" />
+
+                            <field name="debit_account_id"/>
+                            <field name="credit_account_id"/>
+
+
+                        </list>
+                    </field>
+                </page>
+
+            </xpath>
+        </field>
+  </record>
+  </data>
+</odoo>

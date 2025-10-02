@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_tender_contract_account_move_form" model="ir.ui.view">
+            <field name="name">view.tender.contract.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="tender_contract_id" options="{'no_open':True,'no_create':True}"
+                           invisible="('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))" readonly="('state','!=','draft')"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_tender_contract_account_move_line_filter" model="ir.ui.view">
+            <field name="name">view.tender.contract.account.move.line.filter</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="inside">
+                    <filter string="Project" name="group_by_tender_project" domain="[]"
+                            context="{'group_by': 'tender_project_id'}"
+                            groups="contracts_management.group_show_tender_project"/>
+                    <filter string="Contract" name="group_by_tender_contract" domain="[]"
+                            context="{'group_by': 'tender_contract_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

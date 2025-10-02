@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- Service Categories -->
+        <record id="cleaning_tender_service_category" model="tender.service.category">
+            <field name="name">Cleaning</field>
+            <field name="code">C</field>
+        </record>
+        <record id="cleaning_labour_cost_tender_service_category" model="tender.service.category">
+            <field name="name">Labour Cost</field>
+            <field name="code">LC</field>
+            <field name="parent_id" ref="contracts_management.cleaning_tender_service_category"/>
+        </record>
+        <record id="cleaning_materials_tender_service_category" model="tender.service.category">
+            <field name="name">Materials</field>
+            <field name="code">M</field>
+            <field name="parent_id" ref="contracts_management.cleaning_tender_service_category"/>
+        </record>
+
+        <record id="hospitality_tender_service_category" model="tender.service.category">
+            <field name="name">Hospitality</field>
+            <field name="code">H</field>
+        </record>
+        <record id="hospitality_labour_cost_tender_service_category" model="tender.service.category">
+            <field name="name">Labour Cost</field>
+            <field name="code">LC</field>
+            <field name="parent_id" ref="contracts_management.hospitality_tender_service_category"/>
+        </record>
+        <record id="hospitality_materials_tender_service_category" model="tender.service.category">
+            <field name="name">Materials</field>
+            <field name="code">M</field>
+            <field name="parent_id" ref="contracts_management.hospitality_tender_service_category"/>
+        </record>
+
+        <record id="maintenance_tender_service_category" model="tender.service.category">
+            <field name="name">Maintenance</field>
+            <field name="code">C</field>
+        </record>
+        <record id="maintenance_spare_parts_tender_service_category" model="tender.service.category">
+            <field name="name">Spare Parts</field>
+            <field name="code">SP</field>
+            <field name="parent_id" ref="contracts_management.maintenance_tender_service_category"/>
+        </record>
+        <record id="maintenance_service_charge_tender_service_category" model="tender.service.category">
+            <field name="name">Service Charge</field>
+            <field name="code">SC</field>
+            <field name="parent_id" ref="contracts_management.maintenance_tender_service_category"/>
+        </record>
+
+        <record id="pest_control_tender_service_category" model="tender.service.category">
+            <field name="name">Pest Control</field>
+            <field name="code">PC</field>
+        </record>
+        <record id="pest_control_service_charge_tender_service_category" model="tender.service.category">
+            <field name="name">Service Charge</field>
+            <field name="code">SC</field>
+            <field name="parent_id" ref="contracts_management.pest_control_tender_service_category"/>
+        </record>
+    </data>
+</odoo>

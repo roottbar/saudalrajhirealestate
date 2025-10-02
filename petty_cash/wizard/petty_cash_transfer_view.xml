@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_petty_cash_transfer_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.transfer.form</field>
+            <field name="model">petty.cash.transfer.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Petty Cash Transfers">
+                    <group>
+                        <group>
+                            <field name="managers" widget="many2many_tags" options="{'no_open':True,'no_create':True}"/>
+                        </group>
+                        <group/>
+                    </group>
+
+                    <group>
+                        <field name="notes"/>
+                    </group>
+
+                    <footer>
+                        <button name="action_transfer" string="Save" type="object" class="btn-primary"/>
+                        or
+                        <button string="Cancel" class="btn-link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_transfer" model="ir.actions.act_window">
+            <field name="name">Transfer</field>
+            <field name="res_model">petty.cash.transfer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_petty_cash_transfer_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
+

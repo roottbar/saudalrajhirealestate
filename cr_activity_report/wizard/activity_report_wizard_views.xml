@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="activity_report_wizard_form" model="ir.ui.view">
+        <field name="name">activity.report.wizard.form</field>
+        <field name="model">activity.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate activity report">
+            <group>
+                <group>
+                    <field name="activity_type_ids" widget="many2many_tags"/>
+                    <field name="due_date"/>         
+                </group>
+                <group>
+                    <field name="range_type"/>
+                    <field name="user_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button string="Excel Report" type="object" name="action_Excel" class="btn-primary"/>
+                    <button string="PDF Report" type="object" name="action_Pdf" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" type="object" class="btn-primary"/>
+                </footer>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_activity_report" model="ir.actions.act_window">
+        <field name="name">Activity Report</field>
+        <field name="res_model">activity.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="activity_report_wizard_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">form</field>
+    </record>
+
+    <menuitem name="Activity Report" 
+            id="property_1"
+            parent="sale.menu_sale_report"
+            action="action_activity_report"/> 
+    </data>
+</odoo>

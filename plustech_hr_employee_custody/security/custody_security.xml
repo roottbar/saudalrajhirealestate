@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="base.module_category_human_resources_custody">
+        <field name="name">Custody</field>
+        <field name="description">custody</field>
+    </record>
+    <record id="employee_custody_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="base.module_category_human_resources_custody"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="employee_custody_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_human_resources_custody"/>
+        <field name="implied_ids" eval="[(4, ref('employee_custody_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="employee_custody_hr_approval" model="res.groups">
+        <field name="name">HR Approval</field>
+        <field name="category_id" ref="base.module_category_human_resources_custody"/>
+        <field name="implied_ids" eval="[(4, ref('plustech_hr_employee_custody.employee_custody_user'))]"/>
+    </record>
+    <record id="employee_custody_delivery_approval" model="res.groups">
+        <field name="name">Delivery Approval</field>
+        <field name="category_id" ref="base.module_category_human_resources_custody"/>
+        <field name="implied_ids" eval="[(4, ref('plustech_hr_employee_custody.employee_custody_user'))]"/>
+    </record>
+
+    <record id="employee_custody_return_approval" model="res.groups">
+        <field name="name">Return Approval</field>
+        <field name="category_id" ref="base.module_category_human_resources_custody"/>
+        <field name="implied_ids" eval="[(4, ref('plustech_hr_employee_custody.employee_custody_user'))]"/>
+    </record>
+
+    <record id="employee_custody_personal_rule" model="ir.rule">
+        <field name="name">Personal custody</field>
+        <field ref="model_employee_custody" name="model_id"/>
+        <field name="domain_force">['|', ('employee_id.user_id','=',user.id), ('employee_id', 'child_of',
+            user.employee_ids.ids)]
+        </field>
+
+        <field name="groups" eval="[(4, ref('plustech_hr_employee_custody.employee_custody_user'))]"/>
+    </record>
+    <record id="employee_custody_see_all" model="ir.rule">
+        <field name="name">All custodians</field>
+        <field ref="model_employee_custody" name="model_id"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('plustech_hr_employee_custody.employee_custody_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="employee_custody_comp_rule">
+        <field name="name">Custody Request multi-company</field>
+        <field name="model_id" ref="model_employee_custody"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

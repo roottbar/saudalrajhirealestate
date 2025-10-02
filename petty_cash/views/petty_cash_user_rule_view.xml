@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_petty_cash_user_rule_tree" model="ir.ui.view">
+            <field name="name">view.petty.cash.user.rule.tree</field>
+            <field name="model">petty.cash.user.rule</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="code" optional="show"/>
+                    <field name="user" optional="show"/>
+                    <field name="account_id" optional="show"/>
+                    <field name="journal_id" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_petty_cash_user_rule_form" model="ir.ui.view">
+            <field name="name">view.petty.cash.user.rule.form</field>
+            <field name="model">petty.cash.user.rule</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="o_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="o_stat_button" icon="fa-check">
+                                <field name="active" widget="boolean_button" options='{"terminology": "active"}'/>
+                            </button>
+                        </div>
+
+                        <div class="o_title">
+                            <h1>
+                                <field name="code"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="user"/>
+                                <field name="name"/>
+                            </group>
+
+                            <group>
+                                <field name="account_id"/>
+                                <field name="journal_id"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="analytic_accounts" string="Analytic Accounts">
+                                <field name="analytic_account_ids" options="{'no_open': True,'no_create':True}">
+                                    <list>
+                                        <field name="name" string="Name"/>
+                                        <field name="code"/>
+                                        <field name="partner_id"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page name="accounts" string="Accounts">
+                                <field name="accounts" options="{'no_open': True,'no_create':True}">
+                                    <list>
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page name="products" string="Products">
+                                <field name="products" options="{'no_open': True,'no_create':True}">
+                                    <list>
+                                        <field name="default_code"/>
+                                        <field name="barcode"/>
+                                        <field name="name"/>
+                                        <field name="qty_available"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page name="partners" string="Partners">
+                                <field name="partner_ids" options="{'no_open': True,'no_create':True}">
+                                    <list>
+                                        <field name="display_name" string="Name"/>
+                                        <field name="phone"/>
+                                        <field name="email"/>
+                                        <field name="company_id" groups="base.group_multi_company"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_petty_cash_user_rule" model="ir.actions.act_window">
+            <field name="name">Petty Cash Rule</field>
+            <field name="res_model">petty.cash.user.rule</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

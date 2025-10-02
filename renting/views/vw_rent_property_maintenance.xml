@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="rent_property_maintenance_tree">
+            <field name="name">rent.property.maintain.tree</field>
+            <field name="model">rent.property.maintain</field>
+            <field name="arch" type="xml">
+                <list string="الصيانات">
+                    <field name="maintain_name"/>
+                    <field name="property"/>
+                    <field name="apartment"/>
+                    <field name="maintain_provider"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="rent_property_maintenance_form">
+            <field name="name">rent.property.maintain.form</field>
+            <field name="model">rent.property.maintain</field>
+            <field name="arch" type="xml">
+                <form string="الصيانات">
+                    <header>
+                        <field name="state" widget="statusbar" clickable="True"/>
+                        <button string="بدأ الصيانة" type="object" name="set_start"
+                                invisible="('state', 'in', ['done','start','draft','invoice'"/>
+                        <button string="تأكيد الطلب" type="object" name="set_confirm"
+                                invisible="('state', 'in', ['done','start','invoice','confirm'"/>
+                        <button string="الفوترة" type="object" name="set_invoice"
+                                invisible="('state', 'in', ['done','start','draft','invoice'"/>
+                        <button string="انتهاء الصيانة" type="object" name="set_finish"
+                                invisible="('state', 'not in', ['start'"/>
+
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="maintain_name"/>
+                                <field name="maintain_desc"/>
+                            </group>
+                             <group string="العقار">
+                                <field name="property"/>
+                                <field name="apartment"/>
+                            </group>
+                            <group string="تاريخ الصيانة">
+                                <field name="maintain_date_from"/>
+                                <field name="maintain_date_to"/>
+                            </group>
+                            <group string="مسؤول الصيانة">
+                                <field name="maintain_provider"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_property_maintain" model="ir.actions.act_window">
+            <field name="name">الصيانات</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rent.property.maintain</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain"></field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    قم بأضافة طلب صيانة من هنا.
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem id="maintain"
+                  name="الصيانات"
+                  action="action_property_maintain"
+                  sequence="50"/>
+    </data>
+</odoo>

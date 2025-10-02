@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_user_action_rule_manager,user.action.rule,model_user_action_rule,,1,1,1,1
+access_user_action_rule_line_manager,user.action.rule.line,model_user_action_rule_line,,1,1,1,1
+access_user_action_line_rule_manager,user.action.line.rule,model_user_action_line_rule,,1,1,1,1
+access_user_action_rule_history_manager,user.action.rule.history,model_user_action_rule_history,,1,1,1,1
+access_user_action_field_rul_manager,user.action.field.rul,model_user_action_field_rule,,1,1,1,1
+access_user_action_manager_rule_sequence_manager,user.action.manager.rule.sequence,model_user_action_manager_rule_sequence,,1,1,1,1
+
+
+access_user_action_manager_sequence_wizard_line_manager,user.action.manager.sequence.wizard.line,model_user_action_manager_sequence_wizard_line,,1,1,1,1
+
+access_user_action_manager_sequence_wizard_manager,user.action.manager.sequence.wizard,model_user_action_manager_sequence_wizard,,1,1,1,1

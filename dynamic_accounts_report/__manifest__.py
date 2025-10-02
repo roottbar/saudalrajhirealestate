@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Dynamic Financial Reports",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Dynamic Financial Reports module",
+    'description': "Enhanced Dynamic Financial Reports module for Odoo 18.0 by roottbar",
+    'category': "Accounting",
+    'author': "Cybrosys Techno Solutions",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'base_accounting_kit',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/templates.xml',
+        'views/views.xml',
+        'views/kit_menus.xml',
+        'report/trial_balance.xml',
+        'report/general_ledger.xml',
+        'report/cash_flow_report.xml',
+        'report/financial_report_template.xml',
+        'report/partner_ledger.xml',
+        'report/ageing.xml',
+        'report/daybook.xml',
+    ],
+    'license': "LGPL-3",
+    'application': True,
+    'installable': True,
+    'auto_install': False,
+}

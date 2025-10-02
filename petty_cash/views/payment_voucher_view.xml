@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payment_voucher_tree" model="ir.ui.view">
+            <field name="name">view.payment.voucher.tree</field>
+            <field name="model">payment.voucher</field>
+            <field name="arch" type="xml">
+                <list decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']">
+                    <field name="payment_date"/>
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                    <field name="payment_method_id"/>
+                    <field name="partner_id" string="Vendor"/>
+                    <field name="amount" sum="Amount"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_payment_voucher_form" model="ir.ui.view">
+            <field name="name">view.payment.voucher.form</field>
+            <field name="model">payment.voucher</field>
+            <field name="arch" type="xml">
+                <form string="Payment Voucher">
+                    <header>
+                        <button name="post" class="btn-primary"  string="Confirm" type="object"/>
+                        <button name="print_payment_voucher_report" class="btn-primary"  string="Print"
+                                type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                    </header>
+                    <sheet>
+                        <div class="o_button_box" name="button_box">
+                            <field name="account_payment_id" invisible="1"/>
+                            <button class="o_stat_button" name="open_payment"
+                                    string="Payment" type="object"
+                                    groups="petty_cash.group_petty_cash_manager"
+                                    invisible="('account_payment_id','=',False)" icon="fa-university"/>
+                        </div>
+
+                        <div class="o_title" invisible="('state', '=', 'draft')">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <field name="partner_id" readonly="('state', '!=', 'draft')"
+                                       context="{'form_view_ref': 'petty_cash.view_vendor_petty_cash_form','default_is_company': True,'default_supplier_rank': 1,'vendor_petty_cash':True}"/>
+
+                                <label for="amount"/>
+                                <div name="amount_div" class="o_row">
+                                    <field name="amount" readonly="('state', '!=', 'draft')"/>
+                                    <field name="currency_id" widget="selection" groups="petty_cash.group_petty_cash_multi_currency"
+                                           readonly="('state', '!=', 'draft')"/>
+                                </div>
+                                <field name="journal_id" widget="selection"
+                                       readonly="('state', '!=', 'draft')"/>
+                                <field name="check_manual_sequencing" invisible="1"/>
+                                <field name="check_number" invisible="1"/>
+                                <field name="payment_method_code" invisible="1"/>
+                                <field name="bank_id"
+                                       invisible="('payment_method_code', '!=', 'check_printing')"/>
+                                <field name="check_number_in_words"
+                                       invisible="'|', ('payment_method_code', '!=', 'check_printing'), ('check_manual_sequencing', '=', False)"/>
+                            </group>
+                            <group>
+                                <field name="payment_date" readonly="('state', '!=', 'draft')"/>
+                                <field name="payment_transaction_id" readonly="('state', '!=', 'draft')"/>
+                                <field name="hide_payment_method" invisible="1"/>
+                                <field name="reference" readonly="('state', '!=', 'draft')"/>
+                                <field name="payment_method_id" string=" " widget="radio"
+                                       invisible="('hide_payment_method', '=', True)" readonly="('state', '!=', 'draft')"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="communication"
+                                   invisible="('state', '!=', 'draft'), ('communication', '=', False)" readonly="('state', '!=', 'draft')"/>
+                        </group>
+                    </sheet>
+                    <div class="o_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_payment_voucher" model="ir.actions.act_window">
+            <field name="name">Payment Voucher</field>
+            <field name="res_model">payment.voucher</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="view_payment_voucher_petty_cash_request_tree" model="ir.ui.view">
+            <field name="name">view.payment.voucher.tree</field>
+            <field name="model">payment.voucher</field>
+            <field name="arch" type="xml">
+                <list decoration-info="state == 'draft'" decoration-muted="state in ['reconciled', 'cancelled']"
+                      edit="0" create="false">
+                    <field name="payment_date"/>
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                    <field name="payment_method_id"/>
+                    <field name="partner_id" string="Vendor"/>
+                    <field name="amount" sum="Amount"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="state"/>
+                    <field name="currency_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_payment_voucher_petty_cash_request" model="ir.actions.act_window">
+            <field name="name">Payment Voucher</field>
+            <field name="res_model">payment.voucher</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_payment_voucher_petty_cash_request_tree"/>
+        </record>
+    </data>
+</odoo>

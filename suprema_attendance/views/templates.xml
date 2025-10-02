@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_backend" name="Suprema Assets" inherit_id="web.assets_backend" priority="20">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/suprema_attendance/static/src/js/suprema_connection.js"/>
+        </xpath>
+    </template>
+</odoo>

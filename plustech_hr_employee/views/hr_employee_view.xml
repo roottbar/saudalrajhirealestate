@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="hr_employee_inherit_form_view">
+            <field name="name">hr.employee.form.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                 <field name="user_id" position="before">
+                    <field name="user_type" required="1"/>
+                </field>
+                <field name="user_id" position="replace">
+                    <label for="user_id"/>
+                    <div class="o_row">
+                        <field name="user_id" options="{'no_open': 1}"  context="{'default_employee': True}" />
+                        <button string="Create User" class="btn btn-link" type="object" name="create_portal_user"
+                                invisible="'|',('user_id', '!=',False),('user_type', '=', 'internal')"/>
+                    </div>
+                </field>
+                <field name="job_title" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="mobile_phone" position="before">
+                    <field name="employee_number" required="1"/>
+                </field>
+                <xpath expr="//group[@name='payroll_group']/field[@name='job_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <field name="department_id" position="before">
+                    <field name="job_id"/>
+                </field>
+                <xpath expr="//div[hasclass('o_title')]/h1[1]" position="after">
+                    <h1>
+                        <field name="english_name" placeholder="Employee's name in english"/>
+                    </h1>
+                </xpath>
+                <field name="country_id" position="attributes">
+                    <attribute name="required">1</attribute>
+                </field>
+
+                <xpath expr="//page[@name='personal_information']/group" position="inside">
+                    <group name="emergency_contact_new" colspan="4" string="Emergency Contact">
+                        <field name="emergency_contact_new">
+                            <list editable="bottom">
+                                <field name="number"/>
+                                <field name="relation"/>
+                            </list>
+                        </field>
+                    </group>
+                </xpath>
+                <field name="address_home_id" position="after">
+                    <field name="personal_mobile"/>
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    <page name="service_information" string="Service Information">
+                        <group>
+                            <group name="employee_service" string="Service Dates">
+                                <field name="join_date" required="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+                <field name="identification_id" position="replace"/>
+                <field name="passport_id" position="replace"/>
+                <xpath expr="//page[@name='personal_information']/group/group[1]" position="after">
+                    <group name="identification_id" string="Identification ID">
+                        <field name="identification_id"/>
+                        <field name="id_expiry_date" groups="hr.group_hr_user"
+                               invisible="('identification_id', 'in', [None,False"/>
+                        <field name="id_attachment_id" groups="hr.group_hr_user" widget="many2many_binary"
+                               class="o_inline" invisible="('identification_id', 'in', [None,False"/>
+                        <field name="membership_number"/>
+                        <field name="membership_name"  invisible="('membership_number', 'in', [None,False"/>
+                        <field name="membership_type"  invisible="('membership_number', 'in', [None,False"/>
+                        <field name="membership_expire_date"  invisible="('membership_number', 'in', [None,False"/>
+                    </group>
+                    <group name="passport_id" string="Passport ID">
+                        <field name="passport_id"/>
+                        <field name="passport_issue_location"
+                               invisible="('passport_id', 'in', [None,False"/>
+                        <field name="passport_issue_date" invisible="('passport_id', 'in', [None,False"/>
+                        <field name="passport_expiry_date" groups="hr.group_hr_user"
+                               invisible="('passport_id', 'in', [None,False"/>
+                        <field name="passport_attachment_id" groups="hr.group_hr_user" widget="many2many_binary"
+                               class="o_inline" invisible="('passport_id', 'in', [None,False"/>
+                    </group>
+                </xpath>
+                  <field name="gender" position="after">
+                    <field name="religion_id"/>
+                </field>
+
+                <page name="hr_settings" position="after">
+                    <page name="family_info" string="Family Information" groups="hr.group_hr_user">
+                        <group string="Family">
+                            <field name="fam_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="member_name"/>
+                                    <field name="relation"/>
+                                    <field name="identification_no"/>
+                                    <field name="birth_date" required="1"/>
+                                    <field name="age" invisible="0"/>
+                                </list>
+                            </field>
+                        </group>
+                    </page>
+                </page>
+
+            </field>
+        </record>
+        <record model="ir.ui.view" id="hr_employee_inherit_tree_view">
+            <field name="name">hr.employee.tree.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="employee_number" string="No#"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_employee_inherit_kanban_view">
+            <field name="name">hr.employee.tree.view</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_kanban_details')]" position="inside">
+                    <h4>
+                        <field name="employee_number"/>
+                    </h4>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_customer_tender_contract_accounting_category" model="ir.actions.act_window">
+            <field name="name">Customer Categories</field>
+            <field name="res_model">res.partner.account.category</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('accounting_category_partner.view_res_partner_account_category_tree2')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('accounting_category_partner.view_res_partner_account_category_form2')})]"/>
+            <field name="domain">[("apply_to_tender_contract","=",True)]</field>
+            <field name="context">
+                {"default_apply_to_tender_contract":True,"default_apply_to_customer":True,"default_apply_to_vendor":False}
+            </field>
+        </record>
+    </data>
+</odoo>

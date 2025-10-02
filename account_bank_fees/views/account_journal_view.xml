@@ -1,0 +1,48 @@
+<odoo>
+    <record id="view_account_bank_fees_form" model="ir.ui.view">
+        <field name="name">view.account.bank.fees.form</field>
+        <field name="model">account.bank.fees</field>
+        <field name="arch" type="xml">
+            <form string="Account Bank Fees">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="account_id" options="{'no_open': True, 'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="type"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="taxes_ids" widget="many2many_tags"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_account_journal_bank_fees_form" model="ir.ui.view">
+        <field name="name">view.account.journal.bank.fees.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='bank_account']" position="after">
+                <page string="Bank Fees" name="account_bank_fees" invisible="('type','!=','bank')">
+                    <field name="account_bank_fees_ids">
+                        <list editable="bottom">
+                            <field name="account_id"
+                                   options="{'no_open': True, 'no_create': True}"/>
+                            <field name="name" optional="show"/>
+                            <field name="type"/>
+                            <field name="amount"/>
+                            <field name="taxes_ids" widget="many2many_tags"
+                                   options="{'no_create': True, 'no_open': True}" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

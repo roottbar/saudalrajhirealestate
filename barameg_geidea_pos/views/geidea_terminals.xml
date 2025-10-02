@@ -1,0 +1,45 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="barameg_geidea_pos_geidea_terminals_list">
+      <field name="name">barameg_geidea_pos_geidea_terminals_list</field>
+      <field name="model">geidea.terminals</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+        </list>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="barameg_geidea_pos_geidea_terminals_form">
+      <field name="name">barameg_geidea_pos_geidea_terminals_form</field>
+      <field name="model">geidea.terminals</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="ConnectionMode" required="True"/>
+                <field name="PrintSettings" required="True"/>
+                <field name="AppId" required="True"/>
+              </group>
+              <group>
+                <field name="ComName" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="BaudRate" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="Parity" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="DataBits" required="('ConnectionMode','=','COM')" invisible="('ConnectionMode','!=', 'COM')"/>
+                <field name="IpAddress" required="('ConnectionMode','=','TCP')" invisible="('ConnectionMode','!=', 'TCP')"/>
+                <field name="Port" required="('ConnectionMode','=','TCP')" invisible="('ConnectionMode','!=', 'TCP')"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+  </data>
+</odoo>

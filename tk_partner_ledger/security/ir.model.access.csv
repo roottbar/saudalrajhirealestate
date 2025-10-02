@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+tk_partner_ledger.access_partner_ledger_report,access_partner_ledger_report,tk_partner_ledger.model_partner_ledger_report,base.group_user,1,1,1,1
+
+
+
+
+
+
+
