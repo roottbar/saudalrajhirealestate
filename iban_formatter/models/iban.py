@@ -59,6 +59,3 @@ class res_partner_bank(models.Model):
             result['acc_number'] = self._format_iban(self.acc_number)
 
         return {'value': result}
-     
- 
-res_partner_bank() 
