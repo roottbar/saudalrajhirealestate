@@ -13,6 +13,6 @@
     ],
     'data': [],
     'license': "LGPL-3",
-    'installable': False,  # Disabled for v18 upgrade - causing cron connection errors
+    'installable': False,  # Disabled for v18 upgrade - causing module loading and cron errors
     'auto_install': False,
 }
