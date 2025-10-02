@@ -7,8 +7,6 @@ from odoo.tools import format_time
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
-from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY
-
 
 class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
