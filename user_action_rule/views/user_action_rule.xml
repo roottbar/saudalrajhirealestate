@@ -76,13 +76,7 @@
                                     <field name="manager_ids" widget="many2many_tags"
                                            options="{'no_create': True, 'no_open': True}" string="Approval Levels"/>
                                     <field name="sequence"/>
-                                    <field name="manager_rule_sequence_ids" invisible="1">
-                                        <tree>
-                                            <field name="manager_id"/>
-                                            <field name="next_state"/>
-                                            <field name="sequence"/>
-                                        </tree>
-                                    </field>
+                                    <field name="manager_rule_sequence_ids" invisible="1"/>
                                     <button name="action_manager_sequence" type="object" icon="fa-list" width="0.1"/>
                                 </list>
                             </field>
