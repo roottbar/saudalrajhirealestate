@@ -194,9 +194,31 @@ def _to_action_data(model=None, *, action=None, views=None, res_id=None, domain=
             for field, value in action.sudo().read()[0].items()
             if field in action._get_readable_fields()
         }
-        act = clean_action(act, env=action.env)
-        model = act['res_model']
-        views = act['views']
+        model = act.get('res_model')
+        # Build views list if not provided on the action
+        views = act.get('views')
+        if not views:
+            vmodes = []
+            view_mode = act.get('view_mode') or ''
+            if isinstance(view_mode, str):
+                vmodes = [m.strip() for m in view_mode.split(',') if m.strip()]
+            # view_id can be an id or a (id, name) pair depending on read
+            raw_view_id = act.get('view_id')
+            view_id = None
+            if isinstance(raw_view_id, (list, tuple)):
+                view_id = raw_view_id[0] if raw_view_id else None
+            else:
+                view_id = raw_view_id
+            views = []
+            if vmodes:
+                # primary view
+                views.append([view_id or False, vmodes[0]])
+                # additional modes without specific view ids
+                for t in vmodes[1:]:
+                    views.append([False, t])
+            else:
+                # default to form view
+                views.append([view_id or False, 'form'])
     # FIXME: search-view-id, possibly help?
     descr = {
         'data-model': model,
