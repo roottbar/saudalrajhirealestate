@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_account_move_journal_edit,account.move.journal.edit,model_account_move,group_journal_edit_after_confirm,1,1,1,0
+=======
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_move_journal_edit,account.move.journal.edit,model_account_move,group_journal_edit_after_confirm,1,1,1,0
+>>>>>>> 37199f9744a6e4c8cc0af3f1967bf725aa67430a
 access_account_move_line_journal_edit,account.move.line.journal.edit,model_account_move_line,group_journal_edit_after_confirm,1,1,1,0

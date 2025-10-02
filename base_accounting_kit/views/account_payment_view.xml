@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="account_check_printing.view_account_payment_form_inherited" model="ir.ui.view">
@@ -46,3 +47,53 @@
 <!--        </field>-->
 <!--    </record>-->
 </odoo>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_check_printing.view_account_payment_form_inherited" model="ir.ui.view">
+        <field name="name">account.payment.form.inherited</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_post']" position="before">
+                <button name="print_checks" class="btn-primary"
+                        invisible="'|', ('payment_method_code', 'not in', ['check_printing','pdc'"
+                        string="Print Check" type="object"/>
+                <button name="unmark_as_sent"
+                        invisible="'|', ('payment_method_code', 'not in', ['check_printing','pdc'"
+                        string="Unmark Sent" type="object"/>
+            </xpath>
+            <xpath expr="//div[@name='amount_div']" position="after">
+                <field name="check_amount_in_words"
+                       invisible="('payment_method_code', 'not in', ['check_printing','pdc'" readonly="('state', '!=', 'draft')"
+                       groups="base.group_no_one"/>
+            </xpath>
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="check_manual_sequencing" invisible="1"/>
+                <field name="check_number"
+                       invisible="'|', ('payment_method_code', 'not in', ['check_printing','pdc'"/>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="after">
+                <field name="effective_date"
+                       required="('payment_method_code', '=', 'pdc')" invisible="('payment_method_code', '!=', 'pdc')" readonly="('state', 'not in', ('draft'))"/>
+                <field name="bank_reference" readonly="('state', '!=', 'draft')"/>
+                <field name="cheque_reference" readonly="('state', '!=', 'draft')"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- For multiple payments -->
+<!--    <record model="ir.ui.view" id="view_account_reg_payment_form_check_pdc">-->
+<!--        <field name="name">view.account.reg.payment.form.check.pdc</field>-->
+<!--        <field name="model">account.payment.register</field>-->
+<!--        <field name="inherit_id" ref="account.view_account_payment_form_multi"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='payment_date']" position="after">-->
+<!--                    <field name="effective_date"/>-->
+<!--                    <field name="bank_reference"/>-->
+<!--                    <field name="cheque_reference"/>-->
+<!--                </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>
+>>>>>>> 37199f9744a6e4c8cc0af3f1967bf725aa67430a

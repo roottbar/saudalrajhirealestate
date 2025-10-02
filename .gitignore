@@ -110,6 +110,7 @@ venv.bak/
 
 # added by google drive
 desktop.ini
+<<<<<<< HEAD
 
 # Odoo specific
 *.pyc
@@ -161,3 +162,5 @@ openerp.cfg
 # Temporary files
 *.tmp
 *.temp
+=======
+>>>>>>> 37199f9744a6e4c8cc0af3f1967bf725aa67430a

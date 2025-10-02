@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+=======
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+>>>>>>> 37199f9744a6e4c8cc0af3f1967bf725aa67430a
 access_cost_center_report,cost.center.report,model_cost_center_report,account.group_account_manager,1,1,1,0
