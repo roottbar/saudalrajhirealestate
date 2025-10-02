@@ -3,7 +3,26 @@
 from odoo import api, fields, models, exceptions, _
 from odoo.exceptions import UserError, ValidationError
 import psycopg2
-from odoo.addons.resource.models.resource import float_to_time
+# from odoo.addons.resource.models.resource import float_to_time
+
+def float_to_time(hours):
+    """Convert a float representing hours to a time object."""
+    if hours is None:
+        return None
+    
+    # Handle negative hours
+    sign = -1 if hours < 0 else 1
+    hours = abs(hours)
+    
+    # Extract hours and minutes
+    hour = int(hours)
+    minute = int((hours - hour) * 60)
+    
+    # Ensure we don't exceed 24 hours
+    hour = hour % 24
+    
+    from datetime import time
+    return time(hour, minute)
 from pytz import timezone, utc, UTC
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
