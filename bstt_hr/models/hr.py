@@ -134,8 +134,10 @@ class Employee(models.Model):
     ref_analytic_account = fields.Char(string='رقم اشارة الحساب التحليلي', readonly=True)
     department_analytic_account = fields.Many2one('account.analytic.account', string='الحساب التحليلي للقسم',
                                                   related='department_id.analytic_account')
-    department_analytic_account_parent = fields.Many2one('account.analytic.group',
-                                                         related='department_id.analytic_account.group_id')
+    # Odoo 18: account.analytic.group and analytic account's group_id were removed.
+    # The parent reference through analytic groups is no longer valid, so this field is disabled.
+    # department_analytic_account_parent = fields.Many2one('account.analytic.group',
+    #                                                      related='department_id.analytic_account.group_id')
     """End Analytic Account fields"""
 
     nationality_ar = fields.Char(string='Arabic Nationality', help="used for report purpose")

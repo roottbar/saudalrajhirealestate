@@ -17,7 +17,8 @@ class Department(models.Model):
 
     analytic_account = fields.Many2one('account.analytic.account', string='الحساب التحليلي', ondelete='restrict', readonly=True)
     ref_analytic_account = fields.Char(string='رقم اشارة الحساب التحليلي', readonly=True)
-    group_analytic_account = fields.Many2one('account.analytic.group', string='الحساب التحليلي المجمع', ondelete='restrict', readonly=True)
+    # Odoo 18: account.analytic.group model removed; drop grouped analytic account linkage.
+    # group_analytic_account = fields.Many2one('account.analytic.group', string='الحساب التحليلي المجمع', ondelete='restrict', readonly=True)
 
     # @api.onchange('code')
     # def _onchange_code(self):
@@ -35,11 +36,11 @@ class Department(models.Model):
     def create(self, vals):
         obj = super(Department, self).create(vals)
         # Analytic Accounts
-        obj.ref_analytic_account = str(obj.parent_id.ref_analytic_account) + str(obj.code) if obj.parent_id else '' + str(obj.code)
-        group_analytic_account = self.env['account.analytic.group'].sudo().create(
-            {'name': obj.name, 'parent_id': obj.parent_id.group_analytic_account.id or False})
-        analytic_account = self.env['account.analytic.account'].sudo().create(
-            {'name': obj.name, 'group_id': obj.group_analytic_account.id, 'code': obj.ref_analytic_account})
+        obj.ref_analytic_account = str(obj.parent_id.ref_analytic_account) + str(obj.code) if obj.parent_id else str(obj.code)
+        # Odoo 18: analytic groups were removed. Create a plain analytic account without group linkage.
+        analytic_account = self.env['account.analytic.account'].sudo().create({
+            'name': obj.name,
+            'code': obj.ref_analytic_account,
+        })
         obj.analytic_account = analytic_account
-        obj.group_analytic_account = group_analytic_account
         return obj
