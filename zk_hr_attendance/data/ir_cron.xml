@@ -8,7 +8,6 @@
         <field name="user_id" ref="base.user_admin"/>
         <field name="interval_number">15</field>
         <field name="interval_type">minutes</field>
-        <field name="numbercall">-1</field>
         <field name="model_id" ref="zk_hr_attendance.model_zk_hr_attendance_log"/>
         <field name="state">code</field>
         <field name="code">model.process_zk_machine_attendance_log_sequential()</field>
@@ -21,7 +20,6 @@
         <field name="user_id" ref="base.user_admin"/>
         <field name="interval_number">7</field>
         <field name="interval_type">days</field>
-        <field name="numbercall">-1</field>
         <field name="model_id" ref="zk_hr_attendance.model_zk_hr_attendance_log"/>
         <field name="state">code</field>
         <field name="code">model.clear_processed_zk_machine_attendance_log()</field>

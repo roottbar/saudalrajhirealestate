@@ -9,7 +9,6 @@
             <field name="user_id" ref="base.user_root"/>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
             <field name="state">code</field>
             <field name="code">model.notify_contract()</field>
 
@@ -19,7 +18,6 @@
             <field name="name">Notification For Power of Attorney</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
             <field name="model_id" ref="model_power_of_attorney"/>
             <field name="state">code</field>

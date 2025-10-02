@@ -94,7 +94,6 @@
 <!--                       <field name="code">model.creo_job()</field>-->
 <!--                       <field name='interval_number'>1</field>-->
 <!--                       <field name='interval_type'>days</field>-->
-<!--                       <field name="numbercall">-1</field>-->
 <!--                       <field name="doall" eval="False"/>-->
 
                 <div class="o_chatter">
