@@ -18,7 +18,6 @@ class HrAttendanceBatch(models.Model):
 
     name = fields.Char(required=True, readonly="state != 'draft'")
     attendance_ids = fields.One2many('hr.attendance.batch.line', 'attendance_batch_id', string='Attendances',
-                                     readonly=True,
                                      readonly="state != 'draft'")
     state = fields.Selection([
         ('draft', 'New'),
