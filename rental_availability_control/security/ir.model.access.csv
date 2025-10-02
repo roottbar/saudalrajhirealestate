@@ -1,6 +1,2 @@
-<<<<<<< HEAD
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-=======
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
->>>>>>> 37199f9744a6e4c8cc0af3f1967bf725aa67430a
 access_rental_availability_control,rental_availability_control,model_product_template,base.group_user,1,0,0,0
