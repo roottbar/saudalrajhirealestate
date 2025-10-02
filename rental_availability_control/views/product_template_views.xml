@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
@@ -15,21 +14,3 @@
         </record>
     </data>
 </odoo>
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data>
-        <!-- Inherit product template form view -->
-        <record id="product_template_form_view_inherit" model="ir.ui.view">
-            <field name="name">product.template.form.inherit.rental.availability</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_form_view"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='rent_ok']" position="after">
-                    <field name="rental_availability_info" invisible="1"/>
-                </xpath>
-            </field>
-        </record>
-    </data>
-</odoo>
->>>>>>> 37199f9744a6e4c8cc0af3f1967bf725aa67430a
