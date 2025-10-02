@@ -63,8 +63,9 @@ class MisCashFlow(models.Model):
         readonly=True,
         index=True,
     )
+    # Odoo 18: account.account.user_type_id removed; use account_type instead.
     account_internal_type = fields.Selection(
-        related="account_id.user_type_id.type", readonly=True
+        related="account_id.account_type", readonly=True
     )
     state = fields.Selection(
         selection="_selection_parent_state",
