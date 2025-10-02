@@ -1,0 +1,160 @@
+{
+  "timestamp": "2025-10-02T10:48:56.487640",
+  "tests": {
+    "module_directory": {
+      "passed": true,
+      "message": "مجلد الموديل موجود",
+      "timestamp": "2025-10-02T10:48:56.488645"
+    },
+    "file___manifest__.py": {
+      "passed": true,
+      "message": "الملف موجود: __manifest__.py",
+      "timestamp": "2025-10-02T10:48:56.489149"
+    },
+    "file_models___init__.py": {
+      "passed": true,
+      "message": "الملف موجود: models/__init__.py",
+      "timestamp": "2025-10-02T10:48:56.489149"
+    },
+    "file_models_res_users.py": {
+      "passed": true,
+      "message": "الملف موجود: models/res_users.py",
+      "timestamp": "2025-10-02T10:48:56.489149"
+    },
+    "file_models_account_account.py": {
+      "passed": true,
+      "message": "الملف موجود: models/account_account.py",
+      "timestamp": "2025-10-02T10:48:56.489149"
+    },
+    "file_views_res_users_views.xml": {
+      "passed": true,
+      "message": "الملف موجود: views/res_users_views.xml",
+      "timestamp": "2025-10-02T10:48:56.489149"
+    },
+    "file_security_security.xml": {
+      "passed": true,
+      "message": "الملف موجود: security/security.xml",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "file_security_ir.model.access.csv": {
+      "passed": true,
+      "message": "الملف موجود: security/ir.model.access.csv",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "manifest_name": {
+      "passed": true,
+      "message": "المفتاح موجود: name",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "manifest_version": {
+      "passed": true,
+      "message": "المفتاح موجود: version",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "manifest_depends": {
+      "passed": true,
+      "message": "المفتاح موجود: depends",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "manifest_data": {
+      "passed": true,
+      "message": "المفتاح موجود: data",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "manifest_installable": {
+      "passed": true,
+      "message": "المفتاح موجود: installable",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "manifest_dependencies": {
+      "passed": true,
+      "message": "التبعيات صحيحة",
+      "timestamp": "2025-10-02T10:48:56.490154"
+    },
+    "security_rule_account_account_user_restriction_rule": {
+      "passed": true,
+      "message": "القاعدة موجودة: account_account_user_restriction_rule",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "security_rule_account_move_line_user_restriction_rule": {
+      "passed": true,
+      "message": "القاعدة موجودة: account_move_line_user_restriction_rule",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "security_rule_account_move_user_restriction_rule": {
+      "passed": true,
+      "message": "القاعدة موجودة: account_move_user_restriction_rule",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "access_csv_content": {
+      "passed": true,
+      "message": "ملف الصلاحيات يحتوي على المحتوى المطلوب",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "users_model_field": {
+      "passed": true,
+      "message": "حقل الحسابات المقيدة موجود",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "users_model_method": {
+      "passed": true,
+      "message": "دالة الحصول على الحسابات المقيدة موجودة",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "account_model_search": {
+      "passed": true,
+      "message": "دالة البحث المعدلة موجودة",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "account_model_read": {
+      "passed": true,
+      "message": "دالة القراءة المعدلة موجودة",
+      "timestamp": "2025-10-02T10:48:56.491154"
+    },
+    "view_view_users_form_inherit": {
+      "passed": true,
+      "message": "العرض موجود: view_users_form_inherit",
+      "timestamp": "2025-10-02T10:48:56.492154"
+    },
+    "view_view_users_tree_inherit": {
+      "passed": true,
+      "message": "العرض موجود: view_users_tree_inherit",
+      "timestamp": "2025-10-02T10:48:56.492154"
+    },
+    "view_view_users_search_inherit": {
+      "passed": true,
+      "message": "العرض موجود: view_users_search_inherit",
+      "timestamp": "2025-10-02T10:48:56.492154"
+    },
+    "view_field_present": {
+      "passed": true,
+      "message": "حقل الحسابات المقيدة موجود في العروض",
+      "timestamp": "2025-10-02T10:48:56.492154"
+    },
+    "git_repository": {
+      "passed": true,
+      "message": "مستودع Git موجود",
+      "timestamp": "2025-10-02T10:48:56.492154"
+    },
+    "gitignore_exists": {
+      "passed": true,
+      "message": "ملف .gitignore موجود",
+      "timestamp": "2025-10-02T10:48:56.493154"
+    },
+    "git_status_command": {
+      "passed": true,
+      "message": "أمر git status يعمل بشكل صحيح",
+      "timestamp": "2025-10-02T10:48:56.596634"
+    },
+    "git_uncommitted_changes": {
+      "passed": true,
+      "message": "يوجد تغييرات غير محفوظة",
+      "timestamp": "2025-10-02T10:48:56.596634"
+    }
+  },
+  "summary": {
+    "passed": 30,
+    "failed": 0,
+    "total": 30
+  }
+}
