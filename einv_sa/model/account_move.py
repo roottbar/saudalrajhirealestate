@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError, Warning
+from odoo.exceptions import UserError
 import base64
 import qrcode
 from io import BytesIO
