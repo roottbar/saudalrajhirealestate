@@ -22,7 +22,7 @@ from datetime import date
 from dateutil import relativedelta
 from odoo import models, fields, _
 from odoo import api
-from odoo.exceptions import ValidationError, UserError, Warning
+from odoo.exceptions import ValidationError, UserError
 
 GENDER_SELECTION = [('male', 'Male'),
                     ('female', 'Female'),
