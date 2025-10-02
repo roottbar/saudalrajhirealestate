@@ -18,13 +18,10 @@
                     </group>
                     <group col="2">
                         <field name="account_ids" widget="many2many_tags"
-                                domain="[('company_id','=',company_id)]"
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="journal_ids" widget="many2many_tags"
-                                domain="[('company_id','=',company_id)]"
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="analytic_ids" widget="many2many_tags"
-                                domain="[('company_id','=',company_id)]"
                                 options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                         <field name="strict_range" help="If checked the accounts will act strict to the date range
                                     else it will consider initial balance to account"/>
