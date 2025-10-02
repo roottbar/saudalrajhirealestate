@@ -17,7 +17,7 @@
 		<field name="arch" type="xml">
 			<form>
 				<header>
-					<button name="print_result" string="Print PDF" type="object" invisible="('raw_output','in',['',[" style="color: blue !important"/>
+					<button name="print_result" string="Print PDF" type="object" invisible="[('raw_output','in',['',''])]" style="color: blue !important"/>
 				</header>
 
 				<sheet>
