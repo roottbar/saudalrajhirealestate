@@ -24,6 +24,6 @@
         'views/hr_holiday.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,  # Disabled for now - HR modules disabled
     'auto_install': False,
 }

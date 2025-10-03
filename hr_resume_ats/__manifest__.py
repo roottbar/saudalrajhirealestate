@@ -48,6 +48,6 @@
         'reports/resume_analysis_report.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,   # خليها True إذا بدك تنزل الموديول
+    'installable': False,  # Disabled for now - HR modules disabled   # خليها True إذا بدك تنزل الموديول
     'auto_install': False,
 }

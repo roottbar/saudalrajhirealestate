@@ -30,7 +30,7 @@
         'reports/resume_analysis_report.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,  # Disabled for now - HR modules disabled
     'auto_install': False,
 
 }

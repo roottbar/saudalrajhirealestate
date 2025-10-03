@@ -15,6 +15,6 @@
         'views/hr_payroll_analytic_account_view.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,  # Disabled for now - HR modules disabled
     'auto_install': False,
 }

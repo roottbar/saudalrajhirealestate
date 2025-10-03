@@ -22,7 +22,7 @@
                                 <field name="resume_analysis_count" widget="statinfo" string="Analyses"/>
                             </button>
                             <button name="%(action_hr_resume_analysis)d" type="action" class="o_stat_button" icon="fa-bar-chart"
-                                    context="{'search_default_job_position_id': active_id}">
+                                    context="{'search_default_job_position_id': id}">
                                 <div class="o_field_widget o_stat_info">
                                     <span class="o_stat_value">
                                         <field name="average_score" widget="float" digits="[16,1]"/>%

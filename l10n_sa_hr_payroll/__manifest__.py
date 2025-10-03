@@ -18,6 +18,6 @@
         'views/hr_contract_view.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,  # Disabled for now - HR modules disabled
     'auto_install': False,
 }

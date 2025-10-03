@@ -33,6 +33,6 @@ This module provides comprehensive custody management for employees including:
         'views/hr_employee.xml',
     ],
     'license': "LGPL-3",
-    'installable': True,
+    'installable': False,  # Disabled for now - HR modules disabled
     'auto_install': False,
 }
