@@ -267,7 +267,6 @@ class SaleOrder(models.Model):
             'tax_ids': [(6, 0, [])],
             'sale_line_ids': [(4, self.context_order.order_line[0].id)],
             'analytic_account_id': False,
-            'exclude_from_invoice_tab': False,
         }
         return res
 

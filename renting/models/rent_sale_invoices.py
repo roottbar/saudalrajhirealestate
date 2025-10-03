@@ -84,7 +84,6 @@ class RentSaleInvoices(models.Model):
             'tax_ids': [(6, 0, line.tax_id.ids)],
             'analytic_account_id': line.product_id.analytic_account.id,
             'sale_line_ids': [(4, line.id)],
-            'exclude_from_invoice_tab': False,
         }
         # 'analytic_tag_ids': [(6, 0, line.analytic_tag_ids.ids)],
         if self.sequence == 1:
@@ -115,7 +114,6 @@ class RentSaleInvoices(models.Model):
                 'display_type': 'line_note',
                 'sequence': seq + 1000,
                 'name': 'إجمالي قيمة ' + type_product_template.name + ': ' + str(fees_amount),
-                'exclude_from_invoice_tab': False,
             }
         else:
             res = {
@@ -141,7 +139,6 @@ class RentSaleInvoices(models.Model):
             'analytic_account_id': line.product_id.analytic_account.id,
             'tax_ids': [(6, 0, self.sale_order_id.order_line.tax_id.ids)] if type in ['contract_admin_sub_fees',
                                                                                       'contract_service_sub_fees'] else False,
-            'exclude_from_invoice_tab': False,
             'rent_fees': True,
             # 'sale_line_ids': [(4, line.id)],
         }

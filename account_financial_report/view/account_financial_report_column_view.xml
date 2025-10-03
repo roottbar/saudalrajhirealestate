@@ -27,7 +27,7 @@
     <record model="ir.ui.view" id="view_account_financial_report_column_tree">
         <field name="name">account.financial.report.column.tree</field>
         <field name="model">account.financial.report.column</field>
-        <field name="type">tree</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <list editable="bottom" create="false" delete="false">
                 <field name="sequence" widget="handle" />
