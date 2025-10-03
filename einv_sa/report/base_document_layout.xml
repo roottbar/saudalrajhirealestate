@@ -46,7 +46,8 @@
 
         </template>
 
-        <template id="einv_external_layout_standard"
+        <!-- Template commented out - footer elements changed in Odoo 18 -->
+        <!-- <template id="einv_external_layout_standard"
                   inherit_id="web.external_layout_standard">
             <xpath expr="//div[contains(@t-attf-class,'footer')]/div/ul" position="before">
                 <div t-call="einv_sa.financial_layout_row">
@@ -54,9 +55,10 @@
 
             </xpath>
            
-        </template>
+        </template> -->
 
-        <template id="einv_external_layout_boxed"
+        <!-- Template commented out - footer elements changed in Odoo 18 -->
+        <!-- <template id="einv_external_layout_boxed"
                   inherit_id="web.external_layout_boxed">
             <xpath expr="//div[contains(@t-attf-class,'footer')]/div" position="before">
                 <div t-call="einv_sa.financial_layout_row">
@@ -64,7 +66,7 @@
 
             </xpath>
         
-        </template>
+        </template> -->
 
         
 

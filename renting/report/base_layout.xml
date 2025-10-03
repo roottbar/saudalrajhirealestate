@@ -2,7 +2,8 @@
 <odoo>
     <data>
         <template id="external_layout_standard" inherit_id="l10n_gcc_invoice.external_layout_standard">
-            <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']" position="replace">
+            <!-- XPath commented out - footer element structure changed in Odoo 18 -->
+            <!-- <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']" position="replace">
                 <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
                     <div class="text-center" style="font-size: small;border-top: 1px solid black;">
                         <ul class="list-inline mb4">
@@ -39,9 +40,9 @@
                      t-att-data-oe-lang="o and o.env.context.get('lang')" >
                     <t t-raw="0"/>
                 </div>
-            </xpath>
+            </xpath> -->
 
-            <xpath expr="//div[@t-attf-class='header o_company_#{company.id}_layout']" position="replace">
+            <!-- <xpath expr="//div[@t-attf-class='header o_company_#{company.id}_layout']" position="replace">
                 <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
                     <div class="row" style="font-weight: bold;font-size: small;border-bottom: 1px solid black;direction: rtl;">
                         <div class="col-5 text-center" style="text-align:left;">
@@ -87,7 +88,7 @@
                         </div>
                     </div>
                 </div>
-            </xpath>
+            </xpath> -->
         </template>
     </data>
 </odoo>

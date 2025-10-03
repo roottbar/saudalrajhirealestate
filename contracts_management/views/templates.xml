@@ -2,7 +2,8 @@
 <odoo>
 
 
-    <template id="contracts_external_layout_standard" inherit_id="web.external_layout_standard">
+    <!-- Template commented out - elements may not exist in Odoo 18 parent view -->
+    <!-- <template id="contracts_external_layout_standard" inherit_id="web.external_layout_standard">
         <xpath expr="//div[@name='moto']" position="replace">
             <div class="col-9 text-right" style="margin-top:22px;" name="moto"/>
         </xpath>
@@ -17,9 +18,10 @@
                       t-options='{"widget": "contact", "fields": ["address"], "no_marker": true,"no_tag_br": True}'/>
             </li>
         </xpath>
-    </template>
+    </template> -->
 
-    <template id="contracts_external_layout_boxed" inherit_id="web.external_layout_boxed">
+    <!-- Template commented out - elements may not exist in Odoo 18 parent view -->
+    <!-- <template id="contracts_external_layout_boxed" inherit_id="web.external_layout_boxed">
         <xpath expr="//h4[hasclass('mt0')]" position="replace">
             <h4 class="mt0"/>
         </xpath>
@@ -34,7 +36,7 @@
                       t-options='{"widget": "contact", "fields": ["address"], "no_marker": true,"no_tag_br": True}'/>
             </li>
         </div>
-    </template>
+    </template> -->
 
 <!--     <template id="contracts_external_layout_clean" inherit_id="web.external_layout_clean">
         <xpath expr="//div[@name='company_address']" position="replace">
