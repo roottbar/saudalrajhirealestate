@@ -1007,8 +1007,10 @@ class AccountBankStatementLine(models.Model):
             reconciliation, containing entries for the statement.line (1), the
             counterpart move lines (0..*) and the new move lines (0..*).
         """
-        payable_account_type = self.env.ref("account.data_account_type_payable")
-        receivable_account_type = self.env.ref("account.data_account_type_receivable")
+        # account.account.type model no longer exists in Odoo 15+
+        # These xmlids are no longer available
+        # payable_account_type = self.env.ref("account.data_account_type_payable")
+        # receivable_account_type = self.env.ref("account.data_account_type_receivable")
         suspense_moves_mode = self._context.get("suspense_moves_mode")
         counterpart_aml_dicts = counterpart_aml_dicts or []
         payment_aml_rec = payment_aml_rec or self.env["account.move.line"]
@@ -1030,23 +1032,19 @@ class AccountBankStatementLine(models.Model):
             if isinstance(aml_dict["move_line"], int):
                 aml_dict["move_line"] = aml_obj.browse(aml_dict["move_line"])
 
-        account_types = self.env["account.account.type"]
+        # account.account.type model no longer exists in Odoo 15+
+        # Using account_type field instead
+        account_types_used = set()
         for aml_dict in counterpart_aml_dicts + new_aml_dicts:
             if aml_dict.get("tax_ids") and isinstance(aml_dict["tax_ids"][0], int):
                 # Transform the value in the format required for One2many and
                 # Many2many fields
                 aml_dict["tax_ids"] = [(4, id, None) for id in aml_dict["tax_ids"]]
 
-            user_type_id = (
-                self.env["account.account"]
-                .browse(aml_dict.get("account_id"))
-                .user_type_id
-            )
-            if (
-                user_type_id in [payable_account_type, receivable_account_type]
-                and user_type_id not in account_types
-            ):
-                account_types |= user_type_id
+            account = self.env["account.account"].browse(aml_dict.get("account_id"))
+            account_type = account.account_type if hasattr(account, 'account_type') else ''
+            if account_type in ['asset_receivable', 'liability_payable']:
+                account_types_used.add(account_type)
         # Fully reconciled moves are just linked to the bank statement
         total = self.amount
         currency = self.currency_id or statement_currency

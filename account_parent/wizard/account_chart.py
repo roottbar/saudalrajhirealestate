@@ -150,14 +150,14 @@ class OpenAccountChart(models.TransientModel):
 			'id': account.id,
 			'wiz_id': wiz_id,
 			'level': level,
-			'unfoldable': account.user_type_id.type == 'view' and True or False,
+			'unfoldable': account.is_view and True or False,
 			'auto_unfold' : self._context.get('auto_unfold',False),
 			'model_id': account.id,
 			'parent_id': parent_id,
 			'code': account.code,
 			'name': account.name,
-			'ac_type': self._m2o_to_str(account.user_type_id),
-			'type': account.user_type_id.type,
+			'ac_type': account.account_type if hasattr(account, 'account_type') else 'equity',
+			'type': 'view' if account.is_view else 'other',
 			'currency': self._m2o_to_str(account.currency_id),
 			'company': self._m2o_to_str(account.company_id),
 			'debit': self._float_html_formating(account.debit, account.company_id),
@@ -193,6 +193,8 @@ class OpenAccountChart(models.TransientModel):
 		return self._lines(wiz_id, line_id, level=level, obj_ids=accounts)
 	
 	def account_type_data(self):
+		# account.account.type model no longer exists in Odoo 15+
+		# Using simplified structure based on account_type field
 		parent_account_types =[
 				{'name': _('Balance Sheet'), 'id': -1001, 'parent_id': False,
 							'internal_group': ['asset', 'liability', 'equity'], 'atype':False},
@@ -209,29 +211,31 @@ class OpenAccountChart(models.TransientModel):
 				{'name': _('Expense'), 'id': -1007, 'parent_id': -1002, 
 							'internal_group':['expense'], 'atype':False},
 				]
-		parent_account_types_temp = parent_account_types[:]
-		for parent_account_type in parent_account_types_temp:
-			if not parent_account_type['parent_id']:
-				continue
-			account_types = self.env['account.account.type'].search([
-				('internal_group', 'in', parent_account_type['internal_group'])])
-			for account_type in account_types:
-				at_data = {
-					'name': account_type.name,
-					'id': -1 * account_type.id,  # not to mix with account id
-					'parent_id': parent_account_type['id'],
-					'internal_group': [account_type.internal_group], 'atype':True
-				}
-				parent_account_types.append(at_data)
+		# Account types are now handled differently in Odoo 15+
+		# The account.account.type model was removed
 		return parent_account_types
 
 	@api.model
 	def get_at_accounts(self, at_data, context):
 		account_domain = [('company_id', '=', context.get('company_id', False))]
 		if not at_data['atype']:
-			account_domain += [('user_type_id.internal_group', 'in', at_data['internal_group'])]
-		else:
-			account_domain += [('user_type_id', '=', at_data['id']*-1)]
+			# Map internal_group to account_type values
+			account_types = []
+			for group in at_data['internal_group']:
+				if group == 'asset':
+					account_types.extend(['asset_receivable', 'asset_cash', 'asset_current', 
+										'asset_non_current', 'asset_prepayments', 'asset_fixed'])
+				elif group == 'liability':
+					account_types.extend(['liability_payable', 'liability_credit_card', 
+										'liability_current', 'liability_non_current'])
+				elif group == 'equity':
+					account_types.extend(['equity', 'equity_unaffected'])
+				elif group == 'income':
+					account_types.extend(['income', 'income_other'])
+				elif group == 'expense':
+					account_types.extend(['expense', 'expense_depreciation', 'expense_direct_cost'])
+			if account_types:
+				account_domain += [('account_type', 'in', account_types)]
 		return self.env['account.account'].sudo().with_context(context).search(account_domain)
 
 	def at_line_data(self, at_data, level, wiz_id=False, parent_id=False, accounts=False):

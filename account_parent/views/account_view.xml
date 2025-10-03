@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+	<!-- account.account.template model no longer exists in Odoo 15+ -->
+	<!-- This view inheritance is disabled for compatibility -->
+	<!--
 	<record id="view_account_template_form_wp" model="ir.ui.view">
 		<field name="name">account.account.template.wp.form</field>
 		<field name="model">account.account.template</field>
@@ -8,37 +11,43 @@
 		<field name="arch" type="xml">
 			<field name="code" position="after">
 				<field name="parent_id"
-					domain="[('user_type_id.type','=','view')]"
+					domain="[('is_view','=',True)]"
 					groups="account_parent.group_coas_user"
 					context="{'show_parent_account':True}" />
 			</field>
 		</field>
 	</record>
+	-->
 	
+	<!-- account.account.template model no longer exists in Odoo 15+ -->
+	<!-- This view inheritance is disabled for compatibility -->
+	<!--
 	<record id="view_account_template_tree_wp" model="ir.ui.view">
 		<field name="name">account.account.template.wp.tree</field>
 		<field name="model">account.account.template</field>
 		<field name="inherit_id"
 			ref="account.view_account_template_tree" />
 		<field name="arch" type="xml">
-			<field name="user_type_id" position="after">
+			<field name="account_type" position="after">
 				<field name="parent_id" />
 			</field>
 		</field>
 	</record>
+	-->
 
 	<record id="view_account_withparent_form" model="ir.ui.view">
 		<field name="name">account.account.form</field>
 		<field name="model">account.account</field>
 		<field name="inherit_id" ref="account.view_account_form" />
 		<field name="arch" type="xml">
-			<field name="user_type_id" position="before">
+			<field name="account_type" position="before">
+				<field name="is_view" />
 				<field name="parent_id"
-					domain="[('internal_type','=','view')]"
+					domain="[('is_view','=',True)]"
 					groups="account_parent.group_coas_user"
 					context="{'show_parent_account':True}" />
 			</field>
-			<field name="user_type_id" position="attributes">
+			<field name="account_type" position="attributes">
 				<attribute name="context">{'show_parent_account':True}</attribute>
 			</field>
 		</field>
@@ -49,8 +58,9 @@
 		<field name="model">account.account</field>
 		<field name="inherit_id" ref="account.view_account_list"/>
 		<field name="arch" type="xml">
-			<field name="user_type_id" position="after">
-				<field name="parent_id" domain="[('user_type_id.type','=','view')]"
+			<field name="account_type" position="after">
+				<field name="is_view" />
+				<field name="parent_id" domain="[('is_view','=',True)]"
 					groups="account_parent.group_coas_user"
 					context="{'show_parent_account':True}" />
 			</field>
@@ -62,10 +72,14 @@
 		<field name="context">{'show_parent_account':True}</field>
 	</record>
 	
+	<!-- account.account.type model no longer exists in Odoo 15+ -->
+	<!-- This menu item is disabled for compatibility -->
+	<!--
 	<menuitem action="account.action_account_type_form"
 		id="menu_action_account_type_form"
 		parent="account.account_account_menu" sequence="1"
 		groups="account_parent.group_coas_user" />
+	-->
 
 	<!-- do we need this-->
 	<record id="open_view_account_tree" model="ir.actions.client">

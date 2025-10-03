@@ -11,7 +11,7 @@ from odoo import api, fields, models
 from odoo.osv import expression
 
 
-# account.account.template model has been removed in Odoo 18
+# account.account.template model has been removed in Odoo 15+
 # Chart of accounts templates are now handled differently
 # class AccountAccountTemplate(models.Model):
 #	_inherit = "account.account.template"
@@ -34,12 +34,12 @@ from odoo.osv import expression
 #		# one Customer informed an issue that the same args is updated to company causing error
 #		# So to avoid that args was copied to new variable and it solved the issue.
 #		if not context.get('show_parent_account',False):
-#			new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
+#			new_args = expression.AND([[('is_view', '!=', True)], new_args])
 #		return super(AccountAccountTemplate, self)._search(new_args, offset=offset,
 #						limit=limit, order=order, count=count, access_rights_uid=access_rights_uid)
 
 
-# account.account.type model has been removed in Odoo 18
+# account.account.type model has been removed in Odoo 15+
 # Account types are now handled differently
 # class AccountAccountType(models.Model):
 #	_inherit = "account.account.type"
@@ -58,7 +58,7 @@ class AccountAccount(models.Model):
 		# So instead, we make it a many2one to a psql view with what we need as records.
 		# TODO now view accounts is not listed under the root view
 		for record in self:
-			if record.user_type_id.type != 'view':
+			if not record.is_view:
 				record.root_id = record.code and (ord(record.code[0]) * 1000 + ord(record.code[1:2] or '\x00')) or False
 			else:
 				record.root_id = False
@@ -127,6 +127,8 @@ class AccountAccount(models.Model):
 	child_ids = fields.One2many('account.account', 'parent_id', 'Child Accounts')
 	parent_path = fields.Char(index=True)
 	initial_balance = fields.Float(compute="compute_values", digits=(16, 4), string='Initial Balance')
+	is_view = fields.Boolean(string='Is View Account', default=False, 
+		help="Check this box to use this account as a parent/grouping account only (no journal items allowed)")
 
 	_parent_name = "parent_id"
 	_parent_store = True
@@ -149,7 +151,7 @@ class AccountAccount(models.Model):
 		# one Customer informed an issue that the same args is updated to company causing error
 		# So to avoid that args was copied to new variable and it solved the issue.
 		if not context.get('show_parent_account', False):
-			new_args = expression.AND([[('user_type_id.type', '!=', 'view')], new_args])
+			new_args = expression.AND([[('is_view', '=', False)], new_args])
 		return super(AccountAccount, self)._search(new_args, offset=offset, limit=limit, order=order,
 												   count=count, access_rights_uid=access_rights_uid)
 
@@ -168,7 +170,7 @@ class AccountJournal(models.Model):
 		parent_id = self.env['account.account'].with_context({'show_parent_account':True}).search([
 														('code', '=', account_code_prefix),
 														('company_id', '=', company.id),
-														('user_type_id.type', '=', 'view')], limit=1)
+														('is_view', '=', True)], limit=1)
 		
 		if parent_id:
 			res.update({'parent_id': parent_id.id})
