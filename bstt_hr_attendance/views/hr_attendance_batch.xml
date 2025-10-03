@@ -47,7 +47,7 @@
                     <div class="o_button_box" name="button_box">
                         <button name="%(bstt_hr_attendance.act_attendance_list)d"
                                 type="action"
-                                context="{'search_default_batch_id': active_id}"
+                                context="{'search_default_batch_id': id}"
                                 class="o_stat_button"
                                 icon="fa-list"
                                 string="Attendees"
