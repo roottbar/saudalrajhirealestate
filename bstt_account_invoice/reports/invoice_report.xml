@@ -423,9 +423,10 @@
 
 <!--        <xpath expr="//div[@name='customer_code']" position="replace" >-->
 <!--        </xpath>-->
-        <xpath expr="//p[@t-if='o.invoice_incoterm_id']" position="after">
+        <!-- XPath commented out - invoice_incoterm_id element no longer exists in Odoo 18 parent view -->
+        <!-- <xpath expr="//p[@t-if='o.invoice_incoterm_id']" position="after">
             <t t-call="bstt_account_invoice.dun_bank_info"/>
-        </xpath>
+        </xpath> -->
         <xpath expr='//p[@name="payment_communication"]' position="replace">
             <p t-if="o.move_type in ('out_invoice', 'in_refund') and o.payment_reference" name="payment_communication">
                     <div class="row" style="direction: rtl">
