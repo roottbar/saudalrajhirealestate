@@ -47,7 +47,7 @@
             <field name="inherit_id" ref="account.view_account_form"/>
             <field name="arch" type="xml">
                 <data>
-                    <xpath expr="//field[@name='user_type_id']" position="after">
+                    <xpath expr="//field[@name='account_type']" position="after">
                         <field name="cash_flow_category"
                                options="{'no_create_edit': True,'no_create': True, 'no_quick_create': True}"/>
                     </xpath>
