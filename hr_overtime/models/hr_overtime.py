@@ -82,7 +82,7 @@ class HrOvertime(models.Model):
         ('approved', 'Approved'),
         ('refused', 'Refused'),
         ('cancel', 'Canceled'),
-    ], string="State", default='draft', track_visibility='onchange', copy=False, )
+    ], string="State", default='draft', tracking=True, copy=False, )
 
     @api.onchange('employee_id', 'contact_id')
     def check_contact(self):

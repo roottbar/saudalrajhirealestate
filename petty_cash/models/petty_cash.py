@@ -47,7 +47,7 @@ class PettyCash(models.Model):
         ('in progress', 'In Progress'),
         ('review', 'Review'),
         ('closed', 'Closed')
-    ], string='Status', index=True, readonly=True, default='draft', copy=False, track_visibility='onchange')
+    ], string='Status', index=True, readonly=True, default='draft', copy=False, tracking=True)
     template_type = fields.Selection([
         ('with product', 'With Product'),
         ('without product', 'without product'),

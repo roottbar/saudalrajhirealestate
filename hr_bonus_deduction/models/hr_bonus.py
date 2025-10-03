@@ -22,7 +22,7 @@ class HrBonus(models.Model):
         ('confirm', 'Confirm'),
         ('approved', 'Approved'),
         ('cancel', 'Cancel'),
-    ], string='State', index=True, readonly=True, default='draft', copy=False, track_visibility='onchange')
+    ], string='State', index=True, readonly=True, default='draft', copy=False, tracking=True)
     employee_ids = fields.Many2many('hr.employee', string='Employees', required=True)
     target_group = fields.Selection([
         ('employee', 'By Employees'),

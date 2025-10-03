@@ -19,7 +19,7 @@ class PettyCashRequestFeeding(models.Model):
         ('gm_approved', 'GM Approved'),
         ('f_m_approved', 'FM Approved'),
         ('rejected', 'Rejected'),
-    ], string='State', index=True, readonly=True, default='draft', copy=False, track_visibility='onchange')
+    ], string='State', index=True, readonly=True, default='draft', copy=False, tracking=True)
     date = fields.Datetime('Date', required=True, default=fields.Datetime.now)
     user_rule_id = fields.Many2one("petty.cash.user.rule", string='Box', required=True, )
     journal_id = fields.Many2one('account.journal', related="user_rule_id.journal_id", string='Journal', readonly=True,

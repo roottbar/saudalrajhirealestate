@@ -21,7 +21,7 @@ class PettyCashRequest(models.Model):
         ('gm_approved', 'GM Approved'),
         ('f_m_approved', 'FM Approved'),
         ('cancel', 'Cancel'),
-    ], string='State', index=True, readonly=True, default='draft', copy=False, track_visibility='onchange')
+    ], string='State', index=True, readonly=True, default='draft', copy=False, tracking=True)
     date = fields.Datetime('Date', required=True, default=fields.Datetime.now, copy=False)
     partner_id = fields.Many2one('res.partner', string='Partner')
     amount = fields.Float("Amount", required=True, digits=dp.get_precision('Product Price'))

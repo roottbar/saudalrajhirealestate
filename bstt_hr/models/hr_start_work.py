@@ -44,7 +44,7 @@ class EmployeeStartWork(models.Model):
         ('approve', 'مقبول'),
         ('refuse', 'مرفوض'),
         ('cancel', 'ملغي'),
-    ], string="State", default='draft', track_visibility='onchange', copy=False)
+    ], string="State", default='draft', tracking=True, copy=False)
 
     def is_project_manager_chk(self):
         for rec in self:

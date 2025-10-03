@@ -22,7 +22,7 @@ class HrDeduction(models.Model):
         ('confirm', 'Confirm'),
         ('approved', 'Approved'),
         ('cancel', 'Cancel'),
-    ], string='State', index=True, readonly=True, default='draft', copy=False, track_visibility='onchange')
+    ], string='State', index=True, readonly=True, default='draft', copy=False, tracking=True)
     employee_id = fields.Many2one('hr.employee', ondelete='cascade', string='Employee', required=True)
     department_id = fields.Many2one('hr.department', related='employee_id.department_id', string='Department',
                                     store=True, readonly=True)
