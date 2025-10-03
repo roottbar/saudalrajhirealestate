@@ -34,11 +34,9 @@
                                 name="action_show_po" string="Purchase Order"/>
                     </div>
                     <div class="o_title">
-                        <div class="o_title">
                         <h1>
                             <field name="name"/><br/>
                         </h1>
-                    </div>
                     </div>
                         <group>
                                 <group>
@@ -56,7 +54,7 @@
                              </group>
                         <notebook>
                             <page string="Requisitions Lines">
-                                <field name="requisition_line_ids" readonly="('state', 'in', ['cancel','receive'">
+                                <field name="requisition_line_ids" readonly="('state', 'in', ['cancel','receive'])">
                                     <list editable="bottom">
                                         <field name="requisition_type" groups="material_purchase_requisitions.group_purchase_requisition_user,purchase.group_purchase_user,material_purchase_requisitions.group_purchase_requisition_manager,material_purchase_requisitions.group_purchase_requisition_department"/>
                                         <field name="product_id"/>
