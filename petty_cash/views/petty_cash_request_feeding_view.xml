@@ -117,7 +117,7 @@
             <field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='date']" position="replace">
-                    <field name="date" readonly="('state', 'in', ['gm_approved','rejected'"/>
+                    <field name="date" readonly="('state', 'in', ['gm_approved','rejected'])"/>
                 </xpath>
             </field>
         </record>

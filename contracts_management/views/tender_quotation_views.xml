@@ -130,20 +130,20 @@
                             <h1 class="d-inline-flex">
                                 <field name="name"/>
                                 <field name="version_number"
-                                       invisible="('parent_quotation_id','=',False)" readonly="('state', 'not in', ['draft','in progress'"/>
+                                       invisible="('parent_quotation_id','=',False)" readonly="('state', 'not in', ['draft','in progress'])"/>
                             </h1>
                         </div>
 
                         <group>
                             <group>
                                 <field name="partner_id"
-                                       readonly="('state','not in',['draft','in progress'"
+                                       readonly="('state','not in',['draft','in progress'])"
                                        context="{'default_customer_rank': 1,'customer_tender_contract':True}"/>
                                 <field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
-                                       readonly="('state','not in',['draft','in progress'"
+                                       readonly="('state','not in',['draft','in progress'])"
                                        context="{'default_type':'invoice'}"/>
                                 <field name="partner_shipping_id" groups="sale.group_delivery_invoice_address"
-                                       readonly="('state','not in',['draft','in progress'"
+                                       readonly="('state','not in',['draft','in progress'])"
                                        context="{'default_type':'delivery'}"/>
 
                                 <separator string="Totals"/>
@@ -154,23 +154,23 @@
                             </group>
                             <group>
                                 <field name="expiration_date"
-                                       readonly="('state','not in',['draft','in progress'"/>
-                                <field name="date" readonly="('state','not in',['draft','in progress'"/>
+                                       readonly="('state','not in',['draft','in progress'])"/>
+                                <field name="date" readonly="('state','not in',['draft','in progress'])"/>
                                 <field name="pricelist_id" groups="product.group_product_pricelist"
                                        options="{'no_open':True,'no_create': True}"
-                                       readonly="('state','not in',['draft','in progress'"/>
+                                       readonly="('state','not in',['draft','in progress'])"/>
                                 <field name="payment_term_id" options="{'no_open':True,'no_create': True}"
-                                       readonly="('state','not in',['draft','in progress'"/>
+                                       readonly="('state','not in',['draft','in progress'])"/>
                                 <field name="currency_id" groups="base.group_multi_currency"
                                        options="{'no_open':True,'no_create':True}"
-                                       readonly="('state','not in',['draft','in progress'"/>
+                                       readonly="('state','not in',['draft','in progress'])"/>
                             </group>
                         </group>
 
                         <notebook>
                             <page name="manpower" string="Manpower">
                                 <field name="manpower_lines" widget="section_and_note_one2many"
-                                       readonly="('state','not in',['draft','in progress'">
+                                       readonly="('state','not in',['draft','in progress'])">
                                     <list string="Manpower">
                                         <field name="service_type_id" optional="show"/>
                                         <field name="service_product_id" optional="hide"/>
@@ -202,7 +202,7 @@
                             </page>
                             <page name="equipments_tools" string="Equipments  &amp; Tools">
                                 <field name="equipments_lines" widget="section_and_note_one2many"
-                                       readonly="('state','not in',['draft','in progress'">
+                                       readonly="('state','not in',['draft','in progress'])">
                                     <list string="Equipments  &amp; Tools" editable="bottom">
                                         <control>
                                             <create name="add_line_control" string="Add a line"/>
@@ -240,7 +240,7 @@
                             </page>
                             <page name="specialty_services_request" string="Specialty">
                                 <field name="specialty_services_lines" widget="section_and_note_one2many"
-                                       readonly="('state','not in',['draft','in progress'">
+                                       readonly="('state','not in',['draft','in progress'])">
                                     <list string="Specialty Services Request" editable="bottom">
                                         <control>
                                             <create name="add_line_control" string="Add a line"/>
@@ -282,56 +282,56 @@
                                 <group>
                                     <group name="sales_person" string="Sales">
                                         <field name="user_id" options="{'no_open':True,'no_create':True}"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                         <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s"
                                                options="{'no_open':True,'no_create':True}"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                         <field name="company_id" groups="base.group_multi_company"
                                                options="{'no_open':True,'no_create':True}"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                         <field name="require_signature"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                         <field name="require_payment"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                         <field name="customer_reference"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                     </group>
                                     <group name="sale_info" string="Invoicing">
                                         <field name="fiscal_position_id" options="{'no_open':True,'no_create':True}"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                         <field name="analytic_account_id" options="{'no_open':True,'no_create':True}"
-                                               readonly="('state','not in',['draft','in progress'"
+                                               readonly="('state','not in',['draft','in progress'])"
                                                groups="analytic.group_analytic_accounting"/>
                                     </group>
                                 </group>
                                 <group>
                                     <group string="Delivery" name="sale_shipping">
                                         <field name="warehouse_id" options="{'no_open':True,'no_create':True}"
-                                               readonly="('state','not in',['draft','in progress'"
+                                               readonly="('state','not in',['draft','in progress'])"
                                                groups="stock.group_stock_multi_warehouses"/>
                                         <field name="incoterm" widget="selection"
-                                               readonly="('state','not in',['draft','in progress'"
+                                               readonly="('state','not in',['draft','in progress'])"
                                                groups="sale_stock.group_display_incoterm"/>
                                         <field name="picking_policy"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                         <label for="commitment_date" string="Delivery Date"/>
                                         <div class="o_row">
                                             <field name="commitment_date"
-                                                   readonly="('state','not in',['draft','in progress'"/>
+                                                   readonly="('state','not in',['draft','in progress'])"/>
                                         </div>
                                     </group>
                                     <group string="Reporting" name="sale_reporting" groups="base.group_no_one">
                                         <group name="technical" colspan="2" class="mt-0">
                                             <field name="origin"
-                                                   readonly="('state','not in',['draft','in progress'"/>
+                                                   readonly="('state','not in',['draft','in progress'])"/>
                                         </group>
                                         <group name="utm_link" colspan="2" class="mt-0">
                                             <field name="campaign_id"
-                                                   readonly="('state','not in',['draft','in progress'"/>
+                                                   readonly="('state','not in',['draft','in progress'])"/>
                                             <field name="medium_id"
-                                                   readonly="('state','not in',['draft','in progress'"/>
+                                                   readonly="('state','not in',['draft','in progress'])"/>
                                             <field name="source_id"
-                                                   readonly="('state','not in',['draft','in progress'"/>
+                                                   readonly="('state','not in',['draft','in progress'])"/>
                                         </group>
                                     </group>
                                 </group>
@@ -340,7 +340,7 @@
                                 <group>
                                     <group>
                                         <field name="terms_conditions_id" options="{'no_open':True,'no_create':True}"
-                                               readonly="('state','not in',['draft','in progress'"/>
+                                               readonly="('state','not in',['draft','in progress'])"/>
                                     </group>
                                     <group/>
                                 </group>
@@ -350,11 +350,11 @@
                                   invisible="('require_signature', '=', False), ('signed_by', '=', False), ('signature', '=', False), ('signed_on', '=', False)">
                                 <group>
                                     <field name="signed_by"
-                                           readonly="('state','not in',['draft','in progress'"/>
+                                           readonly="('state','not in',['draft','in progress'])"/>
                                     <field name="signed_on"
-                                           readonly="('state','not in',['draft','in progress'"/>
+                                           readonly="('state','not in',['draft','in progress'])"/>
                                     <field name="signature" widget="image"
-                                           readonly="('state','not in',['draft','in progress'"/>
+                                           readonly="('state','not in',['draft','in progress'])"/>
                                 </group>
                             </page>
                         </notebook>

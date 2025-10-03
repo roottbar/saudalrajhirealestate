@@ -15,19 +15,19 @@
                 <!--        -->
                 <xpath expr="//div[@class='badge-pill badge-info float-right']" position="replace">
                     <div class="badge-pill badge-info float-right"
-                         invisible="'|', ('state', 'not in', ['sale', 'done'">
+                         invisible="'|', ('state', 'not in', ['sale', 'done'])">
                         Confirmed
                     </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-warning float-right']" position="replace">
                     <div class="badge-pill badge-warning float-right"
-                         invisible="'|','|', ('state', 'not in', ['done', 'occupied'">
+                         invisible="'|','|', ('state', 'not in', ['done', 'occupied'])">
                         Picked-up
                     </div>
                 </xpath>
                 <xpath expr="//div[@class='badge-pill badge-success float-right']" position="replace">
                     <div class="badge-pill badge-success float-right"
-                         invisible="'|', ('state', 'not in', ['cancel','termination'">
+                         invisible="'|', ('state', 'not in', ['cancel','termination'])">
                         Returned
                     </div>
                 </xpath>
@@ -118,13 +118,13 @@
                 <xpath expr="//button[@name='action_cancel']" position="replace">
                     <field name="no_of_invoiced" invisible="1"/>
                     <button name="action_cancel" type="object" string="Cancel"
-                            invisible="'|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination'"/>
+                            invisible="'|','|', ('state', 'not in', ['sent', 'sale', 'occupied', 'termination'])"/>
                     <button name="action_termination" type="object" string="Termination" class="btn-primary"
                             />
                     <button name="action_refund_insurance" type="object" string="Refund Insurance" class="btn-primary"
                             invisible="'|', ('refund_insurance', '=', True), ('state', '!=', 'termination')"/>
                     <button name="renew_contract" type="object" string="Renew" class="btn-primary"
-                            invisible="('state', 'not in', ['occupied', 'termination'"/>
+                            invisible="('state', 'not in', ['occupied', 'termination'])"/>
                     <field name="no_of_invoiced" invisible="1"/>
                     <field name="has_late_lines" invisible="1"/>
                     <field name="rental_status" invisible="1"/>
@@ -220,7 +220,7 @@
                 <xpath expr="//button[@name='action_quotation_send']" position="before">
                     <button name="action_pickup" type="object" class="btn-primary" string="PICKUP"
                             groups="rent_customize.group_pickup_rental_order"
-                            invisible="'|', ('rental_status','not in',['sent'"/>
+                            invisible="'|', ('rental_status','not in',['sent'])"/>
                     <button name="action_transfer" type="object" class="btn-primary" string="Transfer"
                             invisible=" ('transferred', '=', True)"/>
                     <button name="print_transfer" type="object" class="btn-primary" string="Print Transfer"

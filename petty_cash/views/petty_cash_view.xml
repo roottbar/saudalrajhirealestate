@@ -136,7 +136,7 @@
                                 </group>
 
                                 <field name="petty_cash_line_ids"
-                                       invisible="'|',('state','=','draft'),('template_type','=','with product')" readonly="('state','in',['review','closed'">
+                                       invisible="'|',('state','=','draft'),('template_type','=','with product')" readonly="('state','in',['review','closed'])">
                                     <list string="Petty Cash Lines">
                                         <field name="reference"/>
                                         <field name="date"/>
@@ -170,7 +170,7 @@
                                 </field>
 
                                 <field name="petty_cash_line_ids2" context="{'with_product':1}"
-                                       invisible="'|',('state','=','draft'),('template_type','!=','with product')" readonly="('state','in',['review','closed'">
+                                       invisible="'|',('state','=','draft'),('template_type','!=','with product')" readonly="('state','in',['review','closed'])">
                                     <list string="Petty Cash Lines">
                                         <field name="reference"/>
                                         <field name="date"/>
@@ -217,7 +217,7 @@
                             <page string="Journal Items" groups="petty_cash.group_petty_cash_dynamic_journal"
                                   invisible="'|',('state','=','draft'),('dynamic_journal','=',False)">
                                 <field name="dynamic_move_line_ids" context="{'force_petty_cash':True}"
-                                       readonly="('state','in',['review','closed'">
+                                       readonly="('state','in',['review','closed'])">
                                     <list string="Journal Items" editable="bottom" create="false" delete="false"
                                           readonly="1">
                                         <field name="account_id" readonly="1"/>

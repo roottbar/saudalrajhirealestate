@@ -22,7 +22,7 @@
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="replace">
                     <button name="action_cancel" type="object" string="Cancel"
-                            invisible="'|','|', ('state', 'not in', ['draft', 'sent','sale'"/>
+                            invisible="'|','|', ('state', 'not in', ['draft', 'sent','sale'])"/>
                     <field name="no_of_invoiced" invisible="1"/>
                 </xpath>
                 <xpath expr="// field [@ name = 'order_line'] / tree / field [@ name = 'tax_id']"
@@ -104,7 +104,7 @@
                             </list>
                         </field>
                     </page>
-                    <page name="property_stats" string="حالة الوحدات" invisible="('rental_status','not in', ['pickup','return'">
+                    <page name="property_stats" string="حالة الوحدات" invisible="('rental_status','not in', ['pickup','return'])">
                         <field name="order_property_state" widget="section_and_note_one2many" mode="tree,form" context="{'default_sale_order': active_id}">
                             <form>
                                 <group>

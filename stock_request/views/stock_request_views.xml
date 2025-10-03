@@ -108,7 +108,7 @@
                         name="action_confirm"
                         string="Confirm"
                         type="object"
-                        invisible="('state', 'not in', ['draft'"
+                        invisible="('state', 'not in', ['draft'])"
                     />
                     <button
                         name="action_cancel"
@@ -126,7 +126,7 @@
                         name="action_done"
                         string="Done"
                         type="object"
-                        invisible="('state', 'not in', ['open'"
+                        invisible="('state', 'not in', ['open'])"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
