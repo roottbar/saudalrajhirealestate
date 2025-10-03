@@ -49,9 +49,9 @@
                                 </group>
                                 <group>
                                     <field name="request_date" readonly="('state', '!=', 'draft')"/>
-                                    <field name="receive_date" readonly="['state', 'in', ['reject','cancel','receive'"/>
-                                    <field name="date_end" readonly="['state', 'in', ['reject','cancel','receive'"/>
-                                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting" readonly="['state', 'in', ['reject','cancel','receive'"/>
+                                    <field name="receive_date" readonly="['state', 'in', ['reject','cancel','receive']]"/>
+                                    <field name="date_end" readonly="['state', 'in', ['reject','cancel','receive']]"/>
+                                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting" readonly="['state', 'in', ['reject','cancel','receive']]"/>
                                 </group>
                              </group>
                         <notebook>
@@ -68,20 +68,20 @@
                                     </list>
                                 </field>
                                 <group>
-                                    <field name="reason" readonly="['state', 'in', ['reject','cancel','receive'" placeholder="Add Reason for Internal Requistion ...."/>
+                                    <field name="reason" readonly="['state', 'in', ['reject','cancel','receive']]" placeholder="Add Reason for Internal Requistion ...."/>
                                 </group>
                             </page>
-                            <page groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" string="Picking Details" readonly="['state', 'in', ['done'">
+                            <page groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" string="Picking Details" readonly="['state', 'in', ['done']]">
                                 <group>
                                     <group>
                                             <field name="location_id"
                                                    groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" 
-                                                   domain="[('usage','!=', 'view')]" readonly="['state', 'in', ['reject','cancel','receive'"/>
+                                                   domain="[('usage','!=', 'view')]" readonly="['state', 'in', ['reject','cancel','receive']]"/>
                                     </group>
                                     <group>
-                                        <field name="dest_location_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" readonly="['state', 'in', ['reject','cancel','receive'"/>
+                                        <field name="dest_location_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" readonly="['state', 'in', ['reject','cancel','receive']]"/>
                                         <field name="delivery_picking_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user"/>
-                                        <field name="custom_picking_type_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" readonly="['state', 'in', ['reject','cancel','receive'"/>
+                                        <field name="custom_picking_type_id" groups="material_purchase_requisitions.group_purchase_requisition_user,stock.group_stock_user" readonly="['state', 'in', ['reject','cancel','receive']]"/>
                                     </group>
                                 </group>
                             </page>
