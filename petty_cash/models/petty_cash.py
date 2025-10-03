@@ -695,9 +695,9 @@ class PettyCashLine(models.Model):
         if self.petty_cash_id.template_type != 'with product':
             domain = self._get_domain_account()
             if self.type == "payment":
-                domain += [("internal_type", "=", "payable"), ("deprecated", "=", False)]
+                domain += [("account_type", "=", "liability_payable"), ("deprecated", "=", False)]
 
-                if self.account_id and (self.account_id.internal_type != "payable" or self.account_id.deprecated):
+                if self.account_id and (self.account_id.account_type != "liability_payable" or self.account_id.deprecated):
                     self.account_id = False
 
             return {"domain": {"account_id": domain}}
@@ -706,8 +706,8 @@ class PettyCashLine(models.Model):
     def onchange_account(self):
         if self.petty_cash_id.template_type != 'with product':
             if self.type == "payment":
-                domain = self._get_domain_account() + [("internal_type", "=", "payable"), ("deprecated", "=", False)]
-                if self.account_id and (self.account_id.internal_type != "payable" or self.account_id.deprecated):
+                domain = self._get_domain_account() + [("account_type", "=", "liability_payable"), ("deprecated", "=", False)]
+                if self.account_id and (self.account_id.account_type != "liability_payable" or self.account_id.deprecated):
                     self.account_id = False
 
                 return {"domain": {"account_id": domain}}

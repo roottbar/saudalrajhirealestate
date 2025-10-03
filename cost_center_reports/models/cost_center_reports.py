@@ -61,7 +61,7 @@ class CostCenterReport(models.TransientModel):
             ('date', '<=', data['date_to']),
             ('analytic_account_id', 'in', data['analytic_account_ids']),
             ('move_id.state', '=', 'posted'),
-            ('account_id.internal_type', '=', 'receivable'),
+            ('account_id.account_type', '=', 'asset_receivable'),
             ('credit', '>', 0),
         ])
         
@@ -70,7 +70,7 @@ class CostCenterReport(models.TransientModel):
             ('date', '<=', data['date_to']),
             ('analytic_account_id', 'in', data['analytic_account_ids']),
             ('move_id.state', '=', 'posted'),
-            ('account_id.internal_type', '=', 'receivable'),
+            ('account_id.account_type', '=', 'asset_receivable'),
             ('reconciled', '=', False),
             ('balance', '>', 0),
         ])

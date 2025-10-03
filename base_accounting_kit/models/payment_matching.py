@@ -511,7 +511,7 @@ class AccountReconciliation(models.AbstractModel):
                     '|', ('amount_residual_currency', '=', amount),
                     '|', ('amount_residual', '=', -amount),
                     '|', ('amount_residual_currency', '=', -amount),
-                    '&', ('account_id.internal_type', '=', 'liquidity'),
+                    '&', ('account_id.account_type', 'in', ['asset_cash', 'asset_bank']),
                     '|', '|', '|', ('debit', '=', amount), ('credit', '=', amount), ('amount_currency', '=', amount), ('amount_currency', '=', -amount),
                 ]
                 str_domain = expression.OR([str_domain, amount_domain])
@@ -637,10 +637,10 @@ class AccountReconciliation(models.AbstractModel):
                 # For reconciliation between statement transactions and already registered payments (eg. checks)
                 # NB : we don't use the 'reconciled' field because the line we're selecting is not the one that gets reconciled
                 'account_id': [line.account_id.id, line.account_id.display_name],
-                'already_paid': line.account_id.internal_type == 'liquidity',
+                'already_paid': line.account_id.account_type in ['asset_cash', 'asset_bank'],
                 'account_code': line.account_id.code,
                 'account_name': line.account_id.name,
-                'account_type': line.account_id.internal_type,
+                'account_type': line.account_id.account_type,
                 'date_maturity': format_date(self.env, line.date_maturity),
                 'date': format_date(self.env, line.date),
                 'journal_id': [line.journal_id.id, line.journal_id.display_name],
@@ -655,7 +655,7 @@ class AccountReconciliation(models.AbstractModel):
             amount_currency = line.amount_residual_currency
 
             # For already reconciled lines, don't use amount_residual(_currency)
-            if line.account_id.internal_type == 'liquidity':
+            if line.account_id.account_type in ['asset_cash', 'asset_bank']:
                 amount = debit - credit
                 amount_currency = line.amount_currency
 

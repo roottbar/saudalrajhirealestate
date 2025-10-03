@@ -481,7 +481,7 @@ class DashBoard(models.Model):
                             AND payment_state = 'not_paid' 
                             AND %s
                             AND account_move.company_id in ''' + str(tuple(company_id)) + '''
-                            AND account_account.internal_type = 'payable'
+                            AND account_account.account_type = 'liability_payable'
                             AND account_move.commercial_partner_id=res_partner.commercial_partner_id 
                             group by parent,partner,res
                             order by amount desc

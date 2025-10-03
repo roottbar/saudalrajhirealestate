@@ -9,10 +9,10 @@ class ResPartnerAccountCategory(models.Model):
 
     name = fields.Char(string='Name', required=True, translate=True)
     account_payable_id = fields.Many2one('account.account', string="Account Payable",
-                                         domain="[('internal_type', '=', 'payable'), ('deprecated', '=', False)]",
+                                         domain="[('account_type', '=', 'liability_payable'), ('deprecated', '=', False)]",
                                          required=True)
     account_receivable_id = fields.Many2one('account.account', string="Account Receivable",
-                                            domain="[('internal_type', '=', 'receivable'), ('deprecated', '=', False)]",
+                                            domain="[('account_type', '=', 'asset_receivable'), ('deprecated', '=', False)]",
                                             required=True)
     apply_to_customer = fields.Boolean("Apply to Customer", default=True, copy=False)
     apply_to_vendor = fields.Boolean("Apply to Vendor", default=True, copy=False)

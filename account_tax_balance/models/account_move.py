@@ -26,27 +26,29 @@ class AccountMove(models.Model):
     )
 
     @api.depends(
-        "line_ids.account_id.internal_type",
+        "line_ids.account_id.account_type",
         "line_ids.balance",
-        "line_ids.account_id.user_type_id.type",
     )
     def _compute_financial_type(self):
-        def _balance_get(line_ids, internal_type):
+        def _balance_get(line_ids, account_type):
             return sum(
                 line_ids.filtered(
-                    lambda x: x.account_id.internal_type == internal_type
+                    lambda x: x.account_id.account_type == account_type
                 ).mapped("balance")
             )
 
         for move in self:
-            internal_types = move.line_ids.mapped("account_id.internal_type")
-            if "liquidity" in internal_types:
+            # Map account_type values to internal_type equivalents
+            account_types = move.line_ids.mapped("account_id.account_type")
+            
+            # Check for liquidity accounts (bank and cash)
+            if any(acc_type in account_types for acc_type in ['asset_cash', 'asset_bank']):
                 move.financial_type = "liquidity"
-            elif "payable" in internal_types:
-                balance = _balance_get(move.line_ids, "payable")
+            elif "liability_payable" in account_types:
+                balance = _balance_get(move.line_ids, "liability_payable")
                 move.financial_type = "payable" if balance < 0 else "payable_refund"
-            elif "receivable" in internal_types:
-                balance = _balance_get(move.line_ids, "receivable")
+            elif "asset_receivable" in account_types:
+                balance = _balance_get(move.line_ids, "asset_receivable")
                 move.financial_type = (
                     "receivable" if balance > 0 else "receivable_refund"
                 )
