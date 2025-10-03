@@ -8,7 +8,7 @@
             <field name="name">attendance officer: full access</field>
             <field name="model_id" ref="model_attendance_transaction"/>
             <field name="domain_force">[(1,'=',1)]</field>
-            <field name="groups" eval="[(4,ref('hr_attendance.group_hr_attendance_user'))]"/>
+            <field name="groups" eval="[(4,ref('hr_attendance.group_hr_attendance_officer'))]"/>
         </record>
 
         <record id="hr_attendance_transaction_rule_attendance_transaction_employee" model="ir.rule">
