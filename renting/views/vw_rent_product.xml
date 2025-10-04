@@ -16,7 +16,6 @@
                     <field name="sale_ok" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="cost_currency_id" invisible="1"/>
-                    <field name="priority" widget="priority" optional="show" nolabel="1"/>
                     <field name="last_sale_id" string="رقم العقد"/>
                     <field name="unit_state"  invisible="1"/>
                     <field name="state_id" string="مؤجرة / شاغرة"/>
