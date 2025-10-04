@@ -8,7 +8,13 @@ class SaleReport(models.Model):
 
     branch_id = fields.Many2one('res.branch')
 
-    def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
-        fields['branch_id'] = ", s.branch_id as branch_id"
-        return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
+    def _select_additional_fields(self):
+        fields_add = super()._select_additional_fields()
+        fields_add['branch_id'] = "s.branch_id"
+        return fields_add
+
+    def _group_by_sale(self):
+        groupby = super()._group_by_sale()
+        groupby += ", s.branch_id"
+        return groupby
 

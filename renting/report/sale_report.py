@@ -13,11 +13,16 @@ class SaleReport(models.Model):
     property_address_city = fields.Many2one('rent.property.city', string='المدينة')
     country = fields.Many2one('res.country', string='الدولة')
 
-    def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
-        fields['property_id'] = ", t.property_id as property_id"
-        fields['property_state_id'] = ", t.state_id as property_state_id"
-        fields['property_address_build'] = ", t.property_address_build as property_address_build"
-        fields['property_address_city'] = ", t.property_address_city as property_address_city"
-        fields['country'] = ", t.country as country"
-        groupby += ', t.property_id, property_state_id, property_address_build, property_address_city, country'
-        return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
+    def _select_additional_fields(self):
+        fields_add = super()._select_additional_fields()
+        fields_add['property_id'] = "t.property_id"
+        fields_add['property_state_id'] = "t.state_id"
+        fields_add['property_address_build'] = "t.property_address_build"
+        fields_add['property_address_city'] = "t.property_address_city"
+        fields_add['country'] = "t.country"
+        return fields_add
+
+    def _group_by_sale(self):
+        groupby = super()._group_by_sale()
+        groupby += ", t.property_id, t.state_id, t.property_address_build, t.property_address_city, t.country"
+        return groupby

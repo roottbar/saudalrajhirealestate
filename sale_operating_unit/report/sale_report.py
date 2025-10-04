@@ -9,12 +9,12 @@ class SaleReport(models.Model):
 
     operating_unit_id = fields.Many2one('operating.unit', 'Operating Unit')
 
-    def _query(self, with_clause='', fields=False,  # noqa
-               groupby='', from_clause=''):
-        if not fields:
-            fields = {}
-        fields['operating_unit_id'] = \
-            ", s.operating_unit_id as operating_unit_id"
-        groupby += ', s.operating_unit_id'
-        return super(SaleReport, self)._query(with_clause, fields,
-                                              groupby, from_clause)
+    def _select_additional_fields(self):
+        fields_add = super()._select_additional_fields()
+        fields_add['operating_unit_id'] = "s.operating_unit_id"
+        return fields_add
+
+    def _group_by_sale(self):
+        groupby = super()._group_by_sale()
+        groupby += ", s.operating_unit_id"
+        return groupby
