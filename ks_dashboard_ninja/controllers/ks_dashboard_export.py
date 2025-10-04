@@ -4,7 +4,8 @@ import operator
 import logging
 from werkzeug.exceptions import InternalServerError
 
-from odoo.addons.web.controllers.main import ExportFormat,serialize_exception
+from odoo.addons.web.controllers.export import ExportFormat
+from odoo.http import serialize_exception
 
 from odoo import http
 from odoo.http import request

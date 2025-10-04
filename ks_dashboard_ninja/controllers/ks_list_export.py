@@ -5,7 +5,8 @@ import json
 import operator
 import logging
 from werkzeug.exceptions import InternalServerError
-from odoo.addons.web.controllers.main import ExportFormat,serialize_exception, ExportXlsxWriter
+from odoo.addons.web.controllers.export import ExportFormat, ExportXlsxWriter
+from odoo.http import serialize_exception
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 import datetime
 from odoo import http
