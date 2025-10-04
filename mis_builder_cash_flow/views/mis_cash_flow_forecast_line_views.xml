@@ -12,10 +12,7 @@
                         <field name="company_id" groups="base.group_multi_company" />
                         <field name="date" />
                         <field name="partner_id" />
-                        <field
-                            name="account_id"
-                            domain="[('company_id', '=', company_id)]"
-                        />
+                        <field name="account_id" />
                         <field name="name" />
                         <field name="balance" />
                     </group>
@@ -71,7 +68,7 @@
                 <field name="partner_id" />
                 <field
                     name="account_id"
-                    domain="[('company_id', '=', company_id), ('deprecated', '=', False), ('hide_in_cash_flow', '=', False), ('internal_type', '=', ['receivable', 'payable', 'liquidity'])]"
+                    domain="[('deprecated', '=', False), ('hide_in_cash_flow', '=', False), ('internal_type', '=', ['receivable', 'payable', 'liquidity'])]"
                 />
                 <field name="balance" />
             </list>
