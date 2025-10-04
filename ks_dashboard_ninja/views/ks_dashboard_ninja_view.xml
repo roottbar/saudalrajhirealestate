@@ -29,7 +29,7 @@
                         <notebook>
                             <page name="pre_defined_filters" string="Pre Defined Filters">
                                 <field name="ks_dashboard_defined_filters_ids" widget="section_and_note_one2many">
-                                    <tree>
+                                    <list editable="bottom">
                                         <control>
                                             <create name="add_filter_control" string="Add a filter"/>
                                             <create name="add_section_control" string="Add a separator"
