@@ -26,6 +26,9 @@
         'report/contract.xml',
         'report/transfer.xml',
     ],
+    'external_dependencies': {
+        'python': ['hijri_converter']
+    },
     'license': "LGPL-3",
     'installable': True,
     'auto_install': False,

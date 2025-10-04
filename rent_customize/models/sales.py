@@ -7,7 +7,7 @@ from odoo import models, fields, _
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
 from dateutil.relativedelta import relativedelta
 
-from hijri_converter import Gregorian, convert
+# Avoid import-time crashes if external dependency is missing; import lazily where used
 
 class RentalOrder(models.TransientModel):
     _inherit = 'rental.order.wizard'
@@ -66,6 +66,12 @@ class SaleOrder(models.Model):
 
 
     def get_date_hijri(self, date):
+        try:
+            from hijri_converter import Gregorian, convert
+        except ImportError:
+            # Provide a clear, user-facing error when the feature is invoked without dependency
+            from odoo.exceptions import UserError
+            raise UserError(_('Missing python dependency "hijri-converter". Please install it (requirements.txt) or disable Hijri conversion.'))
         day = date.day
         month = date.month
         year = date.year
