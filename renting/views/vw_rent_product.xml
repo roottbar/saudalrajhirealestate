@@ -28,7 +28,6 @@
                     <field name="standard_price" invisible="1" widget="monetary" options="{'currency_field': 'cost_currency_id'}"
                            optional="show" readonly="1"/>
                     <field name="categ_id" invisible="1" optional="hide"/>
-                    <field name="detailed_type" invisible="1" optional="hide" readonly="1"/>
                     <field name="type" invisible="1"/>
                     <field name="uom_id" readonly="1" invisible="1" optional="show" groups="uom.group_uom"/>
                     <field name="active" invisible="1"/>
