@@ -24,6 +24,9 @@ ORIGINAL_M2M_READ = fields.Many2many.read
 
 def ks_read(self, records):
     if self.name == 'ks_list_view_fields' or self.name == 'ks_list_view_group_fields':
+        # If registry not ready (during preload), use original behavior to avoid API mismatches
+        if not records.env.registry.ready:
+            return ORIGINAL_M2M_READ(self, records)
         comodel = records.env[self.comodel_name]
 
         # String domains are supposed to be dynamic and evaluated on client-side
@@ -32,7 +35,15 @@ def ks_read(self, records):
 
         wquery = comodel._where_calc(domain)
         comodel._apply_ir_rules(wquery, 'read')
-        from_c, where_c, where_params = wquery.get_sql()
+        # Handle Odoo query API differences gracefully
+        try:
+            from_c, where_c, where_params = wquery.get_sql()
+        except AttributeError:
+            try:
+                from_c, where_c, where_params = wquery.query.get_sql()
+            except Exception:
+                # Fallback to original read if SQL extraction is not available
+                return ORIGINAL_M2M_READ(self, records)
         query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
                     WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
                 """.format(rel=self.relation, id1=self.column1, id2=self.column2,
