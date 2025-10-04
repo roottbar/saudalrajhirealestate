@@ -17,15 +17,18 @@ def _patch_view_arch(arch_text):
         root = etree.fromstring(arch_text.encode('utf-8'), parser=parser)
         changed = False
 
-        # Remove xpath nodes that target the old assets_common
-        for xp in root.xpath(".//xpath[contains(@expr, \"t[@t-call-assets='web.assets_common']\")]"):
+        # Remove xpath nodes that target the old assets_common (handle various quoting/escaping)
+        for xp in root.xpath(
+            
+            ".//xpath[contains(@expr, 't-call-assets') and contains(@expr, 'assets_common')]"
+        ):
             parent = xp.getparent()
             if parent is not None:
                 parent.remove(xp)
                 changed = True
 
-        # Replace direct t-call-assets on any node
-        for node in root.xpath(".//*[@t-call-assets='web.assets_common']"):
+        # Replace direct t-call-assets on any node (catch contains as well)
+        for node in root.xpath(".//*[@t-call-assets and contains(@t-call-assets, 'assets_common')]"):
             # In website contexts, use website.assets_frontend which is valid in Odoo 18
             node.set('t-call-assets', 'website.assets_frontend')
             changed = True
@@ -40,15 +43,22 @@ def _patch_view_arch(arch_text):
         new_text = arch_text
         before = new_text
         # Remove typical xpath block opening; keep simple to avoid breaking structure too much
-        new_text = new_text.replace(
+        # Common xpath open tag removals (various quoting)
+        for tag in [
             "<xpath expr=\"//t[@t-call-assets='web.assets_common']\">",
-            ""
-        )
+            "<xpath expr=\"//t[@t-call-assets=&#39;web.assets_common&#39;]\">",
+            "<xpath expr='//t[@t-call-assets=\"web.assets_common\"]'>",
+            "<xpath expr='//t[@t-call-assets=&quot;web.assets_common&quot;]'>",
+        ]:
+            new_text = new_text.replace(tag, "")
         new_text = new_text.replace("</xpath>", "")
-        new_text = new_text.replace(
+        for frag in [
             "t-call-assets=\"web.assets_common\"",
-            "t-call-assets=\"website.assets_frontend\"",
-        )
+            "t-call-assets='web.assets_common'",
+            "t-call-assets=&#39;web.assets_common&#39;",
+            "t-call-assets=&quot;web.assets_common&quot;",
+        ]:
+            new_text = new_text.replace(frag, "t-call-assets=\"website.assets_frontend\"")
         return new_text, (new_text != before)
 
 
@@ -61,9 +71,23 @@ def post_init_hook(cr, registry):
     View = env['ir.ui.view']
 
     # Find candidate views by arch text content
-    v1 = View.search([('arch_db', 'ilike', "t-call-assets=\"web.assets_common\"")])
-    v2 = View.search([('arch_db', 'ilike', "t[@t-call-assets='web.assets_common']")])
-    views = (v1 | v2)
+    patterns = [
+        "t-call-assets=\"web.assets_common\"",
+        "t-call-assets='web.assets_common'",
+        "t-call-assets=&#39;web.assets_common&#39;",
+        "t-call-assets=&quot;web.assets_common&quot;",
+        "t[@t-call-assets='web.assets_common']",
+        "t[@t-call-assets=\"web.assets_common\"]",
+        "t[@t-call-assets=&#39;web.assets_common&#39;]",
+        "t[@t-call-assets=&quot;web.assets_common&quot;]",
+    ]
+
+    views = env['ir.ui.view'].browse()
+    for p in patterns:
+        views |= View.search([('arch_db', 'ilike', p)])
+
+    # Heuristic: include possible 404/not_found templates that might carry bad xpaths
+    views |= View.search([('key', 'ilike', '404')])
 
     cleaned = 0
     for view in views:
