@@ -88,6 +88,10 @@ def post_init_hook(cr, registry):
 
     # Heuristic: include possible 404/not_found templates that might carry bad xpaths
     views |= View.search([('key', 'ilike', '404')])
+    # Explicit common keys for website 404 templates
+    views |= View.search([('key', 'in', ['website.404', 'website.not_found_template'])])
+    # Occasionally, customized views are named with 404 in their names
+    views |= View.search([('name', 'ilike', '404')])
 
     cleaned = 0
     for view in views:
