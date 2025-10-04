@@ -70,7 +70,11 @@ def ks_read(self, records):
         # Remove pre-flush of search to avoid recursive rule evaluation during registry init
         wquery = comodel._where_calc(domain)
         comodel._apply_ir_rules(wquery, 'read')
-        order_by = comodel._generate_order_by(None, wquery)
+        # Avoid calling missing _generate_order_by on certain models during registry init
+        try:
+            order_by = comodel._generate_order_by(None, wquery)
+        except Exception:
+            order_by = ''
         from_c, where_c, where_params = wquery.get_sql()
         query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
                             WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
