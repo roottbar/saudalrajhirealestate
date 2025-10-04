@@ -68,7 +68,7 @@
                 <field name="partner_id" />
                 <field
                     name="account_id"
-                    domain="[('deprecated', '=', False), ('hide_in_cash_flow', '=', False), ('internal_type', '=', ['receivable', 'payable', 'liquidity'])]"
+                    domain="[('deprecated', '=', False), ('hide_in_cash_flow', '=', False)]"
                 />
                 <field name="balance" />
             </list>
