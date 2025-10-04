@@ -101,7 +101,6 @@
                         <div class="col-5  text-center" style="text-align:right;">
                             <h4 class="mt0" t-field="company.report_header" style="text-align:left;"/>
                             <div class="float-center mb4" style="text-align:left;">
-                                <!--                               class="list-group list-group-flush flex-wrap flex-row flex-lg-column"   >-->
                                 <ul class="list-inline" style="text-align:left;">
                                     <li class="float-center mb4" style="font-size: large;white-space: nowrap;">
                                         <span t-field="company.foreign_name"/>
