@@ -138,8 +138,8 @@
                     </group>
 
                     <group name="chart_settings"
-                           invisible="'|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','in',['ks_tile','ks_kpi'"
-                           class="ks_qe_form_view_group">
+                           class="ks_qe_form_view_group"
+                           attrs="{'invisible': ['|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','in',['ks_tile','ks_kpi'])]}">
                         <!--                           invisible="'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')"-->
                         <field name="ks_chart_data_count_type" required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')" invisible="'|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view')"/>
                         <!--                                                                                'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>-->
