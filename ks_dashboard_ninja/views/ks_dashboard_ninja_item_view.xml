@@ -331,11 +331,11 @@
                                 <field name="ks_sort_by_field"
                                        context="{'current_id': id}"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       invisible="'|',('ks_fill_temporal','=',True),'&amp;',('ks_goal_lines','!=',["/>
+                                       invisible="['|',('ks_fill_temporal','=',True),'&amp;',('ks_goal_lines','!=',[])]"/>
                                 <field name="ks_sort_by_order"
                                        context="{'current_id': id}"
-                                       invisible="'|',('ks_fill_temporal','=',True),'&amp;',('ks_goal_lines','!=',["/>
-                                <field name="ks_record_data_limit_visibility" invisible="('ks_goal_lines','!=',["/>
+                                       invisible="['|',('ks_fill_temporal','=',True),'&amp;',('ks_goal_lines','!=',[])]"/>
+                                <field name="ks_record_data_limit_visibility" invisible="[('ks_goal_lines','!=',[])]"/>
                                 <field name="ks_record_data_limit"
                                        context="{'current_id': id}"
                                        required="[('ks_record_data_limit_visibility','=',True)]" invisible="['|','|','&amp;',('ks_chart_relation_sub_groupby','!=',False),('ks_dashboard_item_type','not in', ['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
