@@ -18,7 +18,8 @@ from odoo.addons.ks_dashboard_ninja.common_lib.ks_date_filter_selections import 
 # TODO : Check all imports if needed
 
 
-read = fields.Many2one.read
+# Keep original Many2many.read to safely fallback during registry preload
+ORIGINAL_M2M_READ = fields.Many2many.read
 
 
 def ks_read(self, records):
@@ -63,6 +64,10 @@ def ks_read(self, records):
             cache.set(record, self, tuple(group[record.id]))
 
     else:
+        # During registry preload or for system models (e.g., res.groups.implied_ids),
+        # defer to the original implementation to avoid API mismatches.
+        if not records.env.registry.ready:
+            return ORIGINAL_M2M_READ(self, records)
         context = {'active_test': False}
         context.update(self.context)
         comodel = records.env[self.comodel_name].with_context(**context)
@@ -75,7 +80,16 @@ def ks_read(self, records):
             order_by = comodel._generate_order_by(None, wquery)
         except Exception:
             order_by = ''
-        from_c, where_c, where_params = wquery.get_sql()
+        # Handle older/newer Odoo query API differences gracefully
+        try:
+            from_c, where_c, where_params = wquery.get_sql()
+        except AttributeError:
+            # In some versions, an expression object may expose .query.get_sql()
+            try:
+                from_c, where_c, where_params = wquery.query.get_sql()
+            except Exception:
+                # Fallback to original read if SQL extraction is not available
+                return ORIGINAL_M2M_READ(self, records)
         query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
                             WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
                             {order_by} {limit} OFFSET {offset}
