@@ -6,6 +6,13 @@ from odoo import models, fields, api
 class AccountAsset(models.Model):
     _inherit = 'account.asset'
 
+    # Odoo 18: account.asset no longer provides 'account_analytic_id' by default.
+    # Add it here so downstream logic and filters relying on this field keep working.
+    account_analytic_id = fields.Many2one(
+        'account.analytic.account',
+        string='الحساب التحليلي'
+    )
+
     @api.depends('account_analytic_id')
     def get_product(self):
         for r in self:
