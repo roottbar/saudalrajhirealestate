@@ -67,7 +67,7 @@ def ks_read(self, records):
         context.update(self.context)
         comodel = records.env[self.comodel_name].with_context(**context)
         domain = self.get_domain_list(records)
-        comodel._flush_search(domain)
+        # Remove pre-flush of search to avoid recursive rule evaluation during registry init
         wquery = comodel._where_calc(domain)
         comodel._apply_ir_rules(wquery, 'read')
         order_by = comodel._generate_order_by(None, wquery)
