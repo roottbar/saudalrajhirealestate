@@ -81,9 +81,17 @@ class KsChartExcelExport(KsChartExport, http.Controller):
 class KsChartCsvExport(KsChartExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/chart_csv', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
-        return self.base(data)
+        try:
+            return self.base(data)
+        except Exception as exc:
+            _logger.exception("Exception during chart CSV export request handling.")
+            payload = json.dumps({
+                'code': 200,
+                'message': "Odoo Server Error",
+                'data': serialize_exception(exc)
+            })
+            raise InternalServerError(payload) from exc
 
     @property
     def content_type(self):
