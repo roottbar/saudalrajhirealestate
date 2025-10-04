@@ -10,6 +10,7 @@
     'depends': [
         'base',
         'sale',
+        'sale_renting',
     ],
     'data': [],
     'license': "LGPL-3",

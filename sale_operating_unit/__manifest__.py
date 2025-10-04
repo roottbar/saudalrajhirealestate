@@ -10,6 +10,7 @@
     'depends': [
         'base',
         'sale',
+        'sale_renting',
         'sales_team_operating_unit',
     ],
     'data': [
