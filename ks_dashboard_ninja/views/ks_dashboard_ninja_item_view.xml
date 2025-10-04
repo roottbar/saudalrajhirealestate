@@ -99,10 +99,10 @@
                         <field name="ks_actions" invisible="1"/>
                         <field name="ks_model_id" placeholder="Model..."
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True, 'limit': 10}"
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view']" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
+                               required="[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
+                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]" invisible="['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
                                                         ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view']"/>
+                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]"/>
                         <field name="ks_dashboard_item_type" invisible="1"/>
                         <field name="ks_update_items_data" invisible="('ks_dashboard_item_type','=', 'ks_to_do')" placeholder="Item Update Interval.."/>
                     </group>
@@ -192,16 +192,16 @@
                             <field name="ks_model_id"
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                    context="{'current_id': id}"
-                                   required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view']" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
+                                   required="[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
+                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]" invisible="['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
                                                         ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view']"/>
+                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]"/>
                             <field name="ks_company_id"
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                             <field name="ks_dashboard_item_type" string="Type" context="{'current_id': id}"/>
                             <field name="ks_semi_circle_chart"
                                    context="{'current_id': id}"
-                                   invisible="'|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type', 'not in', ['ks_doughnut_chart','ks_pie_chart'"/>
+                                   invisible="['|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type', 'not in', ['ks_doughnut_chart','ks_pie_chart'])]"/>
                         </group>
                         <div style="width: calc(50% - 30px);position: fixed;">
                             <field name="ks_preview" widget="ks_dashboard_item_preview"
@@ -320,7 +320,7 @@
                                 <field name="ks_chart_relation_sub_groupby" invisible="1"/>
                                 <field name="ks_fill_temporal"
                                        context="{'current_id': id}"
-                                       invisible="'|','|','|',('ks_dashboard_item_type','in',['ks_list_view','ks_kpi', 'ks_tile'"/>
+                                       invisible="['|','|','|',('ks_dashboard_item_type','in',['ks_list_view','ks_kpi', 'ks_tile'])]"/>
 
                                 <field name="ks_chart_relation_sub_groupby"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
@@ -338,8 +338,8 @@
                                 <field name="ks_record_data_limit_visibility" invisible="('ks_goal_lines','!=',["/>
                                 <field name="ks_record_data_limit"
                                        context="{'current_id': id}"
-                                       required="('ks_record_data_limit_visibility','=',True)" invisible="'|','|','&amp;',('ks_chart_relation_sub_groupby','!=',False),('ks_dashboard_item_type','not in', ['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'"/>
+                                       required="[('ks_record_data_limit_visibility','=',True)]" invisible="['|','|','&amp;',('ks_chart_relation_sub_groupby','!=',False),('ks_dashboard_item_type','not in', ['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
+                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'])]"/>
                             </group>
                             <group string="Filter" invisible="('ks_dashboard_item_type','=','ks_to_do')">
                                 <field name="ks_domain" widget="domain" class="ks_domain_content"
@@ -356,9 +356,9 @@
                                 <field name="ks_item_end_date"
                                        required="('ks_model_id','!=',False),('ks_date_filter_selection','=','l_custom')" invisible="'|',('ks_model_id','=',False),('ks_date_filter_selection','!=','l_custom')"/>
                                 <field name="ks_compare_period"
-                                       invisible="'|',('ks_model_id','=',False),('ks_date_filter_selection','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
+                                       invisible="['|',('ks_model_id','=',False),('ks_date_filter_selection','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'])]"/>
                                 <field name="ks_year_period"
-                                       invisible="'|',('ks_model_id','=',False),('ks_date_filter_selection','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
+                                       invisible="['|',('ks_model_id','=',False),('ks_date_filter_selection','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'])]"/>
                             </group>
                         </page>
                         <page string="Data #2" name="data_model_2"
@@ -399,9 +399,9 @@
                                 <field name="ks_item_end_date_2" string="End Date"
                                        required="('ks_model_id_2','!=',False),('ks_date_filter_selection_2','=','l_custom')" invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','!=','l_custom')"/>
                                 <field name="ks_compare_period_2" string="Include Period"
-                                       invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
+                                       invisible="['|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'])]"/>
                                 <field name="ks_year_period_2" string="Same Period Previous Years"
-                                       invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
+                                       invisible="['|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'])]"/>
                             </group>
                         </page>
                         <page string="Display" name="display_settings"
@@ -411,7 +411,7 @@
                                    invisible="('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')">
                                 <field name="ks_data_format"
                                        context="{'current_id':id}"
-                                       invisible="('ks_dashboard_item_type','in',['ks_list_view', 'ks_pie_chart', 'ks_doughnut_chart', 'ks_polarArea_chart'"
+                                       invisible="[('ks_dashboard_item_type','in',['ks_list_view', 'ks_pie_chart', 'ks_doughnut_chart', 'ks_polarArea_chart'])]"
                                 />
                                 <field name="ks_layout"
                                        invisible="('ks_dashboard_item_type','!=','ks_tile')"/>
@@ -436,7 +436,7 @@
                                    invisible="'|','|','|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')">
                                 <field name="ks_data_format"
                                        context="{'current_id':id}"
-                                       invisible="('ks_dashboard_item_type','in',['ks_list_view', 'ks_pie_chart', 'ks_doughnut_chart', 'ks_polarArea_chart'"
+                                       invisible="[('ks_dashboard_item_type','in',['ks_list_view', 'ks_pie_chart', 'ks_doughnut_chart', 'ks_polarArea_chart'])]"
                                 />
                                 <field name="ks_chart_item_color" string="Chart Color Palette"
                                        context="{'current_id': id}"
@@ -465,7 +465,7 @@
                               invisible="['|','|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','not in',['ks_tile','ks_kpi','ks_bar_chart','ks_line_chart','ks_area_chart','ks_horizontalBar_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view',]),'&amp;',('ks_list_view_type','=','ungrouped'),('ks_dashboard_item_type','=','ks_list_view')]">
 
                             <field name="ks_action_lines" required="1" style="width: 90% !important;"
-                                   invisible="('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'">
+                                   invisible="[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]">
                                 <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="ks_item_action_field" required="1"
@@ -482,7 +482,7 @@
                                 </list>
                             </field>
                             <group name="ks_show_messages"
-                                   invisible="('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'">
+                                   invisible="[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'])]">
                                 <div>
                                     Below action will be performed at the end of the Drill Down Action
                                 </div>
@@ -504,7 +504,7 @@
                             </group>
                         </page>
                         <page string="Target" name="target_settings"
-                              invisible="'|','&amp;',('ks_chart_groupby_type','!=','date_type'),('ks_dashboard_item_type','!=','ks_kpi'),'|','|',('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_list_view','ks_kpi'">
+                              invisible="['|','&amp;',('ks_chart_groupby_type','!=','date_type'),('ks_dashboard_item_type','!=','ks_kpi'),'|','|',('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_list_view','ks_kpi'])]">
                             <group style="width:50%;">
                                 <field name="ks_goal_enable" context="{'current_id': id}"/>
                                 <field name="ks_goal_bar_line"
@@ -544,7 +544,7 @@
                         <page string="Advance Configuration" invisible="('ks_dashboard_item_type','=','ks_to_do')">
                             <group invisible="'|','|',('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')">
                                 <field name="ks_hide_legend" context="{'current_id': id}"
-                                       invisible="('ks_dashboard_item_type','in',['ks_tile', 'ks_kpi', 'ks_list_view'"/>
+                                       invisible="[('ks_dashboard_item_type','in',['ks_tile', 'ks_kpi', 'ks_list_view'])]"/>
                                 <field name="ks_chart_cumulative_field"  widget='many2many_tags'
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                        required="('ks_chart_cumulative','=',True)" invisible="'|','|','|','|','|',('ks_chart_data_count_type','=','count'),('ks_chart_relation_sub_groupby','!=',False),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart'),('ks_data_calculation_type','!=','custom')"
@@ -557,7 +557,7 @@
                                        invisible="('ks_data_calculation_type','=','query')"/>
 
                                 <field name="ks_multiplier_active" force_save="1"
-                                       invisible="'|','|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),('ks_data_calculation_type','=','query'),'&amp;',('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'"/>
+                                       invisible="['|','|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),('ks_data_calculation_type','=','query'),'&amp;',('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'])]"/>
                                 <field name="ks_multiplier_lines" invisible="('ks_multiplier_active','=',False)">
                                     <list editable="bottom" create="false"  delete="false">
                                         <field name="ks_model_id" invisible="1"/>
@@ -566,7 +566,7 @@
                                     </list>
                                 </field>
                             </group>
-                            <group invisible="('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'">
+                            <group invisible="[('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'])]">
                                 <field name="ks_multiplier_active" force_save="1"/>
                                 <field name="ks_multiplier" invisible="('ks_multiplier_active','=',False)"/>
                            </group>
