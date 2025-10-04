@@ -100,9 +100,9 @@
                         <field name="ks_model_id" placeholder="Model..."
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True, 'limit': 10}"
                                required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
+                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view']" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
                                                         ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'"/>
+                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view']"/>
                         <field name="ks_dashboard_item_type" invisible="1"/>
                         <field name="ks_update_items_data" invisible="('ks_dashboard_item_type','=', 'ks_to_do')" placeholder="Item Update Interval.."/>
                     </group>
@@ -193,9 +193,9 @@
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                    context="{'current_id': id}"
                                    required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
+                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view']" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
                                                         ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'"/>
+                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view']"/>
                             <field name="ks_company_id"
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                             <field name="ks_dashboard_item_type" string="Type" context="{'current_id': id}"/>
