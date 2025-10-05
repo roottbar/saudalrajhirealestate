@@ -48,7 +48,7 @@
                   action="action_account_moves_ensurance"
                   groups="account.group_account_readonly"
                   sequence="3"
-                  parent="account.menu_finance_entries_accounting_ledgers"
+                  parent="account.menu_finance_entries_management"
                   name="التأمينات"
         />
 
