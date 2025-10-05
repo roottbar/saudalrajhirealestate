@@ -13,24 +13,24 @@
                 </xpath>
             </field>
         </record>
-        <record id="view_crm_template_google_map" model="ir.ui.view">
-            <field name="name">view.crm.leads.google_map</field>
-            <field name="model">product.template</field>
-            <field name="arch" type="xml">
-                <google_map string="Maps" lat="partner_latitude" lng="partner_longitude" color="orange">
-                    <field name="partner_latitude"/>
-                    <field name="partner_longitude"/>
-                    <field name="name"/>
-                </google_map>
-            </field>
-        </record>
+<!--        <record id="view_crm_template_google_map" model="ir.ui.view">-->
+<!--            <field name="name">view.crm.leads.google_map</field>-->
+<!--            <field name="model">product.template</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <google_map string="Maps" lat="partner_latitude" lng="partner_longitude" color="orange">-->
+<!--                    <field name="partner_latitude"/>-->
+<!--                    <field name="partner_longitude"/>-->
+<!--                    <field name="name"/>-->
+<!--                </google_map>-->
+<!--            </field>-->
+<!--        </record>-->
 
-        <record id="crm_lead_action_pipeline_view_google_map" model="ir.actions.act_window.view">
-            <field name="sequence" eval="6"/>
-            <field name="view_mode">google_map</field>
-            <field name="view_id" ref="view_crm_template_google_map"/>
-            <field name="act_window_id" ref="sale_renting.rental_product_template_action"/>
-        </record>
+<!--        <record id="crm_lead_action_pipeline_view_google_map" model="ir.actions.act_window.view">-->
+<!--            <field name="sequence" eval="6"/>-->
+<!--            <field name="view_mode">google_map</field>-->
+<!--            <field name="view_id" ref="view_crm_template_google_map"/>-->
+<!--            <field name="act_window_id" ref="sale_renting.rental_product_template_action"/>-->
+<!--        </record>-->
 
         <record id="customize_product_template_form_view" model="ir.ui.view">
             <field name="name">product.template</field>
