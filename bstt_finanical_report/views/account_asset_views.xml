@@ -16,23 +16,10 @@
                 </xpath>
             </field>
         </record>
-
-        <record model="ir.ui.view" id="view_account_asset_sale_tree_bstt">
-            <field name="name">account.asset.list.inherit</field>
-            <field name="model">account.asset</field>
-            <field name="inherit_id" ref="account_asset.view_account_asset_purchase_tree"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='value_residual']" position="after">
-                    <field name="account_analytic_id" optional="hide"/>
-                    <field name="product_id" optional="hide"/>
-                    <field name="property_id" optional="hide"/>
-                    <field name="property_address_build" optional="hide"/>
-                    <field name="property_address_area" optional="hide"/>
-                    <field name="property_address_city" optional="hide"/>
-                    <field name="country" optional="hide"/>
-                </xpath>
-            </field>
-        </record>
+        <!-- Removed tree/list view inheritance due to missing XML ID in Odoo 18.
+             The previous target account_asset.view_account_asset_purchase_tree no longer exists.
+             This block is temporarily disabled to unblock registry load; we will reintroduce
+             list view columns once the correct base view XML ID is identified. -->
 
         <record model="ir.ui.view" id="view_account_asset_inherit_filter_bstt">
             <field name="name">view.account.asset.inherit.filter</field>
