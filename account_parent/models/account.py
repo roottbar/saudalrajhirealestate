@@ -135,25 +135,24 @@ class AccountAccount(models.Model):
 	_parent_order = 'code, name'
 	_order = 'code, id'
 	
-	@api.model
-	def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
-		context = self._context or {}
-		# updated to search the code too
-		new_args = []
-		if args:
-			for arg in args:
-				if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
-					new_args.append('|')
-					new_args.append(arg)
-					new_args.append(['code', arg[1], arg[2]])
-				else:
-					new_args.append(arg)
-		# one Customer informed an issue that the same args is updated to company causing error
-		# So to avoid that args was copied to new variable and it solved the issue.
-		if not context.get('show_parent_account', False):
-			new_args = expression.AND([[('is_view', '=', False)], new_args])
-		return super(AccountAccount, self)._search(new_args, offset=offset, limit=limit, order=order,
-											   access_rights_uid=access_rights_uid)
+    @api.model
+    def _search(self, args, offset=0, limit=None, order=None):
+        context = self._context or {}
+        # updated to search the code too
+        new_args = []
+        if args:
+            for arg in args:
+                if isinstance(arg, (list, tuple)) and arg[0] == 'name' and isinstance(arg[2], str):
+                    new_args.append('|')
+                    new_args.append(arg)
+                    new_args.append(['code', arg[1], arg[2]])
+                else:
+                    new_args.append(arg)
+        # one Customer informed an issue that the same args is updated to company causing error
+        # So to avoid that args was copied to new variable and it solved the issue.
+        if not context.get('show_parent_account', False):
+            new_args = expression.AND([[('is_view', '=', False)], new_args])
+        return super(AccountAccount, self)._search(new_args, offset=offset, limit=limit, order=order)
 
 	
 class AccountJournal(models.Model):
