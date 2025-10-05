@@ -25,6 +25,11 @@ class SaleRentalSchedule(models.Model):
             parent = super(SaleRentalSchedule, self)._groupby()
         return SQL("%s, t.property_id, rp.property_address_area, rp.property_address_build", parent)
 
+    # Ensure compatibility if upstream still calls _groupby()
+    def _groupby(self):
+        parent = super(SaleRentalSchedule, self)._groupby()
+        return SQL("%s, t.property_id, rp.property_address_area, rp.property_address_build", parent)
+
     def _from(self):
         return SQL(
             """
