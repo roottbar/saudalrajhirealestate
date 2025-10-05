@@ -21,18 +21,20 @@
         <field name="model">account.account</field>
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
-            <header position="inside">
-                <button name="action_archive_account" 
-                        string="Archive Account" 
-                        type="object" 
-                        class="btn-warning"
-                        attrs="{'invisible': [('is_archived', '=', True)]}"/>
-                <button name="action_unarchive_account" 
-                        string="Unarchive Account" 
-                        type="object" 
-                        class="btn-success"
-                        attrs="{'invisible': [('is_archived', '=', False)]}"/>
-            </header>
+            <form position="inside">
+                <header>
+                    <button name="action_archive_account" 
+                            string="Archive Account" 
+                            type="object" 
+                            class="btn-warning"
+                            attrs="{'invisible': [('is_archived', '=', True)]}"/>
+                    <button name="action_unarchive_account" 
+                            string="Unarchive Account" 
+                            type="object" 
+                            class="btn-success"
+                            attrs="{'invisible': [('is_archived', '=', False)]}"/>
+                </header>
+            </form>
         </field>
     </record>
     
