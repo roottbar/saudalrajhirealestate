@@ -113,7 +113,7 @@
         <field name="arch" type="xml">
             <search string="Search Asset Category">
                 <filter name="type" string="Sales" domain="[('type','=', 'sale')]" help="Deferred Revenues"/>
-                <filter name="type" string="Purchase" domain="[('type','=', 'purchase')]" help="Assets"/>
+                <filter name="type" string="Purchase" domain="[('type', '=', 'purchase')]" help="Assets"/>
                 <field name="name" string="Category"/>
                 <field name="journal_id"/>
                 <group expand="0" string="Group By...">
