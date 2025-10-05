@@ -61,7 +61,7 @@
                 </xpath>
                 <!-- Remove domain to avoid parse errors during Odoo 18 validation -->
                 <xpath expr="//field[@name='external_report_layout_id']" position="replace">
-                    <field name="external_report_layout_id" class="oe_inline"/>
+                    <field name="external_report_layout_id" domain="[('type', '=', 'qweb')]" class="oe_inline"/>
                 </xpath>
             </field>
         </record>
