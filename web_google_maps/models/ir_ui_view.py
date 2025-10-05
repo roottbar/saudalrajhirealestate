@@ -39,7 +39,7 @@ class IrUiView(models.Model):
                         else f"domain of field '{name}'"
                     )
                     fnames, vnames = self._validate_domain_identifiers(
-                        node, domain, desc
+                        node, domain, desc, desc, field.comodel_name, node_info
                     )
                     self._check_field_paths(
                         node, fnames, field.comodel_name, f"{desc} ({domain})"
