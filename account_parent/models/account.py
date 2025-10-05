@@ -136,7 +136,7 @@ class AccountAccount(models.Model):
 	_order = 'code, id'
 	
 	@api.model
-	def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+	def _search(self, args, offset=0, limit=None, order=None, access_rights_uid=None):
 		context = self._context or {}
 		# updated to search the code too
 		new_args = []
@@ -153,7 +153,7 @@ class AccountAccount(models.Model):
 		if not context.get('show_parent_account', False):
 			new_args = expression.AND([[('is_view', '=', False)], new_args])
 		return super(AccountAccount, self)._search(new_args, offset=offset, limit=limit, order=order,
-												   count=count, access_rights_uid=access_rights_uid)
+											   access_rights_uid=access_rights_uid)
 
 	
 class AccountJournal(models.Model):
