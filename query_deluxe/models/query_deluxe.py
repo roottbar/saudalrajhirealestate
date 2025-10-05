@@ -1,9 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-import os
-import logging
-
-_logger = logging.getLogger(__name__)
+from odoo.exceptions import UserError
 
 
 class QueryDeluxe(models.Model):
@@ -40,28 +36,6 @@ class QueryDeluxe(models.Model):
             self.name = self.tips.name
 
     def execute(self):
-        """
-        Execute a PostgreSQL query directly.
-        
-        ⚠️ SECURITY WARNING: This method executes raw SQL queries without
-        the protection of Odoo's ORM and access control systems.
-        Use only in development environments!
-        """
-        # Check if running on Odoo.sh or production environment
-        is_odoo_sh = os.environ.get('ODOO_STAGE') or os.environ.get('PLATFORM_SH')
-        if is_odoo_sh:
-            raise ValidationError(_(
-                "Security Error: Direct SQL query execution is disabled on Odoo.sh "
-                "and production environments. This module should only be used in "
-                "local development environments. Please use Odoo's ORM methods instead."
-            ))
-        
-        # Log security warning
-        _logger.warning(
-            "SECURITY: Direct SQL query executed by user %s (id=%s). Query: %s",
-            self.env.user.name, self.env.user.id, self.name[:100]
-        )
-        
         self.show_raw_output = False
         self.raw_output = ''
 
