@@ -59,9 +59,9 @@
                         </div>
                     </div>
                 </xpath>
-                <!-- Ensure a valid domain for external_report_layout_id to avoid ParseError -->
-                <xpath expr="//field[@name='external_report_layout_id']" position="attributes">
-                    <attribute name="domain">[]</attribute>
+                <!-- Force-replace external_report_layout_id to neutral domain to avoid ParseError -->
+                <xpath expr="//field[@name='external_report_layout_id']" position="replace">
+                    <field name="external_report_layout_id" domain="[]" class="oe_inline"/>
                 </xpath>
             </field>
         </record>
