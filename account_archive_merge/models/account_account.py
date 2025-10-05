@@ -41,15 +41,15 @@ class AccountAccount(models.Model):
         readonly=True
     )
     
-    def action_archive_account(self):
+    def action_archive_account(self, force=False):
         """أرشفة الحساب"""
         for account in self:
             if account.is_archived:
                 raise UserError(_('Account %s is already archived.') % account.name)
             
             # التحقق من وجود قيود محاسبية
-            if account.move_line_ids:
-                raise UserError(_('Cannot archive account %s because it has journal entries.') % account.name)
+            if account.move_line_ids and not force:
+                raise UserError(_('Cannot archive account %s because it has journal entries. Use force archive if needed.') % account.name)
             
             account.write({
                 'is_archived': True,
@@ -64,7 +64,7 @@ class AccountAccount(models.Model):
                 'action_type': 'archive',
                 'date': fields.Datetime.now(),
                 'user_id': self.env.user.id,
-                'reason': account.archive_reason or 'Manual archive'
+                'reason': account.archive_reason or ('Force archive' if force else 'Manual archive')
             })
     
     def action_unarchive_account(self):
