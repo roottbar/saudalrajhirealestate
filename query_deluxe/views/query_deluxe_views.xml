@@ -21,6 +21,16 @@
 				</header>
 
 				<sheet>
+					<div class="alert alert-warning" role="alert">
+						<strong>⚠️ Security Warning:</strong> This tool executes direct SQL queries without Odoo's security controls.
+						<ul>
+							<li>Use only in development environments</li>
+							<li>Never use on production or Odoo.sh</li>
+							<li>All queries are logged for audit purposes</li>
+							<li>Direct database access bypasses access rights</li>
+						</ul>
+					</div>
+
 					<group string="Examples">
 						<group colspan="4">
 							<field name="tips" widget="selection" nolabel="1"/>
