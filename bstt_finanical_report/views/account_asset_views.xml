@@ -6,14 +6,14 @@
             <field name="model">account.asset</field>
             <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
             <field name="arch" type="xml">
-                <field name="analytic_tag_ids" position="after">
+                <xpath expr="//field[@name='acquisition_date']" position="after">
                     <field name="product_id"/>
                     <field name="property_id"/>
                     <field name="property_address_build"/>
                     <field name="property_address_area"/>
                     <field name="property_address_city"/>
                     <field name="country"/>
-                </field>
+                </xpath>
             </field>
         </record>
 
