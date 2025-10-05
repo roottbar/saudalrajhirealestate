@@ -11,7 +11,7 @@
         'base',
         'sale_renting',
         'renting',
-        # 'web_google_maps',  # Commented out - module not installable
+        'web_google_maps',
     ],
     'data': [
         'security/security.xml',
