@@ -36,7 +36,6 @@ class SaleRentalSchedule(models.Model):
                 left join rent_property rp on (t.property_id=rp.id)
                 left join uom_uom u on (u.id=sol.product_uom)
                 left join uom_uom u2 on (u2.id=t.uom_id)
-                LEFT OUTER JOIN ordered_lots lot_info ON sol.id=lot_info.sol_id,
-                padding pdg
+                left outer join ordered_lots lot_info on (sol.id=lot_info.sol_id)
             """
         )
