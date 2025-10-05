@@ -61,11 +61,11 @@
                 </xpath>
 
                 <xpath expr="//page[@name='rental']" position="after">
-                    <page name="unit_information" string="معلومات الوحدة" invisible="('rent_ok','==',False)">
+                    <page name="unit_information" string="معلومات الوحدة" invisible="not rent_ok">
                         <group>
                             <group string="معلومات">
                                 <field name="unit_state"/>
-                                <field name="unit_number" required="('rent_ok','!=',False)"/>
+                                <field name="unit_number" required="rent_ok"/>
                                 <field name="unit_floor_number"/>
                                 <field name="rent_unit_area"/>
                                 <field name="entry_number"/>
@@ -88,33 +88,33 @@
                             <group string="الاثاث">
                                 <field name="furniture_bedroom"/>
                                 <field name="furniture_bedroom_no"
-                                       invisible="('furniture_bedroom','==',False)"/>
+                                       invisible="not furniture_bedroom"/>
                                 <field name="furniture_bathroom"/>
                                 <field name="furniture_bathroom_no"
-                                       invisible="('furniture_bathroom','==',False)"/>
+                                       invisible="not furniture_bathroom"/>
                                 <field name="furniture_reception"/>
                                 <field name="furniture_reception_no"
-                                       invisible="('furniture_reception','==',False)"/>
+                                       invisible="not furniture_reception"/>
                                 <field name="furniture_kitchen"/>
                                 <field name="furniture_kitchen_installed"
-                                       invisible="('furniture_kitchen','==',False)"/>
+                                       invisible="not furniture_kitchen"/>
                                 <field name="furniture_service_room"/>
                                 <field name="furniture_inventory"/>
                                 <field name="furniture_inventory_no"
-                                       invisible="('furniture_inventory','==',False)"/>
+                                       invisible="not furniture_inventory"/>
                                 <field name="furniture_setting_room"/>
                                 <field name="furniture_setting_room_no"
-                                       invisible="('furniture_setting_room','==',False)"/>
+                                       invisible="not furniture_setting_room"/>
                                 <field name="furniture_central_air_conditioner"/>
                                 <field name="furniture_split_air_conditioner"/>
                                 <field name="furniture_split_air_conditioner_no"
-                                       invisible="('furniture_split_air_conditioner','==',False)"/>
+                                       invisible="not furniture_split_air_conditioner"/>
                                 <field name="furniture_evaporator_cooler"/>
                                 <field name="furniture_evaporator_cooler_no"
-                                       invisible="('furniture_evaporator_cooler','==',False)"/>
+                                       invisible="not furniture_evaporator_cooler"/>
                                 <field name="furniture_locker_installed"/>
                                 <field name="furniture_locker_installed_no"
-                                       invisible="('furniture_locker_installed','==',False)"/>
+                                       invisible="not furniture_locker_installed"/>
                             </group>
                             <group string="تجهيزات الوحدة">
                                 <field name="rent_config_unit_finish_id"/>
