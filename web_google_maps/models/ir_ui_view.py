@@ -38,7 +38,7 @@ class IrUiView(models.Model):
                         if node.get('domain')
                         else f"domain of field '{name}'"
                     )
-                    fnames, vnames = self._get_domain_identifiers(
+                    fnames, vnames = self._validate_domain_identifiers(
                         node, domain, desc
                     )
                     self._check_field_paths(
