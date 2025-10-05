@@ -38,9 +38,9 @@ class IrUiView(models.Model):
                         if node.get('domain')
                         else f"domain of field '{name}'"
                     )
-                    # In Odoo 18, _get_domain_identifiers was renamed to _validate_domain_identifiers
+                    # In Odoo 18, _validate_domain_identifiers requires 6 parameters
                     fnames, vnames = self._validate_domain_identifiers(
-                        node, domain, desc
+                        node, domain, desc, desc, field.comodel_name, node_info
                     )
                     self._check_field_paths(
                         node, fnames, field.comodel_name, f"{desc} ({domain})"
