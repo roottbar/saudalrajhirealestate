@@ -11,7 +11,7 @@
         'base',
         'sale_renting',
         'renting',
-        'web_google_maps',
+        # 'web_google_maps',  # Commented out - google_map view is disabled in views/product.xml
     ],
     'data': [
         'security/security.xml',
