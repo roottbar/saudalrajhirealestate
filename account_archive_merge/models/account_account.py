@@ -55,8 +55,7 @@ class AccountAccount(models.Model):
             account.write({
                 'is_archived': True,
                 'archived_date': fields.Datetime.now(),
-                'archived_by': self.env.user.id,
-                'active': False
+                'archived_by': self.env.user.id
             })
             
             # إنشاء سجل في الأرشيف
@@ -78,8 +77,7 @@ class AccountAccount(models.Model):
                 'is_archived': False,
                 'archived_date': False,
                 'archived_by': False,
-                'archive_reason': False,
-                'active': True
+                'archive_reason': False
             })
             
             # إنشاء سجل في الأرشيف
@@ -111,8 +109,7 @@ class AccountAccount(models.Model):
                 'merged_into_account_id': target_account_id,
                 'merged_date': fields.Datetime.now(),
                 'merged_by': self.env.user.id,
-                'is_archived': True,
-                'active': False
+                'is_archived': True
             })
             
             # إنشاء سجل الدمج
