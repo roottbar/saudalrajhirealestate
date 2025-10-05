@@ -1,23 +1,24 @@
-odoo.define('web_google_maps.GoogleMapFormView', function (require) {
-    'use strict';
+/** @odoo-module **/
 
-    const pyUtils = require('web.py_utils');
-    const FormView = require('web.FormView');
+import { patch } from "@web/core/utils/patch";
+import { formView } from "@web/views/form/form_view";
 
-    FormView.include({
-        init: function (viewInfo, params) {
-            this._super.apply(this, arguments);
-            if (this.arch.attrs.geo_field) {
-                const geo_field = this.arch.attrs.geo_field
-                    ? pyUtils.py_eval(this.arch.attrs.geo_field)
-                    : {};
-                if (
-                    Object.prototype.hasOwnProperty.call(geo_field, 'lat') &&
-                    Object.prototype.hasOwnProperty.call(geo_field, 'lng')
-                ) {
-                    this.controllerParams.geo_field = geo_field;
+patch(formView, {
+    parseArchAttrs(attrs) {
+        const result = super.parseArchAttrs(...arguments);
+        
+        if (attrs.geo_field) {
+            try {
+                const geo_field = JSON.parse(attrs.geo_field);
+                if (geo_field && geo_field.lat && geo_field.lng) {
+                    result.geo_field = geo_field;
                 }
+            } catch (e) {
+                console.warn('Failed to parse geo_field attribute', e);
             }
-        },
-    });
+        }
+        
+        return result;
+    },
 });
+
