@@ -8,7 +8,6 @@
                 <field name="id"/>
                 <field name="partner_latitude"/>
                 <field name="partner_longitude"/>
-                <field name="color"/>
                 <field name="display_name"/>
                 <field name="title"/>
                 <field name="email"/>
@@ -24,10 +23,9 @@
                 <field name="mobile"/>
                 <field name="state_id"/>
                 <field name="category_id"/>
-                <field name="image_128"/>
+                <field name="avatar_128"/>
                 <field name="type"/>
                 <field name="company_type"/>
-                <field name="contact_address"/>
                 
             </google_map>
         </field>
