@@ -85,12 +85,12 @@ class IrUiView(models.Model):
             )
             self._raise_view_error(msg, node)
 
-        # Ensure correct argument binding: pass name first, then info
+        # Bind arguments by keyword to match Odoo 18 signature reliably
         name_manager.has_field(
-            str(name),
-            {'id': node.get('id'), 'select': node.get('select')},
-            node_info,
-            node,
+            name=str(name),
+            info={'id': node.get('id'), 'select': node.get('select')},
+            node_info=node_info,
+            node=node,
         )
 
         if validate:
@@ -163,12 +163,12 @@ class IrUiView(models.Model):
                     node.set('can_create', 'true' if can_create else 'false')
                     node.set('can_write', 'true' if can_write else 'false')
 
-            # Ensure correct argument binding: pass name first, then info
+            # Bind arguments by keyword to match Odoo 18 signature reliably
             name_manager.has_field(
-                str(node.get('name')),
-                attrs,
-                node_info,
-                node,
+                name=str(node.get('name')),
+                info=attrs,
+                node_info=node_info,
+                node=node,
             )
 
             field_info = name_manager.field_info.get(node.get('name'))
