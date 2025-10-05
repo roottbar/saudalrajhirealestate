@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 def _patch_view_arch(arch_text):
     """Remove deprecated xpath targeting t-call-assets='web.assets_common' and
-    replace any direct t-call-assets='web.assets_common' with website.assets_frontend.
+    replace any direct t-call-assets='web.assets_common' with web.assets_frontend.
 
     Returns (new_text, changed:boolean).
     """
@@ -29,8 +29,9 @@ def _patch_view_arch(arch_text):
 
         # Replace direct t-call-assets on any node (catch contains as well)
         for node in root.xpath(".//*[@t-call-assets and contains(@t-call-assets, 'assets_common')]"):
-            # In website contexts, use website.assets_frontend which is valid in Odoo 18
-            node.set('t-call-assets', 'website.assets_frontend')
+            # Use web.assets_frontend which is the valid website bundle in Odoo 18+
+            # (backend templates should target web.assets_backend explicitly)
+            node.set('t-call-assets', 'web.assets_frontend')
             changed = True
 
         if changed:
@@ -58,7 +59,7 @@ def _patch_view_arch(arch_text):
             "t-call-assets=&#39;web.assets_common&#39;",
             "t-call-assets=&quot;web.assets_common&quot;",
         ]:
-            new_text = new_text.replace(frag, "t-call-assets=\"website.assets_frontend\"")
+            new_text = new_text.replace(frag, "t-call-assets=\"web.assets_frontend\"")
         return new_text, (new_text != before)
 
 
