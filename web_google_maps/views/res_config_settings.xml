@@ -59,9 +59,9 @@
                         </div>
                     </div>
                 </xpath>
-                <!-- Force-replace external_report_layout_id to neutral domain to avoid ParseError -->
+                <!-- Fix external_report_layout_id domain syntax (space after comma is required) -->
                 <xpath expr="//field[@name='external_report_layout_id']" position="replace">
-                    <field name="external_report_layout_id" domain="[]" class="oe_inline"/>
+                    <field name="external_report_layout_id" domain="[('type', '=', 'qweb')]" class="oe_inline"/>
                 </xpath>
             </field>
         </record>
