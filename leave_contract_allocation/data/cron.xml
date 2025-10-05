@@ -9,7 +9,6 @@
             <field name="code">model.check_leave_allocation()</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
-            <field name="doall" eval="False"/>
         </record>
     </data>
 </odoo>
