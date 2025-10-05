@@ -7,6 +7,7 @@
     'depends': ['web', 'website'],
     'data': [],
     'post_init_hook': 'post_init_hook',
+    'post_load': 'post_load_hook',
     'installable': True,
     'auto_install': True,
 }
