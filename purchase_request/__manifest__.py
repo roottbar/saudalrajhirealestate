@@ -11,7 +11,7 @@
         'base',
         'purchase_stock',
         'user_action_rule',
-        'bstt_hr',
+        'hr',  # Changed from bstt_hr to hr - only uses standard hr.department and hr.employee
     ],
     'data': [
         'security/security.xml',
