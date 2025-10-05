@@ -85,10 +85,10 @@ class IrUiView(models.Model):
             )
             self._raise_view_error(msg, node)
 
-        # Ensure correct argument binding: pass info first, then name
+        # Ensure correct argument binding: pass name first, then info
         name_manager.has_field(
-            {'id': node.get('id'), 'select': node.get('select')},
             str(name),
+            {'id': node.get('id'), 'select': node.get('select')},
             node_info,
             node,
         )
@@ -163,10 +163,10 @@ class IrUiView(models.Model):
                     node.set('can_create', 'true' if can_create else 'false')
                     node.set('can_write', 'true' if can_write else 'false')
 
-            # Ensure correct argument binding: pass info first, then name
+            # Ensure correct argument binding: pass name first, then info
             name_manager.has_field(
-                attrs,
                 str(node.get('name')),
+                attrs,
                 node_info,
                 node,
             )
