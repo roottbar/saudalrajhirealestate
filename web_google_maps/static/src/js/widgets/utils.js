@@ -1,7 +1,6 @@
-odoo.define('web_google_maps.Utils', function (require) {
-    'use strict';
+/** @odoo-module **/
 
-    const rpc = require('web.rpc');
+import rpc from "@web/core/network/rpc";
 
     const GOOGLE_PLACES_COMPONENT_FORM = {
         street_number: 'long_name',
@@ -62,25 +61,21 @@ odoo.define('web_google_maps.Utils', function (require) {
      * @param {*} field_name
      * @param {*} value
      */
-    function fetchValues(model, field_name, value) {
+    async function fetchValues(model, field_name, value) {
         if (model && value) {
-            return new Promise(async (resolve) => {
-                const data = await rpc.query({
-                    model: model,
-                    method: 'search_read',
-                    args: [['|', ['name', '=', value], ['code', '=', value]], ['display_name']],
-                    limit: 1,
-                });
-                resolve({
-                    [field_name]: data.length === 1 ? data[0] : false,
-                });
+            const data = await rpc('/web/dataset/call_kw', {
+                model: model,
+                method: 'search_read',
+                args: [['|', ['name', '=', value], ['code', '=', value]], ['display_name']],
+                kwargs: { limit: 1 },
             });
+            return {
+                [field_name]: data.length === 1 ? data[0] : false,
+            };
         } else {
-            return new Promise((resolve) => {
-                resolve({
-                    [field_name]: value,
-                });
-            });
+            return {
+                [field_name]: value,
+            };
         }
     }
 
@@ -90,23 +85,20 @@ odoo.define('web_google_maps.Utils', function (require) {
      * @param {*} country
      * @param {*} state
      */
-    function fetchCountryState(model, country, state) {
+    async function fetchCountryState(model, country, state) {
         if (model && country && state) {
-            return new Promise(async (resolve) => {
-                const data = await rpc.query({
-                    model: model,
-                    method: 'search_read',
-                    args: [
-                        [['country_id', '=', country], '|', ['code', '=', state], ['name', '=', state]],
-                        ['display_name'],
-                    ],
-                    limit: 1,
-                });
-                const result = data.length === 1 ? data[0] : {};
-                resolve(result);
+            const data = await rpc('/web/dataset/call_kw', {
+                model: model,
+                method: 'search_read',
+                args: [
+                    [['country_id', '=', country], '|', ['code', '=', state], ['name', '=', state]],
+                    ['display_name'],
+                ],
+                kwargs: { limit: 1 },
             });
+            return data.length === 1 ? data[0] : {};
         } else {
-            return new Promise((resolve) => resolve([]));
+            return [];
         }
     }
 
@@ -2452,20 +2444,20 @@ odoo.define('web_google_maps.Utils', function (require) {
         ],
     };
 
-    return {
-        GOOGLE_PLACES_COMPONENT_FORM: GOOGLE_PLACES_COMPONENT_FORM,
-        ADDRESS_FORM: ADDRESS_FORM,
-        MAP_THEMES: MAP_THEMES,
-        ADDRESS_MODE: ADDRESS_MODE,
-        AUTOCOMPLETE_TYPES: AUTOCOMPLETE_TYPES,
-        MARKER_ICON_SVG_PATH: MARKER_ICON_SVG_PATH,
-        MARKER_ICON_WIDTH: MARKER_ICON_WIDTH,
-        MARKER_ICON_HEIGHT: MARKER_ICON_HEIGHT,
-        gmaps_populate_address: gmaps_populate_address,
-        gmaps_populate_places: gmaps_populate_places,
-        gmaps_get_geolocation: gmaps_get_geolocation,
-        fetchValues: fetchValues,
-        fetchCountryState: fetchCountryState,
-        parseMarkersColor: parseMarkersColor,
-    };
-});
+export {
+    GOOGLE_PLACES_COMPONENT_FORM,
+    ADDRESS_FORM,
+    MAP_THEMES,
+    ADDRESS_MODE,
+    AUTOCOMPLETE_TYPES,
+    MARKER_ICON_SVG_PATH,
+    MARKER_ICON_WIDTH,
+    MARKER_ICON_HEIGHT,
+    gmaps_populate_address,
+    gmaps_populate_places,
+    gmaps_get_geolocation,
+    fetchValues,
+    fetchCountryState,
+    parseMarkersColor,
+};
+

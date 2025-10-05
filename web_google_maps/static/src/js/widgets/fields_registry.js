@@ -1,10 +1,9 @@
-odoo.define('web_google_maps.FieldsRegistry', function (require) {
-    'use strict';
+/** @odoo-module **/
 
-    const registry = require('web.field_registry');
-    const GplacesAutocomplete = require('web_google_maps.GplaceAutocompleteFields');
+import { registry } from "@web/core/registry";
+import { GplacesAddressAutocompleteField, GplacesAutocompleteField } from "./gplaces_autocomplete";
 
-    registry.add('gplaces_address_autocomplete', GplacesAutocomplete.GplacesAddressAutocompleteField);
-    registry.add('gplaces_autocomplete', GplacesAutocomplete.GplacesAutocompleteField);
+const fieldRegistry = registry.category("fields");
 
-});
+fieldRegistry.add('gplaces_address_autocomplete', GplacesAddressAutocompleteField);
+fieldRegistry.add('gplaces_autocomplete', GplacesAutocompleteField);
