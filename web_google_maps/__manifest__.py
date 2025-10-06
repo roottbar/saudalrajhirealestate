@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Web Google Maps",
-    'version': "18.0.1.0.0",
+    'version': "18.0.1.0.1",
     'summary': "Enhanced Web Google Maps module",
     'description': """
         This module brings two features:
