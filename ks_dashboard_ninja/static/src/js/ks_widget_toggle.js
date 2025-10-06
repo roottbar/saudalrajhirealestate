@@ -1,121 +1,106 @@
-/** @odoo-module **/
+odoo.define('ks_dashboard_ninja_list.ks_widget_toggle', function (require) {
+    "use strict";
 
-import { Component, useState } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+    var registry = require('web.field_registry');
+    var AbstractField = require('web.AbstractField');
+    var core = require('web.core');
+    var QWeb = core.qweb;
 
-const fieldRegistry = registry.category("fields");
+    var KsWidgetToggle = AbstractField.extend({
 
-// Base Widget Toggle Component
-export class KsWidgetToggle extends Component {
-    static template = "ks_widget_toggle";
-    static props = {
-        ...standardFieldProps,
+        supportedFieldTypes: ['char'],
+
+        events: _.extend({}, AbstractField.prototype.events, {
+            'change .ks_toggle_icon_input': 'ks_toggle_icon_input_click',
+        }),
+
+        _render: function () {
+            var self = this;
+            self.$el.empty();
+
+
+            var $view = $(QWeb.render('ks_widget_toggle'));
+            if (self.value) {
+                $view.find("input[value='" + self.value + "']").prop("checked", true);
+            }
+            this.$el.append($view)
+
+            if (this.mode === 'readonly') {
+                this.$el.find('.ks_select_dashboard_item_toggle').addClass('ks_not_click');
+            }
+        },
+
+        ks_toggle_icon_input_click: function (e) {
+            var self = this;
+            self._setValue(e.currentTarget.value);
+        }
+    });
+
+    var KsWidgetToggleKPI = AbstractField.extend({
+
+        supportedFieldTypes: ['char'],
+
+        events: _.extend({}, AbstractField.prototype.events, {
+            'change .ks_toggle_icon_input': 'ks_toggle_icon_input_click',
+        }),
+
+        _render: function () {
+            var self = this;
+            self.$el.empty();
+            var $view = $(QWeb.render('ks_widget_toggle_kpi'));
+
+            if (self.value) {
+                $view.find("input[value='" + self.value + "']").prop("checked", true);
+            }
+            this.$el.append($view)
+
+            if (this.mode === 'readonly') {
+                this.$el.find('.ks_select_dashboard_item_toggle').addClass('ks_not_click');
+            }
+        },
+        ks_toggle_icon_input_click: function (e) {
+            var self = this;
+            self._setValue(e.currentTarget.value);
+        }
+    });
+
+    var KsWidgetToggleKpiTarget = AbstractField.extend({
+        supportedFieldTypes: ['char'],
+
+        events: _.extend({}, AbstractField.prototype.events, {
+            'change .ks_toggle_icon_input': 'ks_toggle_icon_input_click',
+        }),
+
+        _render: function () {
+            var self = this;
+            self.$el.empty();
+
+
+            var $view = $(QWeb.render('ks_widget_toggle_kpi_target_view'));
+            if (self.value) {
+                $view.find("input[value='" + self.value + "']").prop("checked", true);
+            }
+            this.$el.append($view)
+
+            if (this.mode === 'readonly') {
+                this.$el.find('.ks_select_dashboard_item_toggle').addClass('ks_not_click');
+            }
+        },
+
+        ks_toggle_icon_input_click: function (e) {
+            var self = this;
+            self._setValue(e.currentTarget.value);
+        }
+    });
+
+    registry.add('ks_widget_toggle', KsWidgetToggle);
+    registry.add('ks_widget_toggle_kpi', KsWidgetToggleKPI);
+    registry.add('ks_widget_toggle_kpi_target', KsWidgetToggleKpiTarget);
+    return {
+        KsWidgetToggle: KsWidgetToggle,
+        KsWidgetToggleKPI: KsWidgetToggleKPI,
+        KsWidgetToggleKpiTarget :KsWidgetToggleKpiTarget
     };
 
-    setup() {
-        this.state = useState({
-            selectedValue: this.props.value || '',
-        });
-    }
 
-    onToggleChange(ev) {
-        if (this.props.readonly) {
-            return;
-        }
-        
-        const value = ev.target.value;
-        this.state.selectedValue = value;
-        this.props.update(value);
-    }
-
-    get isReadonly() {
-        return this.props.readonly;
-    }
-
-    isSelected(value) {
-        return this.state.selectedValue === value;
-    }
-}
-
-// KPI Widget Toggle Component
-export class KsWidgetToggleKPI extends Component {
-    static template = "ks_widget_toggle_kpi";
-    static props = {
-        ...standardFieldProps,
-    };
-
-    setup() {
-        this.state = useState({
-            selectedValue: this.props.value || '',
-        });
-    }
-
-    onToggleChange(ev) {
-        if (this.props.readonly) {
-            return;
-        }
-        
-        const value = ev.target.value;
-        this.state.selectedValue = value;
-        this.props.update(value);
-    }
-
-    get isReadonly() {
-        return this.props.readonly;
-    }
-
-    isSelected(value) {
-        return this.state.selectedValue === value;
-    }
-}
-
-// KPI Target Widget Toggle Component
-export class KsWidgetToggleKpiTarget extends Component {
-    static template = "ks_widget_toggle_kpi_target_view";
-    static props = {
-        ...standardFieldProps,
-    };
-
-    setup() {
-        this.state = useState({
-            selectedValue: this.props.value || '',
-        });
-    }
-
-    onToggleChange(ev) {
-        if (this.props.readonly) {
-            return;
-        }
-        
-        const value = ev.target.value;
-        this.state.selectedValue = value;
-        this.props.update(value);
-    }
-
-    get isReadonly() {
-        return this.props.readonly;
-    }
-
-    isSelected(value) {
-        return this.state.selectedValue === value;
-    }
-
-    get toggleOptions() {
-        return [
-            { value: 'none', label: 'None' },
-            { value: 'target', label: 'Target' },
-            { value: 'previous', label: 'Previous Period' },
-        ];
-    }
-}
-
-// Set supported field types
-KsWidgetToggle.supportedTypes = ["char"];
-KsWidgetToggleKPI.supportedTypes = ["char"];
-KsWidgetToggleKpiTarget.supportedTypes = ["char"];
-
-// Register field widgets
-fieldRegistry.add("ks_widget_toggle", KsWidgetToggle);
-fieldRegistry.add("ks_widget_toggle_kpi", KsWidgetToggleKPI);
-fieldRegistry.add("ks_widget_toggle_kpi_target", KsWidgetToggleKpiTarget);
+});

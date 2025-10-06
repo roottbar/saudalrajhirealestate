@@ -1,106 +1,52 @@
-/** @odoo-module **/
+odoo.define('ks_dashboard_ninja_list.ks_dashboard_item_theme', function(require) {
+    "use strict";
 
-import { Component, useState, useRef } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+    var registry = require('web.field_registry');
+    var AbstractField = require('web.AbstractField');
+    var core = require('web.core');
 
-const fieldRegistry = registry.category("fields");
+    var QWeb = core.qweb;
 
-export class KsDashboardTheme extends Component {
-    static template = "ks_dashboard_theme_view";
-    static props = {
-        ...standardFieldProps,
+    //Widget for dashboard item theme using while creating dashboard item.
+    var KsDashboardTheme = AbstractField.extend({
+
+        supportedFieldTypes: ['char'],
+
+        events: _.extend({}, AbstractField.prototype.events, {
+            'click .ks_dashboard_theme_input_container': 'ks_dashboard_theme_input_container_click',
+        }),
+
+        _render: function() {
+            var self = this;
+            self.$el.empty();
+            var $view = $(QWeb.render('ks_dashboard_theme_view'));
+            if (self.value) {
+                $view.find("input[value='" + self.value + "']").prop("checked", true);
+            }
+            self.$el.append($view)
+
+            if (this.mode === 'readonly') {
+                this.$el.find('.ks_dashboard_theme_view_render').addClass('ks_not_click');
+            }
+        },
+
+        ks_dashboard_theme_input_container_click: function(e) {
+            var self = this;
+            var $box = $(e.currentTarget).find(':input');
+            if ($box.is(":checked")) {
+                self.$el.find('.ks_dashboard_theme_input').prop('checked', false)
+                $box.prop("checked", true);
+            } else {
+                $box.prop("checked", false);
+            }
+            self._setValue($box[0].value);
+        },
+    });
+
+    registry.add('ks_dashboard_item_theme', KsDashboardTheme);
+
+    return {
+        KsDashboardTheme: KsDashboardTheme
     };
 
-    setup() {
-        this.state = useState({
-            selectedTheme: this.props.value || '',
-        });
-    }
-
-    onThemeContainerClick(ev) {
-        const container = ev.currentTarget;
-        const input = container.querySelector('input');
-        
-        if (!input) return;
-        
-        // If readonly mode, prevent interaction
-        if (this.props.readonly) {
-            return;
-        }
-        
-        // Toggle selection
-        if (input.checked) {
-            // Uncheck all other theme inputs
-            this.el.querySelectorAll('.ks_dashboard_theme_input').forEach(inp => {
-                inp.checked = false;
-            });
-            input.checked = true;
-        } else {
-            input.checked = false;
-        }
-        
-        // Update state and notify parent
-        this.state.selectedTheme = input.checked ? input.value : '';
-        this.props.update(this.state.selectedTheme);
-    }
-
-    get isReadonly() {
-        return this.props.readonly;
-    }
-
-    get themeOptions() {
-        return [
-            { value: 'white', label: 'White', class: 'ks_theme_white' },
-            { value: 'dark', label: 'Dark', class: 'ks_theme_dark' },
-            { value: 'blue', label: 'Blue', class: 'ks_theme_blue' },
-            { value: 'red', label: 'Red', class: 'ks_theme_red' },
-            { value: 'green', label: 'Green', class: 'ks_theme_green' },
-            { value: 'yellow', label: 'Yellow', class: 'ks_theme_yellow' },
-            { value: 'purple', label: 'Purple', class: 'ks_theme_purple' },
-            { value: 'orange', label: 'Orange', class: 'ks_theme_orange' },
-        ];
-    }
-
-    isThemeSelected(themeValue) {
-        return this.state.selectedTheme === themeValue;
-    }
-
-    resetTheme() {
-        this.state.selectedTheme = '';
-        this.props.update('');
-        
-        // Uncheck all inputs
-        this.el.querySelectorAll('.ks_dashboard_theme_input').forEach(input => {
-            input.checked = false;
-        });
-    }
-
-    setTheme(themeValue) {
-        this.state.selectedTheme = themeValue;
-        this.props.update(themeValue);
-        
-        // Update input states
-        this.el.querySelectorAll('.ks_dashboard_theme_input').forEach(input => {
-            input.checked = input.value === themeValue;
-        });
-    }
-
-    getThemePreviewClass(themeValue) {
-        const themeMap = {
-            'white': 'ks_theme_preview_white',
-            'dark': 'ks_theme_preview_dark',
-            'blue': 'ks_theme_preview_blue',
-            'red': 'ks_theme_preview_red',
-            'green': 'ks_theme_preview_green',
-            'yellow': 'ks_theme_preview_yellow',
-            'purple': 'ks_theme_preview_purple',
-            'orange': 'ks_theme_preview_orange',
-        };
-        return themeMap[themeValue] || 'ks_theme_preview_default';
-    }
-}
-
-KsDashboardTheme.supportedTypes = ["char"];
-
-fieldRegistry.add("ks_dashboard_item_theme", KsDashboardTheme);
+});
