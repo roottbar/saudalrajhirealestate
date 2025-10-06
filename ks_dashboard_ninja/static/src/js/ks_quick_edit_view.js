@@ -1,170 +1,179 @@
-odoo.define('ks_dashboard_ninja.quick_edit_view', function(require) {
-    "use strict";
+/** @odoo-module **/
 
-    var core = require('web.core');
-    var Widget = require("web.Widget");
-    var _t = core._t;
-    var QWeb = core.qweb;
-    var data = require('web.data');
-    var QuickCreateFormView = require('web.QuickCreateFormView');
-    var AbstractAction = require('web.AbstractAction');
-    const session = require('web.session');
+import { Component, useState, onWillStart } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
+import { _t } from "@web/core/l10n/translation";
+import { session } from "@web/session";
+import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 
-    var QuickEditView = Widget.extend({
+export class KsQuickEditView extends Component {
+    static template = "ksQuickEditViewOption";
 
-        template: 'ksQuickEditViewOption',
+    setup() {
+        this.orm = useService("orm");
+        this.dialog = useService("dialog");
+        this.action = useService("action");
+        
+        this.state = useState({
+            item: this.props.item,
+            isLoading: false,
+        });
+        
+        this.ksDashboardController = this.props.parent;
+        this.ksOriginalItemData = { ...this.props.item };
+        this.item_name = this.props.item.name;
+        
+        onWillStart(this.onWillStart);
+    }
 
-        events: {
-            'click .ks_quick_edit_action': 'ksOnQuickEditViewAction',
-        },
+    async onWillStart() {
+        await this._ksCreateController();
+    }
 
-        init: function(parent, options) {
-            this._super.apply(this, arguments);
-            this.ksDashboardController = parent;
+    async _ksCreateController() {
+        this.context = {
+            ...session.user_context,
+            form_view_ref: 'ks_dashboard_ninja.item_quick_edit_form_view',
+            res_id: this.state.item.id,
+        };
+        this.res_model = "ks_dashboard_ninja.item";
+    }
 
-            this.ksOriginalItemData = $.extend({}, options.item);
-            this.item = options.item;
-            this.item_name = options.item.name;
-
-        },
-
-
-        willStart: function() {
-            var self = this;
-            return $.when(this._super()).then(function() {
-                return self._ksCreateController();
+    async ksOnQuickEditViewAction(ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        
+        this.state.isLoading = true;
+        
+        try {
+            // Open form dialog for editing
+            this.dialog.add(FormViewDialog, {
+                res_model: this.res_model,
+                res_id: this.state.item.id,
+                context: this.context,
+                title: _t("Quick Edit: ") + this.item_name,
+                mode: "edit",
+                size: "medium",
+                onRecordSaved: this._onRecordSaved.bind(this),
+                onRecordDeleted: this._onRecordDeleted.bind(this),
             });
-        },
+        } catch (error) {
+            console.error("Error opening quick edit dialog:", error);
+        } finally {
+            this.state.isLoading = false;
+        }
+    }
 
-        _ksCreateController: function() {
-            var self = this;
-
-            self.context = $.extend({}, session.user_context);
-            self.context['form_view_ref'] = 'ks_dashboard_ninja.item_quick_edit_form_view';
-            self.context['res_id'] = this.item.id;
-            self.res_model = "ks_dashboard_ninja.item";
-            self.dataset = new data.DataSet(this, this.res_model, self.context);
-            var def = self.loadViews(this.dataset.model, self.context, [
-                [false, 'list'],
-                [false, 'form']
-            ], {});
-            return $.when(def).then(function(fieldsViews) {
-                self.formView = new QuickCreateFormView(fieldsViews.form, {
-                    context: self.context,
-                    modelName: self.res_model,
-                    userContext: self.getSession().user_context,
-                    currentId: self.item.id,
-                    index: 0,
-                    mode: 'edit',
-                    footerToButtons: true,
-                    default_buttons: false,
-                    withControlPanel: false,
-                    ids: [self.item.id],
-                });
-                var def2 = self.formView.getController(self);
-                return $.when(def2).then(function(controller) {
-                    self.controller = controller;
-                    self.controller._confirmChange = self._confirmChange.bind(self);
-                });
-            });
-        },
-
-        //This Function is replacing Controllers to intercept in between to fetch changed data and update our item view.
-        _confirmChange: function(id, fields, e) {
-            if (e.name === 'discard_changes' && e.target.reset) {
-                // the target of the discard event is a field widget.  In that
-                // case, we simply want to reset the specific field widget,
-                // not the full view
-                return e.target.reset(this.controller.model.get(e.target.dataPointID), e, true);
+    async _onRecordSaved(record) {
+        // Refresh the dashboard item data
+        try {
+            const updatedData = await this.orm.read(
+                this.res_model,
+                [this.state.item.id],
+                []
+            );
+            
+            if (updatedData.length > 0) {
+                Object.assign(this.state.item, updatedData[0]);
+                
+                // Notify parent dashboard to refresh
+                if (this.ksDashboardController && this.ksDashboardController.ksRefreshDashboardItem) {
+                    this.ksDashboardController.ksRefreshDashboardItem(this.state.item.id);
+                }
             }
+        } catch (error) {
+            console.error("Error refreshing item data:", error);
+        }
+    }
 
-            var state = this.controller.model.get(this.controller.handle);
-            this.controller.renderer.confirmChange(state, id, fields, e);
-            return this.ks_Update_item();
-        },
+    async _onRecordDeleted() {
+        // Notify parent dashboard to remove the item
+        if (this.ksDashboardController && this.ksDashboardController.ksRemoveDashboardItem) {
+            this.ksDashboardController.ksRemoveDashboardItem(this.state.item.id);
+        }
+    }
 
-        ks_Update_item: function() {
-            var self = this;
-            var ksChanges = this.controller.renderer.state.data;
+    async ksGetItemData() {
+        try {
+            const result = await this.orm.call(
+                'ks_dashboard_ninja.item',
+                'read',
+                [this.state.item.id]
+            );
+            return result[0] || {};
+        } catch (error) {
+            console.error("Error fetching item data:", error);
+            return {};
+        }
+    }
 
-            if (ksChanges['name']) this.item['name'] = ksChanges['name'];
+    async ksUpdateItemData(values) {
+        try {
+            await this.orm.write(
+                'ks_dashboard_ninja.item',
+                [this.state.item.id],
+                values
+            );
+            
+            // Update local state
+            Object.assign(this.state.item, values);
+            
+            return true;
+        } catch (error) {
+            console.error("Error updating item data:", error);
+            return false;
+        }
+    }
 
-            self.item['ks_font_color'] = ksChanges['ks_font_color'];
-            self.item['ks_icon_select'] = ksChanges['ks_icon_select'];
-            self.item['ks_icon'] = ksChanges['ks_icon'];
-            self.item['ks_background_color'] = ksChanges['ks_background_color'];
-            self.item['ks_default_icon_color'] = ksChanges['ks_default_icon_color'];
-            self.item['ks_layout'] = ksChanges['ks_layout'];
-            self.item['ks_record_count'] = ksChanges['ks_record_count'];
+    ksResetItemData() {
+        // Reset item data to original values
+        Object.assign(this.state.item, this.ksOriginalItemData);
+    }
 
-            if (ksChanges['ks_list_view_data']) self.item['ks_list_view_data'] = ksChanges['ks_list_view_data'];
+    ksValidateItemData() {
+        // Basic validation for required fields
+        if (!this.state.item.name || this.state.item.name.trim() === '') {
+            return {
+                valid: false,
+                message: _t("Item name is required")
+            };
+        }
+        
+        if (!this.state.item.ks_model_id) {
+            return {
+                valid: false,
+                message: _t("Model is required")
+            };
+        }
+        
+        return {
+            valid: true,
+            message: ""
+        };
+    }
 
-            if (ksChanges['ks_chart_data']) self.item['ks_chart_data'] = ksChanges['ks_chart_data'];
+    async ksPreviewItem() {
+        // Preview functionality for the dashboard item
+        try {
+            const previewData = await this.orm.call(
+                'ks_dashboard_ninja.item',
+                'ks_get_item_preview_data',
+                [this.state.item.id]
+            );
+            
+            // Open preview dialog or update preview area
+            console.log("Preview data:", previewData);
+            
+        } catch (error) {
+            console.error("Error generating preview:", error);
+        }
+    }
 
-            if (ksChanges['ks_kpi_data']) self.item['ks_kpi_data'] = ksChanges['ks_kpi_data'];
+    get itemDisplayName() {
+        return this.state.item.name || _t("Unnamed Item");
+    }
 
-            if (ksChanges['ks_list_view_type']) self.item['ks_list_view_type'] = ksChanges['ks_list_view_type'];
-
-            if (ksChanges['ks_chart_item_color']) self.item['ks_chart_item_color'] = ksChanges['ks_chart_item_color'];
-
-            self.ksUpdateItemView();
-
-        },
-
-        start: function() {
-            var self = this;
-            this._super.apply(this, arguments);
-
-        },
-
-        renderElement: function() {
-            var self = this;
-            self._super.apply(this, arguments);
-            self.controller.appendTo(self.$el.find(".ks_item_field_info"));
-
-            self.trigger('canBeRendered', {});
-        },
-
-        ksUpdateItemView: function() {
-            var self = this;
-            self.ksDashboardController.ksUpdateDashboardItem([self.item.id]);
-            self.item_el = $.find('#' + self.item.id + '.ks_dashboarditem_id');
-
-        },
-
-        ksDiscardChanges: function() {
-            var self = this;
-            self.ksDashboardController.ksFetchUpdateItem(self.item.id);
-            self.destroy();
-        },
-
-
-        ksOnQuickEditViewAction: function(e) {
-            var self = this;
-            self.need_reset = false;
-            var options = {
-                'need_item_reload': false
-            }
-            if (e.currentTarget.dataset['ksItemAction'] === 'saveItemInfo') {
-                this.controller.saveRecord().then(function() {
-                    self.ksDiscardChanges();
-                })
-            } else if (e.currentTarget.dataset['ksItemAction'] === 'fullItemInfo') {
-                this.trigger('openFullItemForm', {});
-            } else {
-                self.ksDiscardChanges();
-            }
-        },
-
-        destroy: function(options) {
-            this.trigger('canBeDestroyed', {});
-            this.controller.destroy();
-            this._super();
-        },
-    });
-
-
-    return {
-        QuickEditView: QuickEditView,
-    };
-});
+    get isItemValid() {
+        return this.ksValidateItemData().valid;
+    }
+}
