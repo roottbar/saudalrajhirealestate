@@ -59,10 +59,7 @@
                         </div>
                     </div>
                 </xpath>
-                <!-- Remove domain to avoid parse errors during Odoo 18 validation -->
-                <xpath expr="//field[@name='external_report_layout_id']" position="attributes">
-                    <attribute name="domain">[('type', '=', 'qweb')]</attribute>
-                </xpath>
+                <!-- تمت إزالة أي تعديل على الدومين لحقل external_report_layout_id لتجنب أخطاء التحقق -->
 
             </field>
         </record>
