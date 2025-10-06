@@ -32,9 +32,10 @@ class AccountMoveLine(models.Model):
             )
 
     @api.model
-    def search_count(self, args):
+    def search_count(self, args, **kwargs):
         # In Big DataBase every time you change the domain widget this method
         # takes a lot of time. This improves performance
         if self.env.context.get("skip_search_count"):
             return 0
-        return super(AccountMoveLine, self).search_count(args)
+        # Forward any new kwargs (e.g., limit) introduced in newer Odoo versions
+        return super(AccountMoveLine, self).search_count(args, **kwargs)
