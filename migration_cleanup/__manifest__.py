@@ -1,7 +1,7 @@
 {
     'name': 'Migration Cleanup: Deprecated Assets Fix',
     'summary': 'Auto-clean QWeb views referencing web.assets_common (Odoo 18).',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'author': 'Internal Migration Tools',
     'license': 'LGPL-3',
     'depends': ['web', 'website'],
