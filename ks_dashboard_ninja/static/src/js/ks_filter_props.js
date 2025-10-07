@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dashboard_ninja.ks_dashboard_filter', function (require) {
 "use strict";
 

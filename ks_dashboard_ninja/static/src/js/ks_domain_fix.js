@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dashboard_ninja.domain_fix', function(require) {
 
     "use strict";

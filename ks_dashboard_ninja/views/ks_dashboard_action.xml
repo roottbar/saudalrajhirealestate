@@ -10,10 +10,17 @@
                         <group>
                             <field name="ks_dashboard_item_ids" invisible='1' required="1"/>
                             <field name="ks_dashboard_ninja_id"
+<<<<<<< HEAD
+                                   attrs="{'invisible':[('ks_action','=','duplicate')], 'required':[('ks_action','=','move')]}"
+                                   options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                            <field name="ks_dashboard_ninja_ids" widget='many2many_tags'
+                                   attrs="{'invisible':[('ks_action','=','move')], 'required':[('ks_action','=','duplicate')]}"
+=======
                                    required="('ks_action','=','move')" invisible="('ks_action','=','duplicate')"
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                             <field name="ks_dashboard_ninja_ids" widget='many2many_tags'
                                    required="('ks_action','=','duplicate')" invisible="('ks_action','=','move')"
+>>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                         </group>
                         <group>
@@ -29,4 +36,8 @@
         </record>
 
     </data>
+<<<<<<< HEAD
 </odoo>
+=======
+</odoo>
+>>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)

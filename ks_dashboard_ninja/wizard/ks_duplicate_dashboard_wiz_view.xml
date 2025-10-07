@@ -12,7 +12,11 @@
                 </group>
                 <footer>
                     <button class="btn-primary" name="ks_duplicate_record" type="object" string="Duplicate"/>
+<<<<<<< HEAD
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+=======
                     <button string="Cancel" class="btn-link" special="cancel"/>
+>>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                 </footer>
             </form>
         </field>
@@ -40,7 +44,11 @@
                 <h6 style="color: #71639e;">Are you sure you want to delete this dashboard ?</h6>
                 <footer>
                     <button class="btn-primary" name="ks_delete_record" type="object" string="Delete"/>
+<<<<<<< HEAD
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+=======
                     <button string="Cancel" class="btn-link" special="cancel"/>
+>>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                 </footer>
             </form>
         </field>

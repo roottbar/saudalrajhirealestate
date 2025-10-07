@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dashboard_ninja.quick_edit_view', function(require) {
     "use strict";
 

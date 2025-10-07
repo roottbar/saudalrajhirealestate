@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dashboard_ninja_list.ks_image_basic_widget', function(require) {
     "use strict";
 

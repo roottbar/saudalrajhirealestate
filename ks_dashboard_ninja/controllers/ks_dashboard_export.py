@@ -1,17 +1,12 @@
 import io
 import json
 import operator
-import logging
-from werkzeug.exceptions import InternalServerError
 
-from odoo.addons.web.controllers.export import ExportFormat
-from odoo.http import serialize_exception
+from odoo.addons.web.controllers.main import ExportFormat,serialize_exception
 
 from odoo import http
 from odoo.http import request
 from odoo.http import content_disposition,request
-
-_logger = logging.getLogger(__name__)
 
 
 class KsDashboardExport(http.Controller):
@@ -30,17 +25,9 @@ class KsDashboardExport(http.Controller):
 class KsDashboardJsonExport(KsDashboardExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/dashboard_json', type='http', auth="user")
+    @serialize_exception
     def index(self, data):
-        try:
-            return self.base(data)
-        except Exception as exc:
-            _logger.exception("Exception during dashboard JSON export request handling.")
-            payload = json.dumps({
-                'code': 200,
-                'message': "Odoo Server Error",
-                'data': serialize_exception(exc)
-            })
-            raise InternalServerError(payload) from exc
+        return self.base(data)
 
     @property
     def content_type(self):
@@ -58,21 +45,13 @@ class KsDashboardJsonExport(KsDashboardExport, http.Controller):
 class KsItemJsonExport(KsDashboardExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/item_json', type='http', auth="user")
+    @serialize_exception
     def index(self, data):
-        try:
-            data = json.loads(data)
-            item_id = data["item_id"]
-            data['dashboard_data'] = request.env['ks_dashboard_ninja.board'].ks_export_item(item_id)
-            data = json.dumps(data)
-            return self.base(data)
-        except Exception as exc:
-            _logger.exception("Exception during item JSON export request handling.")
-            payload = json.dumps({
-                'code': 200,
-                'message': "Odoo Server Error",
-                'data': serialize_exception(exc)
-            })
-            raise InternalServerError(payload) from exc
+        data = json.loads(data)
+        item_id = data["item_id"]
+        data['dashboard_data'] = request.env['ks_dashboard_ninja.board'].ks_export_item(item_id)
+        data = json.dumps(data)
+        return self.base(data)
 
     @property
     def content_type(self):

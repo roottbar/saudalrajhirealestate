@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dashboard_ninja.KsGlobalFunction', function(require) {
     "use strict";
 

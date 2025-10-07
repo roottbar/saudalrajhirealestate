@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dashboard_ninja_list.ks_color_picker', function(require) {
     "use strict";
 

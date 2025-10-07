@@ -18,15 +18,11 @@ from odoo.addons.ks_dashboard_ninja.common_lib.ks_date_filter_selections import 
 # TODO : Check all imports if needed
 
 
-# Keep original Many2many.read to safely fallback during registry preload
-ORIGINAL_M2M_READ = fields.Many2many.read
+read = fields.Many2one.read
 
 
 def ks_read(self, records):
     if self.name == 'ks_list_view_fields' or self.name == 'ks_list_view_group_fields':
-        # If registry not ready (during preload), use original behavior to avoid API mismatches
-        if not records.env.registry.ready:
-            return ORIGINAL_M2M_READ(self, records)
         comodel = records.env[self.comodel_name]
 
         # String domains are supposed to be dynamic and evaluated on client-side
@@ -35,15 +31,7 @@ def ks_read(self, records):
 
         wquery = comodel._where_calc(domain)
         comodel._apply_ir_rules(wquery, 'read')
-        # Handle Odoo query API differences gracefully
-        try:
-            from_c, where_c, where_params = wquery.get_sql()
-        except AttributeError:
-            try:
-                from_c, where_c, where_params = wquery.query.get_sql()
-            except Exception:
-                # Fallback to original read if SQL extraction is not available
-                return ORIGINAL_M2M_READ(self, records)
+        from_c, where_c, where_params = wquery.get_sql()
         query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
                     WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
                 """.format(rel=self.relation, id1=self.column1, id2=self.column2,
@@ -75,32 +63,15 @@ def ks_read(self, records):
             cache.set(record, self, tuple(group[record.id]))
 
     else:
-        # During registry preload or for system models (e.g., res.groups.implied_ids),
-        # defer to the original implementation to avoid API mismatches.
-        if not records.env.registry.ready:
-            return ORIGINAL_M2M_READ(self, records)
         context = {'active_test': False}
         context.update(self.context)
         comodel = records.env[self.comodel_name].with_context(**context)
         domain = self.get_domain_list(records)
-        # Remove pre-flush of search to avoid recursive rule evaluation during registry init
+        comodel._flush_search(domain)
         wquery = comodel._where_calc(domain)
         comodel._apply_ir_rules(wquery, 'read')
-        # Avoid calling missing _generate_order_by on certain models during registry init
-        try:
-            order_by = comodel._generate_order_by(None, wquery)
-        except Exception:
-            order_by = ''
-        # Handle older/newer Odoo query API differences gracefully
-        try:
-            from_c, where_c, where_params = wquery.get_sql()
-        except AttributeError:
-            # In some versions, an expression object may expose .query.get_sql()
-            try:
-                from_c, where_c, where_params = wquery.query.get_sql()
-            except Exception:
-                # Fallback to original read if SQL extraction is not available
-                return ORIGINAL_M2M_READ(self, records)
+        order_by = comodel._generate_order_by(None, wquery)
+        from_c, where_c, where_params = wquery.get_sql()
         query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
                             WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
                             {order_by} {limit} OFFSET {offset}
@@ -124,8 +95,12 @@ def ks_read(self, records):
 
 fields.Many2many.read = ks_read
 
+<<<<<<< HEAD
+read_group = models.BaseModel._read_group_process_groupby
+=======
 # Odoo 15+ compatibility: using _read_group_postprocess_groupby
 read_group = models.BaseModel._read_group_postprocess_groupby
+>>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
 
 def ks_time_addition(self, gb, query):
