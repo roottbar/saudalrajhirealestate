@@ -129,92 +129,57 @@
                     <field name="ks_model_id"
                            options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                            context="{'current_id': id}"
-<<<<<<< HEAD
-                           attrs="{'required':['|',('ks_dashboard_item_type','in',['ks_kpi','ks_tile']),'&amp;',('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','not in',['ks_kpi','ks_tile', 'ks_to_do'])],
-                                'invisible':['|',('ks_dashboard_item_type','not in',['ks_kpi','ks_tile']),('ks_data_calculation_type','=','query'), ('ks_dashboard_item_type','in',['ks_to_do'])]}"/>
+                           modifiers="{'required':['|',('ks_dashboard_item_type','in',['ks_kpi','ks_tile']),'&amp;',('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','not in',['ks_kpi','ks_tile','ks_to_do'])],
+                                       'invisible':['|',('ks_dashboard_item_type','not in',['ks_kpi','ks_tile']),('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','in',['ks_to_do'])]}"/>
                 </xpath>
                 <xpath expr="//form/group[@name='chart_settings']" position="replace">
                     <group name="chart_settings"
-                           attrs="{'invisible':['|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}"
+                           modifiers="{'invisible':['|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}"
                            class="ks_qe_form_view_group">
-                        <field name="ks_chart_data_count_type" attrs="{'invisible':['|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view')],
-                                                                                'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>
-                        <field name="ks_list_view_type" attrs="{'invisible':['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view')],
+                        <field name="ks_chart_data_count_type" modifiers="{'invisible':['|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view')],
+                                                                            'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>
+                        <field name="ks_list_view_type" modifiers="{'invisible':['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view')],
                                            'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view')]}"/>
                         <field name="ks_chart_measure_field" string="Measures" widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               attrs="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')]}"/>
+                               modifiers="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')],
+                                           'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')]}"/>
 
                         <field name="ks_chart_measure_field_2" string="Line Measure" widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               attrs="{'invisible':['|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart')]}"/>
-=======
-                           required="'|',('ks_dashboard_item_type','in',['ks_kpi','ks_tile'" invisible="'|',('ks_dashboard_item_type','not in',['ks_kpi','ks_tile'"/>
-                </xpath>
-                <xpath expr="//form/group[@name='chart_settings']" position="replace">
-                    <group name="chart_settings"
-                           invisible="'|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')"
-                           class="ks_qe_form_view_group">
-                        <field name="ks_chart_data_count_type" required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')" invisible="'|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view')"/>
-                        <field name="ks_list_view_type" required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view')" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view')"/>
-                        <field name="ks_chart_measure_field" string="Measures" widget='many2many_tags'
-                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')" invisible="'|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')"/>
-
-                        <field name="ks_chart_measure_field_2" string="Line Measure" widget='many2many_tags'
-                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               invisible="'|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                               modifiers="{'invisible':['|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart')]}"/>
 
 
                         <field name="ks_list_view_fields" string="Fields to show in list"
                                widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
-                               attrs="{'invisible':['|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')]}"/>
-=======
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')" invisible="'|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                               modifiers="{'invisible':['|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')],
+                                           'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')]}"/>
 
                         <field name="ks_list_view_group_fields" string="Fields to show in list"
                                widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
-                               attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
-=======
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                               modifiers="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')],
+                                           'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
 
                         <field name="ks_chart_groupby_type" invisible="1"/>
                         <field name="ks_chart_relation_groupby" string="Group By"
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
-                               attrs="{'invisible':['|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
+                               modifiers="{'invisible':['|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')],
+                                           'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
                         <field name="ks_chart_date_groupby" string="Group By Date"
-                               attrs="{'invisible':[('ks_chart_groupby_type','!=','date_type')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')]}"/>
-=======
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')"/>
-                        <field name="ks_chart_date_groupby" string="Group By Date"
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')" invisible="('ks_chart_groupby_type','!=','date_type')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                               modifiers="{'invisible':[('ks_chart_groupby_type','!=','date_type')],
+                                           'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')]}"/>
                     </group>
                 </xpath>
                 <xpath expr="//group[@name='chart_settings']" position="after">
                     <group name="custom_query" class="ks_qe_form_view_group"
-<<<<<<< HEAD
-                           attrs="{'invisible':['|',('ks_data_calculation_type','=','custom'),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}">
+                           modifiers="{'invisible':['|',('ks_data_calculation_type','=','custom'),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}">
                         <field name="ks_custom_query"
-                               attrs="{'required': [('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')]}"/>
+                               modifiers="{'required': [('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')]}"/>
                         <field name="ks_query_result" invisible="1"/>
-                        <field name="ks_xlabels" widget="ks_labels" attrs="{'invisible':[('ks_dashboard_item_type','=','ks_list_view')],
+                        <field name="ks_xlabels" widget="ks_labels" modifiers="{'invisible':[('ks_dashboard_item_type','=','ks_list_view')],
                                                                             'required': [('ks_dashboard_item_type','!=','ks_list_view'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')]}"/>
-=======
-                           invisible="'|',('ks_data_calculation_type','=','custom'),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')">
-                        <field name="ks_custom_query"
-                               required="('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')"/>
-                        <field name="ks_query_result" invisible="1"/>
-                        <field name="ks_xlabels" widget="ks_labels" required="('ks_dashboard_item_type','!=','ks_list_view'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_data_calculation_type','=','query')" invisible="('ks_dashboard_item_type','=','ks_list_view')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                     </group>
                 </xpath>
 
@@ -233,8 +198,4 @@
             </field>
         </record>
     </data>
-<<<<<<< HEAD
 </odoo>
-=======
-</odoo>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
