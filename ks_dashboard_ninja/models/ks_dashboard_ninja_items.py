@@ -23,50 +23,10 @@ original_m2m_read = fields.Many2many.read
 
 
 def ks_read(self, records):
-    if self.name == 'ks_list_view_fields' or self.name == 'ks_list_view_group_fields':
-        comodel = records.env[self.comodel_name]
-
-        # String domains are supposed to be dynamic and evaluated on client-side
-        # only (thus ignored here).
-        domain = self.domain if isinstance(self.domain, list) else []
-
-        wquery = comodel._where_calc(domain)
-        comodel._apply_ir_rules(wquery, 'read')
-        from_c, where_c, where_params = wquery.get_sql()
-        query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
-                    WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
-                """.format(rel=self.relation, id1=self.column1, id2=self.column2,
-                           tbl=comodel._table, from_c=from_c, where_c=where_c or '1=1',
-                           limit=(' LIMIT %d' % self.limit) if self.limit else '',
-                           )
-        where_params.append(tuple(records.ids))
-
-        # retrieve lines and group them by record
-        group = defaultdict(list)
-        records._cr.execute(query, where_params)
-        rec_list = records._cr.fetchall()
-        for row in rec_list:
-            group[row[0]].append(row[1])
-
-        # store result in cache
-        cache = records.env.cache
-        for record in records:
-            if self.name == 'ks_list_view_fields':
-                field = 'ks_list_view_fields'
-            else:
-                field = 'ks_list_view_group_fields'
-            order = False
-            if record.ks_many2many_field_ordering:
-                order = json.loads(record.ks_many2many_field_ordering).get(field, False)
-
-            if order:
-                group[record.id].sort(key=lambda x: order.index(x))
-            cache.set(record, self, tuple(group[record.id]))
-
-    else:
-        # For all other Many2many fields, use the original behavior to avoid
-        # interfering with core models (e.g., res.groups.implied_ids) and rules.
-        return original_m2m_read(self, records)
+    # To ensure compatibility with Odoo 18 ORM (Query API changes) and avoid
+    # registry-load failures, always delegate to the original Many2many.read.
+    # This also prevents recursion in core models and rule computations.
+    return original_m2m_read(self, records)
 
 
 fields.Many2many.read = ks_read
