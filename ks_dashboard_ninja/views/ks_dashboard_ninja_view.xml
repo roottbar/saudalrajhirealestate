@@ -188,11 +188,11 @@
         <!-- Child Boards List -->
         <record id="ks_dashboard_ninja.ks_child_board_tree" model="ir.ui.view">
             <field name="name">ks_dashboard_ninja.ks_child_board.list</field>
-            <field name="model">ks_dashboard_ninja.ks_child_board</field>
+            <field name="model">ks_dashboard_ninja.child_board</field>
             <field name="arch" type="xml">
                 <list string="Child Boards" editable="top" create="0">
-                    <field name="ks_child_menu_id"/>
-                    <field name="ks_is_active"/>
+                    <field name="ks_dashboard_ninja_id"/>
+                    <field name="ks_active"/>
                 </list>
             </field>
         </record>
