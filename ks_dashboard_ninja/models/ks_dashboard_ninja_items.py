@@ -50,8 +50,14 @@ def ks_time_addition(self, gb, query):
         gb_function = 'month'
     temporal = field_type in ('date', 'datetime')
     tz_convert = field_type == 'datetime' and self._context.get('tz') in pytz.all_timezones
-    # Odoo 18: _inherits_join_calc has been removed, use query.tables to get the table alias
-    qualified_field = '"%s"."%s"' % (query.tables[split[0]], split[0])
+    # Odoo 18: _inherits_join_calc has been removed, use query.tables or self._field_to_sql
+    # query.tables maps field names to their SQL table aliases
+    field_name = split[0]
+    if hasattr(query, 'tables') and field_name in query.tables:
+        qualified_field = '"%s"."%s"' % (query.tables[field_name], field_name)
+    else:
+        # Fallback: use the model's table name directly
+        qualified_field = '"%s"."%s"' % (self._table, field_name)
     if temporal:
         display_formats = {
             'minute': 'hh:mm dd MMM',
