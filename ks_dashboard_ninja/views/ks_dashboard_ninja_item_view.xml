@@ -237,13 +237,6 @@
                             <group name="ks_dn_header_line"
                                    modifiers="{'invisible' : [('ks_dashboard_item_type','!=','ks_to_do')]}">
                                 <field name="ks_dn_header_lines" string="Sections">
-                                    <tree string="Section"
-                                          widget="section_and_note_one2many">
-                                        <control>
-                                            <create string="Add a Section"/>
-                                        </control>
-                                        <field name="ks_to_do_header" string="Section"/>
-                                    </tree>
                                     <form>
                                         <group>
                                             <group>
