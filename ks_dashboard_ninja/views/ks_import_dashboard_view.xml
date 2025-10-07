@@ -37,8 +37,4 @@
 <!--                  action="ks_dashboard_ninja.layout_tree_action_window" groups="ks_dashboard_ninja_group_manager"/>-->
     </data>
 
-<<<<<<< HEAD
 </odoo>
-=======
-</odoo>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)

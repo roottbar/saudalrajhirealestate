@@ -5,11 +5,7 @@
             <field name="name">Dashboard Items</field>
             <field name="model">ks_dashboard_ninja.item</field>
             <field name="arch" type="xml">
-<<<<<<< HEAD
-                <tree create="false">
-=======
                 <list create="false">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                     <field name="id"/>
                     <field name="name"/>
                     <field name="ks_dashboard_ninja_board_id" string="Dashboard"/>
@@ -22,11 +18,7 @@
                     <field name="ks_compare_period"/>
                     <field name="ks_year_period"/>
                     <field name="ks_update_items_data"/>
-<<<<<<< HEAD
-                </tree>
-=======
                 </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
             </field>
         </record>
 
@@ -107,7 +99,6 @@
                         <field name="ks_actions" invisible="1"/>
                         <field name="ks_model_id" placeholder="Model..."
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True, 'limit': 10}"
-<<<<<<< HEAD
                                attrs="{'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
                                                     'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])],'invisible':['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
                                                         ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
@@ -129,32 +120,10 @@
                                string="Record Value"/>
                         <field name="ks_layout" placeholder="Layout..."
                                attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile')]}"/>
-=======
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
-                                                        ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'"/>
-                        <field name="ks_dashboard_item_type" invisible="1"/>
-                        <field name="ks_update_items_data" invisible="('ks_dashboard_item_type','=', 'ks_to_do')" placeholder="Item Update Interval.."/>
-                    </group>
-
-                    <group invisible="('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')"
-                           class="ks_qe_form_view_group">
-                        <field name="ks_record_count_type"
-                               required="('ks_model_id','!=',False),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')" invisible="('ks_model_id','=',False)"/>
-                        <field name="ks_record_field" placeholder="Record Field..."
-                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               required="('ks_record_count_type','!=','count'),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')" invisible="('ks_record_count_type','=','count')"/>
-                        <field name="ks_record_count" placeholder="Count..."
-                               string="Record Value"/>
-                        <field name="ks_layout" placeholder="Layout..."
-                               invisible="('ks_dashboard_item_type','!=','ks_tile')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                         <field name="ks_dashboard_item_theme" widget="ks_dashboard_item_theme"/>
                     </group>
 
                     <group name="chart_settings"
-<<<<<<< HEAD
                            attrs="{'invisible':['|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','in',['ks_tile','ks_kpi'])]}"
                            class="ks_qe_form_view_group">
                         <!--                           attrs="{'invisible':['|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}"-->
@@ -175,67 +144,30 @@
                         <field name="ks_chart_measure_field_2" string="Line Measure" widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                attrs="{'invisible':['|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart')]}"/>
-=======
-                           invisible="'|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','in',['ks_tile','ks_kpi'"
-                           class="ks_qe_form_view_group">
-                        <!--                           invisible="'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')"-->
-                        <field name="ks_chart_data_count_type" required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')" invisible="'|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view')"/>
-                        <!--                                                                                'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>-->
-                        <field name="ks_list_view_type" force_save="1"
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view')" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view')"/>
-                        <!--                               required="('ks_dashboard_item_type','=','ks_list_view')" invisible="('ks_dashboard_item_type','!=','ks_list_view')"/>-->
-                        <field name="ks_chart_measure_field" string="Measures" widget='many2many_tags'
-                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               required="('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_data_calculation_type','=','custom'),('ks_chart_data_count_type','!=','count')" invisible="'|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_data_calculation_type','!=','custom')"/>
-                        <!--                               required="('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')" invisible="'|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')"/>-->
-
-                        <field name="ks_chart_measure_field_2" string="Line Measure" widget='many2many_tags'
-                               options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                               invisible="'|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
 
                         <field name="ks_list_view_fields" string="Fields to show in list"
                                widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
                                attrs="{'invisible':['|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')]}"/>
 
                         <!--                               attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')],'required':[('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')]}"/>-->
-=======
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')" invisible="'|','|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')"/>
-
-                        <!--                               required="('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')" invisible="'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')"/>-->
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
                         <field name="ks_list_view_group_fields" string="Fields to show in list"
                                widget='many2many_tags'
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
                                attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
                         <!--                               attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')],'required':[('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>-->
-=======
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')"/>
-                        <!--                               required="('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')"/>-->
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
                         <field name="ks_chart_groupby_type" invisible="1"/>
                         <field name="ks_chart_relation_groupby" string="Group By"
                                options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
                                attrs="{'invisible':['|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')],
                                'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
                         <!--                               attrs="{'invisible':['|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')],'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>-->
                         <field name="ks_chart_date_groupby" string="Group By Date"
                                attrs="{'invisible':[('ks_chart_groupby_type','!=','date_type')],'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')]}"/>
                         <!--                               attrs="{'invisible':[('ks_chart_groupby_type','!=','date_type')],'required':[('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')]}"/>-->
-=======
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')"/>
-                        <!--                               required="('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')"/>-->
-                        <field name="ks_chart_date_groupby" string="Group By Date"
-                               required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')" invisible="('ks_chart_groupby_type','!=','date_type')"/>
-                        <!--                               required="('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_groupby_type','=','date_type')" invisible="('ks_chart_groupby_type','!=','date_type')"/>-->
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                     </group>
                 </form>
             </field>
@@ -267,40 +199,24 @@
                             <field name="ks_model_id"
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                    context="{'current_id': id}"
-<<<<<<< HEAD
                                    attrs="{'required':[('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
                                                     'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])],'invisible':['|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
                                                         ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
                                                         'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}"/>
-=======
-                                   required="('ks_data_calculation_type','=','custom'),('ks_dashboard_item_type','in',['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'" invisible="'|',('ks_data_calculation_type','=','query'),('ks_dashboard_item_type','not in',
-                                                        ['ks_kpi','ks_tile','ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart',
-                                                        'ks_doughnut_chart','ks_polarArea_chart','ks_list_view'"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                             <field name="ks_company_id"
                                    options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                             <field name="ks_dashboard_item_type" string="Type" context="{'current_id': id}"/>
                             <field name="ks_semi_circle_chart"
                                    context="{'current_id': id}"
-<<<<<<< HEAD
                                    attrs="{'invisible':['|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type', 'not in', ['ks_doughnut_chart','ks_pie_chart'])]}"/>
                         </group>
                         <div style="width: calc(50% - 30px);position: fixed;">
                             <field name="ks_preview" widget="ks_dashboard_item_preview"
                                    attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile')]}"
-=======
-                                   invisible="'|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type', 'not in', ['ks_doughnut_chart','ks_pie_chart'"/>
-                        </group>
-                        <div style="width: calc(50% - 30px);position: fixed;">
-                            <field name="ks_preview" widget="ks_dashboard_item_preview"
-                                   invisible="('ks_dashboard_item_type','!=','ks_tile')"
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
                             />
                             <field name="ks_graph_preview" string="Preview"
                                    widget="ks_dashboard_graph_preview"
-<<<<<<< HEAD
                                    attrs="{'invisible':['|','|','|',('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')]}"/>
                             <field name="ks_list_view_preview"
                                    widget="ks_dashboard_list_view_preview"
@@ -313,45 +229,21 @@
                                    string="Preview"
                                    widget="ks_dashboard_to_do_preview"
                                    attrs="{'invisible' : [('ks_dashboard_item_type','!=','ks_to_do')]}"
-=======
-                                   invisible="'|','|','|',('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')"/>
-                            <field name="ks_list_view_preview"
-                                   widget="ks_dashboard_list_view_preview"
-
-                                   invisible="('ks_dashboard_item_type','!=','ks_list_view')"/>
-                            <field name="ks_kpi_preview" string="Preview"
-                                   widget="ks_dashboard_kpi_preview"
-                                   />
-                            <field name="ks_to_do_preview"
-                                   string="Preview"
-                                   widget="ks_dashboard_to_do_preview"
-                                   
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                             />
                         </div>
                     </group>
                     <notebook style="width:50%">
                         <page string="Data" name="data_sets">
                             <group name="ks_dn_header_line"
-<<<<<<< HEAD
                                    attrs="{'invisible' : [('ks_dashboard_item_type','!=','ks_to_do')]}">
                                 <field name="ks_dn_header_lines" string="Sections">
                                     <tree string="Section"
-=======
-                                   >
-                                <field name="ks_dn_header_lines" string="Sections">
-                                    <list string="Section"
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                           widget="section_and_note_one2many">
                                         <control>
                                             <create string="Add a Section"/>
                                         </control>
                                         <field name="ks_to_do_header" string="Section"/>
-<<<<<<< HEAD
                                     </tree>
-=======
-                                    </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                     <form>
                                         <group>
                                             <group>
@@ -362,22 +254,14 @@
                                             <page string="Tasks">
 
                                                 <field name="ks_to_do_description_lines" string="Tasks">
-<<<<<<< HEAD
                                                     <tree string="Task Lines" editable="top"
-=======
-                                                    <list string="Task Lines" editable="top"
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                                           widget="section_and_note_one2many">
                                                         <control>
                                                             <create string="Add a Line"/>
                                                         </control>
                                                         <field name="ks_description" string="Tasks" required="1"/>
                                                         <field name="ks_active" string="Active"/>
-<<<<<<< HEAD
                                                     </tree>
-=======
-                                                    </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                                 </field>
 
                                             </page>
@@ -385,7 +269,6 @@
                                     </form>
                                 </field>
                             </group>
-<<<<<<< HEAD
                             <group attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')]}">
                                 <field name="ks_record_count_type"
                                        attrs="{'invisible':[('ks_model_id','=',False)], 'required':[('ks_model_id','!=',False),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')]}"/>
@@ -405,30 +288,10 @@
                                        attrs="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')],
                                                      'required':[('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count'),('ks_data_calculation_type','=','custom')]}"/>
                                 <!--                                               attrs="{'invisible':['|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')],'required':[('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')]}"/>-->
-=======
-                            <group invisible="('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')">
-                                <field name="ks_record_count_type"
-                                       required="('ks_model_id','!=',False),'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')" invisible="('ks_model_id','=',False)"/>
-
-                                <field name="ks_record_field"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       required="'&amp;',('ks_record_count_type','!=','count'),'|',('ks_dashboard_item_type','=','ks_kpi'),('ks_dashboard_item_type','=','ks_tile')" invisible="('ks_record_count_type','=','count'),'|',('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile')"/>
-                                <field name="ks_record_count" string="Record Value"/>
-                                <field name="ks_previous_period"
-                                       />
-                            </group>
-                            <group invisible="'|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')">
-                                <field name="ks_chart_measure_field" string="Measures" widget='many2many_tags'
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       context="{'current_id': id}"
-                                       required="('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count'),('ks_data_calculation_type','=','custom')" invisible="'|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')"/>
-                                <!--                                               required="('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_chart_data_count_type','!=','count')" invisible="'|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view')"/>-->
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                 <field name="ks_chart_measure_field_2" string="Line Measure"
                                        widget='many2many_tags'
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                        context="{'current_id': id}"
-<<<<<<< HEAD
                                        attrs="{'invisible':['|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart')]}"/>
                                 <field name="ks_list_view_type" attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_list_view')],
                                                     'required':[('ks_dashboard_item_type','=','ks_list_view')]}"/>
@@ -436,20 +299,11 @@
                                        widget='many2many_tags'
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
                                        attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')],'required':[('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')]}"/>
-=======
-                                       invisible="'|','|','|',('ks_chart_data_count_type','=','count'),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart')"/>
-                                <field name="ks_list_view_type" required="('ks_dashboard_item_type','=','ks_list_view')" invisible="('ks_dashboard_item_type','!=','ks_list_view')"/>
-                                <field name="ks_list_view_fields" string="Fields to show in list"
-                                       widget='many2many_tags'
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       required="('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')" invisible="'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','ungrouped')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
 
                                 <field name="ks_list_view_group_fields" string="Fields to show in list"
                                        widget='many2many_tags'
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
                                        attrs="{'invisible':['|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')],'required':[('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
                                 <field name="ks_list_target_deviation_field" string="Deviation Field"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
@@ -463,35 +317,16 @@
                             </group>
                             <group string="Groups/Dimensions" name="ks_groups_dimensions"
                                    attrs="{'invisible':['|','|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_kpi')]}">
-=======
-                                       required="('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped')"/>
-                                <field name="ks_list_target_deviation_field" string="Deviation Field"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       context="{'current_id': id}"
-                                       invisible="'|','|','|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','!=','grouped'),('ks_goal_enable','=',False),('ks_chart_groupby_type','!=','date_type')"/>
-                            </group>
-                            <group>
-                                <field name="ks_chart_data_count_type" context="{'current_id': id}"
-                                       required="('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')" invisible="'|','|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')"/>
-                            </group>
-                            <group string="Groups/Dimensions" name="ks_groups_dimensions"
-                                   invisible="'|','|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_kpi')">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                 <field name="ks_chart_groupby_type" invisible="1"/>
                                 <field name="ks_chart_sub_groupby_type" invisible="1"/>
                                 <field name="ks_chart_relation_groupby" string="Group By"
                                        context="{'current_id': id}"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
                                        attrs="{'invisible':['|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')],'required':[('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')]}"/>
-=======
-                                       required="('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_to_do'),('ks_dashboard_item_type','!=','ks_tile'),'|',('ks_dashboard_item_type','!=','ks_list_view'),('ks_list_view_type','=','grouped')" invisible="'|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
 
                                 <field name="ks_chart_date_groupby" string="Group By Date"
                                        context="{'current_id': id}"
-<<<<<<< HEAD
                                        attrs="{'invisible':['|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),('ks_chart_groupby_type','!=','date_type')],'required':[('ks_chart_groupby_type','=','date_type'),'|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped'),'&amp;','&amp;',('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')]}"/>
                                 <field name="ks_chart_relation_sub_groupby" invisible="1"/>
                                 <field name="ks_fill_temporal"
@@ -518,41 +353,12 @@
                                                     'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart']),'&amp;',('ks_goal_lines','!=',[]),('ks_goal_enable','=',True), ('ks_record_data_limit_visibility','!=',True)], 'required': [('ks_record_data_limit_visibility','=',True)]}"/>
                             </group>
                             <group string="Filter" attrs="{'invisible':[('ks_dashboard_item_type','=','ks_to_do')]}">
-=======
-                                       required="('ks_chart_groupby_type','=','date_type'),'|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','grouped'),'&amp;','&amp;',('ks_dashboard_item_type','!=','ks_kpi'),('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view')" invisible="'|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),('ks_chart_groupby_type','!=','date_type')"/>
-                                <field name="ks_chart_relation_sub_groupby" invisible="1"/>
-                                <field name="ks_fill_temporal"
-                                       context="{'current_id': id}"
-                                       invisible="'|','|','|',('ks_dashboard_item_type','in',['ks_list_view','ks_kpi', 'ks_tile'"/>
-
-                                <field name="ks_chart_relation_sub_groupby"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       invisible="'|','|',('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),'|',('ks_chart_relation_groupby','=',False),'&amp;',('ks_chart_groupby_type','=','date_type'),('ks_chart_date_groupby','=',False)"
-                                />
-                                <field name="ks_chart_date_sub_groupby" string="Sub Group By Date"
-                                       required="('ks_dashboard_item_type','!=','ks_tile'),('ks_chart_sub_groupby_type','=','date_type'),('ks_chart_relation_sub_groupby','!=',False)" invisible="'|','|',('ks_chart_sub_groupby_type','!=','date_type'),('ks_dashboard_item_type','=','ks_list_view'),('ks_chart_relation_sub_groupby','=',False)"/>
-                                <field name="ks_sort_by_field"
-                                       context="{'current_id': id}"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       invisible="'|',('ks_fill_temporal','=',True),'&amp;',('ks_goal_lines','!=',["/>
-                                <field name="ks_sort_by_order"
-                                       context="{'current_id': id}"
-                                       invisible="'|',('ks_fill_temporal','=',True),'&amp;',('ks_goal_lines','!=',["/>
-                                <field name="ks_record_data_limit_visibility" invisible="('ks_goal_lines','!=',["/>
-                                <field name="ks_record_data_limit"
-                                       context="{'current_id': id}"
-                                       required="('ks_record_data_limit_visibility','=',True)" invisible="'|','|','&amp;',('ks_chart_relation_sub_groupby','!=',False),('ks_dashboard_item_type','not in', ['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart',
-                                                    'ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'"/>
-                            </group>
-                            <group string="Filter" invisible="('ks_dashboard_item_type','=','ks_to_do')">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                 <field name="ks_domain" widget="domain" class="ks_domain_content"
                                        context="{'current_id': id}"
                                        options="{'model': 'ks_model_name', 'in_dialog': True}"/>
                                 <field name="ks_domain_extension" invisible="1"/>
                                 <field name="ks_date_filter_field" context="{'current_id': id}"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
                                        attrs="{'invisible':[('ks_model_id','=',False)]}"/>
                                 <field name="ks_date_filter_selection"
                                        attrs="{'invisible':['|',('ks_model_id','=',False), ('ks_date_filter_field','=', False)]}"/>
@@ -568,23 +374,6 @@
                         </page>
                         <page string="Data #2" name="data_model_2"
                               attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_kpi')]}">
-=======
-                                       invisible="('ks_model_id','=',False)"/>
-                                <field name="ks_date_filter_selection"
-                                       invisible="'|',('ks_model_id','=',False), ('ks_date_filter_field','=', False)"/>
-                                <field name="ks_item_start_date" string="Start Date"
-                                       required="('ks_model_id','!=',False),('ks_date_filter_selection','=','l_custom')" invisible="'|',('ks_model_id','=',False),('ks_date_filter_selection','!=','l_custom')"/>
-                                <field name="ks_item_end_date"
-                                       required="('ks_model_id','!=',False),('ks_date_filter_selection','=','l_custom')" invisible="'|',('ks_model_id','=',False),('ks_date_filter_selection','!=','l_custom')"/>
-                                <field name="ks_compare_period"
-                                       invisible="'|',('ks_model_id','=',False),('ks_date_filter_selection','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
-                                <field name="ks_year_period"
-                                       invisible="'|',('ks_model_id','=',False),('ks_date_filter_selection','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
-                            </group>
-                        </page>
-                        <page string="Data #2" name="data_model_2"
-                              invisible="('ks_dashboard_item_type','!=','ks_kpi')">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                             <group>
                                 <field name="ks_model_name_2" invisible="1"/>
                                 <field name="ks_model_id_2" string="Model"
@@ -592,7 +381,6 @@
                                        context="{'current_id': id}"/>
 
                                 <field name="ks_record_count_type_2" string="Record Type"
-<<<<<<< HEAD
                                        attrs="{'invisible' : [('ks_model_id_2','=', False)],
                                                         'required' : [('ks_model_id_2','!=', False)]}"
                                        context="{'current_id': id}"/>
@@ -606,19 +394,6 @@
                                 <field name="ks_data_comparison" widget="ks_widget_toggle_kpi"
                                        string="Data Calculation"
                                        attrs="{'invisible' : ['|',('ks_dashboard_item_type','!=','ks_kpi'),('ks_model_id_2','=',False)]}"/>
-=======
-                                       
-                                       context="{'current_id': id}"/>
-                                <field name="ks_record_field_2" string="Record Field"
-                                       
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       context="{'current_id': id}"/>
-                                <field name="ks_record_count_2" string="Record Value" force_save="True"
-                                       />
-                                <field name="ks_data_comparison" widget="ks_widget_toggle_kpi"
-                                       string="Data Calculation"
-                                       />
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                             </group>
                             <group string="Filter">
                                 <field name="ks_domain_2" widget="domain" string="Domain"
@@ -629,7 +404,6 @@
                                 <field name="ks_date_filter_field_2" string="Date Filter Field"
                                        context="{'current_id': id}"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-<<<<<<< HEAD
                                        attrs="{'invisible':[('ks_model_id_2','=',False)]}"/>
                                 <field name="ks_date_filter_selection_2" string="Date Filter Selection"
                                        attrs="{'invisible':['|',('ks_model_id_2','=',False),('ks_date_filter_field_2','=', False)]}"/>
@@ -654,32 +428,6 @@
                                 />
                                 <field name="ks_layout"
                                        attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_tile')]}"/>
-=======
-                                       invisible="('ks_model_id_2','=',False)"/>
-                                <field name="ks_date_filter_selection_2" string="Date Filter Selection"
-                                       invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_field_2','=', False)"/>
-                                <field name="ks_item_start_date_2" string="Start Date"
-                                       required="('ks_model_id_2','!=',False),('ks_date_filter_selection_2','=','l_custom')" invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','!=','l_custom')"/>
-                                <field name="ks_item_end_date_2" string="End Date"
-                                       required="('ks_model_id_2','!=',False),('ks_date_filter_selection_2','=','l_custom')" invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','!=','l_custom')"/>
-                                <field name="ks_compare_period_2" string="Include Period"
-                                       invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
-                                <field name="ks_year_period_2" string="Same Period Previous Years"
-                                       invisible="'|',('ks_model_id_2','=',False),('ks_date_filter_selection_2','in',['ls_past_until_now', 'ls_pastwithout_now', 'n_future_starting_now', 'n_futurestarting_tomorrow','l_none'"/>
-                            </group>
-                        </page>
-                        <page string="Display" name="display_settings"
-                              invisible="('ks_dashboard_item_type','=','ks_list_view')">
-
-                            <group name="ks_layouts"
-                                   invisible="('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_kpi')">
-                                <field name="ks_data_format"
-                                       context="{'current_id':id}"
-                                       invisible="('ks_dashboard_item_type','in',['ks_list_view', 'ks_pie_chart', 'ks_doughnut_chart', 'ks_polarArea_chart'"
-                                />
-                                <field name="ks_layout"
-                                       invisible="('ks_dashboard_item_type','!=','ks_tile')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
                                 <field name="ks_dashboard_item_theme" widget="ks_dashboard_item_theme"/>
 
@@ -689,24 +437,15 @@
                                 />
                                 <field name="ks_icon_select" widget="ks_widget_toggle"/>
                                 <field name="ks_icon" string="Icon" widget="image" class="ks_item_icon"
-<<<<<<< HEAD
                                        attrs="{'invisible':[('ks_icon_select','=','Default')]}"/>
                                 <field name="ks_default_icon" widget="ks_image_widget" class="ks_item_icon"
                                        attrs="{'invisible':[('ks_icon_select','=','Custom')]}"/>
                                 <field name="ks_default_icon_color" widget="ks_color_dashboard_picker"
                                        attrs="{'invisible':['|',('ks_icon_select','=','Custom'),('ks_default_icon','=',False)]}"/>
-=======
-                                       invisible="('ks_icon_select','=','Default')"/>
-                                <field name="ks_default_icon" widget="ks_image_widget" class="ks_item_icon"
-                                       invisible="('ks_icon_select','=','Custom')"/>
-                                <field name="ks_default_icon_color" widget="ks_color_dashboard_picker"
-                                       invisible="'|',('ks_icon_select','=','Custom'),('ks_default_icon','=',False)"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                 <field name="ks_button_color" widget="ks_color_dashboard_picker"
                                 />
                             </group>
                             <group name="ks_colors"
-<<<<<<< HEAD
                                    attrs="{'invisible':['|','|','|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')]}">
                                 <field name="ks_data_format"
                                        context="{'current_id':id}"
@@ -734,60 +473,21 @@
                                        attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_to_do')]}"/>
                                 <field name="ks_button_color" widget="ks_color_dashboard_picker"
                                        attrs="{'invisible':[('ks_dashboard_item_type','!=','ks_to_do')]}"/>
-=======
-                                   invisible="'|','|','|',('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','=','ks_kpi')">
-                                <field name="ks_data_format"
-                                       context="{'current_id':id}"
-                                       invisible="('ks_dashboard_item_type','in',['ks_list_view', 'ks_pie_chart', 'ks_doughnut_chart', 'ks_polarArea_chart'"
-                                />
-                                <field name="ks_chart_item_color" string="Chart Color Palette"
-                                       context="{'current_id': id}"
-                                       required="('ks_dashboard_item_type','!=','ks_tile'),('ks_dashboard_item_type','!=','ks_list_view'),('ks_dashboard_item_type','!=','ks_kpi')"/>
-                                <field name="ks_bar_chart_stacked" string="Stacked Bar Chart"
-                                       context="{'current_id': id}"
-                                       invisible="('ks_dashboard_item_type','!=','ks_bar_chart'),('ks_dashboard_item_type','!=','ks_horizontalBar_chart')"/>
-                                <field name="ks_show_data_value"/>
-                                <field name="ks_unit"/>
-                                <field name="ks_unit_selection" required="('ks_unit','=',True)" invisible="('ks_unit','=',False)"/>
-                                <field name="ks_chart_unit" required="('ks_unit_selection','=','custom'),('ks_unit','=',True)" invisible="'|',('ks_unit_selection','!=','custom'),('ks_unit','=',False)"/>
-                            </group>
-                            <group>
-                                <field name="ks_header_bg_color" widget="ks_color_dashboard_picker"
-                                       invisible="('ks_dashboard_item_type','!=','ks_to_do')">
-                                </field>
-                                <field name="ks_font_color"
-                                       widget="ks_color_dashboard_picker"
-                                       invisible="('ks_dashboard_item_type','!=','ks_to_do')"/>
-                                <field name="ks_button_color" widget="ks_color_dashboard_picker"
-                                       invisible="('ks_dashboard_item_type','!=','ks_to_do')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
                             </group>
                         </page>
                         <page string="Actions" name="action_settings"
-<<<<<<< HEAD
                               attrs=" {'invisible':['|','|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','not in',['ks_tile','ks_kpi','ks_bar_chart','ks_line_chart','ks_area_chart','ks_horizontalBar_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view',]),'&amp;',('ks_list_view_type','=','ungrouped'),('ks_dashboard_item_type','=','ks_list_view')]}">
 
                             <field name="ks_action_lines" required="1" style="width: 90% !important;"
                                    attrs="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}">
                                 <tree editable="bottom">
-=======
-                              invisible="['|','|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','not in',['ks_tile','ks_kpi','ks_bar_chart','ks_line_chart','ks_area_chart','ks_horizontalBar_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view',]),'&amp;',('ks_list_view_type','=','ungrouped'),('ks_dashboard_item_type','=','ks_list_view')]">
-
-                            <field name="ks_action_lines" required="1" style="width: 90% !important;"
-                                   invisible="('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'">
-                                <list editable="bottom">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                     <field name="sequence" widget="handle"/>
                                     <field name="ks_item_action_field" required="1"
                                            options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
                                     <field name="ks_item_action_date_groupby" force_save="1"
-<<<<<<< HEAD
                                            attrs="{'required': [('ks_item_action_field_type','=','date_type')],
                                                                                           'readonly':[('ks_item_action_field_type','!=','date_type')]}"/>
-=======
-                                           required="('ks_item_action_field_type','=','date_type')" readonly="('ks_item_action_field_type','!=','date_type')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                     <field name="ks_item_action_field_type" invisible="1"/>
                                     <field name="ks_chart_type" required="1"/>
                                     <field name="ks_dashboard_item_id" invisible="1"/>
@@ -795,17 +495,10 @@
                                     <field name="ks_sort_by_field" options="{'no_open':True,'no_create':True}"/>
                                     <field name="ks_sort_by_order"/>
                                     <field name="ks_record_limit"/>
-<<<<<<< HEAD
                                 </tree>
                             </field>
                             <group name="ks_show_messages"
                                    attrs="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'])]}">
-=======
-                                </list>
-                            </field>
-                            <group name="ks_show_messages"
-                                   invisible="('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                 <div>
                                     Below action will be performed at the end of the Drill Down Action
                                 </div>
@@ -813,7 +506,6 @@
                             </group>
                             <group>
                                 <field name="ks_is_client_action"
-<<<<<<< HEAD
                                        attrs="{'invisible':[('ks_dashboard_item_type','=','ks_list_view')]}"/>
                                 <field name="ks_actions" string="Item Action"
                                        options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
@@ -829,28 +521,10 @@
                         </page>
                         <page string="Target" name="target_settings"
                               attrs="{'invisible':['|','&amp;',('ks_chart_groupby_type','!=','date_type'),('ks_dashboard_item_type','!=','ks_kpi'),'|','|',('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_list_view','ks_kpi']),'&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),'&amp;','&amp;',('ks_dashboard_item_type','=','ks_kpi'),('ks_model_id_2','!=',False),('ks_data_comparison','in',['None','Ratio'])]}">
-=======
-                                       invisible="('ks_dashboard_item_type','=','ks_list_view')"/>
-                                <field name="ks_actions" string="Item Action"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       invisible="'|',('ks_dashboard_item_type','=','ks_list_view'),('ks_is_client_action','=',True)"/>
-
-                                <field name="ks_client_action"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       required="('ks_is_client_action','=', True)" invisible="'|',('ks_dashboard_item_type','=','ks_list_view'),('ks_is_client_action','=',False)"/>
-
-<!--                                <field name="ks_show_records" force_save="1"-->
-<!--                                       invisible="('ks_data_calculation_type','!=','custom')"/>-->
-                            </group>
-                        </page>
-                        <page string="Target" name="target_settings"
-                              invisible="'|','&amp;',('ks_chart_groupby_type','!=','date_type'),('ks_dashboard_item_type','!=','ks_kpi'),'|','|',('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_list_view','ks_kpi'">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                             <group style="width:50%;">
                                 <field name="ks_goal_enable" context="{'current_id': id}"/>
                                 <field name="ks_goal_bar_line"
                                        context="{'current_id': id}"
-<<<<<<< HEAD
                                        attrs="{'invisible' : ['|',('ks_goal_enable','=',False),('ks_dashboard_item_type','!=','ks_bar_chart')]}"/>
                                 <field name="ks_standard_goal_value"
                                        attrs="{'invisible' : [('ks_goal_enable','=',False)]}"/>
@@ -863,20 +537,6 @@
                             <field name="ks_goal_lines"
                                    attrs="{'invisible' : ['|','|',('ks_goal_enable','=',False),('ks_dashboard_item_type','=','ks_kpi'),('ks_chart_relation_sub_groupby','!=',False)]}">
                                 <tree string="Goal Lines"
-=======
-                                       />
-                                <field name="ks_standard_goal_value"
-                                       />
-                                <field name="ks_target_view" widget="ks_widget_toggle_kpi_target"
-                                       />
-                            </group>
-                            <div >
-                                All Target Lines Changes Will be reflected on Chart after saving the record and pagination will be ignore .
-                            </div>
-                            <field name="ks_goal_lines"
-                                   >
-                                <list string="Goal Lines"
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                       editable="top"
                                       widget="section_and_note_one2many">
                                     <control>
@@ -884,22 +544,14 @@
                                     </control>
                                     <field name="ks_goal_date" required="1"/>
                                     <field name="ks_goal_value"/>
-<<<<<<< HEAD
                                 </tree>
                             </field>
                         </page>
                         <page string="Auto Update" attrs="{'invisible': [('ks_dashboard_item_type','=','ks_to_do')]}">
-=======
-                                </list>
-                            </field>
-                        </page>
-                        <page string="Auto Update" invisible="('ks_dashboard_item_type','=','ks_to_do')">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                             <group>
                                 <field name="ks_auto_update_type" widget="radio"/>
                                 <field name="ks_update_items_data" string="Set Update Interval"
                                        context="{'current_id': id}"
-<<<<<<< HEAD
                                        attrs="{'invisible':[('ks_auto_update_type','!=','ks_update_interval')], 'required':[('ks_auto_update_type','=','ks_update_interval')]}"/>
                                 <field name="ks_show_live_pop_up"
                                        attrs="{'invisible':[('ks_auto_update_type','!=','ks_live_update')]}"/>
@@ -933,41 +585,6 @@
                             <group attrs="{'invisible':[('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'])]}">
                                 <field name="ks_multiplier_active" force_save="1"/>
                                 <field name="ks_multiplier" attrs="{'invisible':[('ks_multiplier_active','=',False)]}"/>
-=======
-                                       required="('ks_auto_update_type','=','ks_update_interval')" invisible="('ks_auto_update_type','!=','ks_update_interval')"/>
-                                <field name="ks_show_live_pop_up"
-                                       invisible="('ks_auto_update_type','!=','ks_live_update')"/>
-                            </group>
-                        </page>
-                        <page string="Advance Configuration" invisible="('ks_dashboard_item_type','=','ks_to_do')">
-                            <group invisible="'|','|',('ks_dashboard_item_type','=','ks_to_do'),('ks_dashboard_item_type','=','ks_tile'),('ks_dashboard_item_type','=','ks_kpi')">
-                                <field name="ks_hide_legend" context="{'current_id': id}"
-                                       invisible="('ks_dashboard_item_type','in',['ks_tile', 'ks_kpi', 'ks_list_view'"/>
-                                <field name="ks_chart_cumulative_field"  widget='many2many_tags'
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"
-                                       required="('ks_chart_cumulative','=',True)" invisible="'|','|','|','|','|',('ks_chart_data_count_type','=','count'),('ks_chart_relation_sub_groupby','!=',False),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart'),('ks_data_calculation_type','!=','custom')"
-                                       domain="[('id', 'in', ks_chart_measure_field)]"/>
-                                <field name="ks_chart_cumulative"
-                                       invisible="'|','|','|','|','|',('ks_chart_data_count_type','=','count'),('ks_chart_relation_sub_groupby','!=',False),('ks_model_id','=',False),('ks_dashboard_item_type','=','ks_list_view'),('ks_dashboard_item_type','!=','ks_bar_chart'),('ks_data_calculation_type','!=','custom')"/>
-                                <field name="ks_pagination_limit"
-                                       required="('ks_dashboard_item_type','=','ks_list_view')" invisible="('ks_dashboard_item_type','!=','ks_list_view')"/>
-                                <field name="ks_show_records" force_save="1"
-                                       invisible="('ks_data_calculation_type','=','query')"/>
-
-                                <field name="ks_multiplier_active" force_save="1"
-                                       invisible="'|','|','&amp;',('ks_dashboard_item_type','=','ks_list_view'),('ks_list_view_type','=','ungrouped'),('ks_data_calculation_type','=','query'),'&amp;',('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'"/>
-                                <field name="ks_multiplier_lines" invisible="('ks_multiplier_active','=',False)">
-                                    <list editable="bottom" create="false"  delete="false">
-                                        <field name="ks_model_id" invisible="1"/>
-                                        <field name="ks_multiplier_fields" readonly="1" options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
-                                        <field name="ks_multiplier_value"/>
-                                    </list>
-                                </field>
-                            </group>
-                            <group invisible="('ks_dashboard_item_type','in',['ks_list_view','ks_bar_chart','ks_pie_chart','ks_to_do','ks_line_chart', 'ks_area_chart', 'ks_horizontalBar_chart','ks_doughnut_chart','ks_polarArea_chart'">
-                                <field name="ks_multiplier_active" force_save="1"/>
-                                <field name="ks_multiplier" invisible="('ks_multiplier_active','=',False)"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                            </group>
                         </page>
                     </notebook>
