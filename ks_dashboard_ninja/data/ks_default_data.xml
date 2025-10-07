@@ -609,8 +609,4 @@
             <field name="digits" eval="2"/>
         </record>
     </data>
-<<<<<<< HEAD
 </odoo>
-=======
-</odoo>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
