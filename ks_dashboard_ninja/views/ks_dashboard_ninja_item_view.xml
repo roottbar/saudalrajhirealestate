@@ -1014,18 +1014,8 @@
         <record model="ir.actions.act_window" id="ks_dashboard_ninja.item_action_window">
             <field name="name">Dashboard Items</field>
             <field name="res_model">ks_dashboard_ninja.item</field>
-<<<<<<< HEAD
-            <field name="view_mode">tree,form</field>
-        </record>
-    </data>
-
-</odoo>
-=======
             <field name="view_mode">list,form</field>
         </record>
     </data>
 
 </odoo>
-
-
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
