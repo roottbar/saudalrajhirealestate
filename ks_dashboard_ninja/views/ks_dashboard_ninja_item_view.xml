@@ -253,16 +253,7 @@
                                         <notebook>
                                             <page string="Tasks">
 
-                                                <field name="ks_to_do_description_lines" string="Tasks">
-                                                    <tree string="Task Lines" editable="top"
-                                                          widget="section_and_note_one2many">
-                                                        <control>
-                                                            <create string="Add a Line"/>
-                                                        </control>
-                                                        <field name="ks_description" string="Tasks" required="1"/>
-                                                        <field name="ks_active" string="Active"/>
-                                                    </tree>
-                                                </field>
+                                                <field name="ks_to_do_description_lines" string="Tasks"/>
 
                                             </page>
                                         </notebook>
