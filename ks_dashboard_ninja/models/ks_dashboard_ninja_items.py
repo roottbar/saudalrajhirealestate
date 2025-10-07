@@ -18,7 +18,8 @@ from odoo.addons.ks_dashboard_ninja.common_lib.ks_date_filter_selections import 
 # TODO : Check all imports if needed
 
 
-read = fields.Many2one.read
+# Preserve original Many2many.read so we can safely fall back
+original_m2m_read = fields.Many2many.read
 
 
 def ks_read(self, records):
@@ -63,34 +64,9 @@ def ks_read(self, records):
             cache.set(record, self, tuple(group[record.id]))
 
     else:
-        context = {'active_test': False}
-        context.update(self.context)
-        comodel = records.env[self.comodel_name].with_context(**context)
-        domain = self.get_domain_list(records)
-        comodel._flush_search(domain)
-        wquery = comodel._where_calc(domain)
-        comodel._apply_ir_rules(wquery, 'read')
-        order_by = comodel._generate_order_by(None, wquery)
-        from_c, where_c, where_params = wquery.get_sql()
-        query = """ SELECT {rel}.{id1}, {rel}.{id2} FROM {rel}, {from_c}
-                            WHERE {where_c} AND {rel}.{id1} IN %s AND {rel}.{id2} = {tbl}.id
-                            {order_by} {limit} OFFSET {offset}
-                        """.format(rel=self.relation, id1=self.column1, id2=self.column2,
-                                   tbl=comodel._table, from_c=from_c, where_c=where_c or '1=1',
-                                   limit=(' LIMIT %d' % self.limit) if self.limit else '',
-                                   offset=0, order_by=order_by)
-        where_params.append(tuple(records.ids))
-
-        # retrieve lines and group them by record
-        group = defaultdict(list)
-        records._cr.execute(query, where_params)
-        for row in records._cr.fetchall():
-            group[row[0]].append(row[1])
-
-        # store result in cache
-        cache = records.env.cache
-        for record in records:
-            cache.set(record, self, tuple(group[record.id]))
+        # For all other Many2many fields, use the original behavior to avoid
+        # interfering with core models (e.g., res.groups.implied_ids) and rules.
+        return original_m2m_read(self, records)
 
 
 fields.Many2many.read = ks_read
