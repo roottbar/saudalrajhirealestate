@@ -464,23 +464,7 @@
                               modifiers=" {'invisible':['|','|',('ks_data_calculation_type','!=','custom'),('ks_dashboard_item_type','not in',['ks_tile','ks_kpi','ks_bar_chart','ks_line_chart','ks_area_chart','ks_horizontalBar_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view',]),'&amp;',('ks_list_view_type','=','ungrouped'),('ks_dashboard_item_type','=','ks_list_view')]}">
 
                             <field name="ks_action_lines" required="1" style="width: 90% !important;"
-                                   modifiers="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}">
-                                <tree editable="bottom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="ks_item_action_field" required="1"
-                                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
-                                    <field name="ks_item_action_date_groupby" force_save="1"
-                                           modifiers="{'required': [('ks_item_action_field_type','=','date_type')],
-                                                                                          'readonly':[('ks_item_action_field_type','!=','date_type')]}"/>
-                                    <field name="ks_item_action_field_type" invisible="1"/>
-                                    <field name="ks_chart_type" required="1"/>
-                                    <field name="ks_dashboard_item_id" invisible="1"/>
-                                    <field name="ks_model_id" invisible="1"/>
-                                    <field name="ks_sort_by_field" options="{'no_open':True,'no_create':True}"/>
-                                    <field name="ks_sort_by_order"/>
-                                    <field name="ks_record_limit"/>
-                                </tree>
-                            </field>
+                                   modifiers="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart','ks_list_view'])]}"/>
                             <group name="ks_show_messages"
                                    modifiers="{'invisible':[('ks_dashboard_item_type','not in',['ks_bar_chart','ks_horizontalBar_chart','ks_line_chart','ks_area_chart','ks_pie_chart','ks_doughnut_chart','ks_polarArea_chart'])]}">
                                 <div>
