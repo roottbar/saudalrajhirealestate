@@ -4,11 +4,12 @@ import io
 import json
 import operator
 import logging
-from odoo.addons.web.controllers.main import ExportFormat,serialize_exception, ExportXlsxWriter
+from werkzeug.exceptions import InternalServerError
+from odoo.addons.web.controllers.export import ExportFormat, ExportXlsxWriter
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 import datetime
 from odoo import http
-from odoo.http import content_disposition, request
+from odoo.http import content_disposition, request, serialize_exception
 from odoo.tools import pycompat
 from ..common_lib.ks_date_filter_selections import ks_get_date, ks_convert_into_utc, ks_convert_into_local
 import os
@@ -134,9 +135,17 @@ class KsListExcelExport(KsListExport, http.Controller):
     raw_data = True
 
     @http.route('/ks_dashboard_ninja/export/list_xls', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
-        return self.base(data)
+        try:
+            return self.base(data)
+        except Exception as exc:
+            _logger.exception("Exception during list XLS export request handling.")
+            payload = json.dumps({
+                'code': 200,
+                'message': "Odoo Server Error",
+                'data': serialize_exception(exc)
+            })
+            raise InternalServerError(payload) from exc
 
     @property
     def content_type(self):
@@ -157,9 +166,17 @@ class KsListExcelExport(KsListExport, http.Controller):
 class KsListCsvExport(KsListExport, http.Controller):
 
     @http.route('/ks_dashboard_ninja/export/list_csv', type='http', auth="user")
-    @serialize_exception
     def index(self, data):
-        return self.base(data)
+        try:
+            return self.base(data)
+        except Exception as exc:
+            _logger.exception("Exception during list CSV export request handling.")
+            payload = json.dumps({
+                'code': 200,
+                'message': "Odoo Server Error",
+                'data': serialize_exception(exc)
+            })
+            raise InternalServerError(payload) from exc
 
     @property
     def content_type(self):
