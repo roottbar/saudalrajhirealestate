@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
 
-        <record model="ir.ui.view" id="ks_dashboard_ninja.board_form">
-            <field name="name">ks_dashboard_ninja View</field>
+        <!-- Dashboard Form View -->
+        <record id="ks_dashboard_ninja.board_form" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.board.form</field>
             <field name="model">ks_dashboard_ninja.board</field>
             <field name="arch" type="xml">
                 <form string="Dashboards">
@@ -10,47 +12,30 @@
                         <group>
                             <group>
                                 <field name="ks_dashboard_state" invisible="1"/>
-<<<<<<< HEAD
-                                <field name="name" attrs="{'readonly':[('ks_dashboard_state','=','Locked')]}"/>
-                                <field name="ks_dashboard_menu_name" attrs="{'readonly':[('ks_dashboard_state','=','Locked')],
-                                                                                         'required':[('ks_dashboard_state','!=','Locked')]}"/>
-=======
                                 <field name="name" readonly="('ks_dashboard_state','=','Locked')"/>
-                                <field name="ks_dashboard_menu_name" required="('ks_dashboard_state','!=','Locked')" readonly="('ks_dashboard_state','=','Locked')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                                <field name="ks_dashboard_menu_name"
+                                       required="('ks_dashboard_state','!=','Locked')"
+                                       readonly="('ks_dashboard_state','=','Locked')"/>
                                 <field name="ks_set_interval"/>
                             </group>
                             <group>
-                                <!--                                <field name="ks_dashboard_default_template"-->
-<<<<<<< HEAD
-                                <!--                                       attrs="{'readonly':[('id','>', 0)], 'required':[('id','&lt;', 1)]}"-->
-                                <!--                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>-->
-                                <!--                                <field name="ks_set_interval"/>-->
+                                <!-- Default template is hidden in form, managed elsewhere -->
                                 <field name="ks_dashboard_top_menu_id"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}" attrs="{'readonly':[('ks_dashboard_state','=','Locked')],
-                                                                                            'required':[('ks_dashboard_state','!=','Locked')]}"/>
-                                <field name="ks_dashboard_menu_sequence"/>
-                                <field name="ks_dashboard_active"
-                                       attrs="{'readonly':[('ks_dashboard_state','=','Locked')]}"/>
-=======
-                                <!--                                       required="('id','&lt;', 1)" readonly="('id','>', 0)"-->
-                                <!--                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>-->
-                                <!--                                <field name="ks_set_interval"/>-->
-                                <field name="ks_dashboard_top_menu_id"
-                                       options="{'no_create': True, 'no_create_edit':True, 'no_open': True}" required="('ks_dashboard_state','!=','Locked')" readonly="('ks_dashboard_state','=','Locked')"/>
-                                <field name="ks_dashboard_menu_sequence"/>
-                                <field name="ks_dashboard_active"
+                                       options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                       required="('ks_dashboard_state','!=','Locked')"
                                        readonly="('ks_dashboard_state','=','Locked')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                                <field name="ks_dashboard_menu_sequence"/>
+                                <field name="ks_dashboard_active" readonly="('ks_dashboard_state','=','Locked')"/>
                             </group>
                         </group>
+
                         <notebook>
                             <page name="pre_defined_filters" string="Pre Defined Filters">
                                 <field name="ks_dashboard_defined_filters_ids" widget="section_and_note_one2many">
-                                    <tree>
+                                    <list>
                                         <control>
-                                            <create name="add_filter_control" string="Add a filter"/>
-                                            <create name="add_section_control" string="Add a separator"
+                                            <create string="Add Filter"/>
+                                            <create string="Add Section"
                                                     context="{'default_display_type': 'line_section'}"/>
                                         </control>
                                         <field name="sequence" widget="handle"/>
@@ -61,30 +46,20 @@
                                         <field name="ks_model_id"/>
                                         <field name="ks_domain"/>
                                         <field name="ks_is_active"/>
-<<<<<<< HEAD
-                                    </tree>
-=======
                                     </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                 </field>
                             </page>
+
                             <page name="custom_defined_filters" string="Custom Filters">
                                 <field name="ks_dashboard_custom_filters_ids">
-<<<<<<< HEAD
-                                    <tree editable="bottom">
-                                        <field name="name" required="1"/>
-                                        <field name="ks_model_id" required="1"/>
-                                        <field name="ks_domain_field_id" required="1"/>
-                                    </tree>
-=======
                                     <list editable="bottom">
                                         <field name="name" required="1"/>
                                         <field name="ks_model_id" required="1"/>
                                         <field name="ks_domain_field_id" required="1"/>
                                     </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                                 </field>
                             </page>
+
                             <page name="advance_setting" string="Advance Settings">
                                 <group>
                                     <group>
@@ -94,15 +69,11 @@
                                     <group>
                                         <field name="ks_date_filter_selection" required="1"/>
                                         <field name="ks_dashboard_start_date"
-<<<<<<< HEAD
-                                               attrs="{'readonly':[('ks_date_filter_selection','!=','l_custom')], 'required':[('ks_date_filter_selection','=','l_custom')]}"/>
+                                               required="('ks_date_filter_selection','=','l_custom')"
+                                               readonly="('ks_date_filter_selection','!=','l_custom')"/>
                                         <field name="ks_dashboard_end_date"
-                                               attrs="{'readonly':[('ks_date_filter_selection','!=','l_custom')], 'required':[('ks_date_filter_selection','=','l_custom')]}"/>
-=======
-                                               required="('ks_date_filter_selection','=','l_custom')" readonly="('ks_date_filter_selection','!=','l_custom')"/>
-                                        <field name="ks_dashboard_end_date"
-                                               required="('ks_date_filter_selection','=','l_custom')" readonly="('ks_date_filter_selection','!=','l_custom')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                                               required="('ks_date_filter_selection','=','l_custom')"
+                                               readonly="('ks_date_filter_selection','!=','l_custom')"/>
                                     </group>
                                 </group>
                             </page>
@@ -112,62 +83,43 @@
             </field>
         </record>
 
-        <record model="ir.ui.view" id="ks_dashboard_ninja.board_tree">
-            <field name="name">ks_dashboard_ninja View</field>
+        <!-- Dashboard Tree/List View -->
+        <record id="ks_dashboard_ninja.board_tree" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.board.list</field>
             <field name="model">ks_dashboard_ninja.board</field>
             <field name="arch" type="xml">
-<<<<<<< HEAD
-                <tree import="0" string="My Dashboard">
-=======
                 <list import="0" string="My Dashboard">
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
                     <field name="ks_dashboard_state" invisible="1"/>
                     <field name="id" invisible="1"/>
-
                     <field name="name"/>
-                    <field name="ks_dashboard_menu_name"
-<<<<<<< HEAD
-                           attrs="{'required':[('ks_dashboard_state','!=','Locked')]}"/>
+                    <field name="ks_dashboard_menu_name" required="('ks_dashboard_state','!=','Locked')"/>
                     <field name="ks_dashboard_menu_sequence"/>
                     <field name="ks_dashboard_top_menu_id"
-                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}" attrs="{'readonly':[('ks_dashboard_state','=','Locked')],
-                                                                                            'required':[('ks_dashboard_state','!=','Locked')]}"/>
-                    <field name="ks_dashboard_active" attrs="{'readonly':[('ks_dashboard_state','=','Locked')]}"/>
-                    <field name="ks_dashboard_default_template"
-                           attrs="{'readonly':[('id','>', 0)], 'required':[('id','&lt;', 1)]}"
-=======
-                           required="('ks_dashboard_state','!=','Locked')"/>
-                    <field name="ks_dashboard_menu_sequence"/>
-                    <field name="ks_dashboard_top_menu_id"
-                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}" required="('ks_dashboard_state','!=','Locked')" readonly="('ks_dashboard_state','=','Locked')"/>
+                           options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                           required="('ks_dashboard_state','!=','Locked')"
+                           readonly="('ks_dashboard_state','=','Locked')"/>
                     <field name="ks_dashboard_active" readonly="('ks_dashboard_state','=','Locked')"/>
                     <field name="ks_dashboard_default_template"
-                           required="('id','&lt;', 1)" readonly="('id','>', 0)"
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
-                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                           required="('id','&lt;', 1)"
+                           readonly="('id','>', 0)"
+                           options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
                     <field name="ks_set_interval"/>
                     <field name="ks_date_filter_selection" required="1"/>
                     <field name="ks_dashboard_start_date"
-<<<<<<< HEAD
-                           attrs="{'readonly':[('ks_date_filter_selection','!=','l_custom')], 'required':[('ks_date_filter_selection','=','l_custom')]}"/>
+                           required="('ks_date_filter_selection','=','l_custom')"
+                           readonly="('ks_date_filter_selection','!=','l_custom')"/>
                     <field name="ks_dashboard_end_date"
-                           attrs="{'readonly':[('ks_date_filter_selection','!=','l_custom')], 'required':[('ks_date_filter_selection','=','l_custom')]}"/>
-                    <field name="ks_dashboard_group_access" widget="many2many_tags"/>
-                    <button name="ks_view_items_view" string="View Items" type="object" class="btn-primary"/>
-                </tree>
-=======
-                           required="('ks_date_filter_selection','=','l_custom')" readonly="('ks_date_filter_selection','!=','l_custom')"/>
-                    <field name="ks_dashboard_end_date"
-                           required="('ks_date_filter_selection','=','l_custom')" readonly="('ks_date_filter_selection','!=','l_custom')"/>
+                           required="('ks_date_filter_selection','=','l_custom')"
+                           readonly="('ks_date_filter_selection','!=','l_custom')"/>
                     <field name="ks_dashboard_group_access" widget="many2many_tags"/>
                     <button name="ks_view_items_view" string="View Items" type="object" class="btn-primary"/>
                 </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
             </field>
         </record>
 
-        <record model="ir.ui.view" id="ks_dashboard_ninja.board_template_form">
-            <field name="name">Dashboard Template Form View</field>
+        <!-- Dashboard Template Form -->
+        <record id="ks_dashboard_ninja.board_template_form" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.board.template.form</field>
             <field name="model">ks_dashboard_ninja.board_template</field>
             <field name="arch" type="xml">
                 <form string="Dashboard Template">
@@ -175,13 +127,10 @@
                         <group>
                             <group>
                                 <field name="name"/>
+                            </group>
+                            <group>
                                 <field name="ks_template_type" readonly="1"/>
-<<<<<<< HEAD
-                                <field name="ks_dashboard_board_id" attrs="{'invisible':[('ks_template_type','!=','ks_custom')],
-                                                                                         'required':[('ks_template_type','=','ks_code')]}"/>
-=======
-                                <field name="ks_dashboard_board_id" required="('ks_template_type','=','ks_code')" invisible="('ks_template_type','!=','ks_custom')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                                <field name="ks_dashboard_board_id" required="('ks_template_type','=', 'custom')" invisible="('ks_template_type','=', 'custom')"/>
                             </group>
                         </group>
                     </sheet>
@@ -189,56 +138,33 @@
             </field>
         </record>
 
-
-        <record model="ir.ui.view" id="ks_dashboard_ninja.board_defined_filters">
-            <field name="name">Dashboard Defined Filter Form View</field>
+        <!-- Predefined Filter Form -->
+        <record id="ks_dashboard_ninja.board_defined_filters_2" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.board_defined_filters.form</field>
             <field name="model">ks_dashboard_ninja.board_defined_filters</field>
             <field name="arch" type="xml">
-                <form string="Dashboard Defined Filter">
+                <form string="Pre Defined Filters">
                     <sheet>
                         <group>
-                            <label for="name" string="Separator Name (eg. Order States, Deadlines)"
-<<<<<<< HEAD
-                                   attrs="{'invisible': [('display_type', '!=', 'line_section')],
-                                   'required': [('display_type', '=', 'line_section')]}"/>
-                            <field name="name" nolabel="1"
-                                   attrs="{'invisible': [('display_type', '!=', 'line_section')]}"/>
-                            <group attrs="{'invisible': [('display_type', '=', 'line_section')]}">
-                                <field name="id" invisible="1"/>
-                                <field name="display_type" invisible="1"/>
-                                <field name="ks_model_name" invisible="1"/>
-                                <field name="name" attrs="{'required': [('display_type', '!=', 'line_section')]}"/>
-=======
-                                   required="('display_type', '=', 'line_section')" invisible="('display_type', '!=', 'line_section')"/>
-                            <field name="name" nolabel="1"
-                                   invisible="('display_type', '!=', 'line_section')"/>
-                            <group invisible="('display_type', '=', 'line_section')">
-                                <field name="id" invisible="1"/>
-                                <field name="display_type" invisible="1"/>
-                                <field name="ks_model_name" invisible="1"/>
-                                <field name="name" required="('display_type', '!=', 'line_section')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
-                                <field name="ks_domain_temp" invisible="1"/>
-                                <field name="ks_domain" widget="domain" class="ks_domain_content"
-                                       context="{'current_id': id}"
-                                       options="{'model': 'ks_model_name', 'in_dialog': True}"
-<<<<<<< HEAD
-                                       attrs="{'required': [('display_type', '!=', 'line_section')]}"/>
+                            <group string="Filter">
+                                <label for="ks_model_id" required="('display_type','!=','line_section')" invisible="('display_type','=','line_section')"/>
+                                <div class="o_row" required="('display_type','!=','line_section')" invisible="('display_type','=','line_section')">
+                                    <field name="ks_model_id"/>
+                                    <field name="ks_model_name" invisible="1"/>
+                                </div>
+                                <label for="name" required="('display_type','!=','line_section')" invisible="('display_type','=','line_section')"/>
+                                <div class="o_row" required="('display_type','!=','line_section')" invisible="('display_type','=','line_section')">
+                                    <field name="name"/>
+                                </div>
+                                <label for="ks_domain" required="('display_type','!=','line_section')" invisible="('display_type','=','line_section')"/>
+                                <div class="o_row" required="('display_type','!=','line_section')" invisible="('display_type','=','line_section')">
+                                    <field name="ks_domain_temp" placeholder="[('field','=','value')]"/>
+                                    <field name="ks_domain" widget="domain"/>
+                                </div>
                             </group>
-                            <group attrs="{'invisible': [('display_type', '=', 'line_section')]}">
-                                <field name="ks_model_id"
-                                       attrs="{'required': [('display_type', '!=', 'line_section')]}"/>
-                                <field name="ks_is_active"
-                                       attrs="{'required': [('display_type', '!=', 'line_section')]}"/>
-=======
-                                       required="('display_type', '!=', 'line_section')"/>
-                            </group>
-                            <group invisible="('display_type', '=', 'line_section')">
-                                <field name="ks_model_id"
-                                       required="('display_type', '!=', 'line_section')"/>
-                                <field name="ks_is_active"
-                                       required="('display_type', '!=', 'line_section')"/>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+                            <group string="Properties">
+                                <field name="ks_is_active" invisible="('display_type','=','line_section')"/>
+                                <field name="display_type" invisible="1"/>
                             </group>
                         </group>
                     </sheet>
@@ -246,121 +172,61 @@
             </field>
         </record>
 
-
-        <record model="ir.ui.view" id="ks_dashboard_ninja.board_template_tree">
-            <field name="name">Dashboard Template Tree View</field>
+        <!-- Dashboard Template List -->
+        <record id="ks_dashboard_ninja.board_template_tree" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.board.template.list</field>
             <field name="model">ks_dashboard_ninja.board_template</field>
             <field name="arch" type="xml">
-<<<<<<< HEAD
-                <tree string="Dashboard Template" editable="top">
+                <list string="Dashboard Template">
                     <field name="name"/>
-                    <field name="ks_template_type" invisible="1"/>
-                    <field name="ks_dashboard_board_id" attrs="{'readonly':[('ks_template_type','!=','ks_custom')],
-                        'required':[('ks_template_type','=','ks_custom')]}"
-                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
-                </tree>
-=======
-                <list string="Dashboard Template" editable="top">
-                    <field name="name"/>
-                    <field name="ks_template_type" invisible="1"/>
-                    <field name="ks_dashboard_board_id" required="('ks_template_type','=','ks_custom')" readonly="('ks_template_type','!=','ks_custom')"
-                           options="{'no_create': True, 'no_create_edit':True, 'no_open': True}"/>
+                    <field name="ks_template_type" readonly="1"/>
+                    <field name="ks_dashboard_board_id" required="('ks_template_type','=', 'custom')" invisible="('ks_template_type','=', 'custom')"/>
                 </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
             </field>
         </record>
 
-        <record model="ir.ui.view" id="ks_dashboard_ninja.child_board_tree">
-            <field name="name">Dashboard Layout Tree View</field>
-            <field name="model">ks_dashboard_ninja.child_board</field>
+        <!-- Child Boards List -->
+        <record id="ks_dashboard_ninja.ks_child_board_tree" model="ir.ui.view">
+            <field name="name">ks_dashboard_ninja.ks_child_board.list</field>
+            <field name="model">ks_dashboard_ninja.ks_child_board</field>
             <field name="arch" type="xml">
-<<<<<<< HEAD
-                <tree string="Dashboard Layout" editable="top" create="0">
-                    <field name="name"/>
-                    <field name="ks_dashboard_ninja_id" string="Dashboard"/>
-                    <field name="company_id" string="Company"/>
-                </tree>
-=======
-                <list string="Dashboard Layout" editable="top" create="0">
-                    <field name="name"/>
-                    <field name="ks_dashboard_ninja_id" string="Dashboard"/>
-                    <field name="company_id" string="Company"/>
+                <list string="Child Boards" editable="top" create="0">
+                    <field name="ks_child_menu_id"/>
+                    <field name="ks_is_active"/>
                 </list>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
             </field>
         </record>
 
-        <!-- Dashboard -->
-        <record id="ks_dashboard_ninja.board_dashboard_action_window" model="ir.actions.client">
-            <field name="name">My Dashboard</field>
-            <field name="tag">ks_dashboard_ninja</field>
-            <field name="params" eval="{'ks_dashboard_id': ref('ks_dashboard_ninja.ks_my_default_dashboard_board')}"/>
+        <!-- Actions -->
+        <record id="ks_dashboard_ninja.board_action" model="ir.actions.act_window">
+            <field name="name">Dashboards</field>
             <field name="res_model">ks_dashboard_ninja.board</field>
-            <field name="context" eval="{'ks_dashboard_id': ref('ks_dashboard_ninja.ks_my_default_dashboard_board')}"/>
-        </record>
-
-
-        <record model="ir.actions.act_window" id="ks_dashboard_ninja.board_form_tree_action_window">
-            <field name="name">Dashboard Manager</field>
-            <field name="res_model">ks_dashboard_ninja.board</field>
-<<<<<<< HEAD
-            <field name="view_mode">tree,form</field>
-=======
             <field name="view_mode">list,form</field>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
-            <field name="context">{'form_view_ref':'ks_dashboard_ninja.board_form',
-                'tree_view_ref':'ks_dashboard_ninja.board_tree'}
-            </field>
         </record>
 
-        <record model="ir.actions.act_window" id="ks_dashboard_ninja.template_tree_action_window">
+        <record id="ks_dashboard_ninja.board_template_action" model="ir.actions.act_window">
             <field name="name">Dashboard Template</field>
             <field name="res_model">ks_dashboard_ninja.board_template</field>
-<<<<<<< HEAD
-            <field name="view_mode">tree,form</field>
-=======
             <field name="view_mode">list,form</field>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
-            <field name="context">{'default_ks_template_type':'ks_custom'}
-            </field>
         </record>
 
-        <record model="ir.actions.act_window" id="ks_dashboard_ninja.layout_tree_action_window">
-            <field name="name">Dashboard layout</field>
-            <field name="res_model">ks_dashboard_ninja.child_board</field>
-<<<<<<< HEAD
-            <field name="view_mode">tree,form</field>
-=======
+        <record id="ks_dashboard_ninja.board_defined_filters_action" model="ir.actions.act_window">
+            <field name="name">Pre Defined Filters</field>
+            <field name="res_model">ks_dashboard_ninja.board_defined_filters</field>
             <field name="view_mode">list,form</field>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
-            <field name="domain">[('board_type', '!=', 'default')]</field>
-            <field name="context">{'group_by':'ks_dashboard_menu_name'}
-            </field>
         </record>
 
-        <menuitem name="My Dashboard" id="ks_dashboard_ninja.board_menu_root"
-                  web_icon="ks_dashboard_ninja,static/description/icon.png"
-                  action="ks_dashboard_ninja.board_dashboard_action_window"/>
+        <!-- Menus -->
+        <menuitem id="ks_dashboard_ninja_root_menu" name="Dashboard Ninja" sequence="10"/>
 
-        <menuitem name="Configuration" id="ks_dashboard_ninja.configuration_menu"
-                  parent="ks_dashboard_ninja.board_menu_root"
-                  groups="ks_dashboard_ninja_group_manager" sequence="100"/>
+        <menuitem id="ks_dashboard_ninja.board_menu" name="Manage Dashboard"
+                  parent="ks_dashboard_ninja_root_menu" action="ks_dashboard_ninja.board_action" sequence="20"/>
 
-        <menuitem name="Dashboards" id="ks_dashboard_ninja.dashboard_menu"
-                  parent="ks_dashboard_ninja.configuration_menu"
-                  action="ks_dashboard_ninja.board_form_tree_action_window" groups="ks_dashboard_ninja_group_manager"/>
+        <menuitem id="ks_dashboard_ninja.board_defined_filters_menu" name="Pre Defined Filters"
+                  parent="ks_dashboard_ninja_root_menu" action="ks_dashboard_ninja.board_defined_filters_action" sequence="30"/>
 
-        <menuitem name="Dashboard Layouts" id="ks_dashboard_ninja.dashboard_layout_menu"
-                  parent="ks_dashboard_ninja.configuration_menu"
-                  action="ks_dashboard_ninja.layout_tree_action_window" groups="ks_dashboard_ninja_group_manager"/>
-
-        <!--        <menuitem name="Dashboard Templates" id="ks_dashboard_ninja.dashboard_template_menu"-->
-        <!--                  parent="ks_dashboard_ninja.configuration_menu"-->
-        <!--                  action="ks_dashboard_ninja.template_tree_action_window" groups="ks_dashboard_ninja_group_manager"/>-->
+        <menuitem id="ks_dashboard_ninja.board_template_menu" name="Dashboard Template"
+                  parent="ks_dashboard_ninja_root_menu" action="ks_dashboard_ninja.board_template_action" sequence="40"/>
 
     </data>
-<<<<<<< HEAD
 </odoo>
-=======
-</odoo>
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
