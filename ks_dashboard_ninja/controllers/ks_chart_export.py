@@ -3,12 +3,6 @@ import re
 import datetime
 import io
 import json
-<<<<<<< HEAD
-import operator
-
-from odoo.addons.web.controllers.main import ExportFormat,serialize_exception, ExportXlsxWriter
-from odoo.tools.translate import _
-=======
 import logging
 import operator
 
@@ -17,18 +11,14 @@ from werkzeug.exceptions import InternalServerError
 from odoo.addons.web.controllers.export import ExportFormat, ExportXlsxWriter
 from odoo.http import serialize_exception
 from odoo import _
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 from odoo import http
 from odoo.http import content_disposition, request
 from odoo.tools.misc import xlwt
 from odoo.exceptions import UserError
 from odoo.tools import pycompat
 
-<<<<<<< HEAD
-=======
 _logger = logging.getLogger(__name__)
-
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+ 
 
 class KsChartExport(http.Controller):
 
@@ -60,11 +50,6 @@ class KsChartExcelExport(KsChartExport, http.Controller):
     raw_data = True
 
     @http.route('/ks_dashboard_ninja/export/chart_xls', type='http', auth="user")
-<<<<<<< HEAD
-    @serialize_exception
-    def index(self, data):
-        return self.base(data)
-=======
     def index(self, data):
         try:
             return self.base(data)
@@ -76,7 +61,6 @@ class KsChartExcelExport(KsChartExport, http.Controller):
                 'data': serialize_exception(exc)
             })
             raise InternalServerError(payload) from exc
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
 
     @property
     def content_type(self):
