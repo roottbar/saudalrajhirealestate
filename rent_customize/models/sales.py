@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.tools import float_compare
 from odoo.exceptions import ValidationError
 from datetime import datetime, date, timedelta
 from odoo import models, fields, _
@@ -388,6 +389,30 @@ class SaleOrder(models.Model):
 
     def action_pickup(self):
         self.write({'state': 'occupied', 'rental_status': 'return'})
+
+    # Safe aliases to fix invalid action warnings in views referencing
+    # 'action_open_pickup' and 'action_open_return'. These open the standard
+    # rental wizard with appropriate status and eligible lines.
+    def action_open_pickup(self):
+        status = 'pickup'
+        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        lines_to_pickup = self.order_line.filtered(
+            lambda r: r.state in ['sale', 'done', 'occupied'] and r.is_rental and
+            float_compare(r.qty_delivered, r.product_uom_qty, precision_digits=precision) < 0
+        )
+        return self._open_rental_wizard(status, lines_to_pickup.ids)
+
+    def action_open_return(self):
+        # Delegate to existing implementation if present
+        if hasattr(self, 'open_return'):
+            return self.open_return()
+        status = 'return'
+        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        lines_to_return = self.order_line.filtered(
+            lambda r: r.state in ['sale', 'done', 'occupied'] and r.is_rental and
+            float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0
+        )
+        return self._open_rental_wizard(status, lines_to_return.ids)
 
     def _compute_has_late_lines(self):
         for order in self:
