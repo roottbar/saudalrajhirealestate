@@ -95,12 +95,11 @@ def ks_read(self, records):
 
 fields.Many2many.read = ks_read
 
-<<<<<<< HEAD
-read_group = models.BaseModel._read_group_process_groupby
-=======
-# Odoo 15+ compatibility: using _read_group_postprocess_groupby
-read_group = models.BaseModel._read_group_postprocess_groupby
->>>>>>> 18de2315 (Initial commit: Odoo 18 Update project with all modules and configurations)
+# Handle Odoo versions with different read_group groupby hook names
+if hasattr(models.BaseModel, '_read_group_postprocess_groupby'):
+    read_group = models.BaseModel._read_group_postprocess_groupby
+else:
+    read_group = models.BaseModel._read_group_process_groupby
 
 
 def ks_time_addition(self, gb, query):
@@ -152,7 +151,10 @@ def ks_time_addition(self, gb, query):
     }
 
 
-models.BaseModel._read_group_process_groupby = ks_time_addition
+if hasattr(models.BaseModel, '_read_group_postprocess_groupby'):
+    models.BaseModel._read_group_postprocess_groupby = ks_time_addition
+else:
+    models.BaseModel._read_group_process_groupby = ks_time_addition
 
 
 class KsDashboardNinjaItems(models.Model):
