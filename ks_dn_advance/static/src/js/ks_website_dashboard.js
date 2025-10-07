@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dn_advance.ks_tv_website_dashboard', function(require){
 
     var KsDashboardNinjaWebsite =  require('ks_website_dashboard_ninja.ks_website_dashboard');
