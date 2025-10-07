@@ -503,17 +503,7 @@
                                 All Target Lines Changes Will be reflected on Chart after saving the record and pagination will be ignore .
                             </div>
                             <field name="ks_goal_lines"
-                                   modifiers="{'invisible' : ['|','|',('ks_goal_enable','=',False),('ks_dashboard_item_type','=','ks_kpi'),('ks_chart_relation_sub_groupby','!=',False)]}">
-                                <tree string="Goal Lines"
-                                      editable="top"
-                                      widget="section_and_note_one2many">
-                                    <control>
-                                        <create string="Add a Line"/>
-                                    </control>
-                                    <field name="ks_goal_date" required="1"/>
-                                    <field name="ks_goal_value"/>
-                                </tree>
-                            </field>
+                                   modifiers="{'invisible' : ['|','|',('ks_goal_enable','=',False),('ks_dashboard_item_type','=','ks_kpi'),('ks_chart_relation_sub_groupby','!=',False)]}"/>
                         </page>
                         <page string="Auto Update" modifiers="{'invisible': [('ks_dashboard_item_type','=','ks_to_do')]}">
                             <group>
