@@ -8,5 +8,6 @@
     "assets": {},
     "license": "OEEL-1",
     "installable": True,
+    "auto_install": True,
     "application": False,
 }
