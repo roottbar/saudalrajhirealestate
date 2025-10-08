@@ -44,6 +44,11 @@
             'ks_dashboard_ninja/static/src/js/ks_to_do_preview.js',
             'ks_dashboard_ninja/static/src/js/ks_widget_toggle.js',
         ],
+        # Ensure early availability of client action registration in frontend
+        'web.assets_web': [
+            'ks_dashboard_ninja/static/src/js/ks_dashboard_ninja.js',
+            'ks_dashboard_ninja/static/src/js/ks_import_dashboard.js',
+        ],
         'web.assets_qweb': [
             'ks_dashboard_ninja/static/src/xml/ks_dashboard_ninja_item_templates.xml',
             'ks_dashboard_ninja/static/src/xml/ks_dashboard_ninja_item_theme.xml',
