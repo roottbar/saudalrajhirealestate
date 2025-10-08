@@ -5,7 +5,7 @@
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/account_parent/static/src/js/account_parent_backend.js"></script>
             <script type="text/javascript" src="/account_parent/static/src/js/account_parent_widgets.js"></script>
-            <link rel="stylesheet" href="/account_parent/static/src/scss/coa_hierarchy.scss" />
+            <link rel="stylesheet" type="text/scss" href="/account_parent/static/src/scss/coa_hierarchy.scss"/>
         </xpath>
    </template>
 

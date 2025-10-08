@@ -65,6 +65,15 @@ class SaleOrder(models.Model):
     annual_increase = fields.Boolean('Annual Increase ?')
     annual_amount = fields.Float("Annual Amount")
 
+    # Ensure recomputation propagates through dependent computed fields in Odoo 18
+    # These fields depend on other computed fields (e.g., order_line.qty_delivered,
+    # amount_total) so they should be marked recursive to avoid dependency warnings
+    rental_status = fields.Selection(recursive=True)
+    next_action_date = fields.Date(recursive=True)
+    has_pickable_lines = fields.Boolean(recursive=True)
+    has_returnable_lines = fields.Boolean(recursive=True)
+    invoice_status = fields.Selection(recursive=True)
+
 
     def get_date_hijri(self, date):
         try:
