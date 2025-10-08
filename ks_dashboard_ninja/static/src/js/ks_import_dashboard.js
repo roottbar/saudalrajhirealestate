@@ -9,6 +9,8 @@ odoo.define('ks_dashboard_ninja.import_button', function(require) {
     var ListController = require('web.ListController');
     var framework = require('web.framework');
     var Dialog = require('web.Dialog');
+    // Use named export for the modern actions registry (Odoo 18+)
+    const { registry } = require('@web/core/registry');
 
 
     ListController.include({
@@ -115,10 +117,7 @@ odoo.define('ks_dashboard_ninja.import_button', function(require) {
 
     });
     core.action_registry.add('ks_dashboard_ninja.import_button', ListController);
-    // Also register in the new actions registry to ensure availability in Odoo 18+
-    var webRegistry = require('@web/core/registry');
-    if (webRegistry && webRegistry.registry && webRegistry.registry.category) {
-        webRegistry.registry.category('actions').add('ks_dashboard_ninja.import_button', ListController);
-    }
+    // Register in the new actions registry
+    registry.category('actions').add('ks_dashboard_ninja.import_button', ListController);
     return ListController;
 });

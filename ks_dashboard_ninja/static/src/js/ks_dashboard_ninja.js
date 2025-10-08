@@ -21,8 +21,8 @@ odoo.define('ks_dashboard_ninja.ks_dashboard', function(require) {
     var KsGlobalFunction = require('ks_dashboard_ninja.KsGlobalFunction');
 
     var KsQuickEditView = require('ks_dashboard_ninja.quick_edit_view');
-    // Ensure registration in the modern actions registry for Odoo 18+
-    var webRegistry = require('@web/core/registry');
+    // Use named export for the modern actions registry (Odoo 18+)
+    const { registry } = require('@web/core/registry');
 
 
     var KsDashboardNinja = AbstractAction.extend({
@@ -3049,10 +3049,8 @@ odoo.define('ks_dashboard_ninja.ks_dashboard', function(require) {
     });
 
     core.action_registry.add('ks_dashboard_ninja', KsDashboardNinja);
-    // Also register in the new actions registry to avoid KeyNotFoundError
-    if (webRegistry && webRegistry.registry && webRegistry.registry.category) {
-        webRegistry.registry.category('actions').add('ks_dashboard_ninja', KsDashboardNinja);
-    }
+    // Register in the new actions registry
+    registry.category('actions').add('ks_dashboard_ninja', KsDashboardNinja);
 
     return KsDashboardNinja;
 });
