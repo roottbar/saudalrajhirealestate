@@ -26,6 +26,11 @@
         'report/mis_report_instance_xlsx.xml',
     ],
     'assets': {
+        'web.assets_backend': [
+            'mis_builder/static/src/css/report.css',
+            'mis_builder/static/src/css/custom.css',
+            'mis_builder/static/src/js/mis_report_widget.js',
+        ],
         'web.assets_qweb': [
             'mis_builder/static/src/xml/mis_report_widget.xml',
         ],

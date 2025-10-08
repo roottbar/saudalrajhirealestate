@@ -12,6 +12,12 @@
     ],
     'data': [],
     'assets': {
+        'web.assets_backend': [
+            'base_dynamic_reports/static/src/css/search_menus.css',
+            'base_dynamic_reports/static/src/js/basic_dynamic_report.js',
+            'base_dynamic_reports/static/src/js/dynamic_relation_filters.js',
+            'base_dynamic_reports/static/src/js/dynamic_report_widgets.js',
+        ],
         'web.assets_qweb': [
             'base_dynamic_reports/static/src/xml/*.xml',
         ],
