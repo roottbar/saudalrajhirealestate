@@ -1,37 +1,37 @@
 /** @odoo-module **/
+odoo.define('web_google_maps.GoogleMapModel', function(require) {
+    'use strict';
 
-import { _t } from "@web/core/l10n/translation";
+    const BasicModel = require('web.BasicModel');
 
-export class GoogleMapModel {
-    constructor(orm) {
-        this.orm = orm;
-        this.defaultGroupedBy = null;
-    }
-
-    /**
-     * Load data
-     */
-    async load(params) {
-        this.defaultGroupedBy = params.groupBy;
-        params.groupedBy = (params.groupedBy && params.groupedBy.length) ? params.groupedBy : this.defaultGroupedBy;
-        return params;
-    }
-
-    /**
-     * Reload data
-     */
-    async reload(id, options) {
-        if (options && options.groupBy && !options.groupBy.length) {
-            options.groupBy = this.defaultGroupedBy;
+    const GoogleMapModel = BasicModel.extend({
+        /**
+         * @override
+         */
+        reload: function (id, options) {
+            if (options && options.groupBy && !options.groupBy.length) {
+                options.groupBy = this.defaultGroupedBy;
+            }
+            return this._super.apply(this, arguments);
+        },
+        /**
+         * @override
+         */
+        load: function (params) {
+            this.defaultGroupedBy = params.groupBy;
+            params.groupedBy = (params.groupedBy && params.groupedBy.length) ? params.groupedBy : this.defaultGroupedBy;
+            return this._super(params);
+        },
+        /**
+         * Disable group by
+         *
+         * @override
+         */
+        _readGroup: function () {
+            return Promise.reject();
         }
-        return id;
-    }
+    });
 
-    /**
-     * Disable group by - not supported in map view
-     */
-    async _readGroup() {
-        return Promise.reject();
-    }
-}
+    return GoogleMapModel;
 
+});

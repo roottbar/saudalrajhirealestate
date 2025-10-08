@@ -1,216 +1,327 @@
 /** @odoo-module **/
+odoo.define('web_google_maps.GoogleMapController', function (require) {
+    'use strict';
 
-import { Component } from "@odoo/owl";
-import { _t } from "@web/core/l10n/translation";
-import { useService } from "@web/core/utils/hooks";
+    const Context = require('web.Context');
+    const core = require('web.core');
+    const BasicController = require('web.BasicController');
+    const Domain = require('web.Domain');
 
-export class GoogleMapController extends Component {
-    setup() {
-        this.orm = useService("orm");
-        this.notification = useService("notification");
-        this.action = useService("action");
-        
-        this.is_marker_edit = false;
-        this.renderer = null;
-    }
+    const qweb = core.qweb;
+    const _t = core._t;
 
-    /**
-     * Check if marker editing is available in context
-     */
-    _isEditMarkerInContext() {
-        const context = this.props.context || {};
-        return context.edit_geo_field;
-    }
-
-    /**
-     * Check if marker is editable
-     */
-    _isMarkerEditable() {
-        const is_editable = this.props.model?.data?.length === 1 && this.props.mapMode === 'geometry';
-        return is_editable;
-    }
-
-    /**
-     * Handle button click to center map
-     */
-    _onButtonMapCenter(event) {
-        event.stopPropagation();
-        if (this.renderer) {
-            const func_name = '_map_center_' + this.props.mapMode;
-            if (this.renderer[func_name]) {
-                this.renderer[func_name].call(this.renderer);
-            }
-        }
-    }
-
-    /**
-     * Handle button click to create new record
-     */
-    _onButtonNew(event) {
-        event.stopPropagation();
-        this.action.doAction({
-            type: 'ir.actions.act_window',
-            res_model: this.props.resModel,
-            views: [[false, 'form']],
-            target: 'current',
-        });
-    }
-
-    /**
-     * Enable marker editing mode
-     */
-    _onEditMarker() {
-        this.is_marker_edit = true;
-        if (this.renderer) {
-            this.renderer.setMarkerDraggable();
-        }
-    }
-
-    /**
-     * Prepare geolocation values from marker position
-     */
-    _prepareGeolocationValues(marker) {
-        return {
-            [this.props.fieldLat]: marker.lat(),
-            [this.props.fieldLng]: marker.lng(),
-        };
-    }
-
-    /**
-     * Save marker position
-     */
-    async _onButtonSaveMarker(event) {
-        event.stopPropagation();
-        if (!this.renderer) return;
-        
-        const markers = this.renderer.getMarkers();
-        if (markers.length === 0) return;
-        
-        const marker_position = markers[0].getPosition();
-        const values = this._prepareGeolocationValues(marker_position);
-        
-        try {
-            const resIds = this.props.model?.resIds || [];
-            await this.orm.write(this.props.resModel, resIds, values);
-            
+    const GoogleMapController = BasicController.extend({
+        custom_events: _.extend({}, BasicController.prototype.custom_events, {
+            button_clicked: '_onButtonClicked',
+            kanban_record_delete: '_onRecordDelete',
+            kanban_record_update: '_onUpdateRecord',
+            kanban_column_archive_records: '_onArchiveRecords',
+            geolocate_user_location: '_geolocate',
+        }),
+        /**
+         * @override
+         * @param {Object} params
+         */
+        init: function (parent, model, renderer, params) {
+            this._super.apply(this, arguments);
+            this.actionButtons = params.actionButtons;
+            this.defaultButtons = params.defaultButtons;
+            this.on_create = params.on_create;
+            this.hasButtons = params.hasButtons;
             this.is_marker_edit = false;
-            if (this.renderer) {
-                this.renderer.disableMarkerDraggable();
+        },
+        start: function () {
+            return this._super.apply(this, arguments).then(this._checkEditMarker.bind(this));
+        },
+        _checkEditMarker: function () {
+            if (this._isEditMarkerInContext()) {
+                this._onEditMarker();
             }
-            
-            // Reload the view
-            await this.props.model?.load();
-            
-            this.notification.add(_t("Marker position saved successfully"), {
-                type: "success",
-            });
-            
-            // Go back in history after a short delay
-            setTimeout(() => {
-                window.history.back();
-            }, 2000);
-        } catch (error) {
-            this.notification.add(_t("Failed to save marker position"), {
-                type: "danger",
-            });
-        }
-    }
+        },
+        _isEditMarkerInContext: function () {
+            const record = this.model.get(this.handle);
+            const context = record.getContext();
+            return context.edit_geo_field;
+        },
+        /**
+         * @private
+         * @param {Widget} kanbanRecord
+         * @param {Object} params
+         */
+        _reloadAfterButtonClick: function (kanbanRecord, params) {
+            const recordModel = this.model.localData[params.record.id];
+            const group = this.model.localData[recordModel.parentID];
+            const parent = this.model.localData[group.parentID];
 
-    /**
-     * Discard marker changes
-     */
-    _onButtonDiscardMarker(event) {
-        event.stopPropagation();
-        this.is_marker_edit = false;
-        
-        if (this.renderer) {
-            this.renderer.disableMarkerDraggable();
-        }
+            this.model.reload(params.record.id).then((db_id) => {
+                const data = this.model.get(db_id);
+                kanbanRecord.update(data);
 
-        if (this._isEditMarkerInContext()) {
-            window.history.back();
-        } else {
-            // Reload the view
-            if (this.props.model) {
-                this.props.model.load();
+                // Check if we still need to display the record. Some fields of the domain are
+                // not guaranteed to be in data. This is for example the case if the action
+                // contains a domain on a field which is not in the Kanban view. Therefore,
+                // we need to handle multiple cases based on 3 variables:
+                // domInData: all domain fields are in the data
+                // activeInDomain: 'active' is already in the domain
+                // activeInData: 'active' is available in the data
+
+                const domain = (parent ? parent.domain : group.domain) || [];
+                const domInData = _.every(domain, function (d) {
+                    return d[0] in data.data;
+                });
+                const activeInDomain = _.pluck(domain, 0).indexOf('active') !== -1;
+                const activeInData = 'active' in data.data;
+
+                // Case # | domInData | activeInDomain | activeInData
+                //   1    |   true    |      true      |      true     => no domain change
+                //   2    |   true    |      true      |      false    => not possible
+                //   3    |   true    |      false     |      true     => add active in domain
+                //   4    |   true    |      false     |      false    => no domain change
+                //   5    |   false   |      true      |      true     => no evaluation
+                //   6    |   false   |      true      |      false    => no evaluation
+                //   7    |   false   |      false     |      true     => replace domain
+                //   8    |   false   |      false     |      false    => no evaluation
+
+                // There are 3 cases which cannot be evaluated since we don't have all the
+                // necessary information. The complete solution would be to perform a RPC in
+                // these cases, but this is out of scope. A simpler one is to do a try / catch.
+
+                if (domInData && !activeInDomain && activeInData) {
+                    domain = domain.concat([['active', '=', true]]);
+                } else if (!domInData && !activeInDomain && activeInData) {
+                    domain = [['active', '=', true]];
+                }
+                let visible = null;
+                try {
+                    visible = new Domain(domain).compute(data.evalContext);
+                } catch (e) {
+                    return;
+                }
+                if (!visible) {
+                    kanbanRecord.destroy();
+                }
+            });
+        },
+        /**
+         * @private
+         * @param {OdooEvent} ev
+         */
+        _onButtonClicked: function (ev) {
+            ev.stopPropagation();
+            const attrs = ev.data.attrs;
+            const record = ev.data.record;
+            const def = Promise.resolve();
+            if (attrs.context) {
+                attrs.context = new Context(attrs.context).set_eval_context({
+                    active_id: record.res_id,
+                    active_ids: [record.res_id],
+                    active_model: record.model,
+                });
             }
-        }
-    }
-
-    /**
-     * Handle geolocation error
-     */
-    _handleGeolocationFailed(error) {
-        let msg = '';
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                msg = _t(
-                    'User denied the request for Geolocation. Please update your configuration to allow browser detect your current location'
+            if (attrs.confirm) {
+                def = new Promise((resolve, reject) => {
+                    Dialog.confirm(this, attrs.confirm, {
+                        confirm_callback: resolve,
+                        cancel_callback: reject,
+                    }).on('closed', null, reject);
+                });
+            }
+            def.then(() => {
+                this.trigger_up('execute_action', {
+                    action_data: attrs,
+                    env: {
+                        context: record.getContext(),
+                        currentID: record.res_id,
+                        model: record.model,
+                        resIDs: record.res_ids,
+                    },
+                    on_closed: this._reloadAfterButtonClick.bind(this, ev.target, ev.data),
+                });
+            });
+        },
+        /**
+         * @private
+         * @param {OdooEvent} event
+         */
+        _onRecordDelete: function (event) {
+            this._deleteRecords([event.data.id]);
+        },
+        /**
+         * @todo should simply use field_changed event...
+         *
+         * @private
+         * @param {OdooEvent} ev
+         */
+        _onUpdateRecord: function (ev) {
+            const onSuccess = ev.data.onSuccess;
+            delete ev.data.onSuccess;
+            const changes = _.clone(ev.data);
+            ev.data.force_save = true;
+            this._applyChanges(ev.target.db_id, changes, ev).then(onSuccess);
+        },
+        /**
+         * The interface allows in some case the user to archive a column. This is
+         * what this handler is for.
+         *
+         * @private
+         * @param {OdooEvent} ev
+         */
+        _onArchiveRecords: async function (ev) {
+            const archive = ev.data.archive;
+            const column = ev.target;
+            const recordIds = _.pluck(column.records, 'id');
+            if (recordIds.length) {
+                const prom = archive
+                    ? this.model.actionArchive(recordIds, column.db_id)
+                    : this.model.actionUnarchive(recordIds, column.db_id);
+                prom.then((dbID) => {
+                    const data = this.model.get(dbID);
+                    if (data) {
+                        // Could be null if a wizard is returned for example
+                        this.model.reload(this.handle).then(() => {
+                            const state = this.model.get(this.handle);
+                            this.renderer.updateColumn(dbID, data, { state });
+                        });
+                    }
+                });
+            }
+        },
+        /**
+         * @private
+         * @param {OdooEvent} event
+         */
+        _onRecordDelete: function (event) {
+            this._deleteRecords([event.data.id]);
+        },
+        _onUpdateRecord: function (ev) {
+            const changes = _.clone(ev.data);
+            ev.data.force_save = true;
+            this._applyChanges(ev.target.db_id, changes, ev);
+        },
+        renderButtons: function ($node) {
+            if (this.hasButtons) {
+                this.$buttons = $(
+                    qweb.render('GoogleMapView.buttons', {
+                        widget: this,
+                    })
                 );
-                break;
-            case error.POSITION_UNAVAILABLE:
-                msg = _t('Location information is unavailable.');
-                break;
-            case error.TIMEOUT:
-                msg = _t('The request to get user location timed out.');
-                break;
-            case error.UNKNOWN_ERROR:
-                msg = _t('An unknown error occurred.');
-                break;
-        }
-        if (msg) {
-            this.notification.add(msg, { type: 'danger' });
-        }
-    }
-
-    /**
-     * Handle geolocation success
-     */
-    _handleGeolocationSuccess(position) {
-        if (!this.renderer || !this.renderer.gmap) return;
-        
-        const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        const marker = new google.maps.Marker({
-            position: latLng,
-            map: this.renderer.gmap,
-        });
-        
-        this.renderer.gmap.panTo(marker.getPosition());
-        google.maps.event.addListenerOnce(this.renderer.gmap, 'idle', () => {
-            google.maps.event.trigger(this.renderer.gmap, 'resize');
-            if (this.renderer.gmap.getZoom() < 19) {
-                this.renderer.gmap.setZoom(19);
+                this.$buttons.on('click', 'button.o-map-button-new', this._onButtonNew.bind(this));
+                this.$buttons.on('click', 'button.o-map-button-center-map', this._onButtonMapCenter.bind(this));
+                this.$buttons.on('click', 'button.o-map-button-marker-save', this._onButtonSaveMarker.bind(this));
+                this.$buttons.on('click', 'button.o-map-button-marker-discard', this._onButtonDiscardMarker.bind(this));
+                this.$buttons.appendTo($node);
             }
-            google.maps.event.trigger(marker, 'click');
-        });
-    }
+        },
+        _isMarkerEditable: function () {
+            const is_editable = this.initialState.count === 1 && this.renderer.mapLibrary === 'geometry';
+            return is_editable;
+        },
+        _onButtonMapCenter: function (event) {
+            event.stopPropagation();
+            const func_name = '_map_center_' + this.renderer.mapMode;
+            this.renderer[func_name].call(this.renderer);
+        },
+        _onButtonNew: function (event) {
+            event.stopPropagation();
+            this.trigger_up('switch_view', {
+                view_type: 'form',
+                res_id: undefined,
+            });
+        },
+        _onEditMarker: function () {
+            this.is_marker_edit = true;
+            this._updateMarkerButtons();
+            this.renderer.setMarkerDraggable();
+        },
+        _prepareGeolocationValues: function (marker) {
+            return {
+                [this.renderer.fieldLat]: marker.lat(),
+                [this.renderer.fieldLng]: marker.lng(),
+            }
+        },
+        _onButtonSaveMarker: function (event) {
+            event.stopPropagation();
+            const record = this.model.get(this.handle);
+            const markers = this.renderer.getMarkers();
+            const marker_position = markers[0].getPosition();
 
-    /**
-     * Geolocate user location
-     */
-    _geolocate() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                this._handleGeolocationSuccess.bind(this),
-                this._handleGeolocationFailed.bind(this),
-                { enableHighAccuracy: true }
-            );
-        }
-    }
+            this._updateMarkerButtons();
+            const values = this._prepareGeolocationValues(marker_position);
+            return this._rpc({
+                model: this.modelName,
+                method: 'write',
+                args: [record.res_ids, values],
+            }).then(() => {
+                this.is_marker_edit = false;
+                this.renderer.disableMarkerDraggable();
+                this.reload();
+                setTimeout(() => {
+                    this.trigger_up('history_back');
+                }, 2000);
+            });
+        },
+        _onButtonDiscardMarker: function (event) {
+            event.stopPropagation();
+            this.is_marker_edit = false;
+            this._updateMarkerButtons();
+            this.renderer.disableMarkerDraggable();
+            this._discardChanges();
 
-    /**
-     * Open a record in form view
-     */
-    openRecord(resId) {
-        this.action.doAction({
-            type: 'ir.actions.act_window',
-            res_model: this.props.resModel,
-            res_id: resId,
-            views: [[false, 'form']],
-            target: 'current',
-        });
-    }
-}
+            if (this._isEditMarkerInContext()) {
+                this.trigger_up('history_back');
+            } else {
+                this.reload();
+            }
+        },
+        _updateMarkerButtons: function () {
+            this.$buttons.find('.o_form_marker_buttons_actions').toggleClass('o_hidden', this.is_marker_edit);
+            this.$buttons.find('.o_form_marker_buttons_edit').toggleClass('o_hidden', !this.is_marker_edit);
+        },
+        _handleGeolocationFailed: function (error) {
+            let msg = '';
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    msg = _t(
+                        'User denied the request for Geolocation. Please update your configuration to allow browser detect your current location'
+                    );
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    msg = _t('Location information is unavailable.');
+                    break;
+                case error.TIMEOUT:
+                    msg = _t('The request to get user location timed out.');
+                    break;
+                case error.UNKNOWN_ERROR:
+                    msg = _t('An unknown error occurred.');
+                    break;
+            }
+            if (msg) {
+                this.displayNotification({ message: msg, type: 'danger' });
+            }
+        },
+        _handleGeolocationSuccess: function (position) {
+            const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            const marker = new google.maps.Marker({
+                position: latLng,
+                map: this.renderer.gmap,
+            });
+            this.renderer.gmap.panTo(marker.getPosition());
+            google.maps.event.addListenerOnce(this.renderer.gmap, 'idle', () => {
+                google.maps.event.trigger(this.renderer.gmap, 'resize');
+                if (this.renderer.gmap.getZoom() < 19) this.renderer.gmap.setZoom(19);
+                google.maps.event.trigger(marker, 'click');
+            });
+        },
+        _geolocate: function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    this._handleGeolocationSuccess.bind(this),
+                    this._handleGeolocationFailed.bind(this),
+                    { enableHighAccuracy: true }
+                );
+            }
+        },
+    });
 
-GoogleMapController.template = "web_google_maps.GoogleMapView";
-
+    return GoogleMapController;
+});

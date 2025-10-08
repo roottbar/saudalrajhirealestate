@@ -1,6 +1,8 @@
 /** @odoo-module **/
+odoo.define('web_google_maps.Utils', function (require) {
+    'use strict';
 
-import rpc from "@web/core/network/rpc";
+    const rpc = require('web.rpc');
 
     const GOOGLE_PLACES_COMPONENT_FORM = {
         street_number: 'long_name',
@@ -61,21 +63,25 @@ import rpc from "@web/core/network/rpc";
      * @param {*} field_name
      * @param {*} value
      */
-    async function fetchValues(model, field_name, value) {
+    function fetchValues(model, field_name, value) {
         if (model && value) {
-            const data = await rpc('/web/dataset/call_kw', {
-                model: model,
-                method: 'search_read',
-                args: [['|', ['name', '=', value], ['code', '=', value]], ['display_name']],
-                kwargs: { limit: 1 },
+            return new Promise(async (resolve) => {
+                const data = await rpc.query({
+                    model: model,
+                    method: 'search_read',
+                    args: [['|', ['name', '=', value], ['code', '=', value]], ['display_name']],
+                    limit: 1,
+                });
+                resolve({
+                    [field_name]: data.length === 1 ? data[0] : false,
+                });
             });
-            return {
-                [field_name]: data.length === 1 ? data[0] : false,
-            };
         } else {
-            return {
-                [field_name]: value,
-            };
+            return new Promise((resolve) => {
+                resolve({
+                    [field_name]: value,
+                });
+            });
         }
     }
 
@@ -85,20 +91,23 @@ import rpc from "@web/core/network/rpc";
      * @param {*} country
      * @param {*} state
      */
-    async function fetchCountryState(model, country, state) {
+    function fetchCountryState(model, country, state) {
         if (model && country && state) {
-            const data = await rpc('/web/dataset/call_kw', {
-                model: model,
-                method: 'search_read',
-                args: [
-                    [['country_id', '=', country], '|', ['code', '=', state], ['name', '=', state]],
-                    ['display_name'],
-                ],
-                kwargs: { limit: 1 },
+            return new Promise(async (resolve) => {
+                const data = await rpc.query({
+                    model: model,
+                    method: 'search_read',
+                    args: [
+                        [['country_id', '=', country], '|', ['code', '=', state], ['name', '=', state]],
+                        ['display_name'],
+                    ],
+                    limit: 1,
+                });
+                const result = data.length === 1 ? data[0] : {};
+                resolve(result);
             });
-            return data.length === 1 ? data[0] : {};
         } else {
-            return [];
+            return new Promise((resolve) => resolve([]));
         }
     }
 
@@ -2444,20 +2453,20 @@ import rpc from "@web/core/network/rpc";
         ],
     };
 
-export {
-    GOOGLE_PLACES_COMPONENT_FORM,
-    ADDRESS_FORM,
-    MAP_THEMES,
-    ADDRESS_MODE,
-    AUTOCOMPLETE_TYPES,
-    MARKER_ICON_SVG_PATH,
-    MARKER_ICON_WIDTH,
-    MARKER_ICON_HEIGHT,
-    gmaps_populate_address,
-    gmaps_populate_places,
-    gmaps_get_geolocation,
-    fetchValues,
-    fetchCountryState,
-    parseMarkersColor,
-};
-
+    return {
+        GOOGLE_PLACES_COMPONENT_FORM: GOOGLE_PLACES_COMPONENT_FORM,
+        ADDRESS_FORM: ADDRESS_FORM,
+        MAP_THEMES: MAP_THEMES,
+        ADDRESS_MODE: ADDRESS_MODE,
+        AUTOCOMPLETE_TYPES: AUTOCOMPLETE_TYPES,
+        MARKER_ICON_SVG_PATH: MARKER_ICON_SVG_PATH,
+        MARKER_ICON_WIDTH: MARKER_ICON_WIDTH,
+        MARKER_ICON_HEIGHT: MARKER_ICON_HEIGHT,
+        gmaps_populate_address: gmaps_populate_address,
+        gmaps_populate_places: gmaps_populate_places,
+        gmaps_get_geolocation: gmaps_get_geolocation,
+        fetchValues: fetchValues,
+        fetchCountryState: fetchCountryState,
+        parseMarkersColor: parseMarkersColor,
+    };
+});
