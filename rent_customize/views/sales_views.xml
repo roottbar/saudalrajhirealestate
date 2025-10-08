@@ -183,7 +183,6 @@
                 <list string="contract_tree">
                     <field name="state" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
-                    <field name="has_late_lines" invisible="1"/>
                     <field name="name" readonly="1" decoration-bf="1"/>
                     <field name="date_order" widget="date"/>
                     <field name="fromdate"/>
