@@ -351,7 +351,6 @@ class PurchaseRequestLine(models.Model):
         'account.analytic.tag',
         store=True,
         string='Analytic Tags',
-        check_company=True,
     )
     company_id = fields.Many2one('res.company', related='purchase_request_id.company_id', string='Company', store=True,
                                  readonly=True)
