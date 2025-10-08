@@ -59,7 +59,10 @@
                         </div>
                     </div>
                 </xpath>
-                <!-- تمت إزالة أي تعديل على الدومين لحقل external_report_layout_id لتجنب أخطاء التحقق -->
+                <!-- Force a valid domain on external_report_layout_id to avoid validation errors -->
+                <xpath expr="//field[@name='external_report_layout_id']" position="attributes">
+                    <attribute name="domain">[("type","=","qweb")]</attribute>
+                </xpath>
 
             </field>
         </record>
