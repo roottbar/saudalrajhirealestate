@@ -6,7 +6,7 @@ from odoo import models, fields, api
 class HrEndOfService(models.Model):
     _inherit = 'hr.end.service'
 
-    unpaid_loan = fields.Float(string="Unpaid Loan", compute='_compute_unpaid_loan', stote=True, readonly=True)
+    unpaid_loan = fields.Float(string="Unpaid Loan", compute='_compute_unpaid_loan', store=True, readonly=True)
 
     @api.depends("employee_id")
     def _compute_unpaid_loan(self):

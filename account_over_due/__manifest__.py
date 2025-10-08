@@ -18,9 +18,18 @@
         'views/report_over_due.xml',
         'views/assets.xml',
     ],
-    'qweb': [
-        'static/src/xml/account_over_due_template.xml',
-    ],
+    'assets': {
+        'web.assets_backend': [
+            'account_over_due/static/src/scss/account_followup_letter.scss',
+            'account_over_due/static/src/js/followup_form_controller.js',
+            'account_over_due/static/src/js/followup_form_model.js',
+            'account_over_due/static/src/js/followup_form_renderer.js',
+            'account_over_due/static/src/js/followup_form_view.js',
+        ],
+        'web.assets_qweb': [
+            'account_over_due/static/src/xml/account_over_due_template.xml',
+        ],
+    },
     'license': "LGPL-3",
     'installable': True,
     'auto_install': False,

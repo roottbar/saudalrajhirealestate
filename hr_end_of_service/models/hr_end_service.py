@@ -41,14 +41,14 @@ class HrEndOfService(models.Model):
         ('rejected', 'Rejected')], string='State', index=True, readonly=True, default='draft', copy=False,
         tracking=True)
 
-    total_service = fields.Char(string="Total Service", compute='_compute_total_end_service', stote=True, readonly=True)
-    total_service_year = fields.Float(string="Total Service Years", compute='_compute_total_end_service', stote=True,
+    total_service = fields.Char(string="Total Service", compute='_compute_total_end_service', store=True, readonly=True)
+    total_service_year = fields.Float(string="Total Service Years", compute='_compute_total_end_service', store=True,
                                       readonly=True)
-    service_year = fields.Integer(string="Total Service Years", compute='_compute_total_end_service', stote=True,
+    service_year = fields.Integer(string="Total Service Years", compute='_compute_total_end_service', store=True,
                                   readonly=True)
-    service_month = fields.Integer(string="Total Service Months", compute='_compute_total_end_service', stote=True,
+    service_month = fields.Integer(string="Total Service Months", compute='_compute_total_end_service', store=True,
                                    readonly=True)
-    service_day = fields.Integer(string="Total Service Days", compute='_compute_total_end_service', stote=True,
+    service_day = fields.Integer(string="Total Service Days", compute='_compute_total_end_service', store=True,
                                  readonly=True)
     note = fields.Text(string="Notes", copy=False)
     reject_reason = fields.Text(string="Reject Reason", copy=False)
@@ -57,7 +57,7 @@ class HrEndOfService(models.Model):
     eos_setting_id = fields.Many2one('hr.end.service.setting', string="Hr End Of Service Setting")
     eos_setting_type = fields.Selection(related="eos_setting_id.type", string="Hr End Of Service Setting Type")
     move_id = fields.Many2one('account.move', 'Accounting Entry', readonly=True, copy=False)
-    unpaid_loan = fields.Float(string="Unpaid Loan", compute='_compute_unpaid_loan', stote=True, readonly=True)
+    unpaid_loan = fields.Float(string="Unpaid Loan", compute='_compute_unpaid_loan', store=True, readonly=True)
     balance_wage = fields.Float(string="راتب الموظف", compute="_employee_wage", store=True)
     # employee_leaves = fields.One2many('hr.leave', 'employee_id', string="Employee Leaves")
 
@@ -68,12 +68,12 @@ class HrEndOfService(models.Model):
     #         loan.employee_loan = employee.balance_amount
 
     remaining_balance_time_off = fields.Float(string="Remaining balance", compute='_compute_remaining_time_off',
-                                              stote=True, readonly=True)
+                                              store=True, readonly=True)
 
     remaining_balance_time_off_amount = fields.Float(string="Remaining balance Amount",
-                                                     compute='_compute_remaining_time_off', stote=True, readonly=True)
+                                                     compute='_compute_remaining_time_off', store=True, readonly=True)
 
-    total_to_pay = fields.Float(string='Total Paid', compute='_compute_remaining_time_off', stote=True, readonly=True)
+    total_to_pay = fields.Float(string='Total Paid', compute='_compute_remaining_time_off', store=True, readonly=True)
 
     @api.depends("employee_id")
     def _compute_remaining_time_off(self):
