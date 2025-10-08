@@ -11,9 +11,11 @@
         'base',
     ],
     'data': [],
-    'qweb': [
-        'static/src/xml/*.xml',
-    ],
+    'assets': {
+        'web.assets_qweb': [
+            'base_dynamic_reports/static/src/xml/*.xml',
+        ],
+    },
     'license': "LGPL-3",
     'installable': True,
     'auto_install': False,

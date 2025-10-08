@@ -28,9 +28,11 @@
         'wizard/partner_ageing_view.xml',
         'wizard/financial_report_view.xml',
     ],
-    'qweb': [
-        'static/src/xml/view.xml',
-    ],
+    'assets': {
+        'web.assets_qweb': [
+            'account_dynamic_reports/static/src/xml/view.xml',
+        ],
+    },
     'license': "LGPL-3",
     'application': True,
     'installable': True,

@@ -31,7 +31,7 @@ class Employee(models.Model):
     payment_type = fields.Selection([
         ('cash', 'Cash'),
         ('bank', 'Bank')], required=True, string='Payment Type', index=True, copy=False, tracking=True)
-    service_year = fields.Char(string="Total Service Years", compute='_compute_total_service', stote=True, readonly=True)
+    service_year = fields.Char(string="Total Service Years", compute='_compute_total_service', store=True, readonly=True)
     passport_no = fields.Char(string="Passport NO", copy=False, tracking=True)
     passport_expire = fields.Date(string="Passport Expiry Date")
 

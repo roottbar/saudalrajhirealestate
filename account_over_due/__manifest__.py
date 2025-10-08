@@ -18,9 +18,11 @@
         'views/report_over_due.xml',
         'views/assets.xml',
     ],
-    'qweb': [
-        'static/src/xml/account_over_due_template.xml',
-    ],
+    'assets': {
+        'web.assets_qweb': [
+            'account_over_due/static/src/xml/account_over_due_template.xml',
+        ],
+    },
     'license': "LGPL-3",
     'installable': True,
     'auto_install': False,

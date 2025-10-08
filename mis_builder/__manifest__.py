@@ -25,9 +25,11 @@
         'report/mis_report_instance_qweb.xml',
         'report/mis_report_instance_xlsx.xml',
     ],
-    'qweb': [
-        'static/src/xml/mis_report_widget.xml',
-    ],
+    'assets': {
+        'web.assets_qweb': [
+            'mis_builder/static/src/xml/mis_report_widget.xml',
+        ],
+    },
     'license': "LGPL-3",
     'application': True,
     'installable': True,

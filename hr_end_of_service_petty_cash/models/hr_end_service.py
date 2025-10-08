@@ -8,7 +8,7 @@ class HrEndOfService(models.Model):
     _inherit = 'hr.end.service'
 
     no_closed_petty_cash = fields.Float(string="No Closed Petty Cash", compute='_compute_no_closed_petty_cash',
-                                        stote=True,
+                                        store=True,
                                         readonly=True)
 
     @api.depends("employee_id")

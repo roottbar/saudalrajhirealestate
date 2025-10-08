@@ -19,9 +19,11 @@
         'views/mis_report_instance_views.xml',
         'views/templates.xml',
     ],
-    'qweb': [
-        'static/src/xml/mis_template_financial_report.xml',
-    ],
+    'assets': {
+        'web.assets_qweb': [
+            'mis_template_financial_report/static/src/xml/mis_template_financial_report.xml',
+        ],
+    },
     'license': "LGPL-3",
     'installable': True,
     'auto_install': False,

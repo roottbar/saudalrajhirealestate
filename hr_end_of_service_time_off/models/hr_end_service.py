@@ -7,10 +7,10 @@ class HrEndOfService(models.Model):
     _inherit = 'hr.end.service'
 
     remaining_balance_time_off = fields.Float(string="Remaining balance", compute='_compute_remaining_time_off',
-                                              stote=True, readonly=True)
+                                              store=True, readonly=True)
 
     remaining_balance_time_off_amount = fields.Float(string="Remaining balance Amount",
-                                                     compute='_compute_remaining_time_off', stote=True, readonly=True)
+                                                     compute='_compute_remaining_time_off', store=True, readonly=True)
 
     @api.depends("employee_id")
     def _compute_remaining_time_off(self):
