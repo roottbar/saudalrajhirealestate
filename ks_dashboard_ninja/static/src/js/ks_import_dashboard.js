@@ -115,5 +115,10 @@ odoo.define('ks_dashboard_ninja.import_button', function(require) {
 
     });
     core.action_registry.add('ks_dashboard_ninja.import_button', ListController);
+    // Also register in the new actions registry to ensure availability in Odoo 18+
+    var webRegistry = require('@web/core/registry');
+    if (webRegistry && webRegistry.registry && webRegistry.registry.category) {
+        webRegistry.registry.category('actions').add('ks_dashboard_ninja.import_button', ListController);
+    }
     return ListController;
 });
