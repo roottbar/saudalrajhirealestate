@@ -59,9 +59,9 @@
                         </div>
                     </div>
                 </xpath>
-                <!-- Force a valid domain on external_report_layout_id to avoid validation errors -->
-                <xpath expr="//field[@name='external_report_layout_id']" position="attributes">
-                    <attribute name="domain">[("type","=","qweb")]</attribute>
+                <!-- Replace the field to enforce a clean, valid domain -->
+                <xpath expr="//field[@name='external_report_layout_id']" position="replace">
+                    <field name="external_report_layout_id" domain="[('type', '=', 'qweb')]" class="oe_inline"/>
                 </xpath>
 
             </field>
