@@ -61,7 +61,6 @@ class StockRequest(models.Model):
         default=lambda s: s._get_default_expected_date(),
         index=True,
         required=True,
-        readonly=True,
         readonly="state != 'draft'",
         help="Date when you expect to receive the goods.",
     )
@@ -72,7 +71,6 @@ class StockRequest(models.Model):
         ],
         string="Shipping Policy",
         required=True,
-        readonly=True,
         readonly="state != 'draft'",
         default="direct",
     )

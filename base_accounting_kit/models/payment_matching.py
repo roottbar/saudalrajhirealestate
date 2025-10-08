@@ -139,7 +139,7 @@ class AccountReconciliation(models.AbstractModel):
             FROM account_bank_statement_line st_line
             JOIN account_move move ON move.id = st_line.move_id
         '''
-        query += "LEFT JOIN res_partner_bank bank ON bank.id = move.partner_bank_id OR bank.sanitized_acc_number ILIKE regexp_replace(st_line.account_number, '\W+', '', 'g') %s\n" % (where_bank)
+        query += r"LEFT JOIN res_partner_bank bank ON bank.id = move.partner_bank_id OR bank.sanitized_acc_number ILIKE regexp_replace(st_line.account_number, '\W+', '', 'g') %s\n" % (where_bank)
         query += 'LEFT JOIN res_partner p1 ON st_line.partner_id=p1.id \n'
         query += 'LEFT JOIN res_partner p2 ON bank.partner_id=p2.id \n'
         # By definition the commercial partner_id doesn't have a parent_id set
