@@ -59,7 +59,10 @@
                         </div>
                     </div>
                 </xpath>
-                <!-- تمت إزالة أي تعديل على الدومين لحقل external_report_layout_id لتجنب أخطاء التحقق -->
+                <!-- Ensure valid domain syntax for external_report_layout_id -->
+                <xpath expr="//field[@name='external_report_layout_id']" position="replace">
+                    <field name="external_report_layout_id" domain="[('type', '=', 'qweb')]" class="oe_inline"/>
+                </xpath>
 
             </field>
         </record>
