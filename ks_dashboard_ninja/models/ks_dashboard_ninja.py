@@ -155,14 +155,18 @@ class KsDashboardNinjaBoard(models.Model):
             if 'ks_dashboard_menu_name' in vals:
                 if self.env.ref('ks_dashboard_ninja.ks_my_default_dashboard_board') and self.env.ref(
                         'ks_dashboard_ninja.ks_my_default_dashboard_board').sudo().id == rec.id:
-                    if self.env.ref('ks_dashboard_ninja.board_menu_root', False):
-                        self.env.ref('ks_dashboard_ninja.board_menu_root').sudo().name = vals['ks_dashboard_menu_name']
+                    menu = self.env.ref('ks_dashboard_ninja.board_menu_root', False) or \
+                           self.env.ref('ks_dashboard_ninja.ks_dashboard_ninja_root_menu', False)
+                    if menu:
+                        menu.sudo().name = vals['ks_dashboard_menu_name']
                 else:
                     rec.ks_dashboard_menu_id.sudo().name = vals['ks_dashboard_menu_name']
             if 'ks_dashboard_group_access' in vals:
                 if self.env.ref('ks_dashboard_ninja.ks_my_default_dashboard_board').id == rec.id:
-                    if self.env.ref('ks_dashboard_ninja.board_menu_root', False):
-                        self.env.ref('ks_dashboard_ninja.board_menu_root').groups_id = vals['ks_dashboard_group_access']
+                    menu = self.env.ref('ks_dashboard_ninja.board_menu_root', False) or \
+                           self.env.ref('ks_dashboard_ninja.ks_dashboard_ninja_root_menu', False)
+                    if menu:
+                        menu.groups_id = vals['ks_dashboard_group_access']
                 else:
                     rec.ks_dashboard_menu_id.sudo().groups_id = vals['ks_dashboard_group_access']
             if 'ks_dashboard_active' in vals and rec.ks_dashboard_menu_id:
@@ -761,8 +765,10 @@ class KsDashboardNinjaBoard(models.Model):
             vals = {
                 'name': data['name'],
                 'ks_dashboard_menu_name': data['ks_dashboard_menu_name'],
-                'ks_dashboard_top_menu_id': ks_dashboard_top_menu_id.id if ks_dashboard_top_menu_id else self.env.ref(
-                    "ks_dashboard_ninja.board_menu_root").id,
+                'ks_dashboard_top_menu_id': ks_dashboard_top_menu_id.id if ks_dashboard_top_menu_id else (
+                    self.env.ref("ks_dashboard_ninja.board_menu_root", False) or
+                    self.env.ref("ks_dashboard_ninja.ks_dashboard_ninja_root_menu")
+                ).id,
                 'ks_dashboard_active': True,
                 'ks_gridstack_config': data['ks_gridstack_config'],
                 'ks_dashboard_default_template': self.env.ref("ks_dashboard_ninja.ks_blank").id,

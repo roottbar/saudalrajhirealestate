@@ -166,7 +166,10 @@ class KsDashboardNinjaAdvance(models.Model):
             vals = {
                 'name': data['name'],
                 'ks_dashboard_menu_name': data['ks_dashboard_menu_name'],
-                'ks_dashboard_top_menu_id': ks_dashboard_top_menu_id.id if ks_dashboard_top_menu_id else self.env.ref("ks_dashboard_ninja.board_menu_root").id,
+                'ks_dashboard_top_menu_id': ks_dashboard_top_menu_id.id if ks_dashboard_top_menu_id else (
+                    self.env.ref("ks_dashboard_ninja.board_menu_root", False) or
+                    self.env.ref("ks_dashboard_ninja.ks_dashboard_ninja_root_menu")
+                ).id,
                 'ks_dashboard_active': True,
                 'ks_gridstack_config': data['ks_gridstack_config'],
                 'ks_dashboard_default_template': self.env.ref("ks_dashboard_ninja.ks_blank").id,

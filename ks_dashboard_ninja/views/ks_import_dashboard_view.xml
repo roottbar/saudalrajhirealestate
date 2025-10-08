@@ -29,7 +29,7 @@
         </record>
 
         <menuitem name="Import Dashboards" id="ks_dashboard_ninja.ks_import_dashboard_menu"
-                  parent="ks_dashboard_ninja.configuration_menu"
+                  parent="ks_dashboard_ninja.ks_dashboard_ninja_root_menu"
                   action="ks_dashboard_ninja.ks_import_dashboard_action" groups="base.group_system"/>
 
 <!--                <menuitem name="Dashboard Import" id="ks_dashboard_ninja.dashboard_layout_menu"-->
