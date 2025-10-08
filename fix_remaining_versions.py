@@ -99,7 +99,7 @@ class VersionFixer:
                 if matches:
                     content = re.sub(old_pattern, new_pattern, content)
                     for match in matches:
-                        old_version = old_pattern.split('\.')[0].split('"')[1] if '"' in old_pattern else old_pattern.split('\.')[0].split("'")[1]
+                        old_version = old_pattern.split(r'\.')[0].split('"')[1] if '"' in old_pattern else old_pattern.split(r'\.')[0].split("'")[1]
                         changes_made.append(f"Updated version: {old_version}.0.{match} -> 18.0.{match}")
             
             # Additional fixes for installable flag
