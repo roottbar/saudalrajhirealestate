@@ -1,5 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<odoo>
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+    <template id=\"inherit_multiple_invoice_report_no_dup\" inherit_id=\"base_accounting_kit.report_multiple_invoice\">
+        <xpath expr=\"//t[@t-call='account.report_invoice_document']\" position=\"attributes\">
+            <attribute name=\"t-if\">not mi_ids and o._get_name_invoice_report() == 'account.report_invoice_document'</attribute>
+        </xpath>
+    </template>
+
     <template id="bstt_account_invoice.dun_bank_info">
         <div style="page-break-inside: avoid; text-right">
             <div class="row">
@@ -9,33 +15,33 @@
             </div>
             <div class="row">
                 <div class="col-8" style="text-align:left; font-weight: bold;white-space:nowrap ">For TELEGRAPHIC TRANSFER (TT), please transfer to:</div>
-                <div class="col-4" style="text-align:right; font-weight: bold;">الرجاء التحويل إالى </div>
+                <div class="col-4" style="text-align:right; font-weight: bold;">Ø§Ù„Ø±Ø¬Ø§Ø¡ Ø§Ù„ØªØ­ÙˆÙŠÙ„ Ø¥Ø§Ù„Ù‰ </div>
 
             </div>
             <div class="row">
                 <div class="col-4 border" style="text-align:left;"> ACCOUNT NAME </div>
                 <div class="col-4 border" style="text-align:center;"><span t-field="o.partner_bank_id.acc_holder_name"></span></div>
-                <div class="col-4 border" style="text-align:right;">اسم الحساب </div>
+                <div class="col-4 border" style="text-align:right;">Ø§Ø³Ù… Ø§Ù„Ø­Ø³Ø§Ø¨ </div>
             </div>
             <div class="row">
                 <div class="col-4 border" style="text-align:left;">BANK NAME </div>
                 <div class="col-4 border" style="text-align:center;"><span t-field="o.partner_bank_id.bank_id.name"></span>  </div>
-                <div class="col-4 border" style="text-align:right;">اسم  البنك  </div>
+                <div class="col-4 border" style="text-align:right;">Ø§Ø³Ù…  Ø§Ù„Ø¨Ù†Ùƒ  </div>
             </div>
             <div class="row">
                 <div class="col-4 border" style="text-align:left;">A/C NO </div>
                 <div class="col-4 border" style="text-align:center;"><span t-field="o.partner_bank_id.acc_number"></span> </div>
-                <div class="col-4 border" style="text-align:right;"> رقم الحساب الريال السعودي </div>
+                <div class="col-4 border" style="text-align:right;"> Ø±Ù‚Ù… Ø§Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠ </div>
             </div>
             <div class="row">
                 <div class="col-4 border" style="text-align:left;">IBAN # </div>
                 <div class="col-4 border" style="text-align:center;"> <span t-esc="o.partner_bank_id.bank_bic"></span> </div>
-                <div class="col-4 border" style="text-align:right;">الريال السعودي أيبان </div>
+                <div class="col-4 border" style="text-align:right;">Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø³Ø¹ÙˆØ¯ÙŠ Ø£ÙŠØ¨Ø§Ù† </div>
             </div>
             <div class="row">
                 <div class="col-4 border" style="text-align:left;">Swift Code </div>
                 <div class="col-4 border" style="text-align:center;"> <span t-esc="o.partner_bank_id.swift_code"></span> </div>
-                <div class="col-4 border" style="text-align:right;">سويفت كود </div>
+                <div class="col-4 border" style="text-align:right;">Ø³ÙˆÙŠÙØª ÙƒÙˆØ¯ </div>
             </div>
 <!--            <div class="row p-1 mt-1 bg-light">-->
 <!--                <div class="col-12" style="text-align:center; font-weight: bold;"><Strong>This is a Computer Generated Invoice and doesn't require Signature</Strong></div>-->
@@ -84,22 +90,22 @@
                     </div>
                     <div class="col-5 " style="text-align: left !important;">
                             <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">
-                                فاتورة ضريبية
+                                ÙØ§ØªÙˆØ±Ø© Ø¶Ø±ÙŠØ¨ÙŠØ©
                             </span>
                             <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">
-                                مسودة فاتورة
+                                Ù…Ø³ÙˆØ¯Ø© ÙØ§ØªÙˆØ±Ø©
                             </span>
                             <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">
-                                فاتورة ملغاة
+                                ÙØ§ØªÙˆØ±Ø© Ù…Ù„ØºØ§Ø©
                             </span>
                             <span t-if="o.move_type == 'out_refund'">
-                                إشعار خصم
+                                Ø¥Ø´Ø¹Ø§Ø± Ø®ØµÙ…
                             </span>
                             <span t-if="o.move_type == 'in_refund'">
-                                إشعار خصم المورد
+                                Ø¥Ø´Ø¹Ø§Ø± Ø®ØµÙ… Ø§Ù„Ù…ÙˆØ±Ø¯
                             </span>
                             <span t-if="o.move_type == 'in_invoice'">
-                                فاتورة المورد
+                                ÙØ§ØªÙˆØ±Ø© Ø§Ù„Ù…ÙˆØ±Ø¯
                             </span>
                         </div>
                 </div>
@@ -122,7 +128,7 @@
                             </div>
                             <div class="col-4 text-right">
                                 <strong style="white-space:nowrap">:
-                                    رقم الفاتورة
+                                    Ø±Ù‚Ù… Ø§Ù„ÙØ§ØªÙˆØ±Ø©
                                 </strong>
                             </div>
                         </div>
@@ -136,7 +142,7 @@
                             </div>
                             <div class="col-4 text-right">
                                 <strong style="white-space:nowrap">:
-                                    تاريخ الفاتورة
+                                    ØªØ§Ø±ÙŠØ® Ø§Ù„ÙØ§ØªÙˆØ±Ø©
                                 </strong>
                             </div>
                         </div>
@@ -152,7 +158,7 @@
                             </div>
                             <div class="col-4 text-right">
                                 <strong style="white-space:nowrap">:
-                                    تاريخ الاستحقاق
+                                    ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§Ø³ØªØ­Ù‚Ø§Ù‚
                                 </strong>
                             </div>
                         </div>
@@ -166,7 +172,7 @@
                         </div>
                         <div class="col-4 text-right">
                             <strong style="white-space:nowrap">:
-                                تاريخ التوصيل
+                                ØªØ§Ø±ÙŠØ® Ø§Ù„ØªÙˆØµÙŠÙ„
                             </strong>
                         </div>
                     </div>
@@ -180,7 +186,7 @@
                             </div>
                             <div class="col-4 text-right">
                                 <strong style="white-space:nowrap">:
-                                    المصدر
+                                    Ø§Ù„Ù…ØµØ¯Ø±
                                 </strong>
                             </div>
                         </div>
@@ -203,7 +209,7 @@
                             </div>
                             <div class="col-4 text-right">
                                 <strong style="white-space:nowrap">:
-                                    رقم الإشارة
+                                    Ø±Ù‚Ù… Ø§Ù„Ø¥Ø´Ø§Ø±Ø©
                                 </strong>
                             </div>
                         </div>
@@ -223,10 +229,10 @@
                 <div class="col-1" ></div>
                 <div class="col-9 round" >
                     <div class="customer">
-                        <div class="row"><span>اسم العميل: </span><span t-field="o.partner_id.name"/></div>
-                        <div class="row"><span>الرقم الضريبي: </span><span t-field="o.partner_id.vat"/></div>
-                        <div class="row"><span>كود العميل: </span><span t-field="o.partner_id.ref"/></div>
-                        <div class="row"><span>عنوان العميل: </span>
+                        <div class="row"><span>Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„: </span><span t-field="o.partner_id.name"/></div>
+                        <div class="row"><span>Ø§Ù„Ø±Ù‚Ù… Ø§Ù„Ø¶Ø±ÙŠØ¨ÙŠ: </span><span t-field="o.partner_id.vat"/></div>
+                        <div class="row"><span>ÙƒÙˆØ¯ Ø§Ù„Ø¹Ù…ÙŠÙ„: </span><span t-field="o.partner_id.ref"/></div>
+                        <div class="row"><span>Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø¹Ù…ÙŠÙ„: </span>
                             <span t-esc='o.with_context(lang="ar_001").partner_id' t-options="dict(widget='contact', fields=['address'], no_marker=True, separator=', ')" class="add address-inline"/>
                         </div>
                     </div>
@@ -245,7 +251,7 @@
                             </span>
                             <br/>
                             <span>
-                                الوصف
+                                Ø§Ù„ÙˆØµÙ
                             </span>
                         </th>
                         <th t-if="o.env.user.has_group('bstt_account_invoice.group_show_product_code')" name="th_internal_reference" class="border text-left">
@@ -254,7 +260,7 @@
                             </span>
                             <br/>
                             <span>
-                                الكود
+                                Ø§Ù„ÙƒÙˆØ¯
                             </span>
                         </th>
                         <th name="th_source" class="border d-none text-left" t-if="0">
@@ -263,7 +269,7 @@
                             </span>
                             <br/>
                             <span>
-                                المستند المصدر
+                                Ø§Ù„Ù…Ø³ØªÙ†Ø¯ Ø§Ù„Ù…ØµØ¯Ø±
                             </span>
                         </th>
                         <th name="th_quantity" class="border text-right">
@@ -272,7 +278,7 @@
                             </span>
                             <br/>
                             <span>
-                                الكمية
+                                Ø§Ù„ÙƒÙ…ÙŠØ©
                             </span>
                         </th>
                         <th name="th_priceunit"
@@ -282,7 +288,7 @@
                             </span>
                             <br/>
                             <span>
-                                سعر الوحدة
+                                Ø³Ø¹Ø± Ø§Ù„ÙˆØ­Ø¯Ø©
                             </span>
                         </th>
                         <th name="th_price_unit" t-if="display_discount"
@@ -292,7 +298,7 @@
                             </span>
                             <br/>
                             <span>
-                                خصم %
+                                Ø®ØµÙ… %
                             </span>
                             <t t-set="colspan" t-value="colspan+1"/>
                         </th>
@@ -303,7 +309,7 @@
                             </span>
                             <br/>
                             <span>
-                                الضرائب
+                                Ø§Ù„Ø¶Ø±Ø§Ø¦Ø¨
                             </span>
                         </th>
                         <th name="th_subtotal" class="border text-right">
@@ -312,7 +318,7 @@
                             </span>
                             <br/>
                             <span>
-                                مبلغ
+                                Ù…Ø¨Ù„Øº
                             </span>
                         </th>
                         <th name="border th_tax_amount"
@@ -322,7 +328,7 @@
                             </span>
                             <br/>
                             <span>
-                                قيمة الضريبة
+                                Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¶Ø±ÙŠØ¨Ø©
                             </span>
                         </th>
                         <th name="th_total" class="border text-right">
@@ -331,7 +337,7 @@
                             </span>
                             <br/>
                             <span>
-                                السعر الاجمالي
+                                Ø§Ù„Ø³Ø¹Ø± Ø§Ù„Ø§Ø¬Ù…Ø§Ù„ÙŠ
                             </span>
                         </th>
                     </tr>
@@ -403,7 +409,7 @@
                         <t t-if="current_section and (line_last or lines[line_index+1].display_type == 'line_section')">
                             <tr class="border is-subtotal text-right" style="background: #D3D8D7  !important;">
                                 <td cclass="border" olspan="99"  style="background: #D3D8D7  !important;" >
-                                    <strong class="mr16" style="display: inline-block">Subtotal/الإجمالي الفرعي</strong>
+                                    <strong class="mr16" style="display: inline-block">Subtotal/Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙØ±Ø¹ÙŠ</strong>
                                     <span
                                             t-esc="current_subtotal"
                                             t-options='{"widget": "monetary", "display_currency": o.currency_id}'
@@ -430,7 +436,7 @@
             <p t-if="o.move_type in ('out_invoice', 'in_refund') and o.payment_reference" name="payment_communication">
                     <div class="row" style="direction: rtl">
                         <div class="col-4 text-right">
-                            <p>رقم إشارة الدفعة:</p>
+                            <p>Ø±Ù‚Ù… Ø¥Ø´Ø§Ø±Ø© Ø§Ù„Ø¯ÙØ¹Ø©:</p>
                         </div>
                         <div class="col-4 text-right">
                             <b><span t-field="o.payment_reference"/></b>
@@ -444,3 +450,4 @@
 
     </template>
 </odoo>
+
