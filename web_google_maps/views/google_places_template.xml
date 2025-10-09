@@ -13,5 +13,9 @@
         </t>
         <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
     </template>
-    <!-- Assets are loaded through the manifest file instead of template inheritance -->
+    <template id="webclient_bootstrap" name="webclient_bootstrap gmaps" inherit_id="web.webclient_bootstrap">
+        <xpath expr="//t[@t-call-assets='web.assets_common']" position="before">
+            <t t-call="web_google_maps.assets_gmaps"/>
+        </xpath>
+    </template>
 </odoo>

@@ -5,7 +5,7 @@
             <field name="name">res.config.settings.view.form.inherit.web_google_maps</field>
             <field name="priority" eval="200"/>
             <field name="model">res.config.settings</field>
-            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='integration']" position="after">
                     <div name="web_google_maps">
@@ -31,7 +31,7 @@
                                             <label for="google_maps_lang_localization" string="Language"/>
                                             <field name="google_maps_lang_localization"/>
                                         </div>
-                                        <div class="mt16" invisible="('google_maps_lang_localization', 'in', [False, ''])">
+                                        <div class="mt16" attrs="{'invisible': [('google_maps_lang_localization', 'in', [False, ''])]}">
                                             <div class="text-muted">
                                                 If you set the language of the map, it's important to consider setting the region too. This helps ensure that your application complies with local laws.
                                             </div>
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 o_setting_box" invisible="('google_maps_lang_localization', '=', False)">
+                            <div class="col-12 col-md-6 o_setting_box" attrs="{'invisible': [('google_maps_lang_localization', '=', False)]}">
                                 <div class="o_setting_left_pane">
                                     <field name="google_autocomplete_lang_restrict"/>
                                 </div>
@@ -59,11 +59,6 @@
                         </div>
                     </div>
                 </xpath>
-                <!-- Replace the field to enforce a clean, valid domain -->
-                <xpath expr="//field[@name='external_report_layout_id']" position="replace">
-                    <field name="external_report_layout_id" domain="[('type', '=', 'qweb')]" class="oe_inline"/>
-                </xpath>
-
             </field>
         </record>
     </data>

@@ -1,7 +1,5 @@
 # Web Google Maps
 
-> **✨ Odoo 18 Compatible!** This module has been completely migrated to Odoo 18 with modern ES6 modules and OWL components. See [ODOO18_MIGRATION.md](./ODOO18_MIGRATION.md) for details.
-
 ![google_map](./static/description/google_map.gif)
 
 This module contains three new features:
