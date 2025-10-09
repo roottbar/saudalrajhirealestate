@@ -3,9 +3,19 @@
 from lxml import etree
 from odoo import fields, models, _
 from odoo.addons.base.models.ir_ui_view import (
-    quick_eval,
     transfer_field_to_modifiers,
 )
+from odoo.tools.safe_eval import safe_eval
+
+
+# Odoo 18: quick_eval was removed from ir_ui_view. Provide a compatible fallback.
+def _quick_eval_compat(val, context):
+    try:
+        # Evaluate attributes like invisible/readonly/required expecting boolean result
+        return safe_eval(val, {'context': context})
+    except Exception:
+        # Keep behavior tolerant: return None on invalid expressions
+        return None
 
 
 class IrUiView(models.Model):
@@ -95,7 +105,7 @@ class IrUiView(models.Model):
             for attribute in ('invisible', 'readonly', 'required'):
                 val = node.get(attribute)
                 if val:
-                    res = quick_eval(val, {'context': self._context})
+                    res = _quick_eval_compat(val, self._context)
                     if res not in (1, 0, True, False, None):
                         msg = _(
                             'Attribute %(attribute)s evaluation expects a boolean, got %(value)s',
