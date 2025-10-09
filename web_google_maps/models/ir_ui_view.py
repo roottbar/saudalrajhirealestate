@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3
 from lxml import etree
+from copy import deepcopy
 from odoo import fields, models, _
 from odoo.tools.safe_eval import safe_eval
 
@@ -181,3 +182,29 @@ class IrUiView(models.Model):
                         pass
 
                 _transfer_field_to_modifiers_compat(field_info, node_info['modifiers'])
+
+    # Odoo 18: extend core view validation to accept custom root tag 'google_map'
+    # Instead of re-implementing the whole validator, validate a cloned node as a
+    # supported type ('kanban') so field checks and templates pass, while keeping
+    # the original architecture untouched.
+    def _validate_view(self, node, model, editable=False, full=False):
+        if getattr(node, 'tag', None) == 'google_map':
+            clone = deepcopy(node)
+            clone.tag = 'kanban'
+            return super(IrUiView, self)._validate_view(
+                clone, model, editable=editable, full=full
+            )
+        return super(IrUiView, self)._validate_view(
+            node, model, editable=editable, full=full
+        )
+
+    def _postprocess_view(self, node, model, editable=False):
+        if getattr(node, 'tag', None) == 'google_map':
+            clone = deepcopy(node)
+            clone.tag = 'kanban'
+            return super(IrUiView, self)._postprocess_view(
+                clone, model, editable=editable
+            )
+        return super(IrUiView, self)._postprocess_view(
+            node, model, editable=editable
+        )
