@@ -2,9 +2,6 @@
 # License AGPL-3
 from lxml import etree
 from odoo import fields, models, _
-from odoo.addons.base.models.ir_ui_view import (
-    transfer_field_to_modifiers,
-)
 from odoo.tools.safe_eval import safe_eval
 
 
@@ -169,4 +166,18 @@ class IrUiView(models.Model):
 
             field_info = name_manager.field_info.get(node.get('name'))
             if field_info:
-                transfer_field_to_modifiers(field_info, node_info['modifiers'])
+                # Odoo 18: transfer_field_to_modifiers removed; merge modifiers compatibly
+                def _transfer_field_to_modifiers_compat(_field_info, _modifiers):
+                    try:
+                        fi_mods = (
+                            _field_info.get('modifiers')
+                            if isinstance(_field_info, dict)
+                            else None
+                        )
+                        if isinstance(fi_mods, dict):
+                            _modifiers.update(fi_mods)
+                    except Exception:
+                        # Be tolerant: if structure differs, leave modifiers as-is
+                        pass
+
+                _transfer_field_to_modifiers_compat(field_info, node_info['modifiers'])
