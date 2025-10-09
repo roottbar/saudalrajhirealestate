@@ -45,6 +45,7 @@ form view, provide autocomplete feature when typing address of partner
             'web_google_maps/static/src/js/widgets/utils.js',
             'web_google_maps/static/src/js/widgets/gplaces_autocomplete.js',
             'web_google_maps/static/src/js/widgets/fields_registry.js',
+            'web_google_maps/static/src/js/services/google_maps_loader.js',
         ],
     },
     'installable': True,
