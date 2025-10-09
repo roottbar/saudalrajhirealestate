@@ -3,6 +3,13 @@
     <!-- Removed inheritance of base_accounting_kit.report_multiple_invoice to avoid
          errors when base_accounting_kit is not installed. -->
 
+    <!-- Prevent duplicate rendering when called from a multiple-invoice context -->
+    <template id="prevent_duplicate_single_doc" inherit_id="account.report_invoice_document">
+        <xpath expr="//t[@t-call='web.external_layout']" position="attributes">
+            <attribute name="t-if">not mi_ids</attribute>
+        </xpath>
+    </template>
+
     <template id="bstt_account_invoice.dun_bank_info">
         <div style="page-break-inside: avoid; text-right">
             <div class="row">
