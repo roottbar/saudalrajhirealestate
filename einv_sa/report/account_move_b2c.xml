@@ -59,9 +59,7 @@
                 </div>
                 <div class="col-3" >
 
-                      <img t-att-src="'/report/barcode/?type=%s&amp;width=%s&amp;height=%s&amp;value=Seller : %s;Vat_Number : %s;date : %s;Total_Vat : %s;Total_Amount : %s'%('QR', 130, 130,doc.company_id.name,doc.company_id.vat,doc.invoice_date,doc.amount_tax_signed,doc.amount_total)"
-                        class="float-right my-1"/>
-<!--                    <img t-att-src="'/report/barcode/?type=%s&amp;width=%s&amp;height=%s&amp;value=%s;'%('QR', 130, 130,doc.company_id.name)"-->
+                      <img t-if="doc.qr_code" t-att-src="image_data_uri(doc.qr_code)" class="float-right my-1" style="width:130px;height:130px;"/>
 
 
                 </div>

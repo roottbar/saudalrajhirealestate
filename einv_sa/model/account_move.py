@@ -37,16 +37,22 @@ class AccountMove(models.Model):
 
     @api.depends('company_id.name', 'company_id.vat', 'invoice_date', 'amount_tax', 'amount_total')
     def _compute_l10n_sa_qr_code_str(self):
-        """حساب نص QR code للفواتير السعودية"""
+        """حساب سلسلة QR وفق معيار ZATCA باستخدام TLV ثم Base64."""
+        def _tlv(tag, value):
+            value = value or ''
+            vb = value.encode('utf-8')
+            return bytes([tag, len(vb)]) + vb
+
         for record in self:
-            if record.move_type in ('out_invoice', 'out_refund') and record.company_id and record.invoice_date:
-                # تنسيق QR code حسب المعايير السعودية
-                qr_data = f"Seller: {record.company_id.name or ''};"
-                qr_data += f"Vat_Number: {record.company_id.vat or ''};"
-                qr_data += f"Date: {record.invoice_date};"
-                qr_data += f"Total_Vat: {record.amount_tax or 0};"
-                qr_data += f"Total_Amount: {record.amount_total or 0}"
-                record.l10n_sa_qr_code_str = qr_data
+            if record.move_type in ('out_invoice', 'out_refund') and record.company_id:
+                seller = record.company_id.name or ''
+                vat = record.company_id.vat or ''
+                timestamp = str(fields.Datetime.now())
+                total = '{:.2f}'.format(record.amount_total or 0.0)
+                vat_total = '{:.2f}'.format(record.amount_tax or 0.0)
+
+                payload = _tlv(1, seller) + _tlv(2, vat) + _tlv(3, timestamp) + _tlv(4, total) + _tlv(5, vat_total)
+                record.l10n_sa_qr_code_str = base64.b64encode(payload).decode('utf-8')
             else:
                 record.l10n_sa_qr_code_str = False
 

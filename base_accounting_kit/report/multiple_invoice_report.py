@@ -9,7 +9,8 @@ class ReportInvoiceMultiple(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        rslt = super()._get_report_values(docids, data)
+        unique_docids = list(dict.fromkeys(docids)) if docids else docids
+        rslt = super()._get_report_values(unique_docids, data)
 
         inv = rslt['docs']
         layout = inv.journal_id.company_id.external_report_layout_id.key
