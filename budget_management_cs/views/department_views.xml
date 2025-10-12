@@ -28,6 +28,9 @@
                             <field name="account_commitment_id"/>
                             <field name="account_expense_id"/>
                         </group>
+                        <group string="الحسابات المرتبطة">
+                            <field name="account_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                        </group>
                         <notebook>
                             <page string="ملاحظات">
                                 <field name="note"/>

@@ -15,6 +15,10 @@ class PurchaseOrder(models.Model):
     budget_move_id = fields.Many2one('account.move', string='قيد الميزانية', readonly=True, copy=False)
     budget_move_reversal_id = fields.Many2one('account.move', string='عكس القيد', readonly=True, copy=False)
 
+    # عرض المبلغ المتبقي في الميزانية في شاشة المشتريات
+    budget_currency_id = fields.Many2one('res.currency', string='عملة الميزانية', compute='_compute_budget_remaining', readonly=True)
+    budget_remaining_amount = fields.Monetary(string='المتبقي في الميزانية', currency_field='budget_currency_id', compute='_compute_budget_remaining', readonly=True)
+
     @api.onchange('budget_department_id', 'budget_project_id', 'date_order')
     def _onchange_budget_fields(self):
         # محاولة تعيين ميزانية تلقائياً إذا كانت واحدة مطابقة
@@ -42,6 +46,28 @@ class PurchaseOrder(models.Model):
                            ('date_end', '>=', self.date_order.date() if hasattr(self.date_order, 'date') else self.date_order)]
             budget = self.env['budget.budget'].search(domain, limit=1)
         return budget
+
+    @api.depends('budget_id')
+    def _compute_budget_remaining(self):
+        for order in self:
+            if order.budget_id:
+                order.budget_currency_id = order.budget_id.currency_id
+                order.budget_remaining_amount = order.budget_id.remaining_amount or 0.0
+            else:
+                order.budget_currency_id = order.currency_id
+                order.budget_remaining_amount = 0.0
+
+    @api.constrains('amount_total', 'budget_id')
+    def _check_budget_remaining(self):
+        for order in self:
+            if order.budget_id:
+                amount = order.amount_total or 0.0
+                # تحويل العملة إذا اختلفت عملة أمر الشراء عن عملة الميزانية
+                if order.currency_id and order.budget_id.currency_id and order.currency_id != order.budget_id.currency_id:
+                    amount = order.currency_id._convert(amount, order.budget_id.currency_id, order.company_id, order.date_order or fields.Date.today())
+                remaining = order.budget_id.remaining_amount or 0.0
+                if amount > remaining:
+                    raise exceptions.ValidationError(_("لا يمكن حفظ أمر الشراء لأن المبلغ يتجاوز المتبقي في الميزانية (%s).") % remaining)
 
     def button_confirm(self):
         for order in self:

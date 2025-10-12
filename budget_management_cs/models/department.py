@@ -14,3 +14,6 @@ class BudgetDepartment(models.Model):
     account_budget_allocation_id = fields.Many2one('account.account', string='حساب مخصصات الميزانية')
     account_commitment_id = fields.Many2one('account.account', string='حساب الالتزامات')
     account_expense_id = fields.Many2one('account.account', string='حساب المصروف')
+
+    # ربط جميع الحسابات المرتبطة بالقسم (الشجرة المحاسبية)
+    account_ids = fields.Many2many('account.account', string='الحسابات المرتبطة بالقسم')
