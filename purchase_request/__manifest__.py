@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Purchase Request",
-    'version': "18.0.1.0.0",
+    'version': "1.3.9",
     'summary': "Enhanced Purchase Request module",
     'description': "Enhanced Purchase Request module for Odoo 18.0 by roottbar",
     'category': "Inventory/Purchase",
