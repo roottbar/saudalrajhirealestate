@@ -21,7 +21,7 @@
                     <sheet>
                         <group>
                             <field name="name"/>
-                            <field name="department_id"/>
+                            <field name="department_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
                             <field name="active"/>
                         </group>
                         <notebook>

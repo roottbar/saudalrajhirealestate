@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//sheet/notebook" position="before">
                     <group string="الميزانية">
-                        <field name="budget_department_id"/>
                         <field name="budget_project_id"/>
+                        <field name="budget_department_id"/>
                         <field name="budget_remaining_amount" readonly="1"/>
                         <field name="budget_id" invisible="1"/>
                     </group>
