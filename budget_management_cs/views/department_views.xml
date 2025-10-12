@@ -24,12 +24,12 @@
                         </group>
                         <group string="إعدادات محاسبية">
                             <field name="budget_journal_id"/>
-                            <field name="account_budget_allocation_id"/>
-                            <field name="account_commitment_id"/>
-                            <field name="account_expense_id"/>
+                            <field name="account_budget_allocation_id" context="{'show_parent_account': True}"/>
+                            <field name="account_commitment_id" context="{'show_parent_account': True}"/>
+                            <field name="account_expense_id" context="{'show_parent_account': True}"/>
                         </group>
                         <group string="الحسابات المرتبطة">
-                            <field name="account_ids" widget="many2many_tags" options="{'no_create_edit': True}"/>
+                            <field name="account_ids" widget="many2many_tags" options="{'no_create_edit': True}" context="{'show_parent_account': True}"/>
                         </group>
                         <notebook>
                             <page string="ملاحظات">
