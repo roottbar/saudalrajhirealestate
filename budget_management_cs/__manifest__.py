@@ -9,7 +9,7 @@
     'depends': ['purchase', 'account'],
     'data': [
         'security/security.xml',
-        'security/ir_model_access.csv',
+        'security/ir.model.access.csv',
         'views/department_views.xml',
         'views/project_views.xml',
         'views/budget_views.xml',
