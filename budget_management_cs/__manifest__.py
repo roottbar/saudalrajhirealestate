@@ -14,6 +14,7 @@
         'views/project_views.xml',
         'views/budget_views.xml',
         'views/purchase_order_views.xml',
+        'views/account_move_views.xml',
         'report/budget_report.xml',
         'report/budget_report_templates.xml',
     ],
