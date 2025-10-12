@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Operating Unit",
+    'name': "Operating Units",
     'version': "18.0.1.0.0",
     'summary': "Enhanced Operating Unit module",
     'description': "Enhanced Operating Unit module for Odoo 18.0 by roottbar",
