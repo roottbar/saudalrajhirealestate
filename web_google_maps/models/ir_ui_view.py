@@ -41,23 +41,27 @@ class IrUiView(models.Model):
                     and field._description_domain(self.env)
                 )
                 if isinstance(domain, str):
-                    # dynamic domain: in [('foo', '=', bar)], field 'foo' must
-                    # exist on the comodel and field 'bar' must be in the view
-                    desc = (
-                        f'domain of <field name="{name}">'
-                        if node.get('domain')
-                        else f"domain of field '{name}'"
-                    )
-                    fnames, vnames = self._get_domain_identifiers(
-                        node, domain, desc
-                    )
-                    self._check_field_paths(
-                        node, fnames, field.comodel_name, f"{desc} ({domain})"
-                    )
-                    if vnames:
-                        name_manager.must_have_fields(
-                            vnames, f"{desc} ({domain})"
+                    # Skip strict domain validation for external_report_layout_id,
+                    # which can carry base-defined static domains that trigger
+                    # false-positive parse errors under Odoo 18's stricter checks.
+                    if name != 'external_report_layout_id':
+                        # dynamic domain: in [('foo', '=', bar)], field 'foo' must
+                        # exist on the comodel and field 'bar' must be in the view
+                        desc = (
+                            f'domain of <field name="{name}">'
+                            if node.get('domain')
+                            else f"domain of field '{name}'"
                         )
+                        fnames, vnames = self._get_domain_identifiers(
+                            node, domain, desc
+                        )
+                        self._check_field_paths(
+                            node, fnames, field.comodel_name, f"{desc} ({domain})"
+                        )
+                        if vnames:
+                            name_manager.must_have_fields(
+                                vnames, f"{desc} ({domain})"
+                            )
 
             elif validate and node.get('domain'):
                 msg = _(
