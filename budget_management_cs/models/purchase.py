@@ -61,7 +61,8 @@ class PurchaseOrder(models.Model):
     def _check_budget_remaining(self):
         for order in self:
             if order.budget_id:
-                amount = order.amount_total or 0.0
+                # احتساب المنع على المبلغ بدون ضريبة
+                amount = order.amount_untaxed or 0.0
                 # تحويل العملة إذا اختلفت عملة أمر الشراء عن عملة الميزانية
                 if order.currency_id and order.budget_id.currency_id and order.currency_id != order.budget_id.currency_id:
                     amount = order.currency_id._convert(amount, order.budget_id.currency_id, order.company_id, order.date_order or fields.Date.today())
@@ -76,8 +77,9 @@ class PurchaseOrder(models.Model):
                 raise exceptions.UserError(_('لا توجد ميزانية مطابقة للقسم/المشروع والتاريخ المحدد.'))
 
             # تحويل مبلغ أمر الشراء إلى عملة الميزانية (إن لزم)
+            # استخدام المبلغ بدون ضريبة بدل الإجمالي مع الضريبة
             order_amount_in_budget_currency = order.currency_id._convert(
-                order.amount_total,
+                order.amount_untaxed,
                 budget.currency_id,
                 order.company_id,
                 order.date_order or fields.Date.today(),
@@ -118,8 +120,9 @@ class PurchaseOrder(models.Model):
             raise exceptions.UserError(_('يرجى ضبط دفتر القيود وحسابات الميزانية في القسم المحدد.'))
 
         # حساب المبلغ بعملة الشركة للمحاسبة
+        # ترحيل قيد الالتزام على صافي المبلغ بدون ضريبة
         amount_company = self.currency_id._convert(
-            self.amount_total,
+            self.amount_untaxed,
             self.company_id.currency_id,
             self.company_id,
             self.date_order or fields.Date.today(),
