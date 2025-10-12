@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Account Report Levels",
-    'version': "18.0.1.0.0",
+    'version': "1.3.9",
     'summary': "Enhanced Account Report Levels module",
     'description': "Enhanced Account Report Levels module for Odoo 18.0 by roottbar",
     'category': "Accounting",
