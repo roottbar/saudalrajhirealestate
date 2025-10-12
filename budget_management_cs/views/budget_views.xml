@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_budget_budget_tree" model="ir.ui.view">
+            <field name="name">budget.budget.tree</field>
+            <field name="model">budget.budget</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="department_id"/>
+                    <field name="project_id"/>
+                    <field name="currency_id"/>
+                    <field name="total_amount"/>
+                    <field name="spent_amount"/>
+                    <field name="remaining_amount"/>
+                    <field name="spent_percentage"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_budget_budget_form" model="ir.ui.view">
+            <field name="name">budget.budget.form</field>
+            <field name="model">budget.budget</field>
+            <field name="arch" type="xml">
+                <form string="الميزانية">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="department_id"/>
+                            <field name="project_id"/>
+                        </group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="total_amount"/>
+                            <field name="spent_amount" readonly="1"/>
+                            <field name="remaining_amount" readonly="1"/>
+                            <field name="spent_percentage" readonly="1" widget="progressbar"/>
+                        </group>
+                        <group>
+                            <field name="period_type"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <notebook>
+                            <page string="أوامر الشراء">
+                                <field name="purchase_order_ids" context="{'default_budget_id': active_id}"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_budget_budget_graph" model="ir.ui.view">
+            <field name="name">budget.budget.graph</field>
+            <field name="model">budget.budget</field>
+            <field name="arch" type="xml">
+                <graph string="نسبة الإنفاق" type="bar">
+                    <field name="name" type="row"/>
+                    <field name="spent_percentage" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_budget_budget_pivot" model="ir.ui.view">
+            <field name="name">budget.budget.pivot</field>
+            <field name="model">budget.budget</field>
+            <field name="arch" type="xml">
+                <pivot string="تحليل الميزانيات">
+                    <field name="department_id" type="col"/>
+                    <field name="project_id" type="col"/>
+                    <field name="total_amount" type="measure"/>
+                    <field name="spent_amount" type="measure"/>
+                    <field name="remaining_amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="action_budget_budget" model="ir.actions.act_window">
+            <field name="name">الميزانيات</field>
+            <field name="res_model">budget.budget</field>
+            <field name="view_mode">tree,graph,pivot,form</field>
+        </record>
+
+        <menuitem id="menu_budget_budgets" name="الميزانيات" parent="menu_budget_root" action="action_budget_budget" sequence="20"/>
+    </data>
+</odoo>

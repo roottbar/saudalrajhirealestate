@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_budget_department_user,Budget Department User,model_budget_department,base.group_user,1,0,0,0
+access_budget_department_manager,Budget Department Manager,model_budget_department,budget_management.group_budget_manager,1,1,1,1
+access_budget_project_user,Budget Project User,model_budget_project,base.group_user,1,0,0,0
+access_budget_project_manager,Budget Project Manager,model_budget_project,budget_management.group_budget_manager,1,1,1,1
+access_budget_budget_user,Budget Budget User,model_budget_budget,base.group_user,1,0,0,0
+access_budget_budget_manager,Budget Budget Manager,model_budget_budget,budget_management.group_budget_manager,1,1,1,1
