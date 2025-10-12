@@ -15,6 +15,7 @@
     ],
     'assets': {
         'web.assets_backend': [
+            'ks_dashboard_ninja/static/src/js/ks_boot.js',
             'ks_dashboard_ninja/static/src/css/ks_dashboard_gridstack.css',
             'ks_dashboard_ninja/static/src/css/ks_dashboard_item_theme.css',
             'ks_dashboard_ninja/static/src/css/ks_dashboard_ninja_item.css',
@@ -46,6 +47,7 @@
         ],
         # Ensure early availability of client action registration in frontend
         'web.assets_web': [
+            'ks_dashboard_ninja/static/src/js/ks_boot.js',
             'ks_dashboard_ninja/static/src/js/ks_dashboard_ninja.js',
             'ks_dashboard_ninja/static/src/js/ks_import_dashboard.js',
         ],
