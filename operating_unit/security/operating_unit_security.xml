@@ -25,16 +25,6 @@
             ['|',('company_id','=',False),('company_id', 'in', allowed_company_ids)]
         </field>
     </record> -->
-       <!-- FIXED: no 'allowed_company_ids' -->
-    <record id="operating_unit_comp_rule" model="ir.rule">
-        <field name="name">Operating Unit Entry</field>
-        <field name="model_id" ref="model_operating_unit"/>
-        <field name="global" eval="True"/>
-        <field name="domain_force">['|', ('company_id','=',False), ('company_id','in', env.companies.ids)]</field>
-        <!-- Alternative if you rely on context:
-        <field name="domain_force">['|', ('company_id','=',False), ('company_id','in', context.get('allowed_company_ids', user.company_ids.ids))]</field>
-        -->
-    </record>
     <record id="ir_rule_operating_unit_allowed_operating_units" model="ir.rule">
         <field name="model_id" ref="model_operating_unit" />
         <field name="domain_force">[('id','in',user.operating_unit_ids.ids)]</field>
