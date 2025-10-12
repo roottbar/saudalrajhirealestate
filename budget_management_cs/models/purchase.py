@@ -4,8 +4,15 @@ from odoo import models, fields, api, exceptions, _
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    budget_project_id = fields.Many2one('budget.project', string='المشروع', domain="[]", ondelete='restrict')
-    budget_department_id = fields.Many2one('budget.department', string='القسم', domain="[('id','in', budget_project_id.department_ids)]", ondelete='restrict')
+    budget_project_id = fields.Many2one('budget.project', string='المشروع', ondelete='restrict')
+    budget_department_id = fields.Many2one('budget.department', string='القسم', ondelete='restrict')
+    
+    @api.onchange('budget_project_id')
+    def _onchange_budget_project_id_domain(self):
+        # ضبط دومين الأقسام بحسب المشروع المختار
+        if self.budget_project_id:
+            return {'domain': {'budget_department_id': [('id', 'in', self.budget_project_id.department_ids.ids)]}}
+        return {'domain': {'budget_department_id': []}}
     budget_id = fields.Many2one(
         'budget.budget',
         string='الميزانية',
