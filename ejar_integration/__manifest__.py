@@ -28,7 +28,7 @@
     # Dependencies
     'depends': [
         'base',
-        'account_asset',
+        'base_accounting_kit',
         'product',
         'einv_sa',
         'contacts',
