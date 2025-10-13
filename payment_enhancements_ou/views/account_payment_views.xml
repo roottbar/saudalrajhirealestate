@@ -8,20 +8,10 @@
             <field name="arch" type="xml">
                 <xpath expr="//sheet" position="inside">
                     <group string="مراجع" name="so_po_refs">
-                        <field name="sale_order_id"
-                               options="{'no_create': True}"
-                               domain="[('partner_id','=', partner_id)]"
-                               attrs="{'invisible': [('partner_type','!=','customer')]}"
-                               context="{'default_partner_id': partner_id}"/>
-                        <field name="sale_order_name"
-                               attrs="{'invisible': [('partner_type','!=','customer')]}"/>
-                        <field name="purchase_order_id"
-                               options="{'no_create': True}"
-                               domain="[('partner_id','=', partner_id)]"
-                               attrs="{'invisible': [('partner_type','!=','supplier')]}"
-                               context="{'default_partner_id': partner_id}"/>
-                        <field name="purchase_order_name"
-                               attrs="{'invisible': [('partner_type','!=','supplier')]}"/>
+                        <field name="sale_order_id" options="{'no_create': True}"/>
+                        <field name="sale_order_name" readonly="1"/>
+                        <field name="purchase_order_id" options="{'no_create': True}"/>
+                        <field name="purchase_order_name" readonly="1"/>
                     </group>
                 </xpath>
             </field>

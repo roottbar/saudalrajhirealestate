@@ -11,6 +11,7 @@
         "account_operating_unit",
     ],
     "data": [
+        "data/ir_config_parameter.xml",
         "views/account_payment_views.xml",
         "views/res_config_settings_views.xml",
     ],
