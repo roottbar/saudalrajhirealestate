@@ -408,42 +408,57 @@ class AccountMoveInherit(models.Model):
     
     @api.model
     def _cron_sync_ejar_invoices(self):
-        """Cron job to sync pending Ejar invoices"""
-        pending_invoices = self.search([
-            ('is_ejar_rental_invoice', '=', True),
-            ('state', '=', 'posted'),
-            ('ejar_sync_status', 'in', ['not_synced', 'error']),
-            ('auto_sync_ejar', '=', True)
-        ])
-        
-        for invoice in pending_invoices:
-            try:
-                invoice._sync_with_ejar()
-                _logger.info(f"Successfully synced invoice {invoice.name} with Ejar")
-            except Exception as e:
-                _logger.error(f"Failed to sync invoice {invoice.name} with Ejar: {e}")
+        """Cron job to sync pending Ejar invoices (batched to reduce memory)."""
+        batch_size = int(self.env['ir.config_parameter'].sudo().get_param('ejar_integration.cron_batch_size', '100'))
+        last_id = 0
+        while True:
+            pending_invoices = self.search([
+                ('id', '>', last_id),
+                ('is_ejar_rental_invoice', '=', True),
+                ('state', '=', 'posted'),
+                ('ejar_sync_status', 'in', ['not_synced', 'error']),
+                ('auto_sync_ejar', '=', True)
+            ], order='id', limit=batch_size)
+            if not pending_invoices:
+                break
+            for invoice in pending_invoices:
+                try:
+                    invoice._sync_with_ejar()
+                    _logger.info("Successfully synced invoice %s with Ejar", invoice.name)
+                except Exception as e:
+                    _logger.error("Failed to sync invoice %s with Ejar: %s", invoice.name, e)
+            last_id = pending_invoices[-1].id
     
     @api.model
     def _cron_check_overdue_invoices(self):
-        """Cron job to check and notify overdue invoices"""
-        overdue_invoices = self.search([
-            ('is_ejar_rental_invoice', '=', True),
-            ('payment_state', '!=', 'paid'),
-            ('ejar_due_date', '<', fields.Date.today())
-        ])
-        
-        for invoice in overdue_invoices:
-            # Send overdue notification
-            if invoice.ejar_contract_id:
-                self.env['ejar.notification'].create({
-                    'title': _('Overdue Payment'),
-                    'message': _('Invoice %s is overdue by %d days') % (invoice.name, invoice.days_overdue),
-                    'notification_type': 'payment_overdue',
-                    'priority': 'high',
-                    'contract_id': invoice.ejar_contract_id.id,
-                    'tenant_id': invoice.ejar_tenant_id.id if invoice.ejar_tenant_id else False,
-                    'landlord_id': invoice.ejar_landlord_id.id if invoice.ejar_landlord_id else False,
-                })
+        """Cron job to check and notify overdue invoices (batched)."""
+        batch_size = int(self.env['ir.config_parameter'].sudo().get_param('ejar_integration.cron_batch_size', '100'))
+        last_id = 0
+        today = fields.Date.today()
+        while True:
+            overdue_invoices = self.search([
+                ('id', '>', last_id),
+                ('is_ejar_rental_invoice', '=', True),
+                ('payment_state', '!=', 'paid'),
+                ('ejar_due_date', '<', today)
+            ], order='id', limit=batch_size)
+            if not overdue_invoices:
+                break
+            for invoice in overdue_invoices:
+                if invoice.ejar_contract_id:
+                    try:
+                        self.env['ejar.notification'].create({
+                            'title': _('Overdue Payment'),
+                            'message': _('Invoice %s is overdue by %d days') % (invoice.name, invoice.days_overdue),
+                            'notification_type': 'payment_overdue',
+                            'priority': 'high',
+                            'contract_id': invoice.ejar_contract_id.id,
+                            'tenant_id': invoice.ejar_tenant_id.id if invoice.ejar_tenant_id else False,
+                            'landlord_id': invoice.ejar_landlord_id.id if invoice.ejar_landlord_id else False,
+                        })
+                    except Exception as e:
+                        _logger.error("Failed to create overdue notification for %s: %s", invoice.name, e)
+            last_id = overdue_invoices[-1].id
 
 
 class AccountMoveLineInherit(models.Model):

@@ -532,17 +532,24 @@ class EjarNotification(models.Model):
     
     @api.model
     def _cron_send_scheduled_notifications(self):
-        """Cron job to send scheduled notifications"""
-        scheduled_notifications = self.search([
-            ('status', '=', 'draft'),
-            ('scheduled_date', '<=', fields.Datetime.now())
-        ])
-        
-        for notification in scheduled_notifications:
-            try:
-                notification.action_send_notification()
-            except Exception as e:
-                _logger.error(f"Failed to send scheduled notification {notification.id}: {e}")
+        """Cron job to send scheduled notifications (batched to reduce memory)."""
+        batch_size = int(self.env['ir.config_parameter'].sudo().get_param('ejar_integration.cron_batch_size', '100'))
+        last_id = 0
+        now = fields.Datetime.now()
+        while True:
+            scheduled_notifications = self.search([
+                ('id', '>', last_id),
+                ('status', '=', 'draft'),
+                ('scheduled_date', '<=', now)
+            ], order='id', limit=batch_size)
+            if not scheduled_notifications:
+                break
+            for notification in scheduled_notifications:
+                try:
+                    notification.action_send_notification()
+                except Exception as e:
+                    _logger.error("Failed to send scheduled notification %s: %s", notification.id, e)
+            last_id = scheduled_notifications[-1].id
     
     @api.model
     def _cron_retry_failed_notifications(self):

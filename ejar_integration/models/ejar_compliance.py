@@ -463,47 +463,70 @@ class EjarCompliance(models.Model):
     
     @api.model
     def _cron_check_compliance(self):
-        """Cron job to check compliance"""
-        # Find compliance records that need checking
-        records_to_check = self.search([
-            ('status', 'in', ['active', 'violated']),
-            ('next_check_date', '<=', fields.Datetime.now())
-        ])
-        
-        for record in records_to_check:
-            try:
-                record.action_check_compliance()
-            except Exception as e:
-                _logger.error(f"Failed to check compliance for {record.id}: {e}")
+        """Cron job to check compliance (batched to reduce memory)."""
+        batch_size = int(self.env['ir.config_parameter'].sudo().get_param('ejar_integration.cron_batch_size', '100'))
+        last_id = 0
+        now = fields.Datetime.now()
+        while True:
+            records = self.search([
+                ('id', '>', last_id),
+                ('status', 'in', ['active', 'violated']),
+                ('next_check_date', '<=', now)
+            ], order='id', limit=batch_size)
+            if not records:
+                break
+            for record in records:
+                try:
+                    record.action_check_compliance()
+                except Exception as e:
+                    _logger.error("Failed to check compliance for %s: %s", record.id, e)
+            last_id = records[-1].id
     
     @api.model
     def _cron_check_deadlines(self):
-        """Cron job to check resolution deadlines"""
-        # Find overdue resolutions
-        overdue_records = self.search([
-            ('status', '=', 'violated'),
-            ('resolution_status', 'in', ['pending', 'in_progress']),
-            ('resolution_deadline', '<', fields.Datetime.now())
-        ])
-        
-        for record in overdue_records:
-            record.resolution_status = 'overdue'
-            
-            # Send overdue notification
-            if record.notify_deadline:
-                record._send_overdue_notification()
-        
-        # Find records approaching deadline
-        approaching_deadline = self.search([
-            ('status', '=', 'violated'),
-            ('resolution_status', 'in', ['pending', 'in_progress']),
-            ('resolution_deadline', '>', fields.Datetime.now()),
-            ('resolution_deadline', '<=', fields.Datetime.now() + timedelta(days=7))
-        ])
-        
-        for record in approaching_deadline:
-            if record.notify_deadline and record.days_to_deadline <= record.notification_days:
-                record._send_deadline_notification()
+        """Cron job to check resolution deadlines (batched to reduce memory)."""
+        batch_size = int(self.env['ir.config_parameter'].sudo().get_param('ejar_integration.cron_batch_size', '100'))
+        now = fields.Datetime.now()
+        # Overdue resolutions
+        last_id = 0
+        while True:
+            overdue_records = self.search([
+                ('id', '>', last_id),
+                ('status', '=', 'violated'),
+                ('resolution_status', 'in', ['pending', 'in_progress']),
+                ('resolution_deadline', '<', now)
+            ], order='id', limit=batch_size)
+            if not overdue_records:
+                break
+            for record in overdue_records:
+                try:
+                    record.resolution_status = 'overdue'
+                    if record.notify_deadline:
+                        record._send_overdue_notification()
+                except Exception as e:
+                    _logger.error("Failed to process overdue compliance %s: %s", record.id, e)
+            last_id = overdue_records[-1].id
+
+        # Approaching deadlines within 7 days
+        last_id = 0
+        deadline_limit = fields.Datetime.to_datetime(now) + timedelta(days=7)
+        while True:
+            approaching_deadline = self.search([
+                ('id', '>', last_id),
+                ('status', '=', 'violated'),
+                ('resolution_status', 'in', ['pending', 'in_progress']),
+                ('resolution_deadline', '>', now),
+                ('resolution_deadline', '<=', deadline_limit)
+            ], order='id', limit=batch_size)
+            if not approaching_deadline:
+                break
+            for record in approaching_deadline:
+                try:
+                    if record.notify_deadline and record.days_to_deadline <= record.notification_days:
+                        record._send_deadline_notification()
+                except Exception as e:
+                    _logger.error("Failed to notify approaching deadline for %s: %s", record.id, e)
+            last_id = approaching_deadline[-1].id
     
     def _send_overdue_notification(self):
         """Send overdue notification"""

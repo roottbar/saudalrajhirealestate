@@ -68,6 +68,10 @@ class EjarSyncLog(models.Model):
     response_data = fields.Text(string='Response Data')
     error_message = fields.Text(string='Error Message')
     error_code = fields.Char(string='Error Code')
+    # Attachments for large payloads
+    request_data_attachment_id = fields.Many2one('ir.attachment', string='Request Data Attachment', readonly=True, copy=False)
+    response_data_attachment_id = fields.Many2one('ir.attachment', string='Response Data Attachment', readonly=True, copy=False)
+    payload_truncated = fields.Boolean(string='Payload Truncated', default=False, readonly=True)
     
     # Timing Information
     start_time = fields.Datetime(string='Start Time')
@@ -117,6 +121,107 @@ class EjarSyncLog(models.Model):
                 name += f" ({record.record_name})"
             result.append((record.id, name))
         return result
+
+    def _get_payload_max_bytes(self):
+        """Return max bytes threshold for log payloads from system parameter."""
+        param = self.env['ir.config_parameter'].sudo().get_param('ejar_integration.log_payload_max_bytes', '100000')
+        try:
+            return int(param)
+        except Exception:
+            return 100000
+
+    def _truncate_text(self, text, max_bytes):
+        """Truncate text to max_bytes preserving string integrity."""
+        if not text:
+            return text
+        if isinstance(text, (dict, list)):
+            try:
+                text = json.dumps(text)
+            except Exception:
+                text = str(text)
+        s = str(text)
+        if len(s.encode('utf-8')) <= max_bytes:
+            return s
+        # Truncate by characters approximating bytes (safe fallback)
+        truncated = s[:max_bytes]
+        return truncated + '\n...[truncated]'
+
+    def _create_text_attachment(self, name, content):
+        """Create attachment storing full content as text."""
+        import base64
+        datas = base64.b64encode(str(content).encode('utf-8'))
+        return self.env['ir.attachment'].create({
+            'name': name,
+            'type': 'binary',
+            'datas': datas,
+            'res_model': self._name,
+            'res_id': self.id,
+        })
+
+    @api.model
+    def create(self, vals):
+        """Override create to offload large payloads to attachments and truncate Text."""
+        max_bytes = self._get_payload_max_bytes()
+        req = vals.get('request_data')
+        resp = vals.get('response_data')
+        truncated_flag = False
+        if req:
+            req_str = req if isinstance(req, str) else json.dumps(req) if isinstance(req, dict) else str(req)
+            if len(req_str.encode('utf-8')) > max_bytes:
+                vals['request_data'] = self._truncate_text(req_str, max_bytes)
+                truncated_flag = True
+        if resp:
+            resp_str = resp if isinstance(resp, str) else json.dumps(resp) if isinstance(resp, dict) else str(resp)
+            if len(resp_str.encode('utf-8')) > max_bytes:
+                vals['response_data'] = self._truncate_text(resp_str, max_bytes)
+                truncated_flag = True
+
+        record = super(EjarSyncLog, self).create(vals)
+        # After creation, attach full content if truncated
+        if truncated_flag:
+            record.payload_truncated = True
+            try:
+                if req:
+                    att = record._create_text_attachment('ejar_request_data_%s.txt' % record.id, req)
+                    record.request_data_attachment_id = att.id
+                if resp:
+                    att = record._create_text_attachment('ejar_response_data_%s.txt' % record.id, resp)
+                    record.response_data_attachment_id = att.id
+            except Exception as e:
+                _logger.warning('Failed to create payload attachments for log %s: %s', record.id, e)
+        return record
+
+    def write(self, vals):
+        """Override write to offload large payloads to attachments and truncate Text."""
+        max_bytes = self._get_payload_max_bytes()
+        req = vals.get('request_data')
+        resp = vals.get('response_data')
+        if req:
+            req_str = req if isinstance(req, str) else json.dumps(req) if isinstance(req, dict) else str(req)
+            if len(req_str.encode('utf-8')) > max_bytes:
+                vals['request_data'] = self._truncate_text(req_str, max_bytes)
+                # After write, create attachment per record
+                res = super(EjarSyncLog, self).write(vals)
+                for rec in self:
+                    try:
+                        att = rec._create_text_attachment('ejar_request_data_%s.txt' % rec.id, req)
+                        rec.write({'request_data_attachment_id': att.id, 'payload_truncated': True})
+                    except Exception as e:
+                        _logger.warning('Failed to attach request payload for log %s: %s', rec.id, e)
+                return res
+        if resp:
+            resp_str = resp if isinstance(resp, str) else json.dumps(resp) if isinstance(resp, dict) else str(resp)
+            if len(resp_str.encode('utf-8')) > max_bytes:
+                vals['response_data'] = self._truncate_text(resp_str, max_bytes)
+                res = super(EjarSyncLog, self).write(vals)
+                for rec in self:
+                    try:
+                        att = rec._create_text_attachment('ejar_response_data_%s.txt' % rec.id, resp)
+                        rec.write({'response_data_attachment_id': att.id, 'payload_truncated': True})
+                    except Exception as e:
+                        _logger.warning('Failed to attach response payload for log %s: %s', rec.id, e)
+                return res
+        return super(EjarSyncLog, self).write(vals)
     
     @api.model
     def create_sync_log(self, operation_type, model_name=None, record_id=None, 
@@ -424,18 +529,22 @@ class EjarSyncLog(models.Model):
     
     @api.model
     def _cron_retry_failed_operations(self):
-        """Cron job to retry failed operations"""
-        pending_retries = self.search([
-            ('status', '=', 'pending'),
-            ('next_retry_time', '<=', fields.Datetime.now()),
-            ('retry_count', '<', 'max_retries')
-        ])
-        
-        for log in pending_retries:
-            try:
-                log._execute_retry()
-            except Exception as e:
-                _logger.error(f"Failed to retry operation {log.id}: {e}")
+        """Cron job to retry failed operations (batched to reduce memory)."""
+        batch_size = int(self.env['ir.config_parameter'].sudo().get_param('ejar_integration.cron_batch_size', '100'))
+        last_id = 0
+        now = fields.Datetime.now()
+        while True:
+            # Domain cannot compare fields; filter retry_count < max_retries in Python
+            logs = self.search([('id', '>', last_id), ('status', '=', 'pending'), ('next_retry_time', '<=', now)], order='id', limit=batch_size)
+            if not logs:
+                break
+            for log in logs:
+                try:
+                    if log.retry_count < log.max_retries:
+                        log._execute_retry()
+                except Exception as e:
+                    _logger.error("Failed to retry operation %s: %s", log.id, e)
+            last_id = logs[-1].id
     
     @api.model
     def _cron_cleanup_old_logs(self):

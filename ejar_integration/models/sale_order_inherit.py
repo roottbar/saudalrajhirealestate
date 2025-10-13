@@ -344,20 +344,26 @@ class SaleOrderInherit(models.Model):
     
     @api.model
     def _cron_sync_ejar_orders(self):
-        """Cron job to sync pending Ejar orders"""
-        pending_orders = self.search([
-            ('is_ejar_rental', '=', True),
-            ('state', 'in', ['sale', 'done']),
-            ('ejar_sync_status', 'in', ['not_synced', 'error']),
-            ('auto_sync_ejar', '=', True)
-        ])
-        
-        for order in pending_orders:
-            try:
-                order._create_or_update_ejar_contract()
-                _logger.info(f"Successfully synced order {order.name} with Ejar")
-            except Exception as e:
-                _logger.error(f"Failed to sync order {order.name} with Ejar: {e}")
+        """Cron job to sync pending Ejar orders (batched to reduce memory)."""
+        batch_size = int(self.env['ir.config_parameter'].sudo().get_param('ejar_integration.cron_batch_size', '100'))
+        last_id = 0
+        while True:
+            pending_orders = self.search([
+                ('id', '>', last_id),
+                ('is_ejar_rental', '=', True),
+                ('state', 'in', ['sale', 'done']),
+                ('ejar_sync_status', 'in', ['not_synced', 'error']),
+                ('auto_sync_ejar', '=', True)
+            ], order='id', limit=batch_size)
+            if not pending_orders:
+                break
+            for order in pending_orders:
+                try:
+                    order._create_or_update_ejar_contract()
+                    _logger.info("Successfully synced order %s with Ejar", order.name)
+                except Exception as e:
+                    _logger.error("Failed to sync order %s with Ejar: %s", order.name, e)
+            last_id = pending_orders[-1].id
     
     def write(self, vals):
         """Override write to handle Ejar field changes"""
