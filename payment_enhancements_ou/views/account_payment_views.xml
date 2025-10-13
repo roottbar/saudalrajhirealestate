@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_payment_form_inherit_so_po" model="ir.ui.view">
+            <field name="name">account.payment.form.inherit.so.po.refs</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group string="مراجع" name="so_po_refs">
+                        <field name="sale_order_id"
+                               options="{'no_create': True}"
+                               domain="[('partner_id','=', partner_id)]"
+                               attrs="{'invisible': [('partner_type','!=','customer')]}"
+                               context="{'default_partner_id': partner_id}"/>
+                        <field name="sale_order_name"
+                               attrs="{'invisible': [('partner_type','!=','customer')]}"/>
+                        <field name="purchase_order_id"
+                               options="{'no_create': True}"
+                               domain="[('partner_id','=', partner_id)]"
+                               attrs="{'invisible': [('partner_type','!=','supplier')]}"
+                               context="{'default_partner_id': partner_id}"/>
+                        <field name="purchase_order_name"
+                               attrs="{'invisible': [('partner_type','!=','supplier')]}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

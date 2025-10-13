@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_enforce_ou_company" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.enforce.ou.company</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Payments Enhancements" string="تحسينات الدفعات" data-key="payment_enhancements_ou">
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <label for="enforce_ou_company_match"/>
+                                    <div class="text-muted">
+                                        التحكم في رسالة تطابق الشركة مع الفرع (Operating Unit) في قيود المحاسبة.
+                                    </div>
+                                    <field name="enforce_ou_company_match"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
