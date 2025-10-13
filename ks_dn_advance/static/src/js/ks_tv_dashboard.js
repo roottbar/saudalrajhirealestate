@@ -1,3 +1,4 @@
+/** @odoo-module */
 odoo.define('ks_dn_advance.ks_tv_dashboard', function(require){
 
     var KsDashboardNinja = require('ks_dashboard_ninja.ks_dashboard');
