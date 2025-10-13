@@ -26,7 +26,7 @@ class HrAttendanceBatch(models.Model):
     check_in = fields.Date(string="Check In From", default=lambda self: date.today(), required=True)
     check_in_to = fields.Date(string="Check In To", default=lambda self: date.today(), required=True)
     worked_hours = fields.Float(string='Worked Hours')
-    attendance_count = fields.Integer(compute='_compute_attendance_count')
+    # attendance_count = fields.Integer(compute='_compute_attendance_count')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True,
                                  default=lambda self: self.env.company)
     country_id = fields.Many2one(
