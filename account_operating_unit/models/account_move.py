@@ -34,6 +34,12 @@ class AccountMoveLine(models.Model):
 
     @api.constrains("operating_unit_id", "company_id")
     def _check_company_operating_unit(self):
+        # Allow disabling this constraint via system setting
+        icp = self.env['ir.config_parameter'].sudo()
+        enforce = icp.get_param('payment_enhancements_ou.enforce_ou_company_match', default='True')
+        enforce_bool = str(enforce).lower() in ('true', '1', 'yes', 'y')
+        if not enforce_bool:
+            return True
         for rec in self:
             if (
                 rec.company_id
@@ -50,6 +56,12 @@ class AccountMoveLine(models.Model):
 
     @api.constrains("operating_unit_id", "move_id")
     def _check_move_operating_unit(self):
+        # Respect the same enforcement flag; when disabled, skip this check
+        icp = self.env['ir.config_parameter'].sudo()
+        enforce = icp.get_param('payment_enhancements_ou.enforce_ou_company_match', default='True')
+        enforce_bool = str(enforce).lower() in ('true', '1', 'yes', 'y')
+        if not enforce_bool:
+            return True
         for rec in self:
             if (
                 rec.move_id
