@@ -4,7 +4,7 @@ from odoo import models, fields, api, exceptions, _
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    budget_project_id = fields.Many2one('budget.project', string='المشروع', ondelete='restrict')
+    budget_project_id = fields.Many2one('budget.project', string='المشروع', ondelete='restrict', domain="[('company_id', '=', company_id)]")
     budget_department_id = fields.Many2one('budget.department', string='القسم', ondelete='restrict')
     
     @api.onchange('budget_project_id')
@@ -16,7 +16,7 @@ class PurchaseOrder(models.Model):
     budget_id = fields.Many2one(
         'budget.budget',
         string='الميزانية',
-        domain="[('department_id', '=', budget_department_id), '|', ('project_id', '=', False), ('project_id', '=', budget_project_id), ('date_start', '<=', date_order), ('date_end', '>=', date_order)]",
+        domain="[('company_id', '=', company_id), ('department_id', '=', budget_department_id), '|', ('project_id', '=', False), ('project_id', '=', budget_project_id), ('date_start', '<=', date_order), ('date_end', '>=', date_order)]",
         ondelete='restrict',
     )
     budget_move_id = fields.Many2one('account.move', string='قيد الميزانية', readonly=True, copy=False)
@@ -31,6 +31,7 @@ class PurchaseOrder(models.Model):
         # محاولة تعيين ميزانية تلقائياً إذا كانت واحدة مطابقة
         for order in self:
             domain = [
+                ('company_id', '=', order.company_id.id),
                 ('department_id', '=', order.budget_department_id.id),
                 '|', ('project_id', '=', False), ('project_id', '=', order.budget_project_id.id),
             ]
@@ -45,6 +46,7 @@ class PurchaseOrder(models.Model):
         budget = self.budget_id
         if not budget and self.budget_department_id:
             domain = [
+                ('company_id', '=', self.company_id.id),
                 ('department_id', '=', self.budget_department_id.id),
                 '|', ('project_id', '=', False), ('project_id', '=', self.budget_project_id.id),
             ]

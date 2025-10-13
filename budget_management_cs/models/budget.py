@@ -8,6 +8,7 @@ class BudgetBudget(models.Model):
     name = fields.Char(string='اسم الميزانية', required=True)
     department_id = fields.Many2one('budget.department', string='القسم', required=True, ondelete='restrict')
     project_id = fields.Many2one('budget.project', string='المشروع', ondelete='restrict')
+    company_id = fields.Many2one('res.company', string='الشركة', required=True, default=lambda self: self.env.company)
 
     currency_id = fields.Many2one('res.currency', string='العملة', required=True, default=lambda self: self.env.company.currency_id)
     total_amount = fields.Monetary(string='المبلغ الكلي', required=True, currency_field='currency_id')
@@ -33,11 +34,10 @@ class BudgetBudget(models.Model):
     @api.depends('purchase_order_ids.state', 'purchase_order_ids.amount_total', 'currency_id')
     def _compute_spent_amount(self):
         for budget in self:
-            company_currency = budget.env.company.currency_id
             total = 0.0
             for po in budget.purchase_order_ids.filtered(lambda p: p.state in ('purchase', 'done')):
                 # تحويل مبلغ أمر الشراء إلى عملة الميزانية
-                total += po.currency_id._convert(po.amount_total, budget.currency_id, budget.company_id if hasattr(budget, 'company_id') else budget.env.company, po.date_order or fields.Date.today())
+                total += po.currency_id._convert(po.amount_total, budget.currency_id, budget.company_id, po.date_order or fields.Date.today())
             budget.spent_amount = total
 
     @api.depends('total_amount', 'spent_amount')

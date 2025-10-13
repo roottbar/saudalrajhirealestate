@@ -6,6 +6,7 @@ class BudgetProject(models.Model):
     _description = 'Budget Project'
 
     name = fields.Char(string='اسم المشروع', required=True)
+    company_id = fields.Many2one('res.company', string='الشركة', required=True, default=lambda self: self.env.company)
     # دعم ربط المشروع بأقسام متعددة
     department_ids = fields.Many2many('budget.department', string='الأقسام')
     # حقل قديم للإتاحة الخلفية، يمكن إبقاؤه إن لزم التوافق
