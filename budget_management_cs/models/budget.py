@@ -27,6 +27,9 @@ class BudgetBudget(models.Model):
 
     purchase_order_ids = fields.One2many('purchase.order', 'budget_id', string='أوامر الشراء ذات الصلة')
 
+    # مربع نص الملاحظات لواجهة الميزانية
+    note = fields.Text(string='ملاحظات')
+
     @api.depends('purchase_order_ids.state', 'purchase_order_ids.amount_total', 'currency_id')
     def _compute_spent_amount(self):
         for budget in self:

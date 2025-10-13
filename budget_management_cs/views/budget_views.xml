@@ -30,6 +30,8 @@
                             <field name="name"/>
                             <field name="department_id"/>
                             <field name="project_id"/>
+                            <!-- مربع نص الملاحظات أسفل حقل المشروع -->
+                            <field name="note"/>
                         </group>
                         <group>
                             <field name="currency_id"/>
