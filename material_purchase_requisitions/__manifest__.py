@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Material Purchase Requisitions by Employees/User",
+    'name': "Material Purchase Requisitions by Employees/Users",
     'version': "18.0.1.0.0",
     'summary': "Enhanced Product/Material Purchase Requisitions by Employees/Users module",
     'description': "Enhanced Product/Material Purchase Requisitions by Employees/Users module for Odoo 18.0 by roottbar",
