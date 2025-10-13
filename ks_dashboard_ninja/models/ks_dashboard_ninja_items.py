@@ -698,18 +698,19 @@ class KsDashboardNinjaItems(models.Model):
 
         return res
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """ Override to save list view fields ordering """
-        if values.get('ks_list_view_fields', False) and values.get('ks_list_view_group_fields', False):
-            ks_many2many_field_ordering = {
-                'ks_list_view_fields': values['ks_list_view_fields'][0][2],
-                'ks_list_view_group_fields': values['ks_list_view_group_fields'][0][2],
-            }
-            values['ks_many2many_field_ordering'] = json.dumps(ks_many2many_field_ordering)
+        for values in vals_list:
+            if values.get('ks_list_view_fields', False) and values.get('ks_list_view_group_fields', False):
+                ks_many2many_field_ordering = {
+                    'ks_list_view_fields': values['ks_list_view_fields'][0][2],
+                    'ks_list_view_group_fields': values['ks_list_view_group_fields'][0][2],
+                }
+                values['ks_many2many_field_ordering'] = json.dumps(ks_many2many_field_ordering)
 
         return super(KsDashboardNinjaItems, self).create(
-            values)
+            vals_list)
 
     def write(self, values):
         for rec in self:

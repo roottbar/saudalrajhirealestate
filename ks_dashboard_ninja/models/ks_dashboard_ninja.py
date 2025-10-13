@@ -101,40 +101,46 @@ class KsDashboardNinjaBoard(models.Model):
             if rec.ks_dashboard_start_date > rec.ks_dashboard_end_date:
                 raise ValidationError(_('Start date must be less than end date'))
 
-    @api.model
-    def create(self, vals):
-        record = super(KsDashboardNinjaBoard, self).create(vals)
-        if 'ks_dashboard_top_menu_id' in vals and 'ks_dashboard_menu_name' in vals:
-            action_id = {
-                'name': vals['ks_dashboard_menu_name'] + " Action",
-                'res_model': 'ks_dashboard_ninja.board',
-                'tag': 'ks_dashboard_ninja',
-                'params': {'ks_dashboard_id': record.id},
-            }
-            record.ks_dashboard_client_action_id = self.env['ir.actions.client'].sudo().create(action_id)
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super(KsDashboardNinjaBoard, self).create(vals_list)
 
-            record.ks_dashboard_menu_id = self.env['ir.ui.menu'].sudo().create({
-                'name': vals['ks_dashboard_menu_name'],
-                'active': vals.get('ks_dashboard_active', True),
-                'parent_id': vals['ks_dashboard_top_menu_id'],
-                'action': "ir.actions.client," + str(record.ks_dashboard_client_action_id.id),
-                'groups_id': vals.get('ks_dashboard_group_access', False),
-                'sequence': vals.get('ks_dashboard_menu_sequence', 10)
-            })
+        for record, vals in zip(records, vals_list):
+            # Create menu and action if top menu & name exist
+            if 'ks_dashboard_top_menu_id' in vals and 'ks_dashboard_menu_name' in vals:
+                action_id = {
+                    'name': vals['ks_dashboard_menu_name'] + " Action",
+                    'res_model': 'ks_dashboard_ninja.board',
+                    'tag': 'ks_dashboard_ninja',
+                    'params': {'ks_dashboard_id': record.id},
+                }
+                record.ks_dashboard_client_action_id = self.env['ir.actions.client'].sudo().create(action_id)
 
-        if record.ks_dashboard_default_template and record.ks_dashboard_default_template.ks_item_count:
-            ks_gridstack_config = {}
-            template_data = json.loads(record.ks_dashboard_default_template.ks_gridstack_config)
-            for item_data in template_data:
-                if record.ks_dashboard_default_template.ks_template_type == 'ks_custom':
-                    dashboard_item = self.env['ks_dashboard_ninja.item'].browse(int(item_data)).copy(
-                        {'ks_dashboard_ninja_board_id': record.id})
-                    ks_gridstack_config[dashboard_item.id] = template_data[item_data]
-                else:
-                    dashboard_item = self.env.ref(item_data['item_id']).copy({'ks_dashboard_ninja_board_id': record.id})
-                    ks_gridstack_config[dashboard_item.id] = item_data['data']
-            record.ks_gridstack_config = json.dumps(ks_gridstack_config)
-        return record
+                record.ks_dashboard_menu_id = self.env['ir.ui.menu'].sudo().create({
+                    'name': vals['ks_dashboard_menu_name'],
+                    'active': vals.get('ks_dashboard_active', True),
+                    'parent_id': vals['ks_dashboard_top_menu_id'],
+                    'action': "ir.actions.client," + str(record.ks_dashboard_client_action_id.id),
+                    'groups_id': vals.get('ks_dashboard_group_access', False),
+                    'sequence': vals.get('ks_dashboard_menu_sequence', 10)
+                })
+
+            # Copy items from default template if exists
+            if record.ks_dashboard_default_template and record.ks_dashboard_default_template.ks_item_count:
+                ks_gridstack_config = {}
+                template_data = json.loads(record.ks_dashboard_default_template.ks_gridstack_config)
+                for item_data in template_data:
+                    if record.ks_dashboard_default_template.ks_template_type == 'ks_custom':
+                        dashboard_item = self.env['ks_dashboard_ninja.item'].browse(int(item_data)).copy(
+                            {'ks_dashboard_ninja_board_id': record.id})
+                        ks_gridstack_config[dashboard_item.id] = template_data[item_data]
+                    else:
+                        dashboard_item = self.env.ref(item_data['item_id']).copy(
+                            {'ks_dashboard_ninja_board_id': record.id})
+                        ks_gridstack_config[dashboard_item.id] = item_data['data']
+                record.ks_gridstack_config = json.dumps(ks_gridstack_config)
+
+        return records
 
     @api.onchange('ks_date_filter_selection')
     def ks_date_filter_selection_onchange(self):
