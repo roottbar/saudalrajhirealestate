@@ -14,8 +14,8 @@
                 </t>
             </xpath>
             <!-- Guard access to o.company_id.country_id.vat_label when o is None -->
-            <xpath expr="//span[t[@t-esc=\"o.company_id.country_id.vat_label or 'Tax ID'\"]]" position="replace">
-                <span t-esc="(o and o.company_id and o.company_id.country_id and o.company_id.country_id.vat_label) or 'Tax ID'"/>
+            <xpath expr="//t[@t-esc=&quot;o.company_id.country_id.vat_label or 'Tax ID'&quot;]" position="replace">
+                <t t-esc="(o and o.company_id and o.company_id.country_id and o.company_id.country_id.vat_label) or 'Tax ID'"/>
             </xpath>
         </template>
     </data>
