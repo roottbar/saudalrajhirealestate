@@ -18,5 +18,22 @@
                 <t t-esc="(o and o.company_id and o.company_id.country_id and o.company_id.country_id.vat_label) or 'Tax ID'"/>
             </xpath>
         </template>
+
+        <!-- Also guard the base external layout variant used by some editions -->
+        <template id="inherit_external_layout_base" inherit_id="web.external_layout">
+            <xpath expr="//*[@t-field='company.company_registry']" position="replace">
+                <t t-if="'company_registry' in company._fields and company.company_registry">
+                    <span t-esc="company.company_registry"/>
+                </t>
+            </xpath>
+            <xpath expr="//*[@t-field='company.foreign_name']" position="replace">
+                <t t-if="'foreign_name' in company._fields and company.foreign_name">
+                    <span t-esc="company.foreign_name"/>
+                </t>
+            </xpath>
+            <xpath expr="//t[@t-esc=&quot;o.company_id.country_id.vat_label or 'Tax ID'&quot;]" position="replace">
+                <t t-esc="(o and o.company_id and o.company_id.country_id and o.company_id.country_id.vat_label) or 'Tax ID'"/>
+            </xpath>
+        </template>
     </data>
 </odoo>
