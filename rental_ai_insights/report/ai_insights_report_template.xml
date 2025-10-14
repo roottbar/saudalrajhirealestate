@@ -3,12 +3,12 @@
     <data>
         <template id="ai_insights_report_template">
             <t t-call="web.html_container">
-                <t t-set="filters" t-value="data.get('filters')"/>
-                <t t-set="kpis" t-value="data.get('kpis')"/>
-                <t t-set="invoice_stats" t-value="data.get('invoice_stats')"/>
-                <t t-set="yearly" t-value="data.get('yearly')"/>
-                <t t-set="forecast" t-value="data.get('forecast_next_year')"/>
-                <t t-set="rankings" t-value="data.get('rankings')"/>
+                <t t-set="filters" t-value="(data or {}).get('filters', {})"/>
+                <t t-set="kpis" t-value="(data or {}).get('kpis', {})"/>
+                <t t-set="invoice_stats" t-value="(data or {}).get('invoice_stats', {})"/>
+                <t t-set="yearly" t-value="(data or {}).get('yearly', [])"/>
+                <t t-set="forecast" t-value="(data or {}).get('forecast_next_year', 0.0)"/>
+                <t t-set="rankings" t-value="(data or {}).get('rankings', {})"/>
 
                 <div class="o_report_layout">
                     <h2 style="text-align:center;">تحليلات الإيجارات بالذكاء الاصطناعي</h2>
@@ -141,6 +141,9 @@
                             </table>
                         </div>
                     </div>
+                    <t t-if="not yearly and not (rankings.get('top_properties') or rankings.get('top_branches') or rankings.get('bottom_properties') or rankings.get('bottom_branches'))">
+                        <div style="margin-top:16px; text-align:center; color:#666;">لا توجد بيانات ضمن الفلاتر المحددة.</div>
+                    </t>
                 </div>
             </t>
         </template>

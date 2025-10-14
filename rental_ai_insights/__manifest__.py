@@ -12,6 +12,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/ai_insights_wizard_views.xml',
+        'report/report_actions.xml',
         'report/ai_insights_report_template.xml',
     ],
     'installable': True,

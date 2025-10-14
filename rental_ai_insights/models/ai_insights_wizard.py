@@ -290,10 +290,5 @@ class RentalAIInsightsWizard(models.TransientModel):
             'core_data': core_data,
         }
 
-        return {
-            'type': 'ir.actions.report',
-            'report_name': 'rental_ai_insights.ai_insights_report_template',
-            'report_type': 'qweb-html',
-            'data': context,
-            'context': context,
-        }
+        # Use registered ir.actions.report to render HTML and pass data
+        return self.env.ref('rental_ai_insights.rental_ai_insights_ai_report_action').report_action(self, data=context)
