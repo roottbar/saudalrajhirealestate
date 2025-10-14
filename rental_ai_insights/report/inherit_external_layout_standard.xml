@@ -4,8 +4,8 @@
         <!-- Guard company_registry access in the standard external layout -->
         <template id="inherit_external_layout_standard" inherit_id="web.external_layout_standard">
             <xpath expr="//span[@t-field='company.company_registry']" position="replace">
-                <t t-if="getattr(company, 'company_registry', False)">
-                    <span t-esc="getattr(company, 'company_registry', '')"/>
+                <t t-if="'company_registry' in company._fields and company.company_registry">
+                    <span t-esc="company.company_registry"/>
                 </t>
             </xpath>
         </template>
