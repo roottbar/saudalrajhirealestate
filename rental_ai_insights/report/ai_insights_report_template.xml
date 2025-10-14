@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="ai_insights_report_template">
+            <t t-call="web.html_container">
+                <t t-set="filters" t-value="data.get('filters')"/>
+                <t t-set="kpis" t-value="data.get('kpis')"/>
+                <t t-set="invoice_stats" t-value="data.get('invoice_stats')"/>
+                <t t-set="yearly" t-value="data.get('yearly')"/>
+                <t t-set="forecast" t-value="data.get('forecast_next_year')"/>
+                <t t-set="rankings" t-value="data.get('rankings')"/>
+
+                <div class="o_report_layout">
+                    <h2 style="text-align:center;">تحليلات الإيجارات بالذكاء الاصطناعي</h2>
+                    <hr/>
+                    <h4>ملخص الفلاتر</h4>
+                    <ul>
+                        <li><strong>الشركات:</strong> <t t-esc="filters.get('companies')"/></li>
+                        <li><strong>الفرع:</strong> <t t-esc="filters.get('operating_unit')"/></li>
+                        <li><strong>المجمع:</strong> <t t-esc="filters.get('property_build')"/></li>
+                        <li><strong>العقار:</strong> <t t-esc="filters.get('property')"/></li>
+                        <li><strong>الوحدة:</strong> <t t-esc="filters.get('product')"/></li>
+                        <li><strong>الفترة:</strong> من <t t-esc="filters.get('date_from')"/> إلى <t t-esc="filters.get('date_to')"/></li>
+                    </ul>
+
+                    <h4>المؤشرات الرئيسية (KPIs)</h4>
+                    <div class="row">
+                        <div class="col-4"><strong>إجمالي الإيرادات:</strong> <t t-esc="'%.2f' % (kpis.get('total_revenue') or 0.0)"/></div>
+                        <div class="col-4"><strong>المبلغ المدفوع:</strong> <t t-esc="'%.2f' % (kpis.get('total_paid') or 0.0)"/></div>
+                        <div class="col-4"><strong>المبلغ المستحق:</strong> <t t-esc="'%.2f' % (kpis.get('total_due') or 0.0)"/></div>
+                    </div>
+
+                    <t t-if="invoice_stats">
+                        <h4>تحليل الفواتير</h4>
+                        <ul>
+                            <li><strong>عدد الفواتير المسددة:</strong> <t t-esc="invoice_stats.get('invoice_paid_count')"/></li>
+                            <li><strong>عدد الفواتير المستحقة:</strong> <t t-esc="invoice_stats.get('invoice_due_count')"/></li>
+                            <li><strong>إجمالي مبالغ الفواتير:</strong> <t t-esc="'%.2f' % (invoice_stats.get('invoice_total_amount') or 0.0)"/></li>
+                            <li><strong>إجمالي المتبقي:</strong> <t t-esc="'%.2f' % (invoice_stats.get('invoice_total_residual') or 0.0)"/></li>
+                        </ul>
+                    </t>
+
+                    <t t-if="yearly">
+                        <h4>المقارنة التحليلية بين السنوات</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>السنة</th>
+                                    <th>الإيرادات</th>
+                                    <th>المدفوع</th>
+                                    <th>المستحق</th>
+                                    <th>عدد العقود</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="yearly" t-as="row">
+                                    <tr>
+                                        <td><t t-esc="row.get('year')"/></td>
+                                        <td><t t-esc="'%.2f' % (row.get('revenue') or 0.0)"/></td>
+                                        <td><t t-esc="'%.2f' % (row.get('paid') or 0.0)"/></td>
+                                        <td><t t-esc="'%.2f' % (row.get('due') or 0.0)"/></td>
+                                        <td><t t-esc="row.get('contracts')"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div><strong>توقع إيرادات السنة القادمة:</strong> <t t-esc="'%.2f' % (forecast or 0.0)"/></div>
+                    </t>
+
+                    <h4>أفضل/أضعف أداء</h4>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>أفضل العقارات</h5>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr><th>العقار</th><th>الإيراد</th><th>نسبة السداد</th></tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rankings.get('top_properties') or []" t-as="r">
+                                        <tr>
+                                            <td><t t-esc="r.get('name')"/></td>
+                                            <td><t t-esc="'%.2f' % (r.get('revenue') or 0.0)"/></td>
+                                            <td><t t-esc="'%.0f%%' % ((r.get('paid_ratio') or 0.0) * 100)"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <h5>أضعف العقارات</h5>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr><th>العقار</th><th>الإيراد</th><th>نسبة السداد</th></tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rankings.get('bottom_properties') or []" t-as="r">
+                                        <tr>
+                                            <td><t t-esc="r.get('name')"/></td>
+                                            <td><t t-esc="'%.2f' % (r.get('revenue') or 0.0)"/></td>
+                                            <td><t t-esc="'%.0f%%' % ((r.get('paid_ratio') or 0.0) * 100)"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>أفضل الفروع</h5>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr><th>الفرع</th><th>الإيراد</th><th>نسبة السداد</th></tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rankings.get('top_branches') or []" t-as="r">
+                                        <tr>
+                                            <td><t t-esc="r.get('name')"/></td>
+                                            <td><t t-esc="'%.2f' % (r.get('revenue') or 0.0)"/></td>
+                                            <td><t t-esc="'%.0f%%' % ((r.get('paid_ratio') or 0.0) * 100)"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-6">
+                            <h5>أضعف الفروع</h5>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr><th>الفرع</th><th>الإيراد</th><th>نسبة السداد</th></tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rankings.get('bottom_branches') or []" t-as="r">
+                                        <tr>
+                                            <td><t t-esc="r.get('name')"/></td>
+                                            <td><t t-esc="'%.2f' % (r.get('revenue') or 0.0)"/></td>
+                                            <td><t t-esc="'%.0f%%' % ((r.get('paid_ratio') or 0.0) * 100)"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
