@@ -8,3 +8,4 @@ class ResCompany(models.Model):
 
     # Add missing field to prevent QWeb KeyError in document layout preview
     company_registry = fields.Char(string='Company Registry')
+    foreign_name = fields.Char(string='Foreign Name')
