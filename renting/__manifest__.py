@@ -43,6 +43,7 @@
         'views/vw_rent_units_report_wizard.xml',
         'views/vw_product_configuration.xml',
         # 'report/base_layout.xml',
+        'report/external_layout_guard.xml',
         'report/reports.xml',
         'report/rent_units_report_template.xml',
         'data/demo_products.xml',
