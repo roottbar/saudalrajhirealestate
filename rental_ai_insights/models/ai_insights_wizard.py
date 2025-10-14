@@ -31,6 +31,38 @@ class RentalAIInsightsWizard(models.TransientModel):
     yearly_html = fields.Html(string='المقارنة السنوية')
     predictions_html = fields.Html(string='توصيات وتوقعات')
 
+    @api.depends(
+        'company_id', 'branch_id', 'property_id', 'analytic_account_id',
+        'partner_id', 'contract_number', 'date_from', 'date_to'
+    )
+    def _compute_metrics(self):
+        for wiz in self:
+            invoices = wiz._fetch_invoices()
+            vendor_bills = wiz._fetch_expenses()
+
+            paid_domain = [inv for inv in invoices if inv.payment_state == 'paid']
+            due_domain = [inv for inv in invoices if inv.payment_state in ('not_paid', 'partial')]
+
+            wiz.invoices_total = len(invoices)
+            wiz.invoices_paid = len(paid_domain)
+            wiz.invoices_due = len(due_domain)
+            wiz.amount_paid = sum(inv.amount_total_signed for inv in paid_domain)
+            wiz.amount_due = sum(inv.amount_total_signed for inv in due_domain)
+            wiz.revenues_amount = sum(inv.amount_total_signed for inv in invoices)
+            wiz.expenses_amount = sum(b.amount_total_signed for b in vendor_bills)
+
+            # Render auxiliary HTML sections for immediate feedback on form open
+            rev_by_year = group_by_year(invoices, lambda r: r.invoice_date, lambda r: r.amount_total_signed)
+            exp_by_year = group_by_year(vendor_bills, lambda r: r.invoice_date, lambda r: r.amount_total_signed)
+            wiz.yearly_html = wiz._render_yearly_html(rev_by_year, exp_by_year)
+
+            rev_by_month = group_by_month(invoices, lambda r: r.invoice_date, lambda r: r.amount_total_signed)
+            month_series = [(y, m, v) for ((y, m), v) in rev_by_month.items()]
+            forecasts = simple_linear_forecast(month_series, horizon=3)
+            wiz.predictions_html = wiz._render_predictions_html(forecasts)
+
+            wiz.summary_html = wiz._render_summary_html()
+
     def action_compute(self):
         self.ensure_one()
         invoices = self._fetch_invoices()
