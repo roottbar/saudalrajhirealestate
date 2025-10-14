@@ -9,7 +9,7 @@ class RentalAIInsightsWizard(models.TransientModel):
     _description = 'Rental AI Insights Wizard'
 
     company_id = fields.Many2one('res.company', string='الشركة', default=lambda self: self.env.company)
-    branch_id = fields.Many2one('res.branch', string='الفرع')
+    operating_unit_id = fields.Many2one('operating.unit', string='الفرع')
     property_id = fields.Many2one('rent.property', string='العقار')
     analytic_account_id = fields.Many2one('account.analytic.account', string='الحساب التحليلي')
     partner_id = fields.Many2one('res.partner', string='اسم العميل')
@@ -30,15 +30,18 @@ class RentalAIInsightsWizard(models.TransientModel):
     summary_html = fields.Html(string='ملخص التحليل')
     yearly_html = fields.Html(string='المقارنة السنوية')
     predictions_html = fields.Html(string='توصيات وتوقعات')
+    property_predictions_html = fields.Html(string='توقعات العقار')
+    contracts_html = fields.Html(string='تقرير العقود')
 
     @api.depends(
-        'company_id', 'branch_id', 'property_id', 'analytic_account_id',
+        'company_id', 'operating_unit_id', 'property_id', 'analytic_account_id',
         'partner_id', 'contract_number', 'date_from', 'date_to'
     )
     def _compute_metrics(self):
         for wiz in self:
             invoices = wiz._fetch_invoices()
             vendor_bills = wiz._fetch_expenses()
+            contract_lines = wiz._fetch_contract_lines()
 
             paid_domain = [inv for inv in invoices if inv.payment_state == 'paid']
             due_domain = [inv for inv in invoices if inv.payment_state in ('not_paid', 'partial')]
@@ -61,7 +64,18 @@ class RentalAIInsightsWizard(models.TransientModel):
             forecasts = simple_linear_forecast(month_series, horizon=3)
             wiz.predictions_html = wiz._render_predictions_html(forecasts)
 
+            # Property-specific predictions
+            if wiz.property_id:
+                prop_invoices = invoices.filtered(lambda inv: getattr(inv, 'property_name', False) == wiz.property_id)
+                prop_by_month = group_by_month(prop_invoices, lambda r: r.invoice_date, lambda r: r.amount_total_signed)
+                prop_series = [(y, m, v) for ((y, m), v) in prop_by_month.items()]
+                prop_forecasts = simple_linear_forecast(prop_series, horizon=3)
+                wiz.property_predictions_html = wiz._render_property_predictions_html(prop_forecasts)
+            else:
+                wiz.property_predictions_html = "<div><p>اختر عقارًا لعرض توقعاته.</p></div>"
+
             wiz.summary_html = wiz._render_summary_html()
+            wiz.contracts_html = wiz._render_contracts_html(contract_lines)
 
     def action_compute(self):
         self.ensure_one()
@@ -116,9 +130,7 @@ class RentalAIInsightsWizard(models.TransientModel):
             domain.append(('property_name', '=', self.property_id.id))
         if self.contract_number:
             domain.append(('so_contract_number', '=', self.contract_number))
-        # branch: attempt via sale order line (if present on invoice)
-        if self.branch_id:
-            domain.append(('rent_sale_line_id.property_address_area', '=', self.branch_id.name))
+        # operating_unit filtering on invoices depends on custom relations; handled in contracts report instead
         return domain
 
     def _fetch_invoices(self):
@@ -139,6 +151,30 @@ class RentalAIInsightsWizard(models.TransientModel):
             bills = bills.filtered(lambda m: getattr(m, 'property_name', False) == self.property_id)
             return bills
         return self.env['account.move'].search(domain)
+
+    def _fetch_contract_lines(self):
+        """Fetch sale.order.line records overlapping the selected date range and filters."""
+        domain = []
+        if self.company_id:
+            domain.append(('order_id.company_id', '=', self.company_id.id))
+        if self.partner_id:
+            domain.append(('order_partner_id', '=', self.partner_id.id))
+        if self.analytic_account_id:
+            domain.append(('analytic_account_id', '=', self.analytic_account_id.id))
+        if self.property_id:
+            domain.append(('property_number', '=', self.property_id.id))
+        if self.contract_number:
+            domain.append(('order_id.name', '=', self.contract_number))
+        if self.operating_unit_id:
+            domain.append(('order_id.operating_unit_id', '=', self.operating_unit_id.id))
+
+        # Date overlap: fromdate <= date_to AND todate >= date_from
+        if self.date_from:
+            domain.append(('todate', '>=', self.date_from))
+        if self.date_to:
+            domain.append(('fromdate', '<=', self.date_to))
+
+        return self.env['sale.order.line'].search(domain)
 
     def _render_summary_html(self):
         return (
@@ -191,3 +227,63 @@ class RentalAIInsightsWizard(models.TransientModel):
             "<p>تم استخدام انحدار خطي بسيط لاكتشاف الاتجاه.</p>"
             "</div>"
         )
+
+    def _render_property_predictions_html(self, forecasts):
+        title = f"توقع الإيرادات للعقار: {self.property_id.display_name}" if self.property_id else "توقع الإيرادات للعقار"
+        if not forecasts:
+            return f"<div><h4>{title}</h4><p>لا توجد بيانات كافية للتنبؤ.</p></div>"
+        rows = []
+        for y, m, v in forecasts:
+            rows.append(f"<tr><td>{y}-{m:02d}</td><td>{v:.2f}</td></tr>")
+        return (
+            f"<div><h4>{title}</h4>"
+            "<table class='table table-sm'>"
+            "<thead><tr><th>الشهر</th><th>القيمة المتوقعة</th></tr></thead>"
+            f"<tbody>{''.join(rows)}</tbody>"
+            "</table>"
+            "</div>"
+        )
+
+    def _render_contracts_html(self, lines):
+        # ترتيب الأعمدة كما في الصورة: الفرع، المجمع، العقار، الحساب التحليلي، الوحدة، اسم العميل، رقم العقد، الحالة،
+        # ثم المبالغ، ثم تاريخ الاستلام والتسليم
+        header = (
+            "<thead><tr>"
+            "<th>الفرع</th><th>المجمع</th><th>العقار</th><th>الحساب التحليلي</th><th>الوحدة</th><th>اسم العميل</th>"
+            "<th>رقم العقد</th><th>شاغرة / مؤجرة</th>"
+            "<th>المبلغ المستحق</th><th>المبلغ المدفوع</th><th>المصروفات</th><th>الإيرادات</th>"
+            "<th>تاريخ الاستلام</th><th>تاريخ التسليم</th>"
+            "</tr></thead>"
+        )
+        rows = []
+        for l in lines:
+            pickup = l.pickup_date and fields.Datetime.to_string(l.pickup_date) or ''
+            return_d = l.return_date and fields.Datetime.to_string(l.return_date) or ''
+            revenues = getattr(l, 'unit_revenues', 0.0) or 0.0
+            expenses = getattr(l, 'unit_expenses', 0.0) or 0.0
+            due = getattr(l, 'amount_due', 0.0) or 0.0
+            paid = getattr(l, 'amount_paid', 0.0) or 0.0
+            state = getattr(l, 'unit_state', '') or ''
+            contract = l.order_id and l.order_id.name or ''
+            customer = l.order_partner_id and l.order_partner_id.display_name or ''
+            unit = l.product_id and l.product_id.display_name or ''
+            analytic = l.analytic_account_id and l.analytic_account_id.display_name or ''
+            property_name = l.property_number and l.property_number.display_name or ''
+            complex_name = getattr(l, 'property_address_build2', '') or ''
+            branch = l.order_id.operating_unit_id and l.order_id.operating_unit_id.name or ''
+            rows.append(
+                f"<tr><td>{branch}</td><td>{complex_name}</td><td>{property_name}</td><td>{analytic}</td><td>{unit}</td><td>{customer}</td>"
+                f"<td>{contract}</td><td>{state}</td>"
+                f"<td>{due:.2f}</td><td>{paid:.2f}</td><td>{expenses:.2f}</td><td>{revenues:.2f}</td>"
+                f"<td>{pickup}</td><td>{return_d}</td>"
+                "</tr>"
+            )
+        table = (
+            "<div>"
+            "<h4>تقرير العقود للفترة المحددة</h4>"
+            "<table class='table table-sm'>"
+            f"{header}<tbody>{''.join(rows)}</tbody>"
+            "</table>"
+            "</div>"
+        )
+        return table
