@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Guard company_registry access in the standard external layout -->
+        <template id="inherit_external_layout_standard" inherit_id="web.external_layout_standard">
+            <xpath expr="//span[@t-field='company.company_registry']" position="replace">
+                <t t-if="getattr(company, 'company_registry', False)">
+                    <span t-esc="getattr(company, 'company_registry', '')"/>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>
