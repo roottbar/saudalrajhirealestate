@@ -104,7 +104,7 @@
                                         <span t-field="company.vat"></span>
                                     </li>
                                     <li class="ml-4 float-center">رقم سجل الشركة
-                                        <span t-field="company.company_registry"></span>
+                                        <span t-if="company._fields.get('company_registry')" t-field="company.company_registry"></span>
                                     </li>
                                 </ul>
                             </div>
@@ -139,7 +139,7 @@
                                     </li>
                                     <li class="float-center mb4">
                                         <span>CR No:</span>
-                                        <span t-field="company.company_registry"></span>
+                                        <span t-if="company._fields.get('company_registry')" t-field="company.company_registry"></span>
                                     </li>
                                 </ul>
                             </div>
