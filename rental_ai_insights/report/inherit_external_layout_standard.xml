@@ -3,12 +3,12 @@
     <data>
         <!-- Guard company_registry access in the standard external layout -->
         <template id="inherit_external_layout_standard" inherit_id="web.external_layout_standard">
-            <xpath expr="//span[@t-field='company.company_registry']" position="replace">
+            <xpath expr="//*[@t-field='company.company_registry']" position="replace">
                 <t t-if="'company_registry' in company._fields and company.company_registry">
                     <span t-esc="company.company_registry"/>
                 </t>
             </xpath>
-            <xpath expr="//span[@t-field='company.foreign_name']" position="replace">
+            <xpath expr="//*[@t-field='company.foreign_name']" position="replace">
                 <t t-if="'foreign_name' in company._fields and company.foreign_name">
                     <span t-esc="company.foreign_name"/>
                 </t>
