@@ -8,7 +8,10 @@
                 <div class="col-6">
                     <div class="row  mx-1 border-bottom">
                         <div class="col-3 px-0 text-left">CR No:</div>
-                        <div class="col-4 px-0 "><span t-field="company.company_registry"></span></div>
+                        <div class="col-4 px-0 ">
+                            <span t-if="company._fields.get('company_registry')" t-field="company.company_registry"></span>
+                            <span t-if="not company._fields.get('company_registry')"></span>
+                        </div>
                         <div class="col-5 px-0  text-right">:رقم سجل الشركة</div>
                     </div>
 
@@ -30,7 +33,7 @@
             <ul class="list-inline mb4">
                 <!-- using the list-inline-item class from bootstrap causes weird behaviours in pdf report
                      adding d-inline class fixes the problem-->
-                <li t-if="company.company_registry" class="list-inline-item d-inline mx-2">
+                <li t-if="company._fields.get('company_registry') and company.company_registry" class="list-inline-item d-inline mx-2">
                     <span>CR No:</span>
                     <span t-field="company.company_registry"></span>
                     <span>:رقم سجل الشركة</span>
