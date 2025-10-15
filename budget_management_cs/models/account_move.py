@@ -53,21 +53,19 @@ class AccountMove(models.Model):
 
     @api.depends('budget_id')
     def _compute_budget_remaining(self):
+        sar = self.env['res.currency'].search([('name', '=', 'SAR')], limit=1)
         for move in self:
-            if move.budget_id:
-                move.budget_currency_id = move.budget_id.currency_id
-                move.budget_remaining_amount = move.budget_id.remaining_amount or 0.0
-            else:
-                move.budget_currency_id = move.currency_id
-                move.budget_remaining_amount = 0.0
+            move.budget_currency_id = sar or move.company_id.currency_id
+            move.budget_remaining_amount = move.budget_id.remaining_amount if move.budget_id else 0.0
 
     @api.constrains('amount_total', 'budget_id', 'move_type')
     def _check_budget_remaining(self):
         for move in self:
             if move.move_type == 'in_invoice' and move.budget_id:
                 amount = move.amount_untaxed or 0.0
-                if move.currency_id and move.budget_id.currency_id and move.currency_id != move.budget_id.currency_id:
-                    amount = move.currency_id._convert(amount, move.budget_id.currency_id, move.company_id, move.invoice_date or fields.Date.today())
+                sar = self.env['res.currency'].search([('name', '=', 'SAR')], limit=1)
+                if move.currency_id and sar and move.currency_id != sar:
+                    amount = move.currency_id._convert(amount, sar, move.company_id, move.invoice_date or fields.Date.today())
                 remaining = move.budget_id.remaining_amount or 0.0
                 if amount > remaining:
                     raise exceptions.ValidationError(_("لا يمكن حفظ الفاتورة لأن المبلغ يتجاوز المتبقي في الميزانية (%s).") % remaining)
@@ -80,9 +78,10 @@ class AccountMove(models.Model):
                 if not budget:
                     raise exceptions.UserError(_('لا توجد ميزانية مطابقة للقسم/المشروع والتاريخ المحدد.'))
 
+                sar = self.env['res.currency'].search([('name', '=', 'SAR')], limit=1)
                 amount_in_budget_currency = move.currency_id._convert(
                     move.amount_untaxed,
-                    budget.currency_id,
+                    sar or budget.currency_id,
                     move.company_id,
                     move.invoice_date or fields.Date.today(),
                 )

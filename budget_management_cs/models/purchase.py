@@ -26,6 +26,10 @@ class PurchaseOrder(models.Model):
     budget_currency_id = fields.Many2one('res.currency', string='عملة الميزانية', compute='_compute_budget_remaining', readonly=True)
     budget_remaining_amount = fields.Monetary(string='المتبقي في الميزانية', currency_field='budget_currency_id', compute='_compute_budget_remaining', readonly=True)
 
+    # إجمالي أمر الشراء محول إلى الريال السعودي (SAR)
+    sar_currency_id = fields.Many2one('res.currency', string='عملة الريال السعودي', compute='_compute_sar_currency_id', readonly=True)
+    total_in_sar = fields.Monetary(string='الإجمالي بالريال السعودي', currency_field='sar_currency_id', compute='_compute_total_in_sar', readonly=True)
+
     @api.onchange('budget_department_id', 'budget_project_id', 'date_order')
     def _onchange_budget_fields(self):
         # محاولة تعيين ميزانية تلقائياً إذا كانت واحدة مطابقة
@@ -59,12 +63,9 @@ class PurchaseOrder(models.Model):
     @api.depends('budget_id')
     def _compute_budget_remaining(self):
         for order in self:
-            if order.budget_id:
-                order.budget_currency_id = order.budget_id.currency_id
-                order.budget_remaining_amount = order.budget_id.remaining_amount or 0.0
-            else:
-                order.budget_currency_id = order.currency_id
-                order.budget_remaining_amount = 0.0
+            sar = self._get_sar_currency()
+            order.budget_currency_id = sar or order.company_id.currency_id
+            order.budget_remaining_amount = order.budget_id.remaining_amount if order.budget_id else 0.0
 
     @api.constrains('amount_total', 'budget_id')
     def _check_budget_remaining(self):
@@ -72,9 +73,10 @@ class PurchaseOrder(models.Model):
             if order.budget_id:
                 # احتساب المنع على الإجمالي مع الضريبة لضمان الاتساق مع إنفاق الميزانية
                 amount = order.amount_total or 0.0
-                # تحويل العملة إذا اختلفت عملة أمر الشراء عن عملة الميزانية
-                if order.currency_id and order.budget_id.currency_id and order.currency_id != order.budget_id.currency_id:
-                    amount = order.currency_id._convert(amount, order.budget_id.currency_id, order.company_id, order.date_order or fields.Date.today())
+                # تحويل العملة إلى الريال السعودي (SAR)
+                sar = self._get_sar_currency()
+                if order.currency_id and sar and order.currency_id != sar:
+                    amount = order.currency_id._convert(amount, sar, order.company_id, order.date_order or fields.Date.today())
                 remaining = order.budget_id.remaining_amount or 0.0
                 if amount > remaining:
                     raise exceptions.ValidationError(_("لا يمكن حفظ أمر الشراء لأن الإجمالي يتجاوز المتبقي في الميزانية (%s).") % remaining)
@@ -87,9 +89,10 @@ class PurchaseOrder(models.Model):
 
             # تحويل مبلغ أمر الشراء إلى عملة الميزانية (إن لزم)
             # استخدام الإجمالي مع الضريبة لضمان الاتساق مع احتساب إنفاق الميزانية
+            sar = self._get_sar_currency()
             order_amount_in_budget_currency = order.currency_id._convert(
                 order.amount_total,
-                budget.currency_id,
+                sar or budget.currency_id,
                 order.company_id,
                 order.date_order or fields.Date.today(),
             )
@@ -130,6 +133,7 @@ class PurchaseOrder(models.Model):
 
         # حساب المبلغ بعملة الشركة للمحاسبة
         # ترحيل قيد الالتزام على صافي المبلغ بدون ضريبة
+        # تحويل إلى عملة الشركة لأغراض القيود، ثم عرض وربط الميزانية دائماً بالريال السعودي
         amount_company = self.currency_id._convert(
             self.amount_untaxed,
             self.company_id.currency_id,
@@ -168,3 +172,22 @@ class PurchaseOrder(models.Model):
         move.action_post()
         self.budget_move_id = move.id
         return move
+
+    def _get_sar_currency(self):
+        return self.env['res.currency'].search([('name', '=', 'SAR')], limit=1)
+
+    @api.depends('company_id')
+    def _compute_sar_currency_id(self):
+        sar = self._get_sar_currency()
+        for order in self:
+            order.sar_currency_id = sar or order.company_id.currency_id
+
+    @api.depends('amount_total', 'currency_id', 'date_order', 'company_id')
+    def _compute_total_in_sar(self):
+        sar = self._get_sar_currency()
+        for order in self:
+            if sar and order.currency_id and order.currency_id != sar:
+                order.total_in_sar = order.currency_id._convert(order.amount_total or 0.0, sar, order.company_id, order.date_order or fields.Date.today())
+            else:
+                # إذا كان الأمر بالريال بالفعل أو لم يتم العثور على SAR، استخدم الإجمالي كما هو
+                order.total_in_sar = order.amount_total or 0.0

@@ -9,10 +9,9 @@
                     <field name="name"/>
                     <field name="department_id"/>
                     <field name="project_id"/>
-                    <field name="currency_id"/>
-                    <field name="total_amount"/>
-                    <field name="spent_amount"/>
-                    <field name="remaining_amount"/>
+                    <field name="total_amount" string="المبلغ الكلي (SAR)"/>
+                    <field name="spent_amount" string="المبلغ المصروف (SAR)"/>
+                    <field name="remaining_amount" string="المتبقي (SAR)"/>
                     <field name="spent_percentage"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
@@ -31,6 +30,7 @@
                         <button name="action_approve" type="object" string="تعمييد" groups="budget_management_cs.group_budget_manager" attrs="{'invisible': [('state', '=', 'approved')]}"/>
                     </header>
                     <sheet>
+                        <separator string="جميع القيم معروضة بالريال السعودي (SAR)"/>
                         <group>
                             <field name="name"/>
                             <field name="department_id"/>
@@ -41,10 +41,10 @@
                             <field name="state" readonly="1" widget="statusbar"/>
                         </group>
                         <group>
-                            <field name="currency_id"/>
-                            <field name="total_amount" attrs="{'readonly': [('state', '=', 'approved')]}"/>
-                            <field name="spent_amount" readonly="1"/>
-                            <field name="remaining_amount" readonly="1"/>
+                            <field name="currency_id" domain="[('name','=','SAR')]" attrs="{'readonly': True}"/>
+                            <field name="total_amount" string="المبلغ الكلي (SAR)" attrs="{'readonly': [('state', '=', 'approved')]}"/>
+                            <field name="spent_amount" string="المبلغ المصروف (SAR)" readonly="1"/>
+                            <field name="remaining_amount" string="المتبقي (SAR)" readonly="1"/>
                             <field name="spent_percentage" readonly="1" widget="progressbar"/>
                         </group>
                         <group>
@@ -72,7 +72,7 @@
             <field name="name">budget.budget.graph</field>
             <field name="model">budget.budget</field>
             <field name="arch" type="xml">
-                <graph string="نسبة الإنفاق" type="bar">
+                <graph string="نسبة الإنفاق (قيم SAR)" type="bar">
                     <field name="name" type="row"/>
                     <field name="spent_percentage" type="measure"/>
                 </graph>
@@ -83,12 +83,12 @@
             <field name="name">budget.budget.pivot</field>
             <field name="model">budget.budget</field>
             <field name="arch" type="xml">
-                <pivot string="تحليل الميزانيات">
+                <pivot string="تحليل الميزانيات (جميع القيم بالريال السعودي)">
                     <field name="department_id" type="col"/>
                     <field name="project_id" type="col"/>
-                    <field name="total_amount" type="measure"/>
-                    <field name="spent_amount" type="measure"/>
-                    <field name="remaining_amount" type="measure"/>
+                    <field name="total_amount" string="المبلغ الكلي (SAR)" type="measure"/>
+                    <field name="spent_amount" string="المبلغ المصروف (SAR)" type="measure"/>
+                    <field name="remaining_amount" string="المتبقي (SAR)" type="measure"/>
                 </pivot>
             </field>
         </record>
