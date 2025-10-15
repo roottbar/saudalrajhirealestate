@@ -15,14 +15,11 @@
                     </group>
                 </xpath>
                 <!-- إضافة حقل الإجمالي بالريال السعودي تحت tax_total_json -->
-                <xpath expr="//field[@name='tax_total_json']" position="after">
-                    <label string="الإجمالي بالريال السعودي"/>
-                    <field name="total_in_sar" readonly="1"/>
-                </xpath>
-                <!-- دعم نسخ أودو التي تستخدم tax_totals_json بدلاً من tax_total_json -->
-                <xpath expr="//field[@name='tax_totals_json']" position="after">
-                    <label string="الإجمالي بالريال السعودي"/>
-                    <field name="total_in_sar" readonly="1"/>
+                <!-- وضع حقل الإجمالي بالريال السعودي بعد سطر الأوامر لضمان توافق XPath عبر الإصدارات -->
+                <xpath expr="//field[@name='order_line']" position="after">
+                    <group>
+                        <field name="total_in_sar" string="الإجمالي بالريال السعودي (SAR)" readonly="1"/>
+                    </group>
                 </xpath>
             </field>
         </record>
