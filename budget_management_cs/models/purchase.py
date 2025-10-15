@@ -70,14 +70,14 @@ class PurchaseOrder(models.Model):
     def _check_budget_remaining(self):
         for order in self:
             if order.budget_id:
-                # احتساب المنع على المبلغ بدون ضريبة
-                amount = order.amount_untaxed or 0.0
+                # احتساب المنع على الإجمالي مع الضريبة لضمان الاتساق مع إنفاق الميزانية
+                amount = order.amount_total or 0.0
                 # تحويل العملة إذا اختلفت عملة أمر الشراء عن عملة الميزانية
                 if order.currency_id and order.budget_id.currency_id and order.currency_id != order.budget_id.currency_id:
                     amount = order.currency_id._convert(amount, order.budget_id.currency_id, order.company_id, order.date_order or fields.Date.today())
                 remaining = order.budget_id.remaining_amount or 0.0
                 if amount > remaining:
-                    raise exceptions.ValidationError(_("لا يمكن حفظ أمر الشراء لأن المبلغ يتجاوز المتبقي في الميزانية (%s).") % remaining)
+                    raise exceptions.ValidationError(_("لا يمكن حفظ أمر الشراء لأن الإجمالي يتجاوز المتبقي في الميزانية (%s).") % remaining)
 
     def button_confirm(self):
         for order in self:
@@ -86,9 +86,9 @@ class PurchaseOrder(models.Model):
                 raise exceptions.UserError(_('لا توجد ميزانية مطابقة للقسم/المشروع والتاريخ المحدد.'))
 
             # تحويل مبلغ أمر الشراء إلى عملة الميزانية (إن لزم)
-            # استخدام المبلغ بدون ضريبة بدل الإجمالي مع الضريبة
+            # استخدام الإجمالي مع الضريبة لضمان الاتساق مع احتساب إنفاق الميزانية
             order_amount_in_budget_currency = order.currency_id._convert(
-                order.amount_untaxed,
+                order.amount_total,
                 budget.currency_id,
                 order.company_id,
                 order.date_order or fields.Date.today(),

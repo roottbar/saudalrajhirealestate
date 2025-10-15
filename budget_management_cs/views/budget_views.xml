@@ -16,6 +16,7 @@
                     <field name="spent_percentage"/>
                     <field name="date_start"/>
                     <field name="date_end"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -33,6 +34,7 @@
                             <field name="company_id"/>
                             <!-- مربع نص الملاحظات أسفل حقل المشروع -->
                             <field name="note"/>
+                            <field name="state" readonly="1" widget="statusbar"/>
                         </group>
                         <group>
                             <field name="currency_id"/>

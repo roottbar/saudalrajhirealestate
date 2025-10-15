@@ -31,6 +31,12 @@ class BudgetBudget(models.Model):
     # مربع نص الملاحظات لواجهة الميزانية
     note = fields.Text(string='ملاحظات')
 
+    # حالة الميزانية: مسودة أو معمد
+    state = fields.Selection([
+        ('draft', 'مسودة'),
+        ('approved', 'معمد'),
+    ], string='الحالة', default='approved', required=True)
+
     @api.depends('purchase_order_ids.state', 'purchase_order_ids.amount_total', 'currency_id')
     def _compute_spent_amount(self):
         for budget in self:
@@ -50,3 +56,10 @@ class BudgetBudget(models.Model):
         for budget in self:
             total = budget.total_amount or 0.0
             budget.spent_percentage = (budget.spent_amount / total * 100.0) if total else 0.0
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # ضمان أن الميزانية تبدأ بالحالة "معمد" حتى في حال تمرير حالة مختلفة
+        for vals in vals_list:
+            vals['state'] = 'approved'
+        return super(BudgetBudget, self).create(vals_list)
