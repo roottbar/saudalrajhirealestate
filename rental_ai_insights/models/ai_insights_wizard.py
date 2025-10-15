@@ -9,11 +9,17 @@ class RentalAIInsightsWizard(models.TransientModel):
     _description = 'Rental AI Insights Wizard'
 
     company_id = fields.Many2one('res.company', string='الشركة', default=lambda self: self.env.company)
+    # حقول الربط والفلترة بحسب طلب المستخدم
     operating_unit_id = fields.Many2one('operating.unit', string='الفرع')
+    property_address_area = fields.Many2one('operating.unit', string='الفرع')
     property_id = fields.Many2one('rent.property', string='العقار')
-    product_id = fields.Many2one('product.product', string='المنتج')
+    property_number = fields.Many2one('rent.property', string='العقار')
+    property_address_build2 = fields.Many2one('rent.property.build', string='المجمع')
+    product_id = fields.Many2one('product.template', string='الوحدة')
     analytic_account_id = fields.Many2one('account.analytic.account', string='الحساب التحليلي')
     partner_id = fields.Many2one('res.partner', string='اسم العميل')
+    order_partner_id = fields.Many2one('res.partner', string='إسم العميل')
+    order_id = fields.Many2one('sale.order', string='رقم العقد')
     contract_number = fields.Char(string='رقم العقد')
     date_from = fields.Date(string='تاريخ الاستلام')
     date_to = fields.Date(string='تاريخ التسليم')
@@ -21,7 +27,6 @@ class RentalAIInsightsWizard(models.TransientModel):
     sort_by = fields.Selection([
         ('property', 'العقار'),
         ('contract', 'رقم العقد'),
-        ('product', 'المنتج'),
     ], string='ترتيب حسب')
 
     amount_paid = fields.Monetary(string='المبلغ المدفوع', currency_field='currency_id', compute='_compute_metrics', store=False)
@@ -41,8 +46,10 @@ class RentalAIInsightsWizard(models.TransientModel):
     contracts_html = fields.Html(string='تقرير العقود')
 
     @api.depends(
-        'company_id', 'operating_unit_id', 'property_id', 'product_id', 'analytic_account_id',
-        'partner_id', 'contract_number', 'date_from', 'date_to', 'sort_by'
+        'company_id', 'operating_unit_id', 'property_address_area', 'property_id', 'property_number',
+        'property_address_build2', 'product_id', 'analytic_account_id',
+        'partner_id', 'order_partner_id', 'order_id', 'contract_number',
+        'date_from', 'date_to', 'sort_by'
     )
     def _compute_metrics(self):
         for wiz in self:
@@ -125,21 +132,29 @@ class RentalAIInsightsWizard(models.TransientModel):
         domain = [('move_type', '=', 'out_invoice'), ('state', '=', 'posted')]
         if self.company_id:
             domain.append(('company_id', '=', self.company_id.id))
-        if self.partner_id:
-            domain.append(('partner_id', '=', self.partner_id.id))
+        # العميل
+        partner = self.order_partner_id or self.partner_id
+        if partner:
+            domain.append(('partner_id', '=', partner.id))
         if self.date_from:
             domain.append(('invoice_date', '>=', self.date_from))
         if self.date_to:
             domain.append(('invoice_date', '<=', self.date_to))
         # Join via sale order to filter branch/property/contract
         # property_name and obj_sale_order are added by renting module
-        if self.property_id:
-            domain.append(('property_name', '=', self.property_id.id))
-        if self.product_id:
-            domain.append(('invoice_line_ids.product_id', '=', self.product_id.id))
-        if self.contract_number:
+        prop = self.property_number or self.property_id
+        if prop:
+            domain.append(('property_name', '=', prop.id))
+        # الربط بالعقد مباشرة إن تم اختياره
+        if self.order_id:
+            domain.append(('obj_sale_order', '=', self.order_id.id))
+        elif self.contract_number:
+            # دعم الفلترة برقم العقد المخزن على أمر البيع
             domain.append(('so_contract_number', '=', self.contract_number))
-        # operating_unit filtering on invoices depends on custom relations; handled in contracts report instead
+        # الفرع
+        ou = self.property_address_area or self.operating_unit_id
+        if ou:
+            domain.append(('operating_unit_id', '=', ou.id))
         return domain
 
     def _fetch_invoices(self):
@@ -150,18 +165,17 @@ class RentalAIInsightsWizard(models.TransientModel):
         domain = [('move_type', '=', 'in_invoice'), ('state', '=', 'posted')]
         if self.company_id:
             domain.append(('company_id', '=', self.company_id.id))
-        if self.product_id:
-            # Apply product filter to vendor bills if products are used
-            domain.append(('invoice_line_ids.product_id', '=', self.product_id.id))
+        ou = self.property_address_area or self.operating_unit_id
+        if ou:
+            domain.append(('operating_unit_id', '=', ou.id))
         if self.analytic_account_id:
-            # match expense lines with analytic account
-            bills = self.env['account.move'].search(domain)
-            bills = bills.filtered(lambda m: any(l.analytic_account_id == self.analytic_account_id for l in m.line_ids))
-            return bills
-        if self.property_id:
-            bills = self.env['account.move'].search(domain)
-            bills = bills.filtered(lambda m: getattr(m, 'property_name', False) == self.property_id)
-            return bills
+            domain.append(('line_ids.analytic_account_id', '=', self.analytic_account_id.id))
+        prop = self.property_number or self.property_id
+        if prop:
+            domain.append(('property_name', '=', prop.id))
+        # المصروفات على مستوى الوحدة إن تم اختيارها
+        if self.product_id:
+            domain.append(('unit_number', '=', self.product_id.id))
         return self.env['account.move'].search(domain)
 
     def _fetch_contract_lines(self):
@@ -169,18 +183,29 @@ class RentalAIInsightsWizard(models.TransientModel):
         domain = []
         if self.company_id:
             domain.append(('order_id.company_id', '=', self.company_id.id))
-        if self.partner_id:
-            domain.append(('order_partner_id', '=', self.partner_id.id))
+        partner = self.order_partner_id or self.partner_id
+        if partner:
+            domain.append(('order_partner_id', '=', partner.id))
         if self.analytic_account_id:
             domain.append(('analytic_account_id', '=', self.analytic_account_id.id))
-        if self.property_id:
-            domain.append(('property_number', '=', self.property_id.id))
+        prop = self.property_number or self.property_id
+        if prop:
+            domain.append(('property_number', '=', prop.id))
+        # المجمع
+        if self.property_address_build2:
+            domain.append(('property_address_build2', '=', self.property_address_build2.id))
+        # الوحدة (product.template -> sale.order.line.product_id.product_tmpl_id)
         if self.product_id:
-            domain.append(('product_id', '=', self.product_id.id))
-        if self.contract_number:
+            domain.append(('product_id.product_tmpl_id', '=', self.product_id.id))
+        # العقد
+        if self.order_id:
+            domain.append(('order_id', '=', self.order_id.id))
+        elif self.contract_number:
             domain.append(('order_id.name', '=', self.contract_number))
-        if self.operating_unit_id:
-            domain.append(('order_id.operating_unit_id', '=', self.operating_unit_id.id))
+        # الفرع
+        ou = self.property_address_area or self.operating_unit_id
+        if ou:
+            domain.append(('order_id.operating_unit_id', '=', ou.id))
 
         # Date overlap: fromdate <= date_to AND todate >= date_from
         if self.date_from:
@@ -192,11 +217,171 @@ class RentalAIInsightsWizard(models.TransientModel):
             # Odoo doesn't support ordering by subfield (order_id.name).
             # Use the Many2one field itself; it sorts by record name.
             'contract': 'order_id',
-            'product': 'product_id',
         }
         # Default order by contract (sale order reference)
         orderby = order_map.get(self.sort_by) or 'order_id'
         return self.env['sale.order.line'].search(domain, order=orderby)
+
+    @api.onchange('operating_unit_id')
+    def _onchange_operating_unit_id(self):
+        """عند تغيير الفرع، يتم تقييد العقارات والحسابات التحليلية لتابعة لنفس الفرع.
+        كما يتم إعادة تعيين الحقول غير المتوافقة.
+        """
+        domain = {}
+        if self.operating_unit_id:
+            # العقارات التابعة لهذا الفرع
+            domain['property_id'] = [('property_address_area', '=', self.operating_unit_id.id)]
+            domain['property_number'] = [('property_address_area', '=', self.operating_unit_id.id)]
+            # المجمعات عبر العقارات المختارة لاحقاً
+            domain['property_address_build2'] = []
+            # الحسابات التحليلية التابعة لهذا الفرع
+            # يعتمد على الحقل operating_unit_id في account.analytic.account
+            domain['analytic_account_id'] = [('operating_unit_id', '=', self.operating_unit_id.id)]
+            # الوحدات التابعة لعقارات هذا الفرع
+            domain['product_id'] = [('property_id.property_address_area', '=', self.operating_unit_id.id)]
+            # إعادة تعيين إذا خرجت القيم عن النطاق
+            if self.property_id and self.property_id.property_address_area != self.operating_unit_id:
+                self.property_id = False
+            if self.property_number and self.property_number.property_address_area != self.operating_unit_id:
+                self.property_number = False
+            if self.analytic_account_id and getattr(self.analytic_account_id, 'operating_unit_id', False) != self.operating_unit_id:
+                self.analytic_account_id = False
+            # مزامنة حقل الفرع البديل
+            self.property_address_area = self.operating_unit_id
+        return {'domain': domain} if domain else {}
+
+    @api.onchange('property_address_area')
+    def _onchange_property_address_area(self):
+        """مزامنة اختيار الفرع البديل مع الفرع الأساسي وتقييد باقي الحقول."""
+        if self.property_address_area:
+            self.operating_unit_id = self.property_address_area
+            return self._onchange_operating_unit_id()
+        return {}
+
+    @api.onchange('property_id')
+    def _onchange_property_id(self):
+        """عند اختيار العقار، يتم ضبط الفرع تلقائياً، وتقييد الحساب التحليلي ليطابق عقار المختار.
+        كما يتم تعيين الحساب التحليلي للقيمة الافتراضية لعقار المختار إن وُجد.
+        """
+        domain = {}
+        if self.property_id:
+            # ضبط الفرع من العقار
+            if self.property_id.property_address_area:
+                self.operating_unit_id = self.property_id.property_address_area
+                self.property_address_area = self.property_id.property_address_area
+                domain['property_id'] = [('property_address_area', '=', self.operating_unit_id.id)]
+                domain['analytic_account_id'] = [('operating_unit_id', '=', self.operating_unit_id.id)]
+            # تقييد الحساب التحليلي ليكون حساب العقار نفسه
+            if self.property_id.analytic_account:
+                domain['analytic_account_id'] = [('id', '=', self.property_id.analytic_account.id)]
+                # ضبط الحساب التحليلي تلقائياً إن لم يكن محدداً أو غير متوافق
+                if not self.analytic_account_id or self.analytic_account_id != self.property_id.analytic_account:
+                    self.analytic_account_id = self.property_id.analytic_account
+            # مزامنة العقار البديل والمجمع
+            self.property_number = self.property_id
+            self.property_address_build2 = self.property_id.property_address_build
+            # تقييد الوحدات لعقار المختار
+            domain['product_id'] = [('property_id', '=', self.property_id.id)]
+        return {'domain': domain} if domain else {}
+
+    @api.onchange('property_number')
+    def _onchange_property_number(self):
+        """مزامنة اختيار العقار البديل مع العقار الأساسي وباقي الحقول."""
+        if self.property_number:
+            self.property_id = self.property_number
+            return self._onchange_property_id()
+        return {}
+
+    @api.onchange('property_address_build2')
+    def _onchange_property_address_build2(self):
+        """تقييد العقارات والوحدات حسب المجمع المختار، ومزامنة الفرع إن أمكن."""
+        domain = {}
+        if self.property_address_build2:
+            # تقييد العقارات بهذا المجمع
+            domain['property_id'] = [('property_address_build', '=', self.property_address_build2.id)]
+            domain['property_number'] = [('property_address_build', '=', self.property_address_build2.id)]
+            # تقييد الوحدات لعقارات هذا المجمع
+            domain['product_id'] = [('property_id.property_address_build', '=', self.property_address_build2.id)]
+            # محاولة مزامنة الفرع عبر أول عقار مطابق
+            prop = self.env['rent.property'].search([('property_address_build', '=', self.property_address_build2.id)], limit=1)
+            if prop and prop.property_address_area:
+                self.operating_unit_id = prop.property_address_area
+                self.property_address_area = prop.property_address_area
+        return {'domain': domain} if domain else {}
+
+    @api.onchange('analytic_account_id')
+    def _onchange_analytic_account_id(self):
+        """عند اختيار الحساب التحليلي، يتم ضبط الفرع تلقائياً،
+        ومحاولة تعيين العقار الذي يملك هذا الحساب التحليلي.
+        """
+        domain = {}
+        if self.analytic_account_id:
+            # ضبط الفرع إن كان معرفاً على الحساب التحليلي
+            ou = getattr(self.analytic_account_id, 'operating_unit_id', False)
+            if ou:
+                self.operating_unit_id = ou
+                self.property_address_area = ou
+                domain['property_id'] = [('property_address_area', '=', ou.id)]
+                domain['property_number'] = [('property_address_area', '=', ou.id)]
+                domain['analytic_account_id'] = [('operating_unit_id', '=', ou.id)]
+            # ربط العقار بالحساب التحليلي إن وُجد
+            prop = self.env['rent.property'].search([('analytic_account', '=', self.analytic_account_id.id)], limit=1)
+            if prop:
+                self.property_id = prop
+                self.property_number = prop
+                # تقييد الحساب التحليلي ليكون نفس حساب العقار المحدد
+                domain['analytic_account_id'] = [('id', '=', prop.analytic_account.id)]
+                # مزامنة المجمع
+                self.property_address_build2 = prop.property_address_build
+                domain['product_id'] = [('property_id', '=', prop.id)]
+        return {'domain': domain} if domain else {}
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        """عند اختيار الوحدة، يتم ضبط العقار والمجمع والفرع والحساب التحليلي تلقائياً."""
+        domain = {}
+        if self.product_id:
+            prop = self.product_id.property_id
+            if prop:
+                self.property_id = prop
+                self.property_number = prop
+                self.property_address_build2 = prop.property_address_build
+                self.operating_unit_id = prop.property_address_area
+                self.property_address_area = prop.property_address_area
+                domain['analytic_account_id'] = [('id', '=', getattr(self.product_id, 'analytic_account', False) and self.product_id.analytic_account.id or False)]
+                if getattr(self.product_id, 'analytic_account', False):
+                    self.analytic_account_id = self.product_id.analytic_account
+            # تقييد العقارات والوحدات بنفس الترابط
+            domain['property_id'] = [('id', '=', prop.id)] if prop else []
+            domain['property_number'] = [('id', '=', prop.id)] if prop else []
+        return {'domain': domain} if domain else {}
+
+    @api.onchange('order_partner_id')
+    def _onchange_order_partner_id(self):
+        """مزامنة اسم العميل مع الحقل الأساسي وتقييد العقود."""
+        domain = {}
+        if self.order_partner_id:
+            self.partner_id = self.order_partner_id
+            domain['order_id'] = [('partner_id', '=', self.order_partner_id.id)]
+        return {'domain': domain} if domain else {}
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if self.partner_id:
+            self.order_partner_id = self.partner_id
+            return self._onchange_order_partner_id()
+        return {}
+
+    @api.onchange('order_id')
+    def _onchange_order_id(self):
+        """عند اختيار العقد، مزامنة العميل والفرع تلقائياً."""
+        if self.order_id:
+            self.order_partner_id = self.order_id.partner_id
+            self.partner_id = self.order_id.partner_id
+            if getattr(self.order_id, 'operating_unit_id', False):
+                self.operating_unit_id = self.order_id.operating_unit_id
+                self.property_address_area = self.order_id.operating_unit_id
+        return {}
 
     def _render_summary_html(self):
         return (
