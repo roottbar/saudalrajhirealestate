@@ -66,6 +66,11 @@ class PurchaseOrder(models.Model):
                     line_id.write({
                         "state": "done",
                     })
+                    # Auto-confirm the PO when all approval lines are approved
+                    if not self.purchase_approve_line.filtered(lambda l: l.state != 'done'):
+                        if self.state not in ['purchase', 'done', 'cancel']:
+                            # سيقوم هذا بإجراء فحوصات الميزانية وأي قيود أخرى قبل التأكيد
+                            self.button_confirm()
                     return {
                         'effect': {
                             'fadeout': 'slow',
