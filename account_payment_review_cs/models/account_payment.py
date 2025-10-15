@@ -7,7 +7,9 @@ class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
     # Add an intermediate review state
-    state = fields.Selection(selection_add=[('review', 'Reviewed')],
+    # Explicit empty selection to satisfy Odoo's field setup assertion,
+    # while still extending the base field via selection_add.
+    state = fields.Selection(selection=[], selection_add=[('review', 'Reviewed')],
                              ondelete={'review': 'set default'})
 
     def action_review(self):
