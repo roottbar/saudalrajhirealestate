@@ -281,6 +281,9 @@ class RentalAIInsightsWizard(models.TransientModel):
         # Cache delivery order contract numbers per sale order to avoid repeated searches
         do_contract_cache = {}
         StockPicking = self.env['stock.picking']
+        # Some databases may not have 'tender_contract_id' on stock.picking.
+        # Detect field existence to avoid AttributeError and provide a graceful fallback.
+        has_tender_field = 'tender_contract_id' in StockPicking._fields
         for l in lines:
             pickup = l.pickup_date and fields.Datetime.to_string(l.pickup_date) or ''
             return_d = l.return_date and fields.Datetime.to_string(l.return_date) or ''
@@ -298,9 +301,26 @@ class RentalAIInsightsWizard(models.TransientModel):
                     do_contract = do_contract_cache[so_name]
                 else:
                     pickings = StockPicking.search([('origin', '=', so_name)])
-                    # استخلاص رقم العقد من الحقل tender_contract_id إذا كان موجودًا
-                    tender_refs = [p.tender_contract_id.ref or p.tender_contract_id.name for p in pickings if p.tender_contract_id]
-                    do_contract = tender_refs and tender_refs[0] or ''
+                    # إذا كان الحقل tender_contract_id موجودًا استخدمه، وإلا وفّر بديلًا آمنًا
+                    if has_tender_field:
+                        tender_ref = ''
+                        for p in pickings:
+                            t = p.tender_contract_id
+                            if t:
+                                # بعض النماذج تحتوي على ref و name، التزم بالأولوية لـ ref إن وجد
+                                ref_val = ('ref' in t._fields) and t.ref or False
+                                name_val = ('name' in t._fields) and t.name or False
+                                tender_ref = ref_val or name_val or ''
+                                if tender_ref:
+                                    break
+                        do_contract = tender_ref
+                    else:
+                        # بديل: اعرض مرجع أمر التوصيل (origin أو name) إن وُجد
+                        if pickings:
+                            p0 = pickings[0]
+                            do_contract = p0.origin or p0.name or ''
+                        else:
+                            do_contract = ''
                     do_contract_cache[so_name] = do_contract
             customer = l.order_partner_id and l.order_partner_id.display_name or ''
             unit = l.product_id and l.product_id.display_name or ''
