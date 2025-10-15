@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- Base payment form: add Review button, adjust Confirm visibility, update statusbar -->
+    <record id="view_account_payment_review_form" model="ir.ui.view">
+      <field name="name">account.payment.review.form</field>
+      <field name="model">account.payment</field>
+      <field name="inherit_id" ref="account.view_account_payment_form"/>
+      <field name="priority" eval="99"/>
+      <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+          <button name="action_review" type="object" string="مراجعة" class="oe_highlight"
+                  attrs="{'invisible': [('state', '!=', 'draft')]}"
+                  groups="account_payment_review_cs.group_payment_review,account_payment_review_cs.group_payment_confirm"/>
+        </xpath>
+
+        <xpath expr="//button[@name='action_post']" position="attributes">
+          <attribute name="string">تأكيد</attribute>
+          <attribute name="attrs">{'invisible': [('state', '!=', 'review')]}</attribute>
+          <attribute name="groups">account_payment_review_cs.group_payment_confirm</attribute>
+        </xpath>
+
+        <xpath expr="//field[@name='state' and @widget='statusbar']" position="attributes">
+          <attribute name="statusbar_visible">draft,review,posted</attribute>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- petty_cash custom form: mirror the same behavior -->
+    <record id="view_petty_cash_payment_review_form" model="ir.ui.view">
+      <field name="name">account.payment.review.form.petty_cash</field>
+      <field name="model">account.payment</field>
+      <field name="inherit_id" ref="petty_cash.view_feeding_petty_cash_form"/>
+      <field name="priority" eval="99"/>
+      <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+          <button name="action_review" type="object" string="مراجعة" class="oe_highlight"
+                  attrs="{'invisible': [('state', '!=', 'draft')]}"
+                  groups="account_payment_review_cs.group_payment_review,account_payment_review_cs.group_payment_confirm"/>
+        </xpath>
+        <xpath expr="//button[@name='action_post']" position="attributes">
+          <attribute name="string">تأكيد</attribute>
+          <attribute name="attrs">{'invisible': [('state', '!=', 'review')]}</attribute>
+          <attribute name="groups">account_payment_review_cs.group_payment_confirm</attribute>
+        </xpath>
+        <xpath expr="//field[@name='state' and @widget='statusbar']" position="attributes">
+          <attribute name="statusbar_visible">draft,review,posted</attribute>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>
