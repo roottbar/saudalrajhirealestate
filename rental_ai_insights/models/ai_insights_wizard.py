@@ -11,11 +11,18 @@ class RentalAIInsightsWizard(models.TransientModel):
     company_id = fields.Many2one('res.company', string='الشركة', default=lambda self: self.env.company)
     operating_unit_id = fields.Many2one('operating.unit', string='الفرع')
     property_id = fields.Many2one('rent.property', string='العقار')
+    product_id = fields.Many2one('product.product', string='المنتج')
     analytic_account_id = fields.Many2one('account.analytic.account', string='الحساب التحليلي')
     partner_id = fields.Many2one('res.partner', string='اسم العميل')
     contract_number = fields.Char(string='رقم العقد')
     date_from = fields.Date(string='تاريخ الاستلام')
     date_to = fields.Date(string='تاريخ التسليم')
+
+    sort_by = fields.Selection([
+        ('property', 'العقار'),
+        ('contract', 'رقم العقد'),
+        ('product', 'المنتج'),
+    ], string='ترتيب حسب')
 
     amount_paid = fields.Monetary(string='المبلغ المدفوع', currency_field='currency_id', compute='_compute_metrics', store=False)
     amount_due = fields.Monetary(string='المبلغ المستحق', currency_field='currency_id', compute='_compute_metrics', store=False)
@@ -34,8 +41,8 @@ class RentalAIInsightsWizard(models.TransientModel):
     contracts_html = fields.Html(string='تقرير العقود')
 
     @api.depends(
-        'company_id', 'operating_unit_id', 'property_id', 'analytic_account_id',
-        'partner_id', 'contract_number', 'date_from', 'date_to'
+        'company_id', 'operating_unit_id', 'property_id', 'product_id', 'analytic_account_id',
+        'partner_id', 'contract_number', 'date_from', 'date_to', 'sort_by'
     )
     def _compute_metrics(self):
         for wiz in self:
@@ -128,6 +135,8 @@ class RentalAIInsightsWizard(models.TransientModel):
         # property_name and obj_sale_order are added by renting module
         if self.property_id:
             domain.append(('property_name', '=', self.property_id.id))
+        if self.product_id:
+            domain.append(('invoice_line_ids.product_id', '=', self.product_id.id))
         if self.contract_number:
             domain.append(('so_contract_number', '=', self.contract_number))
         # operating_unit filtering on invoices depends on custom relations; handled in contracts report instead
@@ -141,6 +150,9 @@ class RentalAIInsightsWizard(models.TransientModel):
         domain = [('move_type', '=', 'in_invoice'), ('state', '=', 'posted')]
         if self.company_id:
             domain.append(('company_id', '=', self.company_id.id))
+        if self.product_id:
+            # Apply product filter to vendor bills if products are used
+            domain.append(('invoice_line_ids.product_id', '=', self.product_id.id))
         if self.analytic_account_id:
             # match expense lines with analytic account
             bills = self.env['account.move'].search(domain)
@@ -163,6 +175,8 @@ class RentalAIInsightsWizard(models.TransientModel):
             domain.append(('analytic_account_id', '=', self.analytic_account_id.id))
         if self.property_id:
             domain.append(('property_number', '=', self.property_id.id))
+        if self.product_id:
+            domain.append(('product_id', '=', self.product_id.id))
         if self.contract_number:
             domain.append(('order_id.name', '=', self.contract_number))
         if self.operating_unit_id:
@@ -173,8 +187,13 @@ class RentalAIInsightsWizard(models.TransientModel):
             domain.append(('todate', '>=', self.date_from))
         if self.date_to:
             domain.append(('fromdate', '<=', self.date_to))
-
-        return self.env['sale.order.line'].search(domain)
+        order_map = {
+            'property': 'property_number',
+            'contract': 'order_id.name',
+            'product': 'product_id',
+        }
+        orderby = order_map.get(self.sort_by) or 'order_id.name'
+        return self.env['sale.order.line'].search(domain, order=orderby)
 
     def _render_summary_html(self):
         return (
@@ -250,12 +269,15 @@ class RentalAIInsightsWizard(models.TransientModel):
         header = (
             "<thead><tr>"
             "<th>الفرع</th><th>المجمع</th><th>العقار</th><th>الحساب التحليلي</th><th>الوحدة</th><th>اسم العميل</th>"
-            "<th>رقم العقد</th><th>شاغرة / مؤجرة</th>"
+            "<th>رقم العقد</th><th>رقم عقد التوصيل</th><th>شاغرة / مؤجرة</th>"
             "<th>المبلغ المستحق</th><th>المبلغ المدفوع</th><th>المصروفات</th><th>الإيرادات</th>"
             "<th>تاريخ الاستلام</th><th>تاريخ التسليم</th>"
             "</tr></thead>"
         )
         rows = []
+        # Cache delivery order contract numbers per sale order to avoid repeated searches
+        do_contract_cache = {}
+        StockPicking = self.env['stock.picking']
         for l in lines:
             pickup = l.pickup_date and fields.Datetime.to_string(l.pickup_date) or ''
             return_d = l.return_date and fields.Datetime.to_string(l.return_date) or ''
@@ -265,6 +287,18 @@ class RentalAIInsightsWizard(models.TransientModel):
             paid = getattr(l, 'amount_paid', 0.0) or 0.0
             state = getattr(l, 'unit_state', '') or ''
             contract = l.order_id and l.order_id.name or ''
+            # رقم عقد التوصيل من أوامر التوصيل المرتبطة
+            do_contract = ''
+            if l.order_id:
+                so_name = l.order_id.name
+                if so_name in do_contract_cache:
+                    do_contract = do_contract_cache[so_name]
+                else:
+                    pickings = StockPicking.search([('origin', '=', so_name)])
+                    # استخلاص رقم العقد من الحقل tender_contract_id إذا كان موجودًا
+                    tender_refs = [p.tender_contract_id.ref or p.tender_contract_id.name for p in pickings if p.tender_contract_id]
+                    do_contract = tender_refs and tender_refs[0] or ''
+                    do_contract_cache[so_name] = do_contract
             customer = l.order_partner_id and l.order_partner_id.display_name or ''
             unit = l.product_id and l.product_id.display_name or ''
             analytic = l.analytic_account_id and l.analytic_account_id.display_name or ''
@@ -273,7 +307,7 @@ class RentalAIInsightsWizard(models.TransientModel):
             branch = l.order_id.operating_unit_id and l.order_id.operating_unit_id.name or ''
             rows.append(
                 f"<tr><td>{branch}</td><td>{complex_name}</td><td>{property_name}</td><td>{analytic}</td><td>{unit}</td><td>{customer}</td>"
-                f"<td>{contract}</td><td>{state}</td>"
+                f"<td>{contract}</td><td>{do_contract}</td><td>{state}</td>"
                 f"<td>{due:.2f}</td><td>{paid:.2f}</td><td>{expenses:.2f}</td><td>{revenues:.2f}</td>"
                 f"<td>{pickup}</td><td>{return_d}</td>"
                 "</tr>"

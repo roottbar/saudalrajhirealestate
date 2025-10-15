@@ -15,6 +15,7 @@
                                 <field name="company_id"/>
                                 <field name="operating_unit_id"/>
                                 <field name="property_id"/>
+                                <field name="product_id"/>
                                 <field name="analytic_account_id"/>
                                 <field name="partner_id"/>
                             </group>
@@ -22,6 +23,7 @@
                                 <field name="contract_number"/>
                                 <field name="date_from"/>
                                 <field name="date_to"/>
+                                <field name="sort_by"/>
                             </group>
                         </group>
                         <notebook>
