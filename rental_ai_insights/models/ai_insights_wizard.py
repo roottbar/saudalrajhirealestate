@@ -189,10 +189,13 @@ class RentalAIInsightsWizard(models.TransientModel):
             domain.append(('fromdate', '<=', self.date_to))
         order_map = {
             'property': 'property_number',
-            'contract': 'order_id.name',
+            # Odoo doesn't support ordering by subfield (order_id.name).
+            # Use the Many2one field itself; it sorts by record name.
+            'contract': 'order_id',
             'product': 'product_id',
         }
-        orderby = order_map.get(self.sort_by) or 'order_id.name'
+        # Default order by contract (sale order reference)
+        orderby = order_map.get(self.sort_by) or 'order_id'
         return self.env['sale.order.line'].search(domain, order=orderby)
 
     def _render_summary_html(self):
