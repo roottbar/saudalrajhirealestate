@@ -125,11 +125,13 @@ class AccountMove(models.Model):
         if amount_company <= 0.0:
             return False
 
+        budget = self._get_applicable_budget()
         vals = {
             'move_type': 'entry',
             'date': self.invoice_date or fields.Date.today(),
             'journal_id': dept.budget_journal_id.id,
             'ref': _('Budget Expense for %s') % (self.name),
+            'budget_id': budget.id if budget else False,
             'line_ids': [
                 (0, 0, {
                     'name': _('Expense %s') % (self.name),

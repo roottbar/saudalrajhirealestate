@@ -140,11 +140,13 @@ class PurchaseOrder(models.Model):
         if amount_company <= 0.0:
             return False
 
+        budget = self._get_applicable_budget()
         vals = {
             'move_type': 'entry',
             'date': self.date_order or fields.Date.today(),
             'journal_id': dept.budget_journal_id.id,
             'ref': _('Budget Commitment for %s') % (self.name),
+            'budget_id': budget.id if budget else False,
             'line_ids': [
                 (0, 0, {
                     'name': _('Commitment %s') % (self.name),
