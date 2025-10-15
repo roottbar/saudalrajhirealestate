@@ -6,7 +6,7 @@
     'author': 'Othmancs',
     'license': 'LGPL-3',
     'category': 'Accounting/Payments',
-    'depends': ['account'],
+    'depends': ['account', 'petty_cash'],
     'data': [
         'security/security.xml',
         'views/account_payment_views.xml',
