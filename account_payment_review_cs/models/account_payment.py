@@ -10,7 +10,14 @@ class AccountPayment(models.Model):
     # Extend the base payment state with a 'review' option using the
     # standard selection_add pattern. Avoid custom ondelete to prevent
     # selection reflection KeyError during module install.
-    state = fields.Selection(selection_add=[('review', 'Reviewed')])
+    # Explicitly set the full selection to satisfy Odoo's field setup
+    # assertion and include the new 'review' state.
+    state = fields.Selection(selection=[
+        ('draft', 'Draft'),
+        ('review', 'Reviewed'),
+        ('posted', 'Posted'),
+        ('cancelled', 'Cancelled'),
+    ])
 
     def action_review(self):
         # Require either review or confirm group to review
