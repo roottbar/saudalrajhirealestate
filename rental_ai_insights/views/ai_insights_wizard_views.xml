@@ -16,7 +16,7 @@
                                 <field name="property_address_area"/>
                                 <field name="property_address_build2"/>
                                 <field name="property_number" domain="[('property_address_area','=', property_address_area), ('property_address_build','=', property_address_build2)]"/>
-                                <field name="analytic_account_id" domain="[('operating_unit_id','=', property_address_area)]"/>
+                                <field name="analytic_account_id"/>
                                 <field name="product_id" domain="[('property_id','=', property_number)]"/>
                             </group>
                             <group>
