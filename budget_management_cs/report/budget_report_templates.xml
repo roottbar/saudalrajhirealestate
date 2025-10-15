@@ -12,7 +12,7 @@
                     <table class="table table-sm o_main_table">
                         <thead>
                             <tr>
-                                <th>العملة</th>
+                                <th>العملة (SAR)</th>
                                 <th>المبلغ الكلي</th>
                                 <th>المصروف</th>
                                 <th>المتبقي</th>
@@ -22,7 +22,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><t t-esc="b.currency_id.name"/></td>
+                                <td><t t-esc="(b.sar_currency_id and b.sar_currency_id.name) or 'SAR'"/></td>
                                 <td><t t-esc="b.total_amount"/></td>
                                 <td><t t-esc="b.spent_amount"/></td>
                                 <td><t t-esc="b.remaining_amount"/></td>
@@ -42,7 +42,7 @@
                                 <th>المورد</th>
                                 <th>التاريخ</th>
                                 <th>الحالة</th>
-                                <th>المبلغ</th>
+                                <th>المبلغ (SAR)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,7 +52,7 @@
                                     <td><t t-esc="po.partner_id.name"/></td>
                                     <td><t t-esc="po.date_order"/></td>
                                     <td><t t-esc="po.state"/></td>
-                                    <td><t t-esc="po.amount_total"/></td>
+                                    <td><t t-esc="po.total_in_sar"/></td>
                                 </tr>
                             </t>
                         </tbody>
