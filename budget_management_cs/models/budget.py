@@ -63,3 +63,20 @@ class BudgetBudget(models.Model):
         for vals in vals_list:
             vals['state'] = 'approved'
         return super(BudgetBudget, self).create(vals_list)
+
+    def write(self, vals):
+        # منع تعديل الحقول الحساسة عندما تكون الحالة "معمد"
+        protected_fields = {'total_amount', 'date_start', 'date_end', 'period_type'}
+        for rec in self:
+            final_state = vals.get('state', rec.state)
+            if final_state == 'approved' and any(f in vals for f in protected_fields):
+                raise exceptions.UserError(_('لا يمكن تعديل المبلغ الكلي أو فترة الميزانية أثناء حالة التعمييد. أعد الميزانية إلى مسودة أولاً.'))
+        return super(BudgetBudget, self).write(vals)
+
+    def action_set_draft(self):
+        self.write({'state': 'draft'})
+        return True
+
+    def action_approve(self):
+        self.write({'state': 'approved'})
+        return True
