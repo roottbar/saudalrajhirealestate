@@ -6,6 +6,7 @@
             <field name="name">account.payment.review.form</field>
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="priority" eval="99"/>
             <field name="arch" type="xml">
                 <!-- Add Review button visible only in draft -->
                 <xpath expr="//header" position="inside">
