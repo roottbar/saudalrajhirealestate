@@ -1,2 +1,0 @@
-import payslipt
-import print_contract
