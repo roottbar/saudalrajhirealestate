@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Advance Multi Branch(Unit) Operation Setup for All Applications Odoo/OpenERP",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Advance Multi Branch(Unit) Operation Setup for All Applications Odoo/OpenERP module",
+    'description': "Enhanced Advance Multi Branch(Unit) Operation Setup for All Applications Odoo/OpenERP module for Odoo 18.0 by roottbar",
+    'category': "Sales",
+    'author': "BSTT",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'sale_management',
+        'purchase',
+        'stock',
+        'account',
+        'purchase_stock',
+        'branch',
+    ],
+    'data': [
+        'views/ir_sequence_branch_view.xml',
+        'views/external_branch_layout.xml',
+        'report/inherit_saleorder_report.xml',
+        'report/inherit_purchasequotation_report.xml',
+        'report/inherit_purchaseorder_report.xml',
+        'report/inherit_invoice_report.xml',
+        'report/inherit_deliveryslip_report.xml',
+        'report/inherit_picking_report.xml',
+        'report/inherit_payment_report.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
+}
