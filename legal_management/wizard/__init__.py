@@ -1,1 +1,0 @@
-from . import issues_details
