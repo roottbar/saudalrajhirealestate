@@ -1,9 +1,0 @@
-<odoo>
-    <menuitem id="menu_suprema_root" name="Suprema Biometric" sequence="10"/>
-
-    <menuitem id="menu_suprema_config" name="Configuration" parent="menu_suprema_root" sequence="10"/>
-    <menuitem id="menu_suprema_devices" name="Devices" parent="menu_suprema_config" action="action_suprema_device" sequence="10"/>
-
-    <menuitem id="menu_suprema_operations" name="Operations" parent="menu_suprema_root" sequence="20"/>
-    <menuitem id="menu_suprema_attendance" name="Attendance Logs" parent="menu_suprema_operations" action="action_suprema_attendance" sequence="10"/>
-</odoo>

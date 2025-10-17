@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_suprema_device,suprema.device,model_suprema_device,base.group_user,1,1,1,0
-access_suprema_attendance_log,suprema.attendance.log,model_suprema_attendance_log,base.group_user,1,1,1,0
-access_suprema_device_manager,suprema.device,model_suprema_device,base.group_erp_manager,1,1,1,1
-access_suprema_attendance_log_manager,suprema.attendance.log,model_suprema_attendance_log,base.group_erp_manager,1,1,1,1
