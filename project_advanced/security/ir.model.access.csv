@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-
-access_project_task_template_user,project.task.template.user,model_project_task_template,project.group_project_user,1,1,1,1
-access_group_change_assign_tasks_user,project.task.assign.history.user,model_project_task_assign_history,project_advanced.group_change_assign_user_tasks,1,1,1,1
-access_project_task_assign_history_user,project.task.assign.history.user,model_project_task_assign_history,project.group_project_user,1,0,0,0
