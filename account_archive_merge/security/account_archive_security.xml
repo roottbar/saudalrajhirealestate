@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="group_account_archive_manager" model="res.groups">
-        <field name="name">Account Archive Manager</field>
-        <field name="category_id" ref="base.module_category_accounting_and_finance"/>
-        <field name="implied_ids" eval="[(4, ref('account.group_account_manager'))]"/>
-    </record>
-</odoo>

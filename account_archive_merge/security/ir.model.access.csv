@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_archive_log_user,account.archive.log.user,account_archive_merge.model_account_archive_log,account.group_account_user,1,0,0,0
-access_account_archive_log_manager,account.archive.log.manager,account_archive_merge.model_account_archive_log,account.group_account_manager,1,1,1,1
-access_account_merge_wizard,account.merge.wizard,account_archive_merge.model_account_merge_wizard,account.group_account_manager,1,1,1,1
-access_account_archive_wizard,account.archive.wizard,account_archive_merge.model_account_archive_wizard,account.group_account_manager,1,1,1,1
