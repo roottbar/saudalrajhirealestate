@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<odoo>
-    <data>
-        <record id="review_account_group" model="res.groups">
-            <field name="name">Review move/invoice/bills</field>
-        </record>
-    </data>
-</odoo>
