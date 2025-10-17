@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Customer Tickets",
+    'version': "18.0.1.0.0",
+    'summary': "Enhanced Customer Tickets module",
+    'description': "Enhanced Customer Tickets module for Odoo 18.0 by roottbar",
+    'category': "Sales",
+    'author': "PlusTech",
+    'maintainer': "roottbar",
+    'depends': [
+        'base',
+        'mail',
+    ],
+    'data': [
+        'security/groups.xml',
+        'security/ir.model.access.csv',
+        'data/ir_sequence_data.xml',
+        'data/cron_data.xml',
+        'data/database_info_data.xml',
+        'data/mail_activity.xml',
+        'views/customer_ticket.xml',
+        'views/subscription.xml',
+        'views/ticket_type.xml',
+        'views/package_ticket_type.xml',
+        'views/feedback.xml',
+        'views/ir_attachment.xml',
+    ],
+    'license': "LGPL-3",
+    'installable': False,
+    'auto_install': False,
+}
