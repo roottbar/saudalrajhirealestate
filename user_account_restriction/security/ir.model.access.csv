@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_res_users_restricted_accounts,res.users.restricted.accounts,base.model_res_users,base.group_user,1,0,0,0
-access_res_users_restricted_accounts_manager,res.users.restricted.accounts.manager,base.model_res_users,base.group_system,1,1,1,1
-access_account_account_user,account.account.user,account.model_account_account,base.group_user,1,0,0,0
