@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_glossy_element_user,glossy_element_user,model_element_element,base.group_user,1,0,0,0
-access_element_hr_manager,glossy_element_group_manager,model_element_element,hr.group_hr_manager,1,1,1,1
-access_emp_element_hr_user,emp_element_hr_user,model_employee_element_line,base.group_user,1,1,1,1
