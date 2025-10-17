@@ -1,4 +1,0 @@
-<odoo>
-    <menuitem id="menu_user_log_root" name="User Logs" sequence="100"/>
-    <menuitem id="menu_user_log" name="Activity Logs" parent="menu_user_log_root" action="action_user_log"/>
-</odoo>
