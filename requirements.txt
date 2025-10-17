@@ -1,0 +1,155 @@
+# Saudi Al-Rajhi Real Estate - Complete Python Dependencies
+# Odoo 18.0 Migration - All External Dependencies
+# Created by: roottbar
+# Date: 2025-01-30
+
+# ===================================================
+# CORE PDF PROCESSING LIBRARIES
+# ===================================================
+# Required by: pdf_helper, base_ubl, hr_resume_ats, hr_resume_ats2
+PyPDF2>=3.0.0
+
+# Alternative PDF processing (fallback)
+pypdf>=3.0.0
+pdfplumber>=0.9.0
+
+# ===================================================
+# EXCEL/SPREADSHEET PROCESSING
+# ===================================================
+# Required by: report_xlsx
+xlsxwriter>=3.0.0
+xlrd>=2.0.0
+
+# ===================================================
+# DOCUMENT PROCESSING
+# ===================================================
+# Required by: hr_resume_ats, hr_resume_ats2
+python-docx>=0.8.11
+
+# ===================================================
+# NATURAL LANGUAGE PROCESSING
+# ===================================================
+# Required by: hr_resume_ats, hr_resume_ats2
+nltk>=3.8
+textstat>=0.7.3
+
+# ===================================================
+# HTTP REQUESTS & API INTEGRATION
+# ===================================================
+# Required by: ejar_integration, hr_resume_ats, hr_resume_ats2
+requests>=2.28.0
+
+# ===================================================
+# SECURITY & CRYPTOGRAPHY
+# ===================================================
+# Required by: ejar_integration
+cryptography>=3.4.8
+PyJWT>=2.4.0
+
+# ===================================================
+# QR CODE GENERATION
+# ===================================================
+# Required by: einv_sa (e-Invoice KSA)
+qrcode[pil]>=7.4.2
+Pillow>=9.0.0
+
+# ===================================================
+# BIOMETRIC DEVICE INTEGRATION
+# ===================================================
+# Required by: suprema_attendance
+pyzk>=0.9.0
+
+# ===================================================
+# ADDITIONAL COMMON DEPENDENCIES
+# ===================================================
+# Standard libraries that might be required
+python-dateutil>=2.8.2
+lxml>=4.9.0
+Babel>=2.9.1
+chardet>=4.0.0
+urllib3>=1.26.0
+certifi>=2022.0.0
+
+# ===================================================
+# CURSOR IDE & PYTHON DEVELOPMENT ENHANCEMENT
+# ===================================================
+# Language Server Protocol for Python
+python-lsp-server[all]>=1.9.0
+jedi>=0.19.0
+rope>=1.9.0
+
+# Code Formatting & Linting
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+mypy>=1.5.0
+pylint>=2.17.0
+autopep8>=2.0.4,<2.1.0
+
+# Type Checking & Static Analysis
+pyright>=1.1.0
+pyre-check>=0.9.0
+
+# Testing Frameworks
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+pytest-odoo>=2.1.3
+coverage>=7.3.0
+
+# Debugging & Profiling
+pdbpp>=0.10.3
+memory-profiler>=0.61.0
+line-profiler>=4.1.0
+py-spy>=0.3.14
+psutil>=5.9.0
+
+# Code Quality & Security
+bandit>=1.7.5
+safety>=2.3.0
+vulture>=2.9.0
+radon>=6.0.0
+
+# Documentation Generation
+sphinx>=7.1.0
+mkdocs>=1.5.0
+mkdocs-material>=9.2.0
+
+# Virtual Environment Management
+virtualenv>=20.24.0
+pipenv>=2023.9.0
+
+# Development Tools
+ipython>=8.0,<9.0  # Pin to compatible version for Python 3.11
+jupyter>=1.0.0
+notebook>=7.0.0
+
+# Performance Monitoring
+py-spy>=0.3.14
+# cProfile2>=1.0.0  # Package doesn't exist, using built-in cProfile instead
+
+# Additional IDE Support
+python-dotenv>=1.0.0
+click>=8.1.0
+rich>=13.5.0
+
+# ===================================================
+# DATE CONVERSION LIBRARIES
+# ===================================================
+# Required by: rent_customize
+hijri-converter>=2.3.0
+
+# ===================================================
+# TESTING FRAMEWORKS (OPTIONAL)
+# ===================================================
+# Uncomment if you need testing capabilities
+# pytest>=7.0.0
+# pytest-odoo>=2.1.3
+# coverage>=6.0.0
+
+# ===================================================
+# NOTES
+# ===================================================
+# All versions are compatible with Odoo 18.0
+# Install with: pip install -r requirements.txt
+# For production: pip install --no-deps -r requirements.txt
