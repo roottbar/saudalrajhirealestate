@@ -1,0 +1,1 @@
+access_rent_maintenance_pivot_report,access_rent_maintenance_pivot_report,model_rent_maintenance_pivot_report,base.group_user,1,1,1,1

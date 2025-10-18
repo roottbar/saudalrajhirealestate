@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="admin_fees" model="product.template">
+            <field name="name">رسوم ادارية</field>
+            <field name="categ_id">1</field>
+            <field name="rent_ok">True</field>
+            <field name="standard_price">0.0</field>
+            <field name="list_price">0.0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="description_sale">رسوم ادارية</field>
+        </record>
+        <record id="service_fees" model="product.template">
+            <field name="name">رسوم خدمات</field>
+            <field name="categ_id">1</field>
+            <field name="rent_ok">True</field>
+            <field name="standard_price">0.0</field>
+            <field name="list_price">0.0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="description_sale">رسوم حدمات</field>
+        </record>
+        <record id="insurance_fees" model="product.template">
+            <field name="name">تـأمين</field>
+            <field name="categ_id">1</field>
+            <field name="rent_ok">True</field>
+            <field name="standard_price">0.0</field>
+            <field name="list_price">0.0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="description_sale">تـأمين</field>
+        </record>
+        <record id="insurance_sub_fees" model="product.template">
+            <field name="name">رسوم خدمات خاضعة</field>
+            <field name="categ_id">1</field>
+            <field name="rent_ok">True</field>
+            <field name="standard_price">0.0</field>
+            <field name="list_price">0.0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="description_sale">رسوم خدمات خاضعة</field>
+        </record>
+        <record id="admin_sub_fees" model="product.template">
+            <field name="name">رسوم ادارية خاضعة</field>
+            <field name="categ_id">1</field>
+            <field name="rent_ok">True</field>
+            <field name="standard_price">0.0</field>
+            <field name="list_price">0.0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="description_sale">رسوم ادارية خاضعة</field>
+        </record>
+    </data>
+</odoo>
